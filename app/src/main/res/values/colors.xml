@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#009999</color>
+    <color name="transparent">#00ffffff</color>
+    <color name="login_gray">#a6a6a6</color>
+    <color name="edit_text_gray">#9f9f9f</color>
+    <color name="bovine_primary">#00b050</color>
+    <color name="bovine_dark">#00a249</color>
+    <color name="milk_primary">#00b0f0</color>
+    <color name="milk_dark">#009ed6</color>
+    <color name="feed_primary">#993366</color>
+    <color name="feed_dark">#842c58</color>
+    <color name="management_primary">#ffc000</color>
+    <color name="management_dark">#d6a300</color>
+    <color name="movements_primary">#cc6600</color>
+    <color name="movements_dark">#ac5600</color>
+    <color name="vaccine_primary">#e91e63</color>
+    <color name="vaccine_dark">#be124b</color>
+    <color name="health_primary">#f44336</color>
+    <color name="health_dark">#cf190b</color>
+    <color name="straw_primary">#7c30a0</color>
+    <color name="straw_dark">#652b91</color>
+    <color name="prairie_primary">#2f5597</color>
+    <color name="prairie_dark">#27467d</color>
+    <color name="reports_primary">#cddc39</color>
+    <color name="reports_dark">#baca24</color>
+    <color name="background_menu">#262626</color>
+    <color name="menu_button">#404040</color>
+    <color name="menu_text">#656565</color>
+    <color name="textview_label">#000</color>
+    <color name="line_template">#d9d9d9</color>
+</resources>

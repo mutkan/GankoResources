@@ -1,0 +1,25 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="login_edit_text" parent="Base.V7.Widget.AppCompat.EditText">
+        <item name="android:textColor">@color/login_gray</item>
+        <item name="android:background">@drawable/login_edit_text</item>
+    </style>
+
+    <style name="edit_text" parent="Base.V7.Widget.AppCompat.EditText">
+        <item name="android:textColor">@color/edit_text_gray</item>
+        <item name="android:background">@drawable/edit_text</item>
+    </style>
+    <style name="textview_label">
+        <item name="android:textColor">@color/textview_label</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Caption</item>
+    </style>
+
+</resources>
