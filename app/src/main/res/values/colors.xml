@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimary">#00b050</color>
+    <color name="colorPrimaryDark">#00a249</color>
     <color name="colorAccent">#009999</color>
     <color name="transparent">#00ffffff</color>
     <color name="login_gray">#a6a6a6</color>
+    <color name="login_gray_transparent">#cc2b2b2b</color>
     <color name="edit_text_gray">#9f9f9f</color>
+    <color name="separator_gray">#a6a6a6</color>
     <color name="bovine_primary">#00b050</color>
     <color name="bovine_dark">#00a249</color>
     <color name="milk_primary">#00b0f0</color>

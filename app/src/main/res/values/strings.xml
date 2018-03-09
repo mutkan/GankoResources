@@ -134,4 +134,6 @@
     <string name="type">Tipo</string>
     <string name="bull_name">Nombre del Toro</string>
     <string name="origin_name">Nombre de Procedencia</string>
+    <string name="date_value">dd / mm / yyyy</string>
+    <string name="button_plus">+</string>
 </resources>

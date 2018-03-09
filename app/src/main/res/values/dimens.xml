@@ -2,4 +2,6 @@
 <resources>
     <dimen name="small">10dp</dimen>
     <dimen name="button_width">170dp</dimen>
+    <dimen name="login_icon">30dp</dimen>
+    <dimen name="button_square">60dp</dimen>
 </resources>

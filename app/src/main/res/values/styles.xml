@@ -11,6 +11,7 @@
     <style name="login_edit_text" parent="Base.V7.Widget.AppCompat.EditText">
         <item name="android:textColor">@color/login_gray</item>
         <item name="android:background">@drawable/login_edit_text</item>
+        <item name="android:textColorHint">@color/login_gray</item>
     </style>
 
     <style name="edit_text" parent="Base.V7.Widget.AppCompat.EditText">
