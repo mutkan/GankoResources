@@ -16,20 +16,23 @@
     <string name="btn_Acept">Aceptar</string>
     <string name="delete_farm">Eliminar Finca</string>
     <string name="delete_farm_text">Digita tu Contraseña para eliminar la finca</string>
-    <string name="bovines">Bovinos</string>
+
+    //Menu Principal
     <string name="farm_name">Nombre de la Finca</string>
     <string name="change_farm">Cambiar Finca</string>
-    <string name="milk">Leche</string>
-    <string name="feeding">Alimentación</string>
-    <string name="management">Manejo</string>
-    <string name="movement">Movimiento</string>
+    <string name="bovines">BOVINOS</string>
+    <string name="milk">LECHE</string>
+    <string name="feeding">ALIMENTACIÓN</string>
+    <string name="management">MANEJO</string>
+    <string name="movement">MOVIMIENTO</string>
+    <string name="vaccines">VACUNAS</string>
+    <string name="health">SANIDAD</string>
+    <string name="straw">PAJILLAS</string>
+    <string name="prairies">PRADERAS</string>
+    <string name="reports">REPORTES</string>
+    <string name="logout">Cerrar Sesión</string>
+
     <string name="vaccine">Vacuna</string>
-    <string name="vaccines">Vacunas</string>
-    <string name="health">Sanidad</string>
-    <string name="straw">Pajillas</string>
-    <string name="prairies">Praderas</string>
-    <string name="reports">Reportes</string>
-    <string name="logout">Cerrar Sesion</string>
     <string name="bovine_name">Nombre del Bovino</string>
     <string name="sex">Sexo</string>
     <string name="birthday">Fecha de Nacimiento</string>
@@ -136,4 +139,6 @@
     <string name="origin_name">Nombre de Procedencia</string>
     <string name="date_value">dd / mm / yyyy</string>
     <string name="button_plus">+</string>
+    <string name="menu_open">Menu abierto</string>
+    <string name="menu_close">Menu cerrado</string>
 </resources>
