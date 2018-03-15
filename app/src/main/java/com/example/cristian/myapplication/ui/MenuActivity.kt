@@ -14,12 +14,14 @@ import android.view.Menu
 import android.view.View
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.ui.adapters.MenuAdapter
+import com.example.cristian.myapplication.util.LifeDisposable
 import kotlinx.android.synthetic.main.activity_menu.*
 
 class MenuActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
     lateinit var toggle: ActionBarDrawerToggle
     var adapter: MenuAdapter = MenuAdapter()
+    val dis: LifeDisposable = LifeDisposable(this)
     var nav: MenuNavigation = MenuNavigation()
     var phone: Boolean = true
     lateinit var menuViewModel: MenuViewModel
@@ -53,7 +55,12 @@ class MenuActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     override fun onResume() {
         super.onResume()
 
-        adapter.clickMenu
+        fun onCreateOptionsMenu(menu: Menu): Boolean{
+            menuInflater.inflate(R.menu.toolbar_menu, menu)
+            return true
+        }
+
+        dis add adapter.clickMenu
                 .subscribe {
                     if(phone) {
                         drawer.closeDrawers()

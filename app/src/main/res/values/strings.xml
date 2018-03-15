@@ -141,4 +141,18 @@
     <string name="button_plus">+</string>
     <string name="menu_open">Menu abierto</string>
     <string name="menu_close">Menu cerrado</string>
+
+    <!-- Filtro -->
+
+    <string name="filter_milk">Leche</string>
+    <string name="filter_meat">Ceba</string>
+    <string name="filter_both">Ambos</string>
+    <string name="filter_purpose">Propósito</string>
+    <string name="filter_production">En producción</string>
+    <string name="filter_reproductive">Reproductivo</string>
+    <string name="filter_state_meat">En ceba</string>
+    <string name="filter_service">En servicio</string>
+    <string name="filter_diagnosis">En diagnóstico</string>
+    <string name="filter_weaning">Destete</string>
+    <string name="filter_retired">Retirados</string>
 </resources>
