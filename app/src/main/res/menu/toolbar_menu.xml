@@ -3,16 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/search_toolbar"
+        android:icon="@drawable/ic_search"
+        app:showAsAction="ifRoom"
+        android:title="Buscar">
+    </item>
+    <item
         android:id="@+id/filter_toolbar"
         android:icon="@drawable/ic_filter"
         app:showAsAction="ifRoom"
         android:title="Compose">
-    </item>
-    <item
-        android:id="@+id/search_toolbar"
-        android:icon="@drawable/ic_search"
-        app:showAsAction="ifRoom|withText"
-        android:title="Buscar">
     </item>
 
 </menu>

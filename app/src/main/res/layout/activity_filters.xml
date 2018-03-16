@@ -156,6 +156,7 @@
             android:text="Limpiar filtros"
             android:background="@color/menu_button"
             style="@style/TextAppearance.AppCompat.Widget.Button.Inverse"
+            android:textColor="@color/white"
             />
 
 </LinearLayout>

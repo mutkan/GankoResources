@@ -1,23 +1,22 @@
 package com.example.cristian.myapplication.ui
 
-import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
-import android.support.v4.widget.DrawerLayout
+import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import android.view.Menu
-import android.view.View
+import android.view.MenuItem
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.ui.adapters.MenuAdapter
 import com.example.cristian.myapplication.util.LifeDisposable
 import kotlinx.android.synthetic.main.activity_menu.*
 
-class MenuActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
+class MenuActivity : AppCompatActivity() {
 
     lateinit var toggle: ActionBarDrawerToggle
     var adapter: MenuAdapter = MenuAdapter()
@@ -33,9 +32,10 @@ class MenuActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         menuViewModel = ViewModelProviders.of(this).get(MenuViewModel::class.java)
         phone = resources.getBoolean(R.bool.phone)
 
+        setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         toggle = ActionBarDrawerToggle(this, drawer, R.string.menu_open, R.string.menu_close)
-        drawer.addDrawerListener(this)
+
 
         recycler.adapter = adapter
         adapter.items = menuViewModel.data
@@ -55,11 +55,6 @@ class MenuActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     override fun onResume() {
         super.onResume()
 
-        fun onCreateOptionsMenu(menu: Menu): Boolean{
-            menuInflater.inflate(R.menu.toolbar_menu, menu)
-            return true
-        }
-
         dis add adapter.clickMenu
                 .subscribe {
                     if(phone) {
@@ -77,8 +72,29 @@ class MenuActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         }
                     }
                 }
+
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.toolbar_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onPostCreate(savedInstanceState: Bundle?) {
+        super.onPostCreate(savedInstanceState)
+        toggle.syncState()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        if(toggle.onOptionsItemSelected(item)){
+            return true
+        }
+        when(item!!.itemId){
+            R.id.filter_toolbar -> drawer.openDrawer(GravityCompat.END)
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
 
     fun clickOnMenu(content: Int){
 
@@ -106,20 +122,5 @@ class MenuActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
     }
 
-    override fun onDrawerStateChanged(newState: Int) {
-        toggle.onDrawerStateChanged(newState)
-    }
-
-    override fun onDrawerSlide(drawerView: View?, slideOffset: Float) {
-        toggle.onDrawerSlide(drawerView, slideOffset)
-    }
-
-    override fun onDrawerClosed(drawerView: View?) {
-        toggle.onDrawerClosed(drawerView)
-    }
-
-    override fun onDrawerOpened(drawerView: View?) {
-        toggle.onDrawerOpened(drawerView)
-    }
 
 }
