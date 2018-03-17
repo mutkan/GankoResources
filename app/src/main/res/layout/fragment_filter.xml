@@ -1,0 +1,161 @@
+<LinearLayout
+    android:id="@+id/filter_menu"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="@dimen/filter_width"
+    android:layout_height="match_parent"
+    android:background="@color/background_menu"
+    android:layout_gravity="end">
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="200dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        >
+
+        <LinearLayout
+            android:layout_width="@dimen/filter_width"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/filter_margin"
+                android:text="FILTRAR"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/filter_margin"
+                android:text="@string/purpose"
+                android:textColor="@color/section_name_filter" />
+
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/check_milk"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/filter_margin"
+                android:buttonTint="@color/check_filter"
+                android:text="@string/filter_milk"
+                android:textColor="@color/white" />
+
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/check_meat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/filter_margin"
+                android:buttonTint="@color/check_filter"
+                android:text="@string/filter_meat"
+                android:textColor="@color/white" />
+
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/check_both"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/filter_margin"
+                android:buttonTint="@color/check_filter"
+                android:text="@string/filter_both"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/filter_margin"
+                android:layout_marginTop="@dimen/small"
+                android:text="@string/filter_milk"
+                android:textColor="@color/section_name_filter" />
+
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/check_production"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/filter_margin"
+                android:buttonTint="@color/check_filter"
+                android:text="@string/filter_production"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/filter_margin"
+                android:layout_marginTop="@dimen/small"
+                android:text="@string/filter_reproductive"
+                android:textColor="@color/section_name_filter" />
+
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/check_state_meat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/filter_margin"
+                android:buttonTint="@color/check_filter"
+                android:text="@string/filter_state_meat"
+                android:textColor="@color/white" />
+
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/check_service"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/filter_margin"
+                android:buttonTint="@color/check_filter"
+                android:text="@string/filter_service"
+                android:textColor="@color/white" />
+
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/check_diagnosis"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/filter_margin"
+                android:buttonTint="@color/check_filter"
+                android:text="@string/filter_diagnosis"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/filter_margin"
+                android:layout_marginTop="@dimen/small"
+                android:text="@string/filter_meat"
+                android:textColor="@color/section_name_filter" />
+
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/check_weaning"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/filter_margin"
+                android:buttonTint="@color/check_filter"
+                android:text="@string/filter_weaning"
+                android:textColor="@color/white"
+                android:layout_marginBottom="@dimen/small"/>
+
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="1dp"
+                android:background="@color/section_name_filter"/>
+
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/check_retired"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/filter_margin"
+                android:buttonTint="@color/check_filter"
+                android:text="@string/filter_retired"
+                android:textColor="@color/white"
+                android:layout_marginTop="@dimen/small"/>
+
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+    <Button
+        android:layout_width="@dimen/filter_width"
+        android:layout_height="wrap_content"
+        android:text="Limpiar filtros"
+        android:background="@color/menu_button"
+        style="@style/TextAppearance.AppCompat.Widget.Button.Inverse"
+        android:textColor="@color/white"
+        />
+
+</LinearLayout>

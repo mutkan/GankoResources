@@ -39,8 +39,8 @@
         tools:listitem="@layout/template_menu" />
 
    <include
-       layout="@layout/activity_filters"
-       android:layout_width="200dp"
+       layout="@layout/fragment_filter"
+       android:layout_width="@dimen/filter_width"
        android:layout_height="match_parent"
        android:layout_gravity="end"/>
 

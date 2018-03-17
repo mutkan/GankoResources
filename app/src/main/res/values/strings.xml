@@ -155,4 +155,11 @@
     <string name="filter_diagnosis">En diagnóstico</string>
     <string name="filter_weaning">Destete</string>
     <string name="filter_retired">Retirados</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="feed_name">Nombre del alimento</string>
+    <string name="feed_date">Fecha del alimento</string>
+    <string name="feed_kile_value">Valor por kilo</string>
+    <string name="feed_total_value">Valor Total</string>
 </resources>
