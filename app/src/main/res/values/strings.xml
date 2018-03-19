@@ -162,4 +162,8 @@
     <string name="feed_date">Fecha del alimento</string>
     <string name="feed_kile_value">Valor por kilo</string>
     <string name="feed_total_value">Valor Total</string>
+    <string name="last_feed">Ultima Alimentacion</string>
+    <string name="monthly_feed">Valor de alimentacion mensual</string>
+    <string name="monthlyFeed">27000 COP</string>
+    <string name="feedNumberBovine">120</string>
 </resources>
