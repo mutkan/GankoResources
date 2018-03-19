@@ -162,4 +162,7 @@
     <string name="feed_date">Fecha del alimento</string>
     <string name="feed_kile_value">Valor por kilo</string>
     <string name="feed_total_value">Valor Total</string>
+    <string name="manage_treatment">Tratamiento</string>
+    <string name="manage_product">Producto</string>
+    <string name="manage_event_name">Nombre del evento</string>
 </resources>
