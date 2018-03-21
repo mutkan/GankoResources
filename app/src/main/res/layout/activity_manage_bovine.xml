@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        tools:listitem="@layout/template_manage_bovine" />
+        tools:listitem="@layout/template_manage_bovine"
+        />
 
 </android.support.constraint.ConstraintLayout>
