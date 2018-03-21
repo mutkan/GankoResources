@@ -61,7 +61,8 @@
             app:setText="@{item.title}"
             tools:text="Seccion menu"
             android:textSize="@dimen/menu_section_name"
-            android:layout_marginTop="@dimen/small"/>
+            android:layout_marginTop="@dimen/small"
+            android:textColor="@color/white"/>
 
     </android.support.constraint.ConstraintLayout>
 </layout>
