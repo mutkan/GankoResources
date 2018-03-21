@@ -66,6 +66,7 @@
     <string name="previous_number_of_births">Numero de Partos Previos</string>
     <string name="weight">Peso</string>
     <string name="weight_in_kg">Peso en Kilogramos</string>
+    <string name="kilogram">Kg</string>
     <string name="color">Color</string>
     <string name="bovine_color">Color del Bovino</string>
     <string name="weaned">Destetado</string>
@@ -142,6 +143,9 @@
     <string name="menu_open">Menu abierto</string>
     <string name="menu_close">Menu cerrado</string>
 
+    <string name="operation_type">Tipo de Operación</string>
+
+
     <!-- Filtro -->
 
     <string name="filter_milk">Leche</string>
@@ -156,13 +160,20 @@
     <string name="filter_weaning">Destete</string>
     <string name="filter_retired">Retirados</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="feed_name">Nombre del alimento</string>
     <string name="feed_date">Fecha del alimento</string>
     <string name="feed_kile_value">Valor por kilo</string>
     <string name="feed_total_value">Valor Total</string>
+    <string name="last_feed">Ultima Alimentacion</string>
+    <string name="monthly_feed">Valor de alimentacion mensual</string>
+    <string name="monthlyFeed">27000 COP</string>
+    <string name="feedNumberBovine">1</string>
     <string name="manage_treatment">Tratamiento</string>
     <string name="manage_product">Producto</string>
     <string name="manage_event_name">Nombre del evento</string>
+    <string name="markBovine">ABC123</string>
+
+
 </resources>
