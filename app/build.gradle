@@ -53,6 +53,6 @@ dependencies {
     implementation "android.arch.lifecycle:extensions:$arch_version"
     kapt "android.arch.lifecycle:compiler:$arch_version"
 
-    kapt "com.android.databinding:compiler:3.0.1"
+
 
 }

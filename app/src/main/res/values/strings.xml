@@ -66,6 +66,7 @@
     <string name="previous_number_of_births">Numero de Partos Previos</string>
     <string name="weight">Peso</string>
     <string name="weight_in_kg">Peso en Kilogramos</string>
+    <string name="kilogram">Kg</string>
     <string name="color">Color</string>
     <string name="bovine_color">Color del Bovino</string>
     <string name="weaned">Destetado</string>
@@ -141,4 +142,5 @@
     <string name="button_plus">+</string>
     <string name="menu_open">Menu abierto</string>
     <string name="menu_close">Menu cerrado</string>
+    <string name="operation_type">Tipo de Operación</string>
 </resources>
