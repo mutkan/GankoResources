@@ -6,7 +6,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     >
     <data>
-
+        <variable
+            name="feed"
+            type="com.example.cristian.myapplication.data.models.Feed"/>
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -21,7 +23,7 @@
             android:layout_marginEnd="32dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="24dp"
-            android:text="TextView"
+            android:text="@{feed.tipo}"
             app:layout_constraintEnd_toStartOf="@+id/feed_date"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -37,7 +39,9 @@
             app:layout_constraintBottom_toBottomOf="@+id/feed_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="15/02/2018" />
+            tools:text="15/02/2018"
+            android:text="@{feed.fecha.toString()}"
+            />
 
         <TextView
             android:id="@+id/feed_rations"
@@ -49,7 +53,9 @@
             android:textColor="@color/menu_button"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/feed_name"
-            tools:text="No. raciones" />
+            tools:text="No. raciones"
+            android:text='@{feed.racion + ""}'
+            />
 
         <TextView
             android:id="@+id/text26"
@@ -58,7 +64,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="16dp"
-            android:text="TextView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/feed_rations"
             tools:text="@string/feed_kile_value" />
@@ -70,7 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="11dp"
-            android:text="TextView"
+            android:text='@{feed.valorKilo + ""}'
             android:textColor="@color/menu_button"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text26"
@@ -83,7 +88,6 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="24dp"
             android:layout_marginStart="8dp"
-            android:text="TextView"
             app:layout_constraintBottom_toBottomOf="@+id/text26"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/text26"
@@ -109,11 +113,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/feed_kile_value" />
-
-
-
-
-
 
     </android.support.constraint.ConstraintLayout>
 </layout>
