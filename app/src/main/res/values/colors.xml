@@ -40,4 +40,5 @@
     <!--Filtro -->
     <color name="check_filter">#009999</color>
     <color name="section_name_filter">#7E7E73</color>
+    <color name="next_zeal_background">#f2f2f2</color>
 </resources>
