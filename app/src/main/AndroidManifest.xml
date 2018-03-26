@@ -20,8 +20,21 @@
             </intent-filter>
         </activity>
         <activity android:name=".PrincipalActivity" />
-        <activity android:name=".ui.FeedBovineActivity" />
-        <activity android:name=".ui.ManageBovineActivity" />
+        <activity android:name=".ui.bovine.feed.FeedBvnActivity" />
+        <activity android:name=".ui.bovine.manage.ManageBvnActivity" />
+        <activity android:name=".ui.account.LoginActivity" />
+        <activity android:name=".ui.account.SigninActivity" />
+        <activity android:name=".ui.account.RestorePassActivity" />
+        <activity android:name=".ui.bovine.DetailBovineActivity" />
+        <activity android:name=".ui.farms.AddFarmActivity" />
+        <activity android:name=".ui.farms.FarmActivity" />
+        <activity android:name=".ui.bovine.RemoveBovineActivity" />
+        <activity android:name=".ui.bovine.AddBovineActivity" />
+        <activity android:name=".ui.bovine.milk.MilkBvnActivity" />
+        <activity android:name=".ui.bovine.milk.AddMilkBvnActivity" />
+        <activity android:name=".ui.bovine.movement.MovementBvnActivity" />
+        <activity android:name=".ui.bovine.health.HealthBvnActivity" />
+        <activity android:name=".ui.bovine.vaccination.VaccinationBvnActivity"></activity>
     </application>
 
 </manifest>
