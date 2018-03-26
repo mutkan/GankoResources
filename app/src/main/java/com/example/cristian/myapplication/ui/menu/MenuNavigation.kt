@@ -1,4 +1,4 @@
-package com.example.cristian.myapplication.ui
+package com.example.cristian.myapplication.ui.menu
 
 /**
  * Created by Ana Marin on 11/03/2018.

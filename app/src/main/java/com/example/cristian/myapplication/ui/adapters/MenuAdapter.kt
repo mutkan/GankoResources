@@ -8,7 +8,7 @@ import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.databinding.TemplateMenuBinding
 import com.example.cristian.myapplication.databinding.TemplateMenuButtonBinding
 import com.example.cristian.myapplication.databinding.TemplateMenuTitleBinding
-import com.example.cristian.myapplication.ui.MenuViewModel
+import com.example.cristian.myapplication.ui.menu.MenuViewModel
 import com.example.cristian.myapplication.util.inflate
 import io.reactivex.subjects.PublishSubject
 
