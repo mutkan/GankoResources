@@ -17,18 +17,15 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.reflect.KClass
 
-/**
- * Created by Ana Marin on 11/03/2018.
- */
 fun ViewGroup.inflate(layout: Int) = LayoutInflater.from(context).inflate(layout, this, false)
 
 fun EditText.text(): String = text.toString()
 
-fun <T : ViewModel> AppCompatActivity.buildViewModel(factory: ViewModelProvider.Factory, kClass: KClass<T>): T
-        = ViewModelProviders.of(this, factory).get(kClass.java)
+inline fun <reified T : ViewModel> AppCompatActivity.buildViewModel(factory: ViewModelProvider.Factory): T
+        = ViewModelProviders.of(this, factory).get(T::class.java)
 
-fun <T : ViewModel> Fragment.buildViewModel(factory: ViewModelProvider.Factory, kClass: KClass<T>): T
-        = ViewModelProviders.of(this, factory).get(kClass.java)
+inline fun <reified T : ViewModel> Fragment.buildViewModel(factory: ViewModelProvider.Factory): T
+        = ViewModelProviders.of(this, factory).get(T::class.java)
 
 
 fun SharedPreferences.save(vararg data: Pair<String, Any>) {

@@ -174,6 +174,7 @@
     <string name="manage_product">Producto</string>
     <string name="manage_event_name">Nombre del evento</string>
     <string name="markBovine">ABC123</string>
+    <string name="dairy">Lechería</string>
 
 
 </resources>

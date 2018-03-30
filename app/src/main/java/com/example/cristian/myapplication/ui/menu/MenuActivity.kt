@@ -1,4 +1,4 @@
-package com.example.cristian.myapplication.ui
+package com.example.cristian.myapplication.ui.menu
 
 import android.arch.lifecycle.ViewModelProviders
 import android.graphics.drawable.ColorDrawable

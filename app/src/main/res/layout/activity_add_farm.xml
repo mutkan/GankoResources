@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/farmNameTxt"
         style="@style/textview_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -14,30 +14,31 @@
         android:layout_marginTop="24dp"
         android:text="@string/name"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="24dp" />
 
     <TextView
-        android:id="@+id/textView7"
+        android:id="@+id/farmLocationTxt"
         style="@style/textview_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="@string/location"
-        app:layout_constraintStart_toStartOf="@+id/editText3"
-        app:layout_constraintTop_toBottomOf="@+id/editText3" />
+        app:layout_constraintStart_toStartOf="@+id/farmName"
+        app:layout_constraintTop_toBottomOf="@+id/farmName" />
 
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/farmHectaersTxt"
         style="@style/textview_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="@string/hectares"
-        app:layout_constraintStart_toStartOf="@+id/editText4"
-        app:layout_constraintTop_toBottomOf="@+id/editText4" />
+        app:layout_constraintStart_toStartOf="@+id/farmLocation"
+        app:layout_constraintTop_toBottomOf="@+id/farmLocation" />
 
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/farmName"
         style="@style/edit_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -47,11 +48,12 @@
         android:hint="@string/farm_name"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/textView6"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+        app:layout_constraintStart_toStartOf="@+id/farmNameTxt"
+        app:layout_constraintTop_toBottomOf="@+id/farmNameTxt"
+        android:layout_marginRight="24dp" />
 
     <EditText
-        android:id="@+id/editText4"
+        android:id="@+id/farmLocation"
         style="@style/edit_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -59,13 +61,13 @@
         android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="@string/farm_location"
-        android:inputType="textPersonName"
+        android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/textView7"
-        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+        app:layout_constraintStart_toStartOf="@+id/farmLocationTxt"
+        app:layout_constraintTop_toBottomOf="@+id/farmLocationTxt" />
 
     <EditText
-        android:id="@+id/editText5"
+        android:id="@+id/farmHectares"
         style="@style/edit_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -73,31 +75,31 @@
         android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="@string/number_of_hectares"
-        android:inputType="textPersonName"
+        android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/textView8"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+        app:layout_constraintStart_toStartOf="@+id/farmHectaersTxt"
+        app:layout_constraintTop_toBottomOf="@+id/farmHectaersTxt" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btnAdd"
         style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="@dimen/button_width"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:text="@string/btn_add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/button2" />
+        app:layout_constraintStart_toEndOf="@+id/btnCancel" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/btnCancel"
         style="@style/Widget.AppCompat.Button.Borderless.Colored"
-        android:layout_width="@dimen/button_width"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/btn_cancel"
-        app:layout_constraintEnd_toStartOf="@+id/button"
+        app:layout_constraintEnd_toStartOf="@+id/btnAdd"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/button" />
+        app:layout_constraintTop_toTopOf="@+id/btnAdd" />
 </android.support.constraint.ConstraintLayout>

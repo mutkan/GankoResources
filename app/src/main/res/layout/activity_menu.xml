@@ -5,7 +5,7 @@
     android:id="@+id/drawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.cristian.myapplication.ui.MenuActivity">
+    tools:context="com.example.cristian.myapplication.ui.menu.MenuActivity">
 
 
     <android.support.constraint.ConstraintLayout

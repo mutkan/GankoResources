@@ -1,4 +1,4 @@
-package com.example.cristian.myapplication.ui
+package com.example.cristian.myapplication.ui.menu
 
 import android.arch.lifecycle.ViewModel
 import android.graphics.Color
@@ -12,8 +12,8 @@ class MenuViewModel : ViewModel(){
     var content: Int = 2
 
     val data: List<MenuItem> = listOf(
-            MenuItem(MenuItem.TYPE_TITLE, titleText = "Nombre finca" ),
-            MenuItem(MenuItem.TYPE_BUTTON, icon = R.drawable.ic_back_white, title = R.string.change_farm ),
+            MenuItem(MenuItem.TYPE_TITLE, titleText = "Nombre finca"),
+            MenuItem(MenuItem.TYPE_BUTTON, icon = R.drawable.ic_back_white, title = R.string.change_farm),
             MenuItem(MenuItem.TYPE_MENU, R.color.img, R.drawable.ic_bovine, R.string.bovines),
             MenuItem(MenuItem.TYPE_MENU, R.color.img, R.drawable.ic_feed, R.string.feeding),
             MenuItem(MenuItem.TYPE_MENU, R.color.img, R.drawable.ic_management, R.string.management),

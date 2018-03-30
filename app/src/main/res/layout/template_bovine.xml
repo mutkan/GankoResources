@@ -6,11 +6,12 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/nameFeedBovine"
+        android:id="@+id/nameBovineTemplate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="@string/bovine_name" />
@@ -19,8 +20,8 @@
         android:id="@+id/codeBovineTemplate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@+id/nameFeedBovine"
-        app:layout_constraintTop_toBottomOf="@+id/nameFeedBovine"
+        app:layout_constraintStart_toStartOf="@+id/nameBovineTemplate"
+        app:layout_constraintTop_toBottomOf="@+id/nameBovineTemplate"
         tools:text="#232321" />
 
     <TextView
@@ -62,7 +63,7 @@
         app:layout_constraintTop_toBottomOf="@+id/sexBovineTemplate" />
 
     <TextView
-        android:id="@+id/lastFeedBovine"
+        android:id="@+id/birthdayBovineTemplate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="@+id/textView14"
@@ -109,18 +110,38 @@
         android:background="@color/separator_gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lastFeedBovine">
+        app:layout_constraintTop_toBottomOf="@+id/birthdayBovineTemplate">
 
     </FrameLayout>
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/btnRemoveTemplate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dateRemoveTemplate"
+        app:srcCompat="@drawable/ic_close" />
+
+    <TextView
+        android:id="@+id/textView50"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/remove"
+        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+        android:textColor="@color/remove"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_close" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/dateRemoveTemplate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/remove"
+        app:layout_constraintEnd_toEndOf="@+id/textView50"
+        app:layout_constraintTop_toBottomOf="@+id/textView50"
+        tools:text="21/03/2018" />
 
 </android.support.constraint.ConstraintLayout>
