@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
-            android:textColor="@color/menu_button"
+            android:textColor="@color/menu_button_light"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/feed_name"
             tools:text="No. raciones"
@@ -76,7 +76,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="11dp"
             android:text='@{feed.valorKilo + ""}'
-            android:textColor="@color/menu_button"
+            android:textColor="@color/menu_button_light"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text26"
             tools:text="20 Lts" />
@@ -99,7 +99,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="TextView"
-            android:textColor="@color/menu_button"
+            android:textColor="@color/menu_button_light"
             app:layout_constraintBottom_toBottomOf="@+id/feed_kile_value"
             app:layout_constraintStart_toStartOf="@+id/textView27"
             tools:text="20 Lts" />

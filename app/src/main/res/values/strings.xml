@@ -175,6 +175,13 @@
     <string name="manage_event_name">Nombre del evento</string>
     <string name="markBovine">ABC123</string>
     <string name="dairy">Lechería</string>
+    <string name="health_treatment">Tratamiento</string>
+    <string name="health_product">Producto</string>
+    <string name="health_dose">Dosis</string>
+    <string name="health_frequency">Frecuencia</string>
+    <string name="health_atention_value">Valor atención</string>
+    <string name="health_product_value">Valor producto</string>
+    <string name="health_next_application">Siguiente aplicación</string>
 
 
 </resources>

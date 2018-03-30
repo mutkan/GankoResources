@@ -14,8 +14,6 @@ import com.example.cristian.myapplication.util.inflate
  */
 class ManageBovineAdapter : RecyclerView.Adapter<ManageBovineAdapter.ManageBovineHolder>(){
 
-
-
     var manage: List<Manage> = emptyList()
         set(value) {
             field = value
