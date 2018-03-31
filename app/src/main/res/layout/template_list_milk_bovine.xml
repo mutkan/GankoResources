@@ -4,9 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <variable
-            name="produccion"
-            type="com.example.cristian.myapplication.data.models.Produccion"/>
+
     </data>
 
     <android.support.constraint.ConstraintLayout

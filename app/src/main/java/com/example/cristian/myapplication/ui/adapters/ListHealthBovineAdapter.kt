@@ -23,7 +23,7 @@ class ListHealthBovineAdapter:RecyclerView.Adapter<ListHealthBovineAdapter.ListH
     override fun getItemCount(): Int = data.size
 
     override fun onBindViewHolder(holder: ListHealthBovineHolder?, position: Int) =
-            holder.bind(data[position])
+            holder!!.bind(data[position])
 
 
     class ListHealthBovineHolder(itemList:View):RecyclerView.ViewHolder(itemList){

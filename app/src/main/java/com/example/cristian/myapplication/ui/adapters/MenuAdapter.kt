@@ -60,15 +60,15 @@ class MenuAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
     override fun getItemCount(): Int = items.size
 
     class MenuHolder(itemView: View): RecyclerView.ViewHolder(itemView){
-        val binding: TemplateMenuBinding? = DataBindingUtil.bind(itemView)
+        val binding: TemplateMenuBinding = DataBindingUtil.bind(itemView)!!
     }
 
     class MenuTitleHolder(itemView: View): RecyclerView.ViewHolder(itemView){
-        val binding: TemplateMenuTitleBinding? = DataBindingUtil.bind(itemView)
+        val binding: TemplateMenuTitleBinding = DataBindingUtil.bind(itemView)!!
     }
 
     class MenuButtonHolder(itemView: View): RecyclerView.ViewHolder(itemView){
-        val binding: TemplateMenuButtonBinding? = DataBindingUtil.bind(itemView)
+        val binding: TemplateMenuButtonBinding = DataBindingUtil.bind(itemView)!!
     }
 
     fun selectItem(position: Int, color:Int){
