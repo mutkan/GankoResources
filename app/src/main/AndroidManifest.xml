@@ -34,7 +34,7 @@
         <activity android:name=".ui.bovine.milk.AddMilkBvnActivity" />
         <activity android:name=".ui.bovine.movement.MovementBvnActivity" />
         <activity android:name=".ui.bovine.health.HealthBvnActivity" />
-        <activity android:name=".ui.bovine.vaccination.VaccinationBvnActivity"></activity>
+        <activity android:name=".ui.bovine.vaccination.VaccinationBvnActivity"/>
     </application>
 
 </manifest>

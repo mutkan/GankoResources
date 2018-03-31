@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.Sanidad
-import com.example.cristian.myapplication.databinding.TemplateHealthBovineBinding
+import com.example.cristian.myapplication.databinding.TemplateListHealthBovineBinding
 import com.example.cristian.myapplication.util.inflate
 
 class HealthBovineAdapter : RecyclerView.Adapter<HealthBovineAdapter.HealthBovineHolder>(){
@@ -29,6 +29,6 @@ class HealthBovineAdapter : RecyclerView.Adapter<HealthBovineAdapter.HealthBovin
 
 
     class HealthBovineHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val binding: TemplateHealthBovineBinding? = DataBindingUtil.bind(itemView)
+        val binding: TemplateListHealthBovineBinding = DataBindingUtil.bind(itemView)!!
     }
 }
