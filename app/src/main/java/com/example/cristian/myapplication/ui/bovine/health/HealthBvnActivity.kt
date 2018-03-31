@@ -7,7 +7,7 @@ import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.HealthBovineAdapter
 import com.example.cristian.myapplication.util.buildViewModel
-import kotlinx.android.synthetic.main.activity_health_bovine.*
+import kotlinx.android.synthetic.main.activity_list_health_bovine.*
 import javax.inject.Inject
 
 class HealthBvnActivity : AppCompatActivity(), Injectable {
@@ -21,10 +21,10 @@ class HealthBvnActivity : AppCompatActivity(), Injectable {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_health_bovine)
+        setContentView(R.layout.activity_list_health_bovine)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        recycler.adapter = adapter
+        recyclerListHealthBovine.adapter = adapter
     }
 }

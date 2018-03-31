@@ -1,4 +1,7 @@
 <resources>
+
+    <string name="base_url"></string>
+
     <string name="app_name">My Application</string>
     <string name="email">Email</string>
     <string name="password">Contraseña</string>

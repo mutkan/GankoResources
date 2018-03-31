@@ -6,9 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.Vacuna
+import com.example.cristian.myapplication.databinding.TemplateListVaccineBovineBinding
 import com.example.cristian.myapplication.util.inflate
+import javax.inject.Inject
 
-class ListVaccineBovineAdapter:RecyclerView.Adapter<ListVaccineBovineAdapter.ListVaccineBovineHolder>() {
+class ListVaccineBovineAdapter @Inject constructor():RecyclerView.Adapter<ListVaccineBovineAdapter.ListVaccineBovineHolder>() {
 
     var data:List<Vacuna> = listOf()
     set(value) {
@@ -22,10 +24,10 @@ class ListVaccineBovineAdapter:RecyclerView.Adapter<ListVaccineBovineAdapter.Lis
     override fun getItemCount(): Int = data.size
 
     override fun onBindViewHolder(holder: ListVaccineBovineHolder?, position: Int) =
-            holder.bind(data[position])
+            holder!!.bind(data[position])
 
     class ListVaccineBovineHolder(itemList:View):RecyclerView.ViewHolder(itemList){
-        val binding : TemplateListVaccineBovineBinding = DataBindingUtil.bind(itemList)
+        val binding : TemplateListVaccineBovineBinding = DataBindingUtil.bind(itemList)!!
         fun bind(vacuna: Vacuna){
             binding.vacuna = vacuna
         }

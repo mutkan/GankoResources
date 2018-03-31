@@ -13,6 +13,7 @@ import android.widget.EditText
 import android.widget.TextView
 import io.reactivex.Observable
 import org.jetbrains.anko.toast
+import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.reflect.KClass
@@ -85,3 +86,9 @@ fun applyFormat(textView: TextView, date: Date){
     textView.text = format.format(date)
 }
 
+fun Float.currencyFormat(): String{
+    val currencyFormat = NumberFormat.getCurrencyInstance()
+    currencyFormat.currency = Currency.getInstance(Locale.getDefault())
+    currencyFormat.maximumFractionDigits = 0
+    return currencyFormat.format(this).replace(",",".",true)
+}

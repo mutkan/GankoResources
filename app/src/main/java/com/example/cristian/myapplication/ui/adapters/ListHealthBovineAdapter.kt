@@ -8,8 +8,9 @@ import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.Sanidad
 import com.example.cristian.myapplication.databinding.TemplateListHealthBovineBinding
 import com.example.cristian.myapplication.util.inflate
+import javax.inject.Inject
 
-class ListHealthBovineAdapter:RecyclerView.Adapter<ListHealthBovineAdapter.ListHealthBovineHolder>() {
+class ListHealthBovineAdapter @Inject constructor():RecyclerView.Adapter<ListHealthBovineAdapter.ListHealthBovineHolder>() {
 
     var data:List<Sanidad> = listOf()
     set(value) {
@@ -23,7 +24,7 @@ class ListHealthBovineAdapter:RecyclerView.Adapter<ListHealthBovineAdapter.ListH
     override fun getItemCount(): Int = data.size
 
     override fun onBindViewHolder(holder: ListHealthBovineHolder?, position: Int) =
-            holder.bind(data[position])
+            holder!!.bind(data[position])
 
 
     class ListHealthBovineHolder(itemList:View):RecyclerView.ViewHolder(itemList){
