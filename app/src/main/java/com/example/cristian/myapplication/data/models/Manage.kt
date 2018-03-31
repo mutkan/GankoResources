@@ -1,7 +1,10 @@
 package com.example.cristian.myapplication.data.models
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 import java.util.*
 
+@Parcelize
 class Manage(
         var fecha: Date,
         var numeroAplicaciones: Int,
@@ -12,4 +15,4 @@ class Manage(
         var producto: String,
         var observaciones: String,
         var aplicaciones: Array<Aplicacion>
-){}
+):Parcelable{}

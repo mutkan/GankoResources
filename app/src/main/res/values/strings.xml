@@ -182,6 +182,8 @@
     <string name="health_atention_value">Valor atención</string>
     <string name="health_product_value">Valor producto</string>
     <string name="health_next_application">Siguiente aplicación</string>
+    <string name="total_milk">Total</string>
+    <string name="average_milk">Promedio</string>
 
 
 </resources>
