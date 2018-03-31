@@ -5,8 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     >
     <data>
-
-
+        <variable
+            name="manage"
+            type="com.example.cristian.myapplication.data.models.Manage"/>
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -21,7 +22,7 @@
             android:layout_marginEnd="32dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="24dp"
-            android:text="@string/manage_event_name"
+            android:text="@{manage.tipo}"
             app:layout_constraintEnd_toStartOf="@+id/manage_date"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -37,7 +38,8 @@
             app:layout_constraintBottom_toBottomOf="@+id/event_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="15/02/2018" />
+            tools:text="15/02/2018"
+            android:text="@{manage.fecha}"/>
 
 
         <TextView
@@ -59,7 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
-            android:text="TextView"
+            android:text="@{manage.tratamiento}"
             android:textColor="@color/menu_button"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text26"
@@ -83,7 +85,7 @@
             style="@style/TextAppearance.AppCompat.Body1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView"
+            android:text="@{manage.producto}"
             android:textColor="@color/menu_button"
             app:layout_constraintBottom_toBottomOf="@+id/manage_treatment"
             app:layout_constraintStart_toStartOf="@+id/textView27"
@@ -108,31 +110,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
-            android:text="TextView"
+            android:text="@{manage.frecuencia}"
             android:textColor="@color/menu_button"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView18"
-            tools:text="20Lts" />
-
-        <TextView
-            android:id="@+id/textView21"
-            style="@style/TextAppearance.AppCompat.Body1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Valor producto"
-            app:layout_constraintBottom_toBottomOf="@+id/textView18"
-            app:layout_constraintStart_toStartOf="@+id/manage_product"
-            tools:text="Valor producto" />
-
-        <TextView
-            android:id="@+id/manage_product_value"
-            style="@style/TextAppearance.AppCompat.Body1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            android:textColor="@color/menu_button"
-            app:layout_constraintBottom_toBottomOf="@+id/manage_frequency"
-            app:layout_constraintStart_toStartOf="@+id/textView21"
             tools:text="20Lts" />
 
         <TextView
@@ -154,7 +135,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
-            android:text="TextView"
+            android:text="@{manage.observaciones}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView26"
