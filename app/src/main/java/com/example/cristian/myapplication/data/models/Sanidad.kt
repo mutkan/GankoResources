@@ -5,14 +5,17 @@ import kotlinx.android.parcel.Parcelize
 import java.util.*
 
 @Parcelize
-class Manage(
-        var fecha: Date,
-        var numeroAplicaciones: Int,
-        var frecuencia: Int,
-        var tipo: String,
-        var otro: String?,
+class Sanidad(
+        var  fecha: Date,
+        var evento: String,
+        var otra: String?,
+        var diagnostico: String,
         var tratamiento: String,
         var producto: String,
+        var dosis: String,
+        var via: String,
+        var numeroAplicaciones: Int,
+        var frecuencia: String,
         var observaciones: String,
         var aplicaciones: Array<Aplicacion>
-):Parcelable{}
+): Parcelable {}
