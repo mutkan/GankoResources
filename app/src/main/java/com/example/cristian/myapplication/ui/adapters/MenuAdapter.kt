@@ -11,11 +11,12 @@ import com.example.cristian.myapplication.databinding.TemplateMenuTitleBinding
 import com.example.cristian.myapplication.ui.menu.MenuViewModel
 import com.example.cristian.myapplication.util.inflate
 import io.reactivex.subjects.PublishSubject
+import javax.inject.Inject
 
 /**
  * Created by Ana Marin on 11/03/2018.
  */
-class MenuAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+class MenuAdapter @Inject constructor(): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     val clickMenu = PublishSubject.create<Int>()
     var selected:Int = 0

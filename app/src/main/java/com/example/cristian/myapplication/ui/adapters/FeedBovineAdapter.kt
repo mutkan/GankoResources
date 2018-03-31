@@ -8,11 +8,12 @@ import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.Feed
 import com.example.cristian.myapplication.databinding.TemplateFeedBovineBinding
 import com.example.cristian.myapplication.util.inflate
+import javax.inject.Inject
 
 /**
  * Created by Ana Marin on 20/03/2018.
  */
-class FeedBovineAdapter : RecyclerView.Adapter<FeedBovineAdapter.FeedBovineHolder>(){
+class FeedBovineAdapter @Inject constructor(): RecyclerView.Adapter<FeedBovineAdapter.FeedBovineHolder>(){
 
     var feed: List<Feed> = emptyList()
         set(value) {

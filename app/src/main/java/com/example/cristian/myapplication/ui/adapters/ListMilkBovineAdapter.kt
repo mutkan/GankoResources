@@ -8,8 +8,9 @@ import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.Produccion
 import com.example.cristian.myapplication.databinding.TemplateListMilkBovineBinding
 import com.example.cristian.myapplication.util.inflate
+import javax.inject.Inject
 
-class ListMilkBovineAdapter:RecyclerView.Adapter<ListMilkBovineAdapter.ListMilkBovineHolder>() {
+class ListMilkBovineAdapter @Inject constructor():RecyclerView.Adapter<ListMilkBovineAdapter.ListMilkBovineHolder>() {
 
 
     var data:List<Produccion> = listOf()

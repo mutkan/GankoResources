@@ -8,8 +8,9 @@ import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.Sanidad
 import com.example.cristian.myapplication.databinding.TemplateListHealthBovineBinding
 import com.example.cristian.myapplication.util.inflate
+import javax.inject.Inject
 
-class HealthBovineAdapter : RecyclerView.Adapter<HealthBovineAdapter.HealthBovineHolder>(){
+class HealthBovineAdapter @Inject constructor(): RecyclerView.Adapter<HealthBovineAdapter.HealthBovineHolder>(){
 
 
     var manage: List<Sanidad> = emptyList()
