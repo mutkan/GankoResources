@@ -33,7 +33,7 @@ class FeedBvnActivity : AppCompatActivity(), Injectable {
     override fun onResume() {
         super.onResume()
 
-        dis add viewModel.getFeedBovine()
+        dis add viewModel.getFeedById()
                 .subscribeByShot(
                         onNext = {
                             adapter.feed = it

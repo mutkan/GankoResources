@@ -7,10 +7,11 @@ import com.example.cristian.myapplication.util.applySchedulers
 import io.reactivex.Observable
 import javax.inject.Inject
 
-class HealthBvnViewModel @Inject constructor(private val client: HealthClient):ViewModel(){
+class HealthBvnViewModel @Inject constructor(private val client: HealthClient,
+                                             private val idBovino: String):ViewModel(){
 
     fun getHealthBovine(): Observable<List<Sanidad>> =
-            client.getHealthBovine()
+            client.getHealthById(idBovino)
                     .applySchedulers()
 
 }

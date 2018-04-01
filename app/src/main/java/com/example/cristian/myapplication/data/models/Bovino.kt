@@ -3,6 +3,7 @@ package com.example.cristian.myapplication.data.models
 import java.util.*
 
 class Bovino(
+        var idBovino: String,
         var tipo: String,
         var codigo: String,
         var imagenRemota: String,
@@ -17,7 +18,7 @@ class Bovino(
         var raza: String,
         var codigoMadre: String?,
         var codigoPadre: String?,
-        var lore: Int,
+        var lote: Int,
         var partos: Int?,
         var precioCompra: Int?,
 
