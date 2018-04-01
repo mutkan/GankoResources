@@ -7,10 +7,9 @@ import com.example.cristian.myapplication.util.applySchedulers
 import io.reactivex.Observable
 import javax.inject.Inject
 
-class ManageBvnViewModel @Inject constructor(private val client: ManageClient,
-                                             private val idBovino: String):ViewModel(){
+class ManageBvnViewModel @Inject constructor(private val client: ManageClient):ViewModel(){
 
-    fun getManageBovine(): Observable<List<Manage>> =
+    fun getManageBovine(idBovino:String): Observable<List<Manage>> =
             client.getManageById(idBovino)
                     .applySchedulers()
 

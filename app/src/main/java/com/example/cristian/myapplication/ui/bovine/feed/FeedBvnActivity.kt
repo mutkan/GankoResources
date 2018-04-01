@@ -23,17 +23,22 @@ class FeedBvnActivity : AppCompatActivity(), Injectable {
     @Inject
     lateinit var adapter: FeedBovineAdapter
 
+    val idBovine:String by lazy{ intent.extras.getString(EXTRA_ID) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_feed_bovine)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         recycler.adapter = adapter
+
+
+
     }
 
     override fun onResume() {
         super.onResume()
 
-        dis add viewModel.getFeedById()
+        dis add viewModel.getFeedById(idBovine)
                 .subscribeByShot(
                         onNext = {
                             adapter.feed = it
@@ -45,5 +50,9 @@ class FeedBvnActivity : AppCompatActivity(), Injectable {
                             toast(it)
                         }
                 )
+    }
+
+    companion object {
+        val EXTRA_ID:String = "ganko.ui.bovine.feed"
     }
 }

@@ -6,6 +6,7 @@ import android.os.Bundle
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.ManageBovineAdapter
+import com.example.cristian.myapplication.ui.bovine.feed.FeedBvnActivity
 import com.example.cristian.myapplication.ui.bovine.health.HealthBvnViewModel
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
@@ -21,6 +22,8 @@ class ManageBvnActivity : AppCompatActivity() , Injectable {
     val viewModel: ManageBvnViewModel by lazy { buildViewModel<ManageBvnViewModel>(factory) }
     val dis: LifeDisposable = LifeDisposable(this)
 
+    val idBovine:String by lazy{ intent.extras.getString(FeedBvnActivity.EXTRA_ID) }
+
     @Inject
     lateinit var adapter: ManageBovineAdapter
 
@@ -34,7 +37,7 @@ class ManageBvnActivity : AppCompatActivity() , Injectable {
     override fun onResume() {
         super.onResume()
 
-        dis add  viewModel.getManageBovine()
+        dis add  viewModel.getManageBovine(idBovine)
                 .subscribeByShot(
                         onNext = {
                             adapter.manage = it
@@ -46,5 +49,9 @@ class ManageBvnActivity : AppCompatActivity() , Injectable {
                             toast(it)
                         }
                 )
+    }
+
+    companion object {
+        val EXTRA_ID:String = "ganko.ui.bovine.feed"
     }
 }
