@@ -25,6 +25,8 @@
     <string name="change_farm">Cambiar Finca</string>
     <string name="bovines">BOVINOS</string>
     <string name="milk">LECHE</string>
+    <string name="reproductive_uppercase">REPRODUCTIVO</string>
+    <string name="meat_uppercase">CEBA</string>
     <string name="feeding">ALIMENTACIÓN</string>
     <string name="management">MANEJO</string>
     <string name="movement">MOVIMIENTO</string>
