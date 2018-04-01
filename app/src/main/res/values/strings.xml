@@ -190,5 +190,8 @@
     <string name="total_milk">Total</string>
     <string name="average_milk">Promedio</string>
 
+    //Validate Form
+    <string name="empty_fields">Hay campos vacios, por favor verifique</string>
+
 
 </resources>

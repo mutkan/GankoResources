@@ -13,7 +13,7 @@ import javax.inject.Inject
 class HealthBovineAdapter @Inject constructor(): RecyclerView.Adapter<HealthBovineAdapter.HealthBovineHolder>(){
 
 
-    var manage: List<Sanidad> = emptyList()
+    var health: List<Sanidad> = emptyList()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -23,7 +23,7 @@ class HealthBovineAdapter @Inject constructor(): RecyclerView.Adapter<HealthBovi
 
     }
 
-    override fun getItemCount(): Int = manage.size
+    override fun getItemCount(): Int = health.size
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): HealthBovineHolder
             = HealthBovineHolder(parent!!.inflate(R.layout.template_manage_bovine))

@@ -2,6 +2,7 @@ package com.example.cristian.myapplication.ui.account
 
 import android.arch.lifecycle.ViewModel
 import com.example.cristian.myapplication.data.models.LoginResponse
+import com.example.cristian.myapplication.data.models.UserLogin
 import com.example.cristian.myapplication.data.models.Usuario
 import com.example.cristian.myapplication.data.net.LoginClient
 import com.example.cristian.myapplication.data.preferences.UserSession
@@ -13,7 +14,7 @@ import javax.inject.Inject
 class AccountViewModel @Inject constructor(val loginClient: LoginClient,
                                            val session: UserSession):ViewModel(){
 
-    fun Login(userLogin: Usuario): Observable<String> = loginClient.login(userLogin)
+    fun Login(userLogin: UserLogin): Observable<String> = loginClient.login(userLogin)
             .flatMap { validateResponse(it) }
             .flatMap { validateState(it) }
             .applySchedulers()
