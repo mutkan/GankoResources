@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textView9"
+        android:id="@+id/nameBovineRemoveBovine"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -16,37 +16,47 @@
         tools:text="@string/bovine_name" />
 
     <TextView
-        android:id="@+id/textView10"
+        android:id="@+id/codeBovineRemoveBovine"
         style="@style/textview_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:textColor="@color/colorAccent"
-        app:layout_constraintStart_toStartOf="@+id/textView9"
-        app:layout_constraintTop_toBottomOf="@+id/textView9"
+        app:layout_constraintStart_toStartOf="@+id/nameBovineRemoveBovine"
+        app:layout_constraintTop_toBottomOf="@+id/nameBovineRemoveBovine"
         tools:text="#23443" />
 
     <TextView
-        android:id="@+id/textView12"
+        android:id="@+id/sexTextRemoveBovine"
         style="@style/textview_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="@string/sex"
-        app:layout_constraintStart_toStartOf="@+id/textView10"
-        app:layout_constraintTop_toBottomOf="@+id/textView10" />
+        app:layout_constraintStart_toStartOf="@+id/codeBovineRemoveBovine"
+        app:layout_constraintTop_toBottomOf="@+id/codeBovineRemoveBovine" />
 
     <TextView
-        android:id="@+id/textView15"
+        android:id="@+id/sexRemoveBovine"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="@+id/textView12"
-        app:layout_constraintTop_toBottomOf="@+id/textView12"
+        app:layout_constraintStart_toStartOf="@+id/sexTextRemoveBovine"
+        app:layout_constraintTop_toBottomOf="@+id/sexTextRemoveBovine"
         tools:text="@string/female" />
 
+    <TextView
+        android:id="@+id/reasonTextRemoveBovine"
+        style="@style/textview_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/reason"
+        app:layout_constraintStart_toStartOf="@+id/sexRemoveBovine"
+        app:layout_constraintTop_toBottomOf="@+id/sexRemoveBovine" />
+
     <Spinner
-        android:id="@+id/spinner"
+        android:id="@+id/reasonSpinnerRemoveBovine"
         style="@style/Base.Widget.AppCompat.Spinner.Underlined"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -54,21 +64,21 @@
         android:layout_marginTop="8dp"
         android:spinnerMode="dialog"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/textView15"
-        app:layout_constraintTop_toBottomOf="@+id/textView15" />
+        app:layout_constraintStart_toStartOf="@+id/reasonTextRemoveBovine"
+        app:layout_constraintTop_toBottomOf="@+id/reasonTextRemoveBovine" />
 
     <TextView
-        android:id="@+id/textView16"
+        android:id="@+id/retirementDateTextRemoveBovine"
         style="@style/textview_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/remove_date"
-        app:layout_constraintStart_toStartOf="@+id/spinner"
-        app:layout_constraintTop_toBottomOf="@+id/spinner" />
+        app:layout_constraintStart_toStartOf="@+id/reasonSpinnerRemoveBovine"
+        app:layout_constraintTop_toBottomOf="@+id/reasonSpinnerRemoveBovine" />
 
     <EditText
-        android:id="@+id/editText6"
+        android:id="@+id/retirementDateRemoveBovine"
         style="@style/edit_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -78,11 +88,11 @@
         android:hint="@string/date_value"
         android:inputType="date"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/textView16"
-        app:layout_constraintTop_toBottomOf="@+id/textView16" />
+        app:layout_constraintStart_toStartOf="@+id/retirementDateTextRemoveBovine"
+        app:layout_constraintTop_toBottomOf="@+id/retirementDateTextRemoveBovine" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/btnNextRemoveBovine"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="@dimen/button_width"
         android:layout_height="wrap_content"
@@ -91,16 +101,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/button4" />
+        app:layout_constraintStart_toEndOf="@+id/btnCancelRemoveBovine" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/btnCancelRemoveBovine"
         style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:layout_width="@dimen/button_width"
         android:layout_height="wrap_content"
         android:text="@string/btn_cancel"
-        app:layout_constraintEnd_toStartOf="@+id/button3"
+        app:layout_constraintEnd_toStartOf="@+id/btnNextRemoveBovine"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/button3" />
+        app:layout_constraintTop_toTopOf="@+id/btnNextRemoveBovine" />
+
 </android.support.constraint.ConstraintLayout>
