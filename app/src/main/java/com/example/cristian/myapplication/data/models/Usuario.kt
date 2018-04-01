@@ -10,4 +10,9 @@ class Usuario(
         var estado: String,
         var rol: String,
         var plan: String
-){}
+)
+class UserLogin(var email: String, password: String)
+class UserResponse(var id: Int,var username: String,var estado: String)
+class LoginResponse(var user:UserResponse,var token:String)
+class ResetPasswordResponse(var email:String,var estado:String)
+class ResetUserEmail(var email:String)

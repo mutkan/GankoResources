@@ -92,3 +92,7 @@ fun Float.currencyFormat(): String{
     currencyFormat.maximumFractionDigits = 0
     return currencyFormat.format(this).replace(",",".",true)
 }
+fun String.toDate():Date{
+    val format = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+    return format.parse(this)
+}

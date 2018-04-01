@@ -2,7 +2,7 @@ package com.example.cristian.myapplication.di.modules
 
 import android.content.Context
 import com.example.cristian.myapplication.R
-import com.example.cristian.myapplication.data.net.MilkClient
+import com.example.cristian.myapplication.data.net.*
 import dagger.Module
 import dagger.Provides
 import io.reactivex.schedulers.Schedulers
@@ -25,4 +25,25 @@ class NetModule {
     @Singleton
     fun provideMilkClient(retrofit: Retrofit): MilkClient =
             retrofit.create(MilkClient::class.java)
+
+    @Provides
+    @Singleton
+    fun provideLoginClient(retrofit: Retrofit): LoginClient =
+            retrofit.create(LoginClient::class.java)
+
+    @Provides
+    @Singleton
+    fun provideFeedClient(retrofit: Retrofit): FeedClient =
+            retrofit.create(FeedClient::class.java)
+
+    @Provides
+    @Singleton
+    fun provideHealthClient(retrofit: Retrofit): HealthClient =
+            retrofit.create(HealthClient::class.java)
+
+    @Provides
+    @Singleton
+    fun provideManageClient(retrofit: Retrofit): ManageClient =
+            retrofit.create(ManageClient::class.java)
+
 }

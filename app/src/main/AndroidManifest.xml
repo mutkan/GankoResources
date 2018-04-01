@@ -31,7 +31,7 @@
         <activity android:name=".ui.bovine.RemoveBovineActivity" />
         <activity android:name=".ui.bovine.AddBovineActivity" />
         <activity android:name=".ui.bovine.milk.MilkBvnActivity" />
-        <activity android:name=".ui.bovine.milk.AddMilkBvnActivity" />
+        <!--<activity android:name=".ui.bovine.milk.AddMilkBvnActivity" />-->
         <activity android:name=".ui.bovine.movement.MovementBvnActivity" />
         <activity android:name=".ui.bovine.health.HealthBvnActivity" />
         <activity android:name=".ui.bovine.vaccination.VaccinationBvnActivity"/>

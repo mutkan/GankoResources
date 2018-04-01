@@ -17,8 +17,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/editText3"
+    <TextView
+        android:id="@+id/dateAddMilkBovine"
         style="@style/edit_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -26,8 +26,9 @@
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="@string/date_value"
+        android:focusable="false"
+        android:clickable="true"
+        tools:text="@string/date_value"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/textView81"
         app:layout_constraintTop_toBottomOf="@+id/textView81" />
@@ -39,11 +40,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="@string/production"
-        app:layout_constraintStart_toStartOf="@+id/editText3"
-        app:layout_constraintTop_toBottomOf="@+id/editText3" />
+        app:layout_constraintStart_toStartOf="@+id/dateAddMilkBovine"
+        app:layout_constraintTop_toBottomOf="@+id/dateAddMilkBovine" />
 
     <EditText
-        android:id="@+id/editText4"
+        android:id="@+id/littersAddMilkBovine"
         style="@style/edit_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -64,27 +65,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="@string/time"
-        app:layout_constraintStart_toStartOf="@+id/editText4"
-        app:layout_constraintTop_toBottomOf="@+id/editText4" />
-
-    <RadioButton
-        android:id="@+id/radioButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/morning"
-        app:layout_constraintStart_toStartOf="@+id/textView88"
-        app:layout_constraintTop_toBottomOf="@+id/textView88" />
-
-    <RadioButton
-        android:id="@+id/radioButton2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="32dp"
-        android:layout_marginStart="32dp"
-        android:text="@string/afternoon"
-        app:layout_constraintStart_toEndOf="@+id/radioButton"
-        app:layout_constraintTop_toTopOf="@+id/radioButton" />
+        app:layout_constraintStart_toStartOf="@+id/littersAddMilkBovine"
+        app:layout_constraintTop_toBottomOf="@+id/littersAddMilkBovine" />
 
     <Button
         android:id="@+id/button"
@@ -92,13 +74,13 @@
         android:layout_width="@dimen/button_width"
         android:layout_height="wrap_content"
         android:text="@string/btn_cancel"
-        app:layout_constraintEnd_toStartOf="@+id/button2"
+        app:layout_constraintEnd_toStartOf="@+id/btnAddMilkBovine"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/button2" />
+        app:layout_constraintTop_toTopOf="@+id/btnAddMilkBovine" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/btnAddMilkBovine"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="@dimen/button_width"
         android:layout_height="wrap_content"
@@ -108,5 +90,32 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/button" />
+
+    <RadioGroup
+        android:id="@+id/timeOfDayAddMilkBovine"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:checkedButton="@+id/morning"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView88"
+        android:orientation="horizontal">
+        <RadioButton
+            android:id="@+id/morningAddMilkBovine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/morning"/>
+        <RadioButton
+            android:id="@+id/afternoonAddMilkBovine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/afternoon"
+            android:layout_marginLeft="24dp"/>
+    </RadioGroup>
 
 </android.support.constraint.ConstraintLayout>

@@ -19,21 +19,23 @@ class MilkBvnActivity : AppCompatActivity() , Injectable {
     lateinit var factory: ViewModelProvider.Factory
     val viewModel: MilkBvnViewModel by lazy { buildViewModel<MilkBvnViewModel>(factory) }
 
-    val dis:LifeDisposable = LifeDisposable(this)
-
     @Inject
     lateinit var milkAdapter:ListMilkBovineAdapter
+
+    val dis:LifeDisposable = LifeDisposable(this)
+    lateinit var idBovino:String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_milk_bovine)
         recyclerListMilkBovine.adapter = milkAdapter
+        idBovino = intent.getStringExtra("idBovino")
     }
 
     override fun onResume() {
         super.onResume()
 
-        dis add viewModel.getMilkProduction()
+        dis add viewModel.getMilkProduction(idBovino)
                 .subscribeByShot(
                         onNext = {
                             milkAdapter.data = it
