@@ -30,6 +30,7 @@ class HealthBvnActivity : AppCompatActivity(), Injectable {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_health_bovine)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setTitle("Sanidad")
         recyclerListHealthBovine.adapter = adapter
     }
 

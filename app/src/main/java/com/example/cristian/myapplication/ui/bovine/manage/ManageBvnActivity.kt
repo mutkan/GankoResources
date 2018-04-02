@@ -31,6 +31,7 @@ class ManageBvnActivity : AppCompatActivity() , Injectable {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_manage_bovine)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setTitle("Manejo")
         recycler.adapter = adapter
     }
 

@@ -9,7 +9,7 @@ import com.example.cristian.myapplication.ui.adapters.FeedBovineAdapter
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
 import com.example.cristian.myapplication.util.subscribeByShot
-import kotlinx.android.synthetic.main.activity_feed_bovine.*
+import kotlinx.android.synthetic.main.activity_list_feed_bovine.*
 import org.jetbrains.anko.toast
 import javax.inject.Inject
 
@@ -27,12 +27,10 @@ class FeedBvnActivity : AppCompatActivity(), Injectable {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_feed_bovine)
+        setContentView(R.layout.activity_list_feed_bovine)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setTitle("Alimentacion")
         recycler.adapter = adapter
-
-
-
     }
 
     override fun onResume() {
