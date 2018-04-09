@@ -4,15 +4,17 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 27
     defaultConfig {
         applicationId "com.example.cristian.myapplication"
-        minSdkVersion 15
-        targetSdkVersion 26
+        minSdkVersion 19
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary true
+        multiDexEnabled true
+
     }
     buildTypes {
         release {
@@ -29,7 +31,7 @@ android {
 
 }
 
-def support_version = "26.1.0"
+def support_version = "27.1.1"
 def arch_version = "1.1.1"
 
 dependencies {
@@ -37,20 +39,21 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     implementation "com.android.support:appcompat-v7:$support_version"
     implementation 'com.android.support.constraint:constraint-layout:1.1.0-beta6'
-    implementation 'com.android.support:support-v4:26.1.0'
+    implementation "com.android.support:support-v4:$support_version"
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation "com.android.support:design:$support_version"
 
     //Rx
-    implementation 'io.reactivex.rxjava2:rxjava:2.1.11'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.12'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
     implementation 'io.reactivex.rxjava2:rxkotlin:2.2.0'
     implementation 'com.jakewharton.rxbinding2:rxbinding-kotlin:2.0.0'
 
     //Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     implementation 'org.jetbrains.anko:anko-commons:0.10.4'
 
     //Android Arch
@@ -60,7 +63,6 @@ dependencies {
     //Dagger
     implementation 'com.google.dagger:dagger:2.15'
     kapt 'com.google.dagger:dagger-compiler:2.15'
-    implementation 'com.google.dagger:dagger-android:2.15'
     implementation 'com.google.dagger:dagger-android-support:2.15'
     // if you use the support libraries
     kapt 'com.google.dagger:dagger-android-processor:2.15'
@@ -69,4 +71,11 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
+
+    //couchbase
+    implementation 'com.couchbase.lite:couchbase-lite-android:2.0.0-DB023'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.5'
+
+    implementation 'com.android.support:multidex:1.0.3'
+
 }

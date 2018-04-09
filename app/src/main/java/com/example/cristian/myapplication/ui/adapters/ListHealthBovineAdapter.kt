@@ -18,12 +18,12 @@ class ListHealthBovineAdapter @Inject constructor():RecyclerView.Adapter<ListHea
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ListHealthBovineHolder =
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListHealthBovineHolder =
             ListHealthBovineHolder(parent!!.inflate(R.layout.template_list_health_bovine))
 
     override fun getItemCount(): Int = data.size
 
-    override fun onBindViewHolder(holder: ListHealthBovineHolder?, position: Int) =
+    override fun onBindViewHolder(holder: ListHealthBovineHolder, position: Int) =
             holder!!.bind(data[position])
 
 
