@@ -116,7 +116,6 @@ class CouchRx @Inject constructor(private val db: Database
         return mapper.convertValue(map, kClass.java)
     }
 
-
     private fun <T : Any> mapToObject(id: String, sequence: Long, map: MutableMap<String, Any>, kClass: KClass<T>): T {
         map["_id"] = id
         map["_sequence"] = sequence
