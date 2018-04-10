@@ -105,13 +105,9 @@ class CouchRx @Inject constructor(private val db: Database
 
     private fun objectToDocument(obj: Any, id: String): MutableDocument {
         val map = mapper.convertValue(obj, Map::class.java) as MutableMap<String, Any>
+        if(map.containsKey("_id")) map.remove("_id")
         return MutableDocument(id, map)
     }
-
-    private fun objectToMap(obj: Any): Map<String, Any> {
-        return mapper.convertValue(obj, Map::class.java) as Map<String, Any>
-    }
-
 
     private fun <T : Any> dictionaryToObject(id: String, sequence: Long, dictionary: Dictionary, kClass: KClass<T>): T {
         val map = dictionary.toMap()
@@ -119,7 +115,6 @@ class CouchRx @Inject constructor(private val db: Database
         map["_sequence"] = sequence
         return mapper.convertValue(map, kClass.java)
     }
-
 
     private fun <T : Any> mapToObject(id: String, sequence: Long, map: MutableMap<String, Any>, kClass: KClass<T>): T {
         map["_id"] = id
