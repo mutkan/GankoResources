@@ -5,12 +5,17 @@ import com.example.cristian.myapplication.ui.bovine.feed.FeedBvnActivity
 import com.example.cristian.myapplication.ui.bovine.health.HealthBvnActivity
 import com.example.cristian.myapplication.ui.bovine.manage.ManageBvnActivity
 import com.example.cristian.myapplication.ui.bovine.milk.AddMilkBvnActivity
+import com.example.cristian.myapplication.ui.bovine.milk.MilkBvnActivity
 import com.example.cristian.myapplication.ui.menu.MenuActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
 @Module
 abstract class ActivityComponents{
+
+    @ActivityScope
+    @ContributesAndroidInjector()
+    abstract fun bindMilkBvnActivity(): MilkBvnActivity
 
     @ActivityScope
     @ContributesAndroidInjector()

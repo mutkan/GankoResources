@@ -93,12 +93,11 @@
         tools:listitem="@layout/template_list_milk_bovine" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/floatingActionButton7"
+        android:id="@+id/btnGoToAddMilkProduction"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
         android:clickable="true"
         app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"

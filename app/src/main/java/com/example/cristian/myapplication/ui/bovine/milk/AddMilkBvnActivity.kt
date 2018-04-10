@@ -17,19 +17,20 @@ import com.jakewharton.rxbinding2.view.clicks
 import com.jakewharton.rxbinding2.view.selected
 import dagger.android.AndroidInjector
 import dagger.android.HasActivityInjector
+import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_add_milk_bovine.*
 import org.jetbrains.anko.toast
 import java.util.*
 import javax.inject.Inject
 
-class AddMilkBvnActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,Injectable {
+class AddMilkBvnActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, Injectable {
 
     @Inject
     lateinit var factory: ViewModelProvider.Factory
     val viewModel: MilkBvnViewModel by lazy { buildViewModel<MilkBvnViewModel>(factory) }
 
     val dis: LifeDisposable = LifeDisposable(this)
-    lateinit var idBovino:String
+    lateinit var idBovino: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,19 +47,18 @@ class AddMilkBvnActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListen
                 .flatMap {
                     val jornada = if (timeOfDayAddMilkBovine.checkedRadioButtonId == R.id.morningAddMilkBovine) "Mañana"
                     else "Tarde"
-                    viewModel.addMilkProduction(idBovino,
-                            Produccion("", idBovino, jornada, it[1], it[0].toDate()))
-                }.subscribeByAction(
-                        onNext = {
-                            toast("Produccion de Leche Agregada")
-                        },
-                        onError = {
-                            toast(it.message!!)
-                        },
-                        onHttpError = {
-                            toast(it)
-                        }
-                )
+                    viewModel.addMilkProduction(
+                            Produccion(idBovino, jornada, it[1], it[0].toDate())
+                    ).toObservable()
+                }.subscribeBy{
+                    toast("Produccion agregada: "+it)
+                    finish()
+                }
+
+        dis add btnCancelMilkBovine.clicks()
+                .subscribe {
+                    finish()
+                }
         dis add dateAddMilkBovine.clicks()
                 .subscribeByAction(
                         onNext = {

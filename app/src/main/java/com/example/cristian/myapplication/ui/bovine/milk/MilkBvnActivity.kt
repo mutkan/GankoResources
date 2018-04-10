@@ -9,7 +9,10 @@ import com.example.cristian.myapplication.ui.adapters.ListMilkBovineAdapter
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
 import com.example.cristian.myapplication.util.subscribeByShot
+import com.jakewharton.rxbinding2.view.clicks
+import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_list_milk_bovine.*
+import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
 import javax.inject.Inject
 
@@ -29,24 +32,24 @@ class MilkBvnActivity : AppCompatActivity() , Injectable {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_milk_bovine)
         recyclerListMilkBovine.adapter = milkAdapter
-        idBovino = intent.getStringExtra("idBovino")
+//        idBovino = intent.getStringExtra("idBovino")
+        idBovino = "1"
     }
 
     override fun onResume() {
         super.onResume()
 
         dis add viewModel.getMilkProduction(idBovino)
-                .subscribeByShot(
-                        onNext = {
-                            milkAdapter.data = it
-                        },
-                        onError = {
-                            toast(it.message!!)
-                        },
-                        onHttpError = {
-                            toast(it)
-                        }
-                )
+                .subscribeBy {
+                    milkAdapter.data = it
+                }
+        dis add btnGoToAddMilkProduction.clicks()
+                .subscribe {
+                    startActivity<AddMilkBvnActivity>("idBovino" to idBovino)
+                }
+
     }
+
+
 
 }
