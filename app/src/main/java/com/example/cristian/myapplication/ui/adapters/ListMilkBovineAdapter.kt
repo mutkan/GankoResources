@@ -24,13 +24,11 @@ class ListMilkBovineAdapter @Inject constructor():RecyclerView.Adapter<ListMilkB
 
     override fun getItemCount(): Int = data.size
 
-    override fun onBindViewHolder(holder: ListMilkBovineHolder, position: Int) =
-            holder!!.bind(data[position])
+    override fun onBindViewHolder(holder: ListMilkBovineHolder, position: Int){
+            holder.binding.produccion = data[position]
+    }
 
     class ListMilkBovineHolder(listItem: View):RecyclerView.ViewHolder(listItem){
         val binding : TemplateListMilkBovineBinding = DataBindingUtil.bind(listItem)!!
-        fun bind(produccion: Produccion){
-            binding.produccion = produccion
-        }
     }
 }

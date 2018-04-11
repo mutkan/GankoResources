@@ -31,7 +31,7 @@ class MilkBvnActivity : AppCompatActivity() , Injectable {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_milk_bovine)
-        recyclerListMilkBovine.adapter = milkAdapter
+//        recyclerListMilkBovine.adapter = milkAdapter
 //        idBovino = intent.getStringExtra("idBovino")
         idBovino = "1"
     }
@@ -40,9 +40,15 @@ class MilkBvnActivity : AppCompatActivity() , Injectable {
         super.onResume()
 
         dis add viewModel.getMilkProduction(idBovino)
-                .subscribeBy {
-                    milkAdapter.data = it
-                }
+                .subscribeBy(
+                        onSuccess = {
+
+                        },
+                        onError = {
+                            toast(it.message!!)
+                        }
+                )
+
         dis add btnGoToAddMilkProduction.clicks()
                 .subscribe {
                     startActivity<AddMilkBvnActivity>("idBovino" to idBovino)

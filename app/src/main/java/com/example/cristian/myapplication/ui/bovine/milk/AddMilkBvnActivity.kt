@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity
 import android.text.Editable
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
+import android.util.Log
 import android.widget.DatePicker
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.Produccion
@@ -44,21 +45,34 @@ class AddMilkBvnActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListen
                 .flatMap {
                     validateForm(R.string.empty_fields, dateAddMilkBovine.text.toString(), littersAddMilkBovine.text())
                 }
-                .flatMap {
-                    val jornada = if (timeOfDayAddMilkBovine.checkedRadioButtonId == R.id.morningAddMilkBovine) "Mañana"
+                .flatMapSingle {
+                    val jornada = if (timeOfDayAddMilkBovine.checkedRadioButtonId == R.id.morningAddMilkBovine) "Manana"
                     else "Tarde"
                     viewModel.addMilkProduction(
                             Produccion(idBovino, jornada, it[1], it[0].toDate())
-                    ).toObservable()
-                }.subscribeBy{
-                    toast("Produccion agregada: "+it)
-                    finish()
-                }
+                    )
+                }.subscribeBy(
+                        onComplete = {
+                            Log.i("COUCH", "complete")
+
+                        },
+                        onNext = {
+                            Log.i("COUCH", "next")
+                            finish()
+
+                        },
+                        onError = {
+                            Log.i("COUCH", "error")
+
+                        }
+
+        )
 
         dis add btnCancelMilkBovine.clicks()
                 .subscribe {
                     finish()
                 }
+
         dis add dateAddMilkBovine.clicks()
                 .subscribeByAction(
                         onNext = {

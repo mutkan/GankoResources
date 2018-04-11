@@ -6,9 +6,17 @@ import kotlinx.android.parcel.Parcelize
 import java.util.*
 
 @Parcelize
-class Produccion(
-        var bovino: String,
-        var jornada: String,
-        var litros: String,
-        var fecha: Date
-):CouchEntity(),Parcelable {}
+class Produccion():CouchEntity(),Parcelable {
+
+        lateinit var bovino: String
+        lateinit var jornada: String
+        lateinit var litros: String
+        lateinit var fecha: Date
+
+        constructor(bovino:String, jornada:String, litros:String, fecha:Date):this(){
+            this.bovino = bovino
+            this.jornada = jornada
+            this.litros = litros
+            this.fecha = fecha
+        }
+}
