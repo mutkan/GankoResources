@@ -10,9 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".ui.bovine.milk.MilkBvnActivity"
-            >
+        <activity android:name=".ui.bovine.milk.MilkBvnActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,12 +28,15 @@
         <activity android:name=".ui.farms.FarmActivity" />
         <activity android:name=".ui.bovine.RemoveBovineActivity" />
         <activity android:name=".ui.bovine.AddBovineActivity" />
-        <!--<activity android:name=".ui.bovine.milk.MilkBvnActivity" />-->
+        <!-- <activity android:name=".ui.bovine.milk.MilkBvnActivity" /> -->
         <activity android:name=".ui.bovine.milk.AddMilkBvnActivity" />
         <activity android:name=".ui.bovine.movement.MovementBvnActivity" />
-        <activity android:name=".ui.menu.MenuActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".ui.bovine.vaccination.VaccinationBvnActivity"/>
+        <activity
+            android:name=".ui.menu.MenuActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ui.bovine.vaccination.VaccinationBvnActivity" />
+        <activity android:name=".ui.bovine.ceba.CebaBvnActivity" />
+        <activity android:name=".ui.bovine.ceba.AddCebaBvnActivity"></activity>
     </application>
 
 </manifest>

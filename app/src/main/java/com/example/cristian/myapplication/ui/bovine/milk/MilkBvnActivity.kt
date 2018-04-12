@@ -3,6 +3,7 @@ package com.example.cristian.myapplication.ui.bovine.milk
 import android.arch.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.ListMilkBovineAdapter
@@ -28,10 +29,13 @@ class MilkBvnActivity : AppCompatActivity() , Injectable {
     val dis:LifeDisposable = LifeDisposable(this)
     lateinit var idBovino:String
 
+    var totalLitters:Int = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_milk_bovine)
-//        recyclerListMilkBovine.adapter = milkAdapter
+        recyclerListMilkBovine.adapter = milkAdapter
+        recyclerListMilkBovine.layoutManager = LinearLayoutManager(this)
 //        idBovino = intent.getStringExtra("idBovino")
         idBovino = "1"
     }
@@ -39,10 +43,16 @@ class MilkBvnActivity : AppCompatActivity() , Injectable {
     override fun onResume() {
         super.onResume()
 
+        totalLitters = 0
         dis add viewModel.getMilkProduction(idBovino)
                 .subscribeBy(
                         onSuccess = {
-
+                            milkAdapter.data = it
+                            for (production in it){
+                                totalLitters += production.litros.toInt()
+                            }
+                            totalListMilkBovine.text = totalLitters.toString()
+                            averageListMilkBovine.text = (totalLitters/it.size).toString()
                         },
                         onError = {
                             toast(it.message!!)

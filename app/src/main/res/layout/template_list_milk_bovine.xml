@@ -13,108 +13,73 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/dateListMilkBovine"
-            style="@style/textview_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/morningLittersListMilkBovine"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textView7"
-            tools:text="12/03/2018"
-            />
-
 
         <TextView
-            android:id="@+id/textView7"
-            style="@style/textview_label"
+            android:id="@+id/jornadaListMilkBovine"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/morning"
-            app:layout_constraintStart_toStartOf="@+id/guideline4"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:text="@{produccion.jornada}"
+            android:textAppearance="@android:style/TextAppearance.Material.Small"
+            app:layout_constraintEnd_toStartOf="@+id/guideline8"
+            app:layout_constraintStart_toStartOf="@+id/guideline7"
+            app:layout_constraintTop_toTopOf="@+id/dateListMilkBovine"
+            tools:text="@string/morning" />
 
         <TextView
-            android:id="@+id/morningLittersListMilkBovine"
+            android:id="@+id/littersListMilkBovine"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintStart_toStartOf="@+id/textView7"
-            app:layout_constraintTop_toBottomOf="@+id/textView7"
-            tools:text="20"
-            android:text='@{produccion.jornada.equals("Manana")? produccion.litros : 0}'/>
-
-        <TextView
-            android:id="@+id/textView79"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:text="@string/liters"
-            app:layout_constraintStart_toEndOf="@+id/morningLittersListMilkBovine"
-            app:layout_constraintTop_toTopOf="@+id/morningLittersListMilkBovine" />
-
-        <TextView
-            android:id="@+id/textView80"
-            style="@style/textview_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:text="@string/afternoon"
-            app:layout_constraintStart_toStartOf="@+id/guideline5"
-            app:layout_constraintTop_toTopOf="@+id/textView7" />
-
-        <TextView
-            android:id="@+id/afternoonListMilkBovine"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintStart_toStartOf="@+id/textView80"
-            app:layout_constraintTop_toBottomOf="@+id/textView80"
-            tools:text="20"
-            android:text='@{produccion.jornada.equals("Tarde")? produccion.litros : 0}'/>
+            android:layout_marginStart="64dp"
+            android:text='@{produccion.litros}'
+            app:layout_constraintStart_toStartOf="@+id/guideline8"
+            app:layout_constraintTop_toTopOf="@+id/jornadaListMilkBovine"
+            tools:text="20" />
 
         <TextView
             android:id="@+id/textView82"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
             android:text="@string/liters"
-            app:layout_constraintStart_toEndOf="@+id/afternoonListMilkBovine"
-            app:layout_constraintTop_toTopOf="@+id/afternoonListMilkBovine" />
-
-        <android.support.constraint.Guideline
-            android:id="@+id/guideline4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.3" />
-
-        <android.support.constraint.Guideline
-            android:id="@+id/guideline5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.65" />
+            app:layout_constraintStart_toEndOf="@+id/littersListMilkBovine"
+            app:layout_constraintTop_toTopOf="@+id/littersListMilkBovine" />
 
         <FrameLayout
+            android:id="@+id/frameLayout4"
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:background="@color/line_template"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/morningLittersListMilkBovine">
+            app:layout_constraintTop_toBottomOf="@+id/dateListMilkBovine">
 
         </FrameLayout>
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.41" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.56" />
+
+        <TextView
+            android:id="@+id/dateListMilkBovine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toStartOf="@+id/guideline7"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/date_value"
+            app:dateFormat="@{produccion.fecha}"/>
     </android.support.constraint.ConstraintLayout>
 </layout>
