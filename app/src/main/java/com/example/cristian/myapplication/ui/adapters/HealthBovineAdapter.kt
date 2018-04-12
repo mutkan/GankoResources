@@ -12,24 +12,20 @@ import javax.inject.Inject
 
 class HealthBovineAdapter @Inject constructor(): RecyclerView.Adapter<HealthBovineAdapter.HealthBovineHolder>(){
 
-
-    override fun onBindViewHolder(holder: HealthBovineHolder, position: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-
     var health: List<Sanidad> = emptyList()
         set(value) {
             field = value
             notifyDataSetChanged()
         }
 
-
-
     override fun getItemCount(): Int = health.size
 
+    override fun onBindViewHolder(holder: HealthBovineHolder, position: Int) {
+        holder.binding.sanidad = health[position]
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HealthBovineHolder =
-            HealthBovineHolder(parent.inflate(R.layout.template_manage_bovine))
+            HealthBovineHolder(parent.inflate(R.layout.template_list_health_bovine))
 
     class HealthBovineHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val binding: TemplateListHealthBovineBinding = DataBindingUtil.bind(itemView)!!
