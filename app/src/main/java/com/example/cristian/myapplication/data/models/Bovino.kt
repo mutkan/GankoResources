@@ -1,5 +1,6 @@
 package com.example.cristian.myapplication.data.models
 
+import com.example.cristian.myapplication.data.db.CouchEntity
 import java.util.*
 
 class Bovino(
@@ -36,5 +37,4 @@ class Bovino(
         var vacunas: Array<Vacuna>,
         var sanidad: Array<Sanidad>,
         var manejo: Array<Manage>
-
-){}
+):CouchEntity(){}

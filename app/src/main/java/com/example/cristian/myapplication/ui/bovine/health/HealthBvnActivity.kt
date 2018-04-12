@@ -6,10 +6,9 @@ import android.support.v7.app.AppCompatActivity
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.HealthBovineAdapter
-import com.example.cristian.myapplication.ui.bovine.feed.FeedBvnActivity
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
-import com.example.cristian.myapplication.util.subscribeByShot
+import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_list_health_bovine.*
 import org.jetbrains.anko.toast
 import javax.inject.Inject
@@ -22,6 +21,10 @@ class HealthBvnActivity : AppCompatActivity(), Injectable {
     val dis: LifeDisposable = LifeDisposable(this)
     lateinit var idBovino:String
 
+
+    //val idBovine:String by lazy{ intent.extras.getString(FeedBvnActivity.EXTRA_ID) }
+    lateinit var idBovine:String
+
     @Inject
     lateinit var adapter: HealthBovineAdapter
 
@@ -31,27 +34,37 @@ class HealthBvnActivity : AppCompatActivity(), Injectable {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setTitle("Sanidad")
         recyclerListHealthBovine.adapter = adapter
+
         idBovino = intent.getStringExtra(EXTRA_ID)
+        idBovine = "1"
+
     }
 
     override fun onResume() {
         super.onResume()
 
+
         dis add viewModel.getHealthBovine(idBovino)
-                .subscribeByShot(
-                        onNext = {
+                .subscribeBy(
+                        onSuccess = {
                             adapter.health = it
                         },
                         onError = {
                             toast(it.message!!)
+                        })
+        dis add viewModel.getHealthBovine(idBovine)
+                .subscribeBy(
+                        onSuccess = {
+                            adapter.health = it
                         },
-                        onHttpError = {
-                            toast(it)
+                        onError = {
+                            toast(it.message!!)
                         }
+
                 )
     }
-
     companion object {
         val EXTRA_ID:String = "ID_BOVINO"
     }
+
 }

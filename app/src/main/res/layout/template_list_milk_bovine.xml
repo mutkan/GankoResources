@@ -25,7 +25,9 @@
             app:layout_constraintBottom_toBottomOf="@+id/morningLittersListMilkBovine"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/textView7"
-            tools:text="12/03/2018"/>
+            tools:text="12/03/2018"
+            />
+
 
         <TextView
             android:id="@+id/textView7"
@@ -46,7 +48,8 @@
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="@+id/textView7"
             app:layout_constraintTop_toBottomOf="@+id/textView7"
-            tools:text="20" />
+            tools:text="20"
+            android:text='@{produccion.jornada.equals("Manana")? produccion.litros : 0}'/>
 
         <TextView
             android:id="@+id/textView79"
@@ -76,7 +79,8 @@
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="@+id/textView80"
             app:layout_constraintTop_toBottomOf="@+id/textView80"
-            tools:text="20" />
+            tools:text="20"
+            android:text='@{produccion.jornada.equals("Tarde")? produccion.litros : 0}'/>
 
         <TextView
             android:id="@+id/textView82"

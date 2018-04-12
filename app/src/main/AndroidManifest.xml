@@ -10,15 +10,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".ui.bovine.health.HealthBvnActivity"
-            >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".ui.bovine.health.HealthBvnActivity" />
+        <activity android:name=".ui.bovine.milk.MilkBvnActivity" />
         <activity android:name=".PrincipalActivity" />
         <activity android:name=".ui.bovine.feed.FeedBvnActivity" />
         <activity android:name=".ui.bovine.manage.ManageBvnActivity" />
@@ -30,11 +24,16 @@
         <activity android:name=".ui.farms.FarmActivity" />
         <activity android:name=".ui.bovine.RemoveBovineActivity" />
         <activity android:name=".ui.bovine.AddBovineActivity" />
-        <activity android:name=".ui.bovine.milk.MilkBvnActivity" />
-        <!--<activity android:name=".ui.bovine.milk.AddMilkBvnActivity" />-->
+        <activity android:name=".ui.bovine.milk.AddMilkBvnActivity" />
         <activity android:name=".ui.bovine.movement.MovementBvnActivity" />
         <activity android:name=".ui.menu.MenuActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".ui.bovine.vaccination.VaccinationBvnActivity"/>
     </application>
 

@@ -18,12 +18,12 @@ class ListManagementBovineAdapter @Inject constructor():RecyclerView.Adapter<Lis
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ListManagementBovineHolder =
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListManagementBovineHolder =
             ListManagementBovineHolder(parent!!.inflate(R.layout.template_list_management_bovine))
 
     override fun getItemCount(): Int = data.size
 
-    override fun onBindViewHolder(holder: ListManagementBovineHolder?, position: Int) =
+    override fun onBindViewHolder(holder: ListManagementBovineHolder, position: Int) =
             holder!!.bind(data[position])
 
     class ListManagementBovineHolder(itemList:View):RecyclerView.ViewHolder(itemList){

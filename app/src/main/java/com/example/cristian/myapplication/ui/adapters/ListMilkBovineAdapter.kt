@@ -19,18 +19,16 @@ class ListMilkBovineAdapter @Inject constructor():RecyclerView.Adapter<ListMilkB
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ListMilkBovineHolder =
-            ListMilkBovineHolder(parent!!.inflate(R.layout.template_list_milk_bovine))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListMilkBovineHolder =
+            ListMilkBovineHolder(parent.inflate(R.layout.template_list_milk_bovine))
 
     override fun getItemCount(): Int = data.size
 
-    override fun onBindViewHolder(holder: ListMilkBovineHolder?, position: Int) =
-            holder!!.bind(data[position])
+    override fun onBindViewHolder(holder: ListMilkBovineHolder, position: Int){
+            holder.binding.produccion = data[position]
+    }
 
     class ListMilkBovineHolder(listItem: View):RecyclerView.ViewHolder(listItem){
         val binding : TemplateListMilkBovineBinding = DataBindingUtil.bind(listItem)!!
-        fun bind(produccion: Produccion){
-            binding.produccion = produccion
-        }
     }
 }

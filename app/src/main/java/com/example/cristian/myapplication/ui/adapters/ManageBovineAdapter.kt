@@ -21,14 +21,14 @@ class ManageBovineAdapter @Inject constructor(): RecyclerView.Adapter<ManageBovi
             notifyDataSetChanged()
         }
 
-    override fun onBindViewHolder(holder: ManageBovineHolder?, position: Int) {
+    override fun onBindViewHolder(holder: ManageBovineHolder, position: Int) {
 
     }
 
     override fun getItemCount(): Int = manage.size
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ManageBovineHolder
-        = ManageBovineHolder(parent!!.inflate(R.layout.template_manage_bovine))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ManageBovineHolder
+        = ManageBovineHolder(parent.inflate(R.layout.template_manage_bovine))
 
 
     class ManageBovineHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

@@ -18,12 +18,12 @@ class ListCebaBovineAdapter @Inject constructor():RecyclerView.Adapter<ListCebaB
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ListCebaBovineHolder =
-            ListCebaBovineHolder(parent!!.inflate(R.layout.template_list_ceba_bovine))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListCebaBovineHolder =
+            ListCebaBovineHolder(parent.inflate(R.layout.template_list_ceba_bovine))
 
     override fun getItemCount(): Int = data.size
 
-    override fun onBindViewHolder(holder: ListCebaBovineHolder?, position: Int) =
+    override fun onBindViewHolder(holder: ListCebaBovineHolder, position: Int) =
             holder!!.bind(data[position])
 
 

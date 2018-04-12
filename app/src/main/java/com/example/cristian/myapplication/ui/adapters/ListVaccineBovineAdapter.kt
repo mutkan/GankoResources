@@ -18,12 +18,12 @@ class ListVaccineBovineAdapter @Inject constructor():RecyclerView.Adapter<ListVa
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ListVaccineBovineHolder =
-            ListVaccineBovineHolder(parent!!.inflate(R.layout.template_list_vaccine_bovine))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListVaccineBovineHolder =
+            ListVaccineBovineHolder(parent.inflate(R.layout.template_list_vaccine_bovine))
 
     override fun getItemCount(): Int = data.size
 
-    override fun onBindViewHolder(holder: ListVaccineBovineHolder?, position: Int) =
+    override fun onBindViewHolder(holder: ListVaccineBovineHolder, position: Int) =
             holder!!.bind(data[position])
 
     class ListVaccineBovineHolder(itemList:View):RecyclerView.ViewHolder(itemList){

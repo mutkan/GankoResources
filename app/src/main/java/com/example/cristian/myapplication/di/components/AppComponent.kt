@@ -3,6 +3,7 @@ package com.example.cristian.myapplication.di.components
 import android.app.Application
 import com.example.cristian.myapplication.App
 import com.example.cristian.myapplication.di.modules.AppModule
+import com.example.cristian.myapplication.di.modules.CouchModule
 import com.example.cristian.myapplication.di.modules.NetModule
 import com.example.cristian.myapplication.di.modules.ViewModelModule
 import dagger.BindsInstance
@@ -16,7 +17,8 @@ import javax.inject.Singleton
     ActivityComponents::class,
     AppModule::class,
     NetModule::class,
-    ViewModelModule::class
+    ViewModelModule::class,
+    CouchModule::class
 ])
 interface AppComponent {
 

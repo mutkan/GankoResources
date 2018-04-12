@@ -2,7 +2,7 @@
 
     <string name="base_url">http://www.google.com</string>
 
-    <string name="app_name">My Application</string>
+    <string name="app_name">Ganko Bovinos</string>
     <string name="email">Email</string>
     <string name="password">Contraseña</string>
     <string name="forgot_password">Olvidé la Contraseña</string>
