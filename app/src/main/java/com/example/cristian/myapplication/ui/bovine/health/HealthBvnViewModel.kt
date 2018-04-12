@@ -11,7 +11,7 @@ class HealthBvnViewModel @Inject constructor(private val db: CouchRx):ViewModel(
 
 
     fun getHealthBovine(idBovino: String): Single<List<Sanidad>> =
-            db.listByExp("idBovino" equalEx idBovino, Sanidad::class)
+            db.listByExp("bovino" equalEx idBovino, Sanidad::class)
 
 
 }

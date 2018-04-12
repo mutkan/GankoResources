@@ -15,11 +15,12 @@ import javax.inject.Named
 import javax.inject.Singleton
 import kotlin.reflect.KClass
 
+
 @Singleton
 class CouchRx @Inject constructor(private val db: Database
-                                        , @Named("dbName") private val dbName: String
-                                        , private val session: UserSession
-                                        , private val mapper: ObjectMapper) {
+                                  , @Named("dbName") private val dbName: String
+                                  , private val session: UserSession
+                                  , private val mapper: ObjectMapper) {
 
 
     fun <T : CouchEntity> insert(doc: T): Single<String> = Single.create {
