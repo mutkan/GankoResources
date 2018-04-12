@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity
 import android.text.Editable
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
+import android.util.Log
 import android.widget.DatePicker
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.Produccion
@@ -17,19 +18,20 @@ import com.jakewharton.rxbinding2.view.clicks
 import com.jakewharton.rxbinding2.view.selected
 import dagger.android.AndroidInjector
 import dagger.android.HasActivityInjector
+import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_add_milk_bovine.*
 import org.jetbrains.anko.toast
 import java.util.*
 import javax.inject.Inject
 
-class AddMilkBvnActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,Injectable {
+class AddMilkBvnActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, Injectable {
 
     @Inject
     lateinit var factory: ViewModelProvider.Factory
     val viewModel: MilkBvnViewModel by lazy { buildViewModel<MilkBvnViewModel>(factory) }
 
     val dis: LifeDisposable = LifeDisposable(this)
-    lateinit var idBovino:String
+    lateinit var idBovino: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,22 +45,34 @@ class AddMilkBvnActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListen
                 .flatMap {
                     validateForm(R.string.empty_fields, dateAddMilkBovine.text.toString(), littersAddMilkBovine.text())
                 }
-                .flatMap {
-                    val jornada = if (timeOfDayAddMilkBovine.checkedRadioButtonId == R.id.morningAddMilkBovine) "Mañana"
+                .flatMapSingle {
+                    val jornada = if (timeOfDayAddMilkBovine.checkedRadioButtonId == R.id.morningAddMilkBovine) "Manana"
                     else "Tarde"
-                    viewModel.addMilkProduction(idBovino,
-                            Produccion("", idBovino, jornada, it[1], it[0].toDate()))
-                }.subscribeByAction(
+                    viewModel.addMilkProduction(
+                            Produccion(idBovino, jornada, it[1], it[0].toDate())
+                    )
+                }.subscribeBy(
+                        onComplete = {
+                            Log.i("COUCH", "complete")
+
+                        },
                         onNext = {
-                            toast("Produccion de Leche Agregada")
+                            Log.i("COUCH", "next")
+                            finish()
+
                         },
                         onError = {
-                            toast(it.message!!)
-                        },
-                        onHttpError = {
-                            toast(it)
+                            Log.i("COUCH", "error")
+
                         }
-                )
+
+        )
+
+        dis add btnCancelMilkBovine.clicks()
+                .subscribe {
+                    finish()
+                }
+
         dis add dateAddMilkBovine.clicks()
                 .subscribeByAction(
                         onNext = {
