@@ -20,8 +20,7 @@ class HealthBvnActivity : AppCompatActivity(), Injectable {
     lateinit var factory: ViewModelProvider.Factory
     val viewModel: HealthBvnViewModel by lazy { buildViewModel<HealthBvnViewModel>(factory) }
     val dis: LifeDisposable = LifeDisposable(this)
-
-    val idBovine:String by lazy{ intent.extras.getString(FeedBvnActivity.EXTRA_ID) }
+    lateinit var idBovino:String
 
     @Inject
     lateinit var adapter: HealthBovineAdapter
@@ -32,12 +31,13 @@ class HealthBvnActivity : AppCompatActivity(), Injectable {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setTitle("Sanidad")
         recyclerListHealthBovine.adapter = adapter
+        idBovino = intent.getStringExtra(EXTRA_ID)
     }
 
     override fun onResume() {
         super.onResume()
 
-        dis add viewModel.getHealthBovine(idBovine)
+        dis add viewModel.getHealthBovine(idBovino)
                 .subscribeByShot(
                         onNext = {
                             adapter.health = it
@@ -52,6 +52,6 @@ class HealthBvnActivity : AppCompatActivity(), Injectable {
     }
 
     companion object {
-        val EXTRA_ID:String = "ganko.ui.bovine.feed"
+        val EXTRA_ID:String = "ID_BOVINO"
     }
 }
