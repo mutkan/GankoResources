@@ -66,7 +66,7 @@ class AddMilkBvnActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListen
 
                         }
 
-        )
+                )
 
         dis add btnCancelMilkBovine.clicks()
                 .subscribe {
@@ -76,7 +76,9 @@ class AddMilkBvnActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListen
         dis add dateAddMilkBovine.clicks()
                 .subscribeByAction(
                         onNext = {
-                            val datePicker = DatePickerDialog(this, AddMilkBvnActivity@ this, 2018, 3, 12).show()
+                            val datePicker = DatePickerDialog(this, AddMilkBvnActivity@ this,
+                                    Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH),
+                                        Calendar.getInstance().get(Calendar.DAY_OF_MONTH)).show()
                         },
                         onHttpError = {},
                         onError = {}

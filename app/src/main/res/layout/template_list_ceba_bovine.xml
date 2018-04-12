@@ -25,7 +25,8 @@
             android:textColor="@color/textview_label"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="10 de Enero de 2018" />
+            tools:text="10 de Enero de 2018"
+            app:dateFormat="@{ceba.fecha}"/>
 
         <TextView
             android:id="@+id/textView37"
@@ -36,7 +37,8 @@
             android:textColor="@color/textview_label"
             app:layout_constraintEnd_toStartOf="@+id/textView38"
             app:layout_constraintTop_toTopOf="@+id/textView36"
-            tools:text="30" />
+            tools:text="30"
+            android:text='@{ceba.peso+""}'/>
 
         <TextView
             android:id="@+id/textView38"
