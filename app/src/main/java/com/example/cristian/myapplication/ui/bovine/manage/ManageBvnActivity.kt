@@ -11,6 +11,7 @@ import com.example.cristian.myapplication.ui.bovine.health.HealthBvnViewModel
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
 import com.example.cristian.myapplication.util.subscribeByShot
+import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_manage_bovine.*
 import org.jetbrains.anko.toast
 import javax.inject.Inject
@@ -22,8 +23,8 @@ class ManageBvnActivity : AppCompatActivity() , Injectable {
     val viewModel: ManageBvnViewModel by lazy { buildViewModel<ManageBvnViewModel>(factory) }
     val dis: LifeDisposable = LifeDisposable(this)
 
-    val idBovine:String by lazy{ intent.extras.getString(FeedBvnActivity.EXTRA_ID) }
-
+    //val idBovino:String by lazy{ intent.extras.getString(FeedBvnActivity.EXTRA_ID) }
+    lateinit var idBovino: String
     @Inject
     lateinit var adapter: ManageBovineAdapter
 
@@ -33,26 +34,25 @@ class ManageBvnActivity : AppCompatActivity() , Injectable {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setTitle("Manejo")
         recycler.adapter = adapter
+
+        idBovino = "1"
     }
 
     override fun onResume() {
         super.onResume()
 
-        dis add  viewModel.getManageBovine(idBovine)
-                .subscribeByShot(
-                        onNext = {
+        dis add  viewModel.getManageBovine(idBovino)
+                .subscribeBy(
+                        onSuccess = {
                             adapter.manage = it
                         },
                         onError = {
                             toast(it.message!!)
-                        },
-                        onHttpError = {
-                            toast(it)
                         }
                 )
     }
 
     companion object {
-        val EXTRA_ID:String = "ganko.ui.bovine.feed"
+        val EXTRA_ID: String = "ID_BOVINO"
     }
 }

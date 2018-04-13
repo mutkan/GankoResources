@@ -6,10 +6,8 @@ import android.support.v7.app.AppCompatActivity
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.HealthBovineAdapter
-import com.example.cristian.myapplication.ui.bovine.feed.FeedBvnActivity
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
-import com.example.cristian.myapplication.util.subscribeByShot
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_list_health_bovine.*
 import org.jetbrains.anko.toast
@@ -22,9 +20,9 @@ class HealthBvnActivity : AppCompatActivity(), Injectable {
     val viewModel: HealthBvnViewModel by lazy { buildViewModel<HealthBvnViewModel>(factory) }
     val dis: LifeDisposable = LifeDisposable(this)
 
-    //val idBovine:String by lazy{ intent.extras.getString(FeedBvnActivity.EXTRA_ID) }
-    lateinit var idBovine:String
-    
+    //val idBovino:String by lazy{ intent.extras.getString(FeedBvnActivity.EXTRA_ID) }
+    lateinit var idBovino:String
+
     @Inject
     lateinit var adapter: HealthBovineAdapter
 
@@ -34,25 +32,27 @@ class HealthBvnActivity : AppCompatActivity(), Injectable {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setTitle("Sanidad")
         recyclerListHealthBovine.adapter = adapter
-        idBovine = "1"
+
+        //idBovino = intent.getStringExtra(EXTRA_ID)
+        idBovino = "1"
+
     }
 
     override fun onResume() {
         super.onResume()
 
-        dis add viewModel.getHealthBovine(idBovine)
+
+        dis add viewModel.getHealthBovine(idBovino)
                 .subscribeBy(
                         onSuccess = {
                             adapter.health = it
                         },
                         onError = {
                             toast(it.message!!)
-                        }
-
-                )
+                        })
     }
-
     companion object {
-        val EXTRA_ID:String = "ganko.ui.bovine.feed"
+        val EXTRA_ID:String = "ID_BOVINO"
     }
+
 }

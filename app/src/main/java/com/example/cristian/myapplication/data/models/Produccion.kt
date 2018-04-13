@@ -8,7 +8,7 @@ import java.util.*
 @Parcelize
 class Produccion():CouchEntity(),Parcelable {
 
-        lateinit var bovino: String
+        var bovino: String? = null
         lateinit var jornada: String
         lateinit var litros: String
         lateinit var fecha: Date
