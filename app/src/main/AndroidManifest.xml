@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".ui.bovine.milk.MilkBvnActivity">
+        <activity android:name=".ui.bovine.ceba.CebaBvnActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -37,7 +37,7 @@
             android:name=".ui.menu.MenuActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ui.bovine.vaccination.VaccinationBvnActivity" />
-        <activity android:name=".ui.bovine.ceba.CebaBvnActivity" />
+        <!--<activity android:name=".ui.bovine.ceba.CebaBvnActivity" />-->
         <activity android:name=".ui.bovine.ceba.AddCebaBvnActivity"/>
     </application>
 

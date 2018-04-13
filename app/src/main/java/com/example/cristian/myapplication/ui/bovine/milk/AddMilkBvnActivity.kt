@@ -62,7 +62,7 @@ class AddMilkBvnActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListen
 
                         },
                         onError = {
-                            Log.i("COUCH", "error")
+                            toast(it.message!!)
 
                         }
 
