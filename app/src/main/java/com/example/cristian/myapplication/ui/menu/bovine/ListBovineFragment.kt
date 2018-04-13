@@ -1,12 +1,12 @@
 package com.example.cristian.myapplication.ui.menu.bovine
 
+
 import android.arch.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.ListBovineAdapter
@@ -17,10 +17,9 @@ import com.example.cristian.myapplication.util.buildViewModel
 import com.jakewharton.rxbinding2.view.clicks
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.fragment_list_bovine.*
-import org.jetbrains.anko.startActivity
-
-
+import org.jetbrains.anko.support.v4.startActivity
 import javax.inject.Inject
+import org.jetbrains.anko.support.v4.toast
 
 class ListBovineFragment : Fragment(), Injectable {
 
@@ -54,19 +53,20 @@ class ListBovineFragment : Fragment(), Injectable {
                         onSuccess = {
                             adapter.bovines = it
                         },
-                        onError = { }
-                )
-
-        dis add btnAddBovine.clicks()
-                .subscribeBy (
-                        onNext = {
-                            goToAddBovine()
+                        onError = {
+                            toast(it.message!!)
                         }
                 )
+
+
+        dis add btnAddBovine.clicks()
+                .subscribe {
+                    goToAddBovine()
+                }
     }
 
     fun goToAddBovine() {
-        //startActivity<AddBovineActivity>()
+        startActivity<AddBovineActivity>()
     }
 
 
