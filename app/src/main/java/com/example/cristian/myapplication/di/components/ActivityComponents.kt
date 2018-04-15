@@ -6,6 +6,8 @@ import com.example.cristian.myapplication.ui.bovine.health.HealthBvnActivity
 import com.example.cristian.myapplication.ui.bovine.manage.ManageBvnActivity
 import com.example.cristian.myapplication.ui.bovine.milk.AddMilkBvnActivity
 import com.example.cristian.myapplication.ui.bovine.milk.MilkBvnActivity
+import com.example.cristian.myapplication.ui.farms.AddFarmActivity
+import com.example.cristian.myapplication.ui.farms.FarmActivity
 import com.example.cristian.myapplication.ui.menu.MenuActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -36,5 +38,13 @@ abstract class ActivityComponents{
     @ActivityScope
     @ContributesAndroidInjector()
     abstract fun bindMenuActivity(): MenuActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector()
+    abstract fun bindFarmActivity(): FarmActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector()
+    abstract fun bindAddFarmActivity(): AddFarmActivity
 
 }

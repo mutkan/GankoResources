@@ -16,8 +16,8 @@ class UserSession @Inject constructor(val prefs: SharedPreferences){
         get() = prefs.getBoolean(KEY_LOGGED, false)
         set(value) = prefs.save(KEY_LOGGED to value)
 
-    var userId: Int
-        get() = prefs.getInt(KEY_USERID, 0)
+    var userId: String
+        get() = prefs.getString(KEY_USERID, "")
         set(value) = prefs.save(KEY_USERID to value)
 
     var farm: String

@@ -7,6 +7,7 @@ import com.example.cristian.myapplication.util.andEx
 import com.example.cristian.myapplication.util.equalEx
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.reactivex.Maybe
+import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.rxkotlin.toObservable
 import java.util.*
@@ -104,9 +105,31 @@ class CouchRx @Inject constructor(private val db: Database
             .map { dictionaryToObject(it.first, it.second, it.third, kClass) }
             .toList()
 
+    fun <T : Any> listByExp2(expression: Expression, kClass: KClass<T>): Observable<List<T>> = Observable.create {e->
+        val query = QueryBuilder
+                .select(SelectResult.all(), SelectResult.expression(Meta.id), SelectResult.expression(Meta.sequence))
+                .from(DataSource.database(db))
+                .where(expression andEx ("type" equalEx kClass.simpleName.toString()))
+
+        query.addChangeListener { qc ->
+             e.onNext(qc.results.allResults().toObservable()
+                     .map {
+                         val id = it.getString("id")
+                         val sequence = it.getLong("sequence")
+                         val content = it.getDictionary(dbName)
+                         Triple(id, sequence, content)
+                     }
+                     .map { dictionaryToObject(it.first, it.second, it.third, kClass) }
+                     .toList()
+                     .blockingGet()
+                     )
+        }
+    }
+
+
     private fun objectToDocument(obj: Any, id: String): MutableDocument {
         val map = mapper.convertValue(obj, Map::class.java) as MutableMap<String, Any>
-        if(map.containsKey("_id")) map.remove("_id")
+        if (map.containsKey("_id")) map.remove("_id")
         return MutableDocument(id, map)
     }
 

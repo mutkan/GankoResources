@@ -1,80 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="farm"
+            type="com.example.cristian.myapplication.data.models.Finca"/>
+        <variable
+            name="clickDeleteFarm"
+            type="io.reactivex.subjects.PublishSubject"/>
+        <variable
+            name="clickEditFarm"
+            type="io.reactivex.subjects.PublishSubject"/>
+        <variable
+            name="clickFarm"
+            type="io.reactivex.subjects.PublishSubject"/>
+    </data>
 
-    <TextView
-        android:id="@+id/farmName"
-        android:layout_width="wrap_content"
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="@string/farm_name" />
+        android:onClick='@{()->clickFarm.onNext(farm._id)}'>
 
-    <TextView
-        android:id="@+id/farmLocation"
-        style="@style/textview_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textColor="@color/colorAccent"
-        app:layout_constraintStart_toStartOf="@+id/farmName"
-        app:layout_constraintTop_toBottomOf="@+id/farmName"
-        tools:text="@string/farm_location" />
+        <TextView
+            android:id="@+id/farmName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text='@{farm.nombre}'
+            tools:text="@string/farm_name" />
 
-    <TextView
-        android:id="@+id/farmHectares"
-        style="@style/textview_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="@+id/farmLocation"
-        app:layout_constraintTop_toBottomOf="@+id/farmLocation"
-        tools:text="10" />
+        <TextView
+            android:id="@+id/farmLocation"
+            style="@style/textview_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/colorAccent"
+            app:layout_constraintStart_toStartOf="@+id/farmName"
+            app:layout_constraintTop_toBottomOf="@+id/farmName"
+            tools:text="@string/farm_location"
+            android:text='@{farm.ubicacion}'/>
 
-    <TextView
-        android:id="@+id/farmHectaresTxt"
-        style="@style/textview_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="@string/hectares"
-        app:layout_constraintStart_toEndOf="@+id/farmHectares"
-        app:layout_constraintTop_toTopOf="@+id/farmHectares" />
+        <TextView
+            android:id="@+id/farmHectares"
+            style="@style/textview_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="@+id/farmLocation"
+            app:layout_constraintTop_toBottomOf="@+id/farmLocation"
+            tools:text="10"
+            android:text='@{""+farm.hectareas}'/>
 
-    <Button
-        android:id="@+id/btnEditFarmTemplate"
-        style="@style/Widget.AppCompat.Button.Borderless.Colored"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:text="@string/btn_edit"
-        app:layout_constraintEnd_toStartOf="@+id/btnDeleteFarmTemplate"
-        app:layout_constraintTop_toTopOf="@+id/btnDeleteFarmTemplate" />
+        <TextView
+            android:id="@+id/farmHectaresTxt"
+            style="@style/textview_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/hectares"
+            app:layout_constraintStart_toEndOf="@+id/farmHectares"
+            app:layout_constraintTop_toTopOf="@+id/farmHectares" />
 
-    <Button
-        android:id="@+id/btnDeleteFarmTemplate"
-        style="@style/Widget.AppCompat.Button.Borderless.Colored"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:text="@string/btn_delete"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/farmHectaresTxt" />
+        <Button
+            android:id="@+id/btnEditFarmTemplate"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="@string/btn_edit"
+            app:layout_constraintEnd_toStartOf="@+id/btnDeleteFarmTemplate"
+            app:layout_constraintTop_toTopOf="@+id/btnDeleteFarmTemplate"
+            android:onClick='@{()->clickEditFarm.onNext(farm._id)}'/>
 
-    <FrameLayout
-        android:id="@+id/frameLayout2"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginTop="8dp"
-        android:background="@color/separator_gray"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnEditFarmTemplate">
+        <Button
+            android:id="@+id/btnDeleteFarmTemplate"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="@string/btn_delete"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/farmHectaresTxt"
+            android:onClick='@{()->clickDeleteFarm.onNext(farm)}'/>
 
-    </FrameLayout>
-</android.support.constraint.ConstraintLayout>
+        <FrameLayout
+            android:id="@+id/frameLayout2"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/separator_gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnEditFarmTemplate">
+
+        </FrameLayout>
+    </android.support.constraint.ConstraintLayout>
+</layout>
