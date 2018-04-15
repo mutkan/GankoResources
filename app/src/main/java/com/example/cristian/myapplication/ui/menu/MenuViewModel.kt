@@ -3,12 +3,19 @@ package com.example.cristian.myapplication.ui.menu
 import android.arch.lifecycle.ViewModel
 import android.graphics.Color
 import com.example.cristian.myapplication.R
+import com.example.cristian.myapplication.data.db.CouchRx
+import com.example.cristian.myapplication.data.models.Bovino
+import com.example.cristian.myapplication.util.applySchedulers
+import com.example.cristian.myapplication.util.equalEx
+import io.reactivex.Single
+import javax.inject.Inject
 
 /**
  * Created by Ana Marin on 11/03/2018.
  */
-class MenuViewModel : ViewModel(){
+class MenuViewModel @Inject constructor(private val db: CouchRx) : ViewModel(){
 
+    //region Menu
     var content: Int = 2
 
     val data: List<MenuItem> = listOf(
@@ -58,5 +65,15 @@ class MenuViewModel : ViewModel(){
             val TYPE_MENU: Int = 2
         }
     }
+    //endregion
+
+    fun getBovine(idFinca: String): Single<List<Bovino>> =
+            db.listByExp("finca" equalEx idFinca, Bovino::class)
+                    .applySchedulers()
+
+    fun addBovine(bovino: Bovino): Single<String> =
+            db.insert(bovino)
+                    .applySchedulers()
+
 
 }
