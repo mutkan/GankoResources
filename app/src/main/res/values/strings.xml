@@ -191,7 +191,7 @@
     <string name="average_milk">Promedio</string>
 
     //Validate Form
-    <string name="empty_fields">No Debe Haber Campos Vacios</string>
+    <string name="empty_fields">No debe haber campos vacios</string>
     <string name="finalize">Finalizar</string>
 
 

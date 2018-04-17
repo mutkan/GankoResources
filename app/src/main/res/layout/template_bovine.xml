@@ -10,11 +10,15 @@
         <variable
             name="bovino"
             type="com.example.cristian.myapplication.data.models.Bovino"/>
+        <variable
+            name="onClickBovine"
+            type="io.reactivex.subjects.PublishSubject"/>
     </data>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:onClick="@{()-> onClickBovine.onNext(bovino)}">
 
         <TextView
             android:id="@+id/nameBovineTemplate"

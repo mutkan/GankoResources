@@ -33,6 +33,8 @@ class CebaBvnActivity : AppCompatActivity(),Injectable {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_ceba)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setTitle("Ceba")
         recyclerListCeba.adapter = cebaAdapter
         recyclerListCeba.layoutManager = LinearLayoutManager(this)
     }

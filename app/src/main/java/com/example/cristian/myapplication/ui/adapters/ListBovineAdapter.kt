@@ -8,9 +8,12 @@ import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.Bovino
 import com.example.cristian.myapplication.databinding.TemplateBovineBinding
 import com.example.cristian.myapplication.util.inflate
+import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
 class ListBovineAdapter @Inject constructor():RecyclerView.Adapter<ListBovineAdapter.ListBovineHolder>() {
+
+    val onClickBovine = PublishSubject.create<Bovino>()
 
     var bovines: List<Bovino> = emptyList()
         set(value) {
@@ -23,6 +26,7 @@ class ListBovineAdapter @Inject constructor():RecyclerView.Adapter<ListBovineAda
 
     override fun onBindViewHolder(holder: ListBovineHolder, position: Int) {
         holder.binding.bovino = bovines[position]
+        holder.binding.onClickBovine = onClickBovine
     }
 
     override fun getItemCount(): Int = bovines.size
