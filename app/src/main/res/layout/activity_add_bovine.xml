@@ -1,458 +1,517 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    tools:context="com.example.cristian.myapplication.ui.bovine.AddBovineActivity">
 
-    <Button
-        android:id="@+id/btnCancel"
-        style="@style/Widget.AppCompat.Button.Borderless.Colored"
-        android:layout_width="@dimen/button_width"
-        android:layout_height="wrap_content"
-        android:text="@string/btn_cancel"
-        app:layout_constraintEnd_toStartOf="@+id/btnNext"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/btnNext" />
+    <data>
+        <variable
+            name="page"
+            type="Integer" />
+        <variable
+            name="stateCheckBox"
+            type="Boolean"/>
 
-    <Button
-        android:id="@+id/btnNext"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="@dimen/button_width"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:text="@string/btn_next"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btnCancel" />
+        <import type="android.view.View"/>
+    </data>
 
-    <android.support.v4.widget.NestedScrollView
-        android:id="@+id/nested"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:fillViewport="true"
-        app:layout_constraintBottom_toTopOf="@+id/btnNext"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent">
 
-        <android.support.constraint.ConstraintLayout
-            android:id="@+id/pages"
+        <Button
+            android:id="@+id/btnBack"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="@string/btn_back"
+            android:visibility='@{page == 1 ? View.GONE : View.VISIBLE}'
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btnNext"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/btnCancel" />
+
+        <Button
+            android:id="@+id/btnCancel"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="8dp"
+            android:text="@string/btn_cancel"
+            android:visibility='@{page == 1 ? View.VISIBLE : View.GONE}'
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btnBack"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/btnNext"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="@string/btn_next"
+            android:visibility='@{page == 3 ? View.GONE : View.VISIBLE}'
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btnFinalize"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/btnBack" />
+
+        <Button
+            android:id="@+id/btnFinalize"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/btn_add"
+            android:visibility='@{page == 3 ? View.VISIBLE : View.GONE}'
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/btnNext" />
+
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/nested"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="0dp"
+            android:layout_marginBottom="8dp"
+            android:fillViewport="true"
+            app:layout_constraintBottom_toTopOf="@+id/horizontalLine"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <android.support.constraint.ConstraintLayout
-                android:id="@+id/page1"
+                android:id="@+id/pages"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <EditText
-                    android:id="@+id/editText16"
-                    style="@style/edit_text"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginTop="8dp"
-                    android:ems="10"
-                    android:hint="@string/previous_number_of_births"
-                    android:inputType="number"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/textView67"
-                    app:layout_constraintStart_toStartOf="@+id/textView67"
-                    app:layout_constraintTop_toBottomOf="@+id/textView67" />
-
-                <TextView
-                    android:id="@+id/textView64"
-                    style="@style/textview_label"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/name"
-                    app:layout_constraintEnd_toEndOf="@+id/editText12"
-                    app:layout_constraintStart_toStartOf="@+id/editText12"
-                    app:layout_constraintTop_toBottomOf="@+id/editText12" />
-
-                <RadioGroup
-                    android:id="@+id/sexBovine"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:checkedButton="@+id/male"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="@+id/textView66"
-                    app:layout_constraintStart_toStartOf="@+id/textView66"
-                    app:layout_constraintTop_toBottomOf="@+id/textView66">
-
-                    <RadioButton
-                        android:id="@+id/male"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/male" />
-
-                    <RadioButton
-                        android:id="@+id/female"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/female" />
-                </RadioGroup>
-
-                <TextView
-                    android:id="@+id/textView65"
-                    style="@style/textview_label"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/breed"
-                    app:layout_constraintEnd_toEndOf="@+id/editText13"
-                    app:layout_constraintStart_toStartOf="@+id/editText13"
-                    app:layout_constraintTop_toBottomOf="@+id/editText13" />
-
-                <TextView
-                    android:id="@+id/textView66"
-                    style="@style/textview_label"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/sex"
-                    app:layout_constraintEnd_toEndOf="@+id/editText14"
-                    app:layout_constraintStart_toStartOf="@+id/editText14"
-                    app:layout_constraintTop_toBottomOf="@+id/editText14" />
-
-                <TextView
-                    android:id="@+id/textView51"
-                    style="@style/textview_label"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginTop="24dp"
-                    android:text="@string/number"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <EditText
-                    android:id="@+id/editText14"
-                    style="@style/edit_text"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:ems="10"
-                    android:hint="@string/bovine_breed"
-                    app:layout_constraintEnd_toEndOf="@+id/textView65"
-                    app:layout_constraintStart_toStartOf="@+id/textView65"
-                    app:layout_constraintTop_toBottomOf="@+id/textView65" />
-
-                <TextView
-                    android:id="@+id/textView67"
-                    style="@style/textview_label"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/number_of_births"
-                    app:layout_constraintEnd_toEndOf="@+id/sexBovine"
-                    app:layout_constraintStart_toStartOf="@+id/sexBovine"
-                    app:layout_constraintTop_toBottomOf="@+id/sexBovine" />
-
-                <EditText
-                    android:id="@+id/editText12"
-                    style="@style/edit_text"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginTop="8dp"
-                    android:ems="10"
-                    android:hint="@string/number_of_identification"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/textView51"
-                    app:layout_constraintTop_toBottomOf="@+id/textView51" />
-
-                <EditText
-                    android:id="@+id/editText13"
-                    style="@style/edit_text"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginTop="8dp"
-                    android:ems="10"
-                    android:hint="@string/name_placeholder"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/textView64"
-                    app:layout_constraintTop_toBottomOf="@+id/textView64" />
-            </android.support.constraint.ConstraintLayout>
-
-            <android.support.constraint.ConstraintLayout
-                android:id="@+id/page2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/page1">
-
-                <EditText
-                    android:id="@+id/editText20"
-                    style="@style/edit_text"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:ems="10"
-                    android:hint="@string/date_value"
-                    android:inputType="date"
-                    app:layout_constraintEnd_toEndOf="@+id/textView72"
-                    app:layout_constraintStart_toStartOf="@+id/textView72"
-                    app:layout_constraintTop_toBottomOf="@+id/textView72" />
-
-                <EditText
-                    android:id="@+id/editText19"
-                    style="@style/edit_text"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:ems="10"
-                    android:hint="@string/date_value"
-                    android:inputType="date"
-                    app:layout_constraintEnd_toEndOf="@+id/textView71"
-                    app:layout_constraintStart_toStartOf="@+id/textView71"
-                    app:layout_constraintTop_toBottomOf="@+id/textView71" />
-
-                <EditText
-                    android:id="@+id/editText18"
-                    style="@style/edit_text"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:ems="10"
-                    android:hint="@string/bovine_color"
-                    android:inputType="none"
-                    app:layout_constraintEnd_toEndOf="@+id/textView70"
-                    app:layout_constraintStart_toStartOf="@+id/textView70"
-                    app:layout_constraintTop_toBottomOf="@+id/textView70" />
-
-                <EditText
-                    android:id="@+id/editText17"
-                    style="@style/edit_text"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:ems="10"
-                    android:hint="@string/weight_in_kg"
-                    android:inputType="number"
-                    app:layout_constraintEnd_toEndOf="@+id/textView69"
-                    app:layout_constraintStart_toStartOf="@+id/textView69"
-                    app:layout_constraintTop_toBottomOf="@+id/textView69" />
-
-                <TextView
-                    android:id="@+id/textView69"
-                    style="@style/textview_label"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/weight"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/textView70"
-                    style="@style/textview_label"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/color"
-                    app:layout_constraintEnd_toEndOf="@+id/editText17"
-                    app:layout_constraintStart_toStartOf="@+id/editText17"
-                    app:layout_constraintTop_toBottomOf="@+id/editText17" />
-
-                <TextView
-                    android:id="@+id/textView71"
-                    style="@style/textview_label"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/birthday"
-                    app:layout_constraintEnd_toEndOf="@+id/editText18"
-                    app:layout_constraintStart_toStartOf="@+id/editText18"
-                    app:layout_constraintTop_toBottomOf="@+id/editText18" />
-
-                <android.support.v7.widget.AppCompatCheckBox
-                    android:id="@+id/check_weaned"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:buttonTint="@color/check_filter"
-                    android:text="@string/weaned"
-                    app:layout_constraintEnd_toEndOf="@+id/editText19"
-                    app:layout_constraintStart_toStartOf="@+id/editText19"
-                    app:layout_constraintTop_toBottomOf="@+id/editText19" />
-
-                <TextView
-                    android:id="@+id/textView72"
-                    style="@style/textview_label"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/weaned_date"
-                    app:layout_constraintEnd_toEndOf="@+id/check_weaned"
-                    app:layout_constraintStart_toStartOf="@+id/check_weaned"
-                    app:layout_constraintTop_toBottomOf="@+id/check_weaned" />
-
-                <TextView
-                    android:id="@+id/textView73"
-                    style="@style/textview_label"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/purpose"
-                    app:layout_constraintEnd_toEndOf="@+id/editText20"
-                    app:layout_constraintStart_toStartOf="@+id/editText20"
-                    app:layout_constraintTop_toBottomOf="@+id/editText20" />
-
-                <RadioGroup
-                    android:id="@+id/purpose"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginTop="8dp"
-                    android:checkedButton="@+id/dairy"
-                    android:orientation="horizontal"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/textView73"
-                    app:layout_constraintStart_toStartOf="@+id/textView73"
-                    app:layout_constraintTop_toBottomOf="@+id/textView73">
-
-                    <RadioButton
-                        android:id="@+id/dairy"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/dairy" />
-
-                    <RadioButton
-                        android:id="@+id/meat"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/meat" />
-
-                    <RadioButton
-                        android:id="@+id/both"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/both" />
-                </RadioGroup>
-            </android.support.constraint.ConstraintLayout>
-
-            <android.support.constraint.ConstraintLayout
-                android:id="@+id/page3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/page2">
-
-                <EditText
-                    android:id="@+id/editText22"
-                    style="@style/edit_text"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:ems="10"
-                    android:hint="@string/mother_id_text"
-                    android:inputType="none"
-                    app:layout_constraintEnd_toEndOf="@+id/textView75"
-                    app:layout_constraintStart_toStartOf="@+id/textView75"
-                    app:layout_constraintTop_toBottomOf="@+id/textView75" />
-
-                <EditText
-                    android:id="@+id/editText21"
-                    style="@style/edit_text"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:ems="10"
-                    android:hint="@string/father_id_text"
-                    android:inputType="none"
-                    app:layout_constraintEnd_toEndOf="@+id/textView74"
-                    app:layout_constraintStart_toStartOf="@+id/textView74"
-                    app:layout_constraintTop_toBottomOf="@+id/textView74" />
-
-                <TextView
-                    android:id="@+id/textView74"
-                    style="@style/textview_label"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginTop="24dp"
-                    android:text="@string/father_id"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/textView75"
-                    style="@style/textview_label"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:text="@string/mother_id"
-                    app:layout_constraintEnd_toEndOf="@+id/editText21"
-                    app:layout_constraintStart_toStartOf="@+id/editText21"
-                    app:layout_constraintTop_toBottomOf="@+id/editText21" />
+                android:layout_height="wrap_content">
 
                 <android.support.constraint.ConstraintLayout
-                    android:id="@+id/addBovinePhoto"
+                    android:id="@+id/page1"
                     android:layout_width="0dp"
-                    android:layout_height="200dp"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginTop="24dp"
-                    android:background="@color/img"
+                    android:layout_height="wrap_content"
+                    android:visibility='@{page == 1 ? View.VISIBLE : View.GONE}'
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <EditText
+                        android:id="@+id/previousBovineBirths"
+                        style="@style/edit_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginTop="8dp"
+                        android:ems="10"
+                        android:hint="@string/previous_number_of_births"
+                        android:inputType="number"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/textView67"
+                        app:layout_constraintStart_toStartOf="@+id/textView67"
+                        app:layout_constraintTop_toBottomOf="@+id/textView67" />
+
+                    <TextView
+                        android:id="@+id/textView64"
+                        style="@style/textview_label"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/name"
+                        app:layout_constraintEnd_toEndOf="@+id/bovineIdentificationNumber"
+                        app:layout_constraintStart_toStartOf="@+id/bovineIdentificationNumber"
+                        app:layout_constraintTop_toBottomOf="@+id/bovineIdentificationNumber" />
+
+                    <RadioGroup
+                        android:id="@+id/sexBovine"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:checkedButton="@+id/male"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="@+id/textView66"
+                        app:layout_constraintStart_toStartOf="@+id/textView66"
+                        app:layout_constraintTop_toBottomOf="@+id/textView66">
+
+                        <RadioButton
+                            android:id="@+id/male"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/male" />
+
+                        <RadioButton
+                            android:id="@+id/female"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/female" />
+                    </RadioGroup>
+
+                    <TextView
+                        android:id="@+id/textView65"
+                        style="@style/textview_label"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/breed"
+                        app:layout_constraintEnd_toEndOf="@+id/bovineName"
+                        app:layout_constraintStart_toStartOf="@+id/bovineName"
+                        app:layout_constraintTop_toBottomOf="@+id/bovineName" />
+
+                    <TextView
+                        android:id="@+id/textView66"
+                        style="@style/textview_label"
+                        android:layout_width="0dp"
+                        android:layout_height="13dp"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/sex"
+                        app:layout_constraintEnd_toEndOf="@+id/bovineRace"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="@+id/bovineRace"
+                        app:layout_constraintTop_toBottomOf="@+id/bovineRace" />
+
+                    <TextView
+                        android:id="@+id/textView51"
+                        style="@style/textview_label"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="24dp"
+                        android:text="@string/number"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <EditText
+                        android:id="@+id/bovineRace"
+                        style="@style/edit_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:ems="10"
+                        android:hint="@string/bovine_breed"
+                        app:layout_constraintEnd_toEndOf="@+id/textView65"
+                        app:layout_constraintStart_toStartOf="@+id/textView65"
+                        app:layout_constraintTop_toBottomOf="@+id/textView65" />
+
+                    <TextView
+                        android:id="@+id/textView67"
+                        style="@style/textview_label"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/number_of_births"
+                        app:layout_constraintEnd_toEndOf="@+id/sexBovine"
+                        app:layout_constraintStart_toStartOf="@+id/sexBovine"
+                        app:layout_constraintTop_toBottomOf="@+id/sexBovine" />
+
+                    <EditText
+                        android:id="@+id/bovineIdentificationNumber"
+                        style="@style/edit_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginTop="8dp"
+                        android:ems="10"
+                        android:hint="@string/number_of_identification"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/textView51"
+                        app:layout_constraintTop_toBottomOf="@+id/textView51" />
+
+                    <EditText
+                        android:id="@+id/bovineName"
+                        style="@style/edit_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginTop="8dp"
+                        android:ems="10"
+                        android:hint="@string/name_placeholder"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/textView64"
+                        app:layout_constraintTop_toBottomOf="@+id/textView64" />
+                </android.support.constraint.ConstraintLayout>
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/page2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:visibility='@{page == 2 ? View.VISIBLE : View.GONE}'
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/page1">
+
+                    <EditText
+                        android:id="@+id/bovineWeanedDate"
+                        style="@style/edit_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:ems="10"
+                        android:hint="@string/date_value"
+                        android:inputType="date"
+                        android:visibility='@{stateCheckBox == true ? View.VISIBLE : View.GONE}'
+                        app:layout_constraintEnd_toEndOf="@+id/textView72"
+                        app:layout_constraintStart_toStartOf="@+id/textView72"
+                        app:layout_constraintTop_toBottomOf="@+id/textView72" />
+
+                    <EditText
+                        android:id="@+id/bovineBirthDate"
+                        style="@style/edit_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:ems="10"
+                        android:hint="@string/date_value"
+                        android:inputType="date"
+                        app:layout_constraintEnd_toEndOf="@+id/textView71"
+                        app:layout_constraintStart_toStartOf="@+id/textView71"
+                        app:layout_constraintTop_toBottomOf="@+id/textView71" />
+
+                    <EditText
+                        android:id="@+id/bovineColor"
+                        style="@style/edit_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:ems="10"
+                        android:hint="@string/bovine_color"
+                        android:inputType="none"
+                        app:layout_constraintEnd_toEndOf="@+id/textView70"
+                        app:layout_constraintStart_toStartOf="@+id/textView70"
+                        app:layout_constraintTop_toBottomOf="@+id/textView70" />
+
+                    <EditText
+                        android:id="@+id/bovineWeight"
+                        style="@style/edit_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:ems="10"
+                        android:hint="@string/weight_in_kg"
+                        android:inputType="number"
+                        app:layout_constraintEnd_toEndOf="@+id/textView69"
+                        app:layout_constraintStart_toStartOf="@+id/textView69"
+                        app:layout_constraintTop_toBottomOf="@+id/textView69" />
+
+                    <TextView
+                        android:id="@+id/textView69"
+                        style="@style/textview_label"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/weight"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textView70"
+                        style="@style/textview_label"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/color"
+                        app:layout_constraintEnd_toEndOf="@+id/bovineWeight"
+                        app:layout_constraintStart_toStartOf="@+id/bovineWeight"
+                        app:layout_constraintTop_toBottomOf="@+id/bovineWeight" />
+
+                    <TextView
+                        android:id="@+id/textView71"
+                        style="@style/textview_label"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/birthday"
+                        app:layout_constraintEnd_toEndOf="@+id/bovineColor"
+                        app:layout_constraintStart_toStartOf="@+id/bovineColor"
+                        app:layout_constraintTop_toBottomOf="@+id/bovineColor" />
+
+                    <android.support.v7.widget.AppCompatCheckBox
+                        android:id="@+id/check_weaned"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:buttonTint="@color/check_filter"
+                        android:text="@string/weaned"
+                        app:layout_constraintEnd_toEndOf="@+id/bovineBirthDate"
+                        app:layout_constraintStart_toStartOf="@+id/bovineBirthDate"
+                        app:layout_constraintTop_toBottomOf="@+id/bovineBirthDate" />
+
+                    <TextView
+                        android:id="@+id/textView72"
+                        style="@style/textview_label"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/weaned_date"
+                        android:visibility='@{stateCheckBox == true ? View.VISIBLE : View.GONE}'
+                        app:layout_constraintEnd_toEndOf="@+id/check_weaned"
+                        app:layout_constraintStart_toStartOf="@+id/check_weaned"
+                        app:layout_constraintTop_toBottomOf="@+id/check_weaned" />
+
+                    <TextView
+                        android:id="@+id/textView73"
+                        style="@style/textview_label"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/purpose"
+                        app:layout_constraintEnd_toEndOf="@+id/check_weaned"
+                        app:layout_constraintStart_toStartOf="@+id/check_weaned"
+                        app:layout_constraintTop_toBottomOf="@+id/bovineWeanedDate" />
+
+                    <RadioGroup
+                        android:id="@+id/purpose"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginTop="8dp"
+                        android:checkedButton="@+id/dairy"
+                        android:orientation="horizontal"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/textView73"
+                        app:layout_constraintStart_toStartOf="@+id/textView73"
+                        app:layout_constraintTop_toBottomOf="@+id/textView73">
+
+                        <RadioButton
+                            android:id="@+id/dairy"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/dairy" />
+
+                        <RadioButton
+                            android:id="@+id/meat"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/meat" />
+
+                        <RadioButton
+                            android:id="@+id/both"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/both" />
+                    </RadioGroup>
+                </android.support.constraint.ConstraintLayout>
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/page3"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:visibility='@{page == 3 ? View.VISIBLE : View.GONE}'
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/editText22">
+                    app:layout_constraintTop_toBottomOf="@+id/page2">
 
-                    <ImageView
-                        android:id="@+id/imageView7"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
+                    <EditText
+                        android:id="@+id/motherId"
+                        style="@style/edit_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:ems="10"
+                        android:hint="@string/mother_id_text"
+                        android:inputType="none"
+                        app:layout_constraintEnd_toEndOf="@+id/textView75"
+                        app:layout_constraintStart_toStartOf="@+id/textView75"
+                        app:layout_constraintTop_toBottomOf="@+id/textView75" />
+
+                    <EditText
+                        android:id="@+id/fatherId"
+                        style="@style/edit_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:ems="10"
+                        android:hint="@string/father_id_text"
+                        android:inputType="none"
+                        app:layout_constraintEnd_toEndOf="@+id/textView74"
+                        app:layout_constraintStart_toStartOf="@+id/textView74"
+                        app:layout_constraintTop_toBottomOf="@+id/textView74" />
+
+                    <TextView
+                        android:id="@+id/textView74"
+                        style="@style/textview_label"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="24dp"
+                        android:text="@string/father_id"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textView75"
+                        style="@style/textview_label"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:text="@string/mother_id"
+                        app:layout_constraintEnd_toEndOf="@+id/fatherId"
+                        app:layout_constraintStart_toStartOf="@+id/fatherId"
+                        app:layout_constraintTop_toBottomOf="@+id/fatherId" />
+
+                    <android.support.constraint.ConstraintLayout
+                        android:id="@+id/addBovinePhoto"
+                        android:layout_width="0dp"
+                        android:layout_height="250dp"
+                        android:layout_marginTop="24dp"
+                        android:background="@color/img"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.35"
-                        app:srcCompat="@drawable/ic_camera" />
+                        app:layout_constraintTop_toBottomOf="@+id/motherId">
 
-                    <TextView
-                        android:id="@+id/textView76"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/btn_add_photo"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                        android:textColor="@color/white"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/imageView7" />
+                        <ImageView
+                            android:id="@+id/imageView7"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.35"
+                            app:srcCompat="@drawable/ic_camera" />
+
+                        <TextView
+                            android:id="@+id/textView76"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/btn_add_photo"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                            android:textColor="@color/white"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/imageView7" />
+                    </android.support.constraint.ConstraintLayout>
+
                 </android.support.constraint.ConstraintLayout>
 
             </android.support.constraint.ConstraintLayout>
+        </android.support.v4.widget.NestedScrollView>
 
-        </android.support.constraint.ConstraintLayout>
-    </android.support.v4.widget.NestedScrollView>
+        <android.support.constraint.Guideline
+            android:id="@+id/horizontalLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.9" />
 
-</android.support.constraint.ConstraintLayout>
+    </android.support.constraint.ConstraintLayout>
+</layout>

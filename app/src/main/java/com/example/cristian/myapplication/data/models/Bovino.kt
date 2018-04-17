@@ -1,40 +1,40 @@
 package com.example.cristian.myapplication.data.models
 
+import android.os.Parcelable
 import com.example.cristian.myapplication.data.db.CouchEntity
+import kotlinx.android.parcel.Parcelize
 import java.util.*
 
-class Bovino(
-        var idBovino: String,
-        var tipo: String,
-        var codigo: String,
-        var imagenRemota: String,
-        var imagenLocal: String,
-        var nombre: String,
-        var fechaNacimiento: Date?,
-        var fechaIngreso: Date,
-        var genero: String,
-        var proposito: String,
-        var peso: Int,
-        var color: String,
-        var raza: String,
-        var codigoMadre: String?,
-        var codigoPadre: String?,
-        var lote: Int,
-        var partos: Int?,
-        var precioCompra: Int?,
+@Parcelize
+class Bovino(var tipo: String? = null,
+             var codigo: String? = null,
+             var imagenRemota: String? = null,
+             var imagenLocal: String? = null,
+             var nombre: String? = null,
+             var fechaNacimiento: Date? = null,
+             var fechaIngreso: Date? = null,
+             var genero: String? = null,
+             var proposito: String? = null,
+             var peso: Int? = null,
+             var color: String? = null,
+             var raza: String? = null,
+             var codigoMadre: String? = null,
+             var codigoPadre: String? = null,
+             var lote: Int? = null,
+             var partos: Int? = null,
+             var precioCompra: Int? = null,
 
-        var retirado: Boolean,
-        var fechaSalida: Date?,
-        var motivoSalida: String?,
-        var precioVenta: Int?,
+             var retirado: Boolean? = null,
+             var fechaSalida: Date? = null,
+             var motivoSalida: String? = null,
+             var precioVenta: Int? = null,
 
-        var finca: String,
+             var finca: String? = null,
 
-        var destete: Boolean,
-        var fechaDestete: Date?,
-        var celos: Array<Date>,
-        var servicios: Array<Servicio>,
-        var vacunas: Array<Vacuna>,
-        var sanidad: Array<Sanidad>,
-        var manejo: Array<Manage>
-):CouchEntity(){}
+             var destete: Boolean? = null,
+             var fechaDestete: Date? = null,
+             var celos: List<Date>? = null,
+             var servicios: List<Servicio>? = listOf(),
+             var vacunas: List<Vacuna>? = listOf(),
+             var sanidad: List<Sanidad>? = listOf(),
+             var manejo: List<Manage>? = listOf()): CouchEntity(), Parcelable

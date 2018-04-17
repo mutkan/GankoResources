@@ -14,31 +14,35 @@ import javax.inject.Inject
 @ActivityScope
 class BovineNavigation @Inject constructor(val activity: DetailBovineActivity){
 
-    fun navigateToFeedBvnActivity(){
-        activity.startActivity<FeedBvnActivity>()
+    fun navigateToFeedBvnActivity(id: String){
+        activity.startActivity<FeedBvnActivity>("idBovine" to id)
     }
 
-    fun navigateToManageBvnActivity(){
-        activity.startActivity<ManageBvnActivity>()
+    fun navigateToManageBvnActivity(id: String){
+        activity.startActivity<ManageBvnActivity>("idBovine" to id)
     }
 
-    fun navigateToHealthBvnActivity(){
-        activity.startActivity<HealthBvnActivity>()
+    fun navigateToHealthBvnActivity(id: String){
+        activity.startActivity<HealthBvnActivity>("idBovine" to id)
     }
 
-    fun navigateToMilkBvnActivity(){
-        activity.startActivity<MilkBvnActivity>()
+    fun navigateToMilkBvnActivity(id: String){
+        activity.startActivity<MilkBvnActivity>("idBovine" to id)
     }
 
-    fun navigateToVaccinationBvnActivity(){
-        activity.startActivity<VaccinationBvnActivity>()
+    fun navigateToVaccinationBvnActivity(id: String){
+        activity.startActivity<VaccinationBvnActivity>("idBovine" to id)
     }
 
-    fun navigateToMovementsBvnActivity(){
-        activity.startActivity<MovementBvnActivity>()
+    fun navigateToMovementsBvnActivity(id: String){
+        activity.startActivity<MovementBvnActivity>("idBovine" to id)
     }
 
-    fun navigateToCebaBvnActivity(){
-        activity.startActivity<CebaBvnActivity>()
+    fun navigateToCebaBvnActivity(id: String){
+        activity.startActivity<CebaBvnActivity>("idBovine" to id)
+    }
+
+    fun navigateToReproductiveBvnActivity(id: String){
+        activity.startActivity<CebaBvnActivity>("idBovine" to id)
     }
 }

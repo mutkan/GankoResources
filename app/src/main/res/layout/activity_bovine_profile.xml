@@ -1,381 +1,401 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    >
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/root"
+    <data>
+        <variable
+            name="bovine"
+            type="com.example.cristian.myapplication.data.models.Bovino"/>
+    </data>
+
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/banner"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:scaleType="centerCrop"
-            app:layout_constraintBottom_toTopOf="@+id/guideImage"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_launcher_background" />
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/root"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <android.support.constraint.Guideline
-            android:id="@+id/guideImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.3" />
+            <ImageView
+                android:id="@+id/banner"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toTopOf="@+id/guideImage"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0"
+                app:srcCompat="@drawable/ic_launcher_background" />
 
-        <TextView
-            android:id="@+id/nameBovineProfileActivity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="16dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideImage"
-            tools:text="@string/bovine_name" />
+            <android.support.constraint.Guideline
+                android:id="@+id/guideImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.3" />
 
-        <TextView
-            android:id="@+id/codeBovineProfileActivity"
-            style="@style/textview_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@+id/nameBovineProfileActivity"
-            app:layout_constraintTop_toBottomOf="@+id/nameBovineProfileActivity"
-            tools:text="#12321" />
+            <TextView
+                android:id="@+id/nameBovineProfileActivity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/guideImage"
+                android:text="@{bovine.nombre}"
+                tools:text="@string/bovine_name" />
 
-        <TextView
-            android:id="@+id/sexText"
-            style="@style/textview_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/sex"
-            app:layout_constraintStart_toStartOf="@+id/codeBovineProfileActivity"
-            app:layout_constraintTop_toBottomOf="@+id/codeBovineProfileActivity" />
+            <TextView
+                android:id="@+id/codeBovineProfileActivity"
+                style="@style/textview_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@+id/nameBovineProfileActivity"
+                app:layout_constraintTop_toBottomOf="@+id/nameBovineProfileActivity"
+                android:text="@{bovine.codigo}"
+                tools:text="#12321" />
 
-        <TextView
-            android:id="@+id/sexBovineProfileActivity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@+id/sexText"
-            app:layout_constraintTop_toBottomOf="@+id/sexText"
-            tools:text="@string/female" />
+            <TextView
+                android:id="@+id/sexText"
+                style="@style/textview_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/sex"
+                app:layout_constraintStart_toStartOf="@+id/codeBovineProfileActivity"
+                app:layout_constraintTop_toBottomOf="@+id/codeBovineProfileActivity" />
 
-        <TextView
-            android:id="@+id/breedText"
-            style="@style/textview_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="@string/breed"
-            app:layout_constraintStart_toStartOf="@+id/guideVertical"
-            app:layout_constraintTop_toTopOf="@+id/sexText" />
+            <TextView
+                android:id="@+id/sexBovineProfileActivity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@+id/sexText"
+                app:layout_constraintTop_toBottomOf="@+id/sexText"
+                android:text="@{bovine.genero}"
+                tools:text="@string/female" />
 
-        <TextView
-            android:id="@+id/breedBovineProfileActivity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@+id/breedText"
-            app:layout_constraintTop_toBottomOf="@+id/breedText"
-            tools:text="Holstein" />
+            <TextView
+                android:id="@+id/breedText"
+                style="@style/textview_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/breed"
+                app:layout_constraintStart_toStartOf="@+id/guideVertical"
+                app:layout_constraintTop_toTopOf="@+id/sexText" />
 
-        <TextView
-            android:id="@+id/purposeText"
-            style="@style/textview_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/purpose"
-            app:layout_constraintStart_toStartOf="@+id/breedBovineProfileActivity"
-            app:layout_constraintTop_toBottomOf="@+id/breedBovineProfileActivity" />
+            <TextView
+                android:id="@+id/breedBovineProfileActivity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@+id/breedText"
+                app:layout_constraintTop_toBottomOf="@+id/breedText"
+                android:text="@{bovine.raza}"
+                tools:text="Holstein" />
 
-        <TextView
-            android:id="@+id/purposeBovineProfileActivity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@+id/purposeText"
-            app:layout_constraintTop_toBottomOf="@+id/purposeText"
-            tools:text="@string/milk" />
+            <TextView
+                android:id="@+id/purposeText"
+                style="@style/textview_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/purpose"
+                app:layout_constraintStart_toStartOf="@+id/breedBovineProfileActivity"
+                app:layout_constraintTop_toBottomOf="@+id/breedBovineProfileActivity" />
 
-        <TextView
-            android:id="@+id/birthdayText"
-            style="@style/textview_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/birthday"
-            app:layout_constraintStart_toStartOf="@+id/sexBovineProfileActivity"
-            app:layout_constraintTop_toBottomOf="@+id/sexBovineProfileActivity" />
+            <TextView
+                android:id="@+id/purposeBovineProfileActivity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@+id/purposeText"
+                app:layout_constraintTop_toBottomOf="@+id/purposeText"
+                android:text="@{bovine.proposito}"
+                tools:text="@string/milk" />
 
-        <TextView
-            android:id="@+id/birthdayBovineProfileActivivty"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@+id/birthdayText"
-            app:layout_constraintTop_toBottomOf="@+id/birthdayText"
-            tools:text="@string/date_value" />
+            <TextView
+                android:id="@+id/birthdayText"
+                style="@style/textview_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/birthday"
+                app:layout_constraintStart_toStartOf="@+id/sexBovineProfileActivity"
+                app:layout_constraintTop_toBottomOf="@+id/sexBovineProfileActivity" />
 
-        <android.support.constraint.Guideline
-            android:id="@+id/guideVertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.5" />
+            <TextView
+                android:id="@+id/birthdayBovineProfileActivivty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@+id/birthdayText"
+                app:layout_constraintTop_toBottomOf="@+id/birthdayText"
+                app:dateFormat="@{bovine.fechaNacimiento}"
+                tools:text="@string/date_value" />
 
-        <ImageView
-            android:id="@+id/line1"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginTop="16dp"
-            android:background="@color/separator_gray"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/purposeBovineProfileActivity">
+            <android.support.constraint.Guideline
+                android:id="@+id/guideVertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5" />
 
-        </ImageView>
+            <ImageView
+                android:id="@+id/line1"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="16dp"
+                android:background="@color/separator_gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/purposeBovineProfileActivity">
 
-        <TextView
-            android:id="@+id/btnMilkProfileActivity"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/button_square"
-            android:gravity="left|center"
-            android:paddingHorizontal="24dp"
-            android:text="@string/milk"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/line1" />
+            </ImageView>
 
-        <ImageButton
-            android:id="@+id/btnAddMilkProfileBovine"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="@dimen/button_square"
-            android:layout_height="@dimen/button_square"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/line1"
-            app:srcCompat="@drawable/ic_add" />
+            <TextView
+                android:id="@+id/btnMilkProfileActivity"
+                android:clickable="true"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/button_square"
+                android:gravity="left|center"
+                android:paddingHorizontal="24dp"
+                android:text="@string/milk"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/line1" />
 
-        <ImageView
-            android:id="@+id/line2"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:background="@color/separator_gray"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnMilkProfileActivity">
+            <ImageButton
+                android:id="@+id/btnAddMilkProfileBovine"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="@dimen/button_square"
+                android:layout_height="@dimen/button_square"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/line1"
+                app:srcCompat="@drawable/ic_add" />
 
-        </ImageView>
+            <ImageView
+                android:id="@+id/line2"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/separator_gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnMilkProfileActivity">
 
-        <TextView
-            android:id="@+id/btnReproduciveProfileActivity"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/button_square"
-            android:gravity="start|center"
-            android:paddingHorizontal="24dp"
-            android:text="@string/reproductive_uppercase"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/line2" />
+            </ImageView>
 
-        <ImageButton
-            android:id="@+id/btnNextReproductive"
-            style="@style/Base.Widget.AppCompat.Button.Borderless"
-            android:layout_width="@dimen/button_square"
-            android:layout_height="@dimen/button_square"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnMilkProfileActivity"
-            app:srcCompat="@drawable/ic_enter_gray" />
+            <TextView
+                android:id="@+id/btnReproduciveProfileActivity"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/button_square"
+                android:gravity="start|center"
+                android:paddingHorizontal="24dp"
+                android:text="@string/reproductive_uppercase"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/line2" />
 
-        <ImageView
-            android:id="@+id/line3"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:background="@color/separator_gray"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnReproduciveProfileActivity">
+            <ImageButton
+                android:id="@+id/btnNextReproductive"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:layout_width="@dimen/button_square"
+                android:layout_height="@dimen/button_square"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnMilkProfileActivity"
+                app:srcCompat="@drawable/ic_enter_gray" />
 
-        </ImageView>
+            <ImageView
+                android:id="@+id/line3"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/separator_gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnReproduciveProfileActivity">
 
-        <TextView
-            android:id="@+id/btnMeatProfileActivity"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/button_square"
-            android:gravity="start|center"
-            android:paddingHorizontal="24dp"
-            android:text="@string/meat_uppercase"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/line3" />
+            </ImageView>
 
-        <ImageButton
-            android:id="@+id/btnNextMeat"
-            style="@style/Base.Widget.AppCompat.Button.Borderless"
-            android:layout_width="@dimen/button_square"
-            android:layout_height="@dimen/button_square"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnReproduciveProfileActivity"
-            app:srcCompat="@drawable/ic_enter_gray" />
+            <TextView
+                android:id="@+id/btnMeatProfileActivity"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/button_square"
+                android:gravity="start|center"
+                android:paddingHorizontal="24dp"
+                android:text="@string/meat_uppercase"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/line3" />
 
-        <ImageView
-            android:id="@+id/line4"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:background="@color/separator_gray"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnMeatProfileActivity">
+            <ImageButton
+                android:id="@+id/btnNextMeat"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:layout_width="@dimen/button_square"
+                android:layout_height="@dimen/button_square"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnReproduciveProfileActivity"
+                app:srcCompat="@drawable/ic_enter_gray" />
 
-        </ImageView>
+            <ImageView
+                android:id="@+id/line4"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/separator_gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnMeatProfileActivity">
 
-        <TextView
-            android:id="@+id/btnFeedingProfileActivity"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/button_square"
-            android:gravity="start|center"
-            android:paddingHorizontal="24dp"
-            android:text="@string/feeding"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/line4" />
+            </ImageView>
 
-        <ImageButton
-            android:id="@+id/btnNextFeeding"
-            style="@style/Base.Widget.AppCompat.Button.Borderless"
-            android:layout_width="@dimen/button_square"
-            android:layout_height="@dimen/button_square"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnMeatProfileActivity"
-            app:srcCompat="@drawable/ic_enter_gray" />
+            <TextView
+                android:id="@+id/btnFeedingProfileActivity"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/button_square"
+                android:gravity="start|center"
+                android:paddingHorizontal="24dp"
+                android:text="@string/feeding"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/line4" />
 
-        <ImageView
-            android:id="@+id/line5"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:background="@color/separator_gray"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnFeedingProfileActivity">
+            <ImageButton
+                android:id="@+id/btnNextFeeding"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:layout_width="@dimen/button_square"
+                android:layout_height="@dimen/button_square"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnMeatProfileActivity"
+                app:srcCompat="@drawable/ic_enter_gray" />
 
-        </ImageView>
+            <ImageView
+                android:id="@+id/line5"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/separator_gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnFeedingProfileActivity">
 
-        <TextView
-            android:id="@+id/btnManagementProfileActivity"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/button_square"
-            android:gravity="start|center"
-            android:paddingHorizontal="24dp"
-            android:text="@string/management"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/line5" />
+            </ImageView>
 
-        <ImageButton
-            android:id="@+id/btnNextManagement"
-            style="@style/Base.Widget.AppCompat.Button.Borderless"
-            android:layout_width="@dimen/button_square"
-            android:layout_height="@dimen/button_square"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnFeedingProfileActivity"
-            app:srcCompat="@drawable/ic_enter_gray" />
+            <TextView
+                android:id="@+id/btnManagementProfileActivity"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/button_square"
+                android:gravity="start|center"
+                android:paddingHorizontal="24dp"
+                android:text="@string/management"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/line5" />
 
-        <ImageView
-            android:id="@+id/line6"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:background="@color/separator_gray"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnManagementProfileActivity">
+            <ImageButton
+                android:id="@+id/btnNextManagement"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:layout_width="@dimen/button_square"
+                android:layout_height="@dimen/button_square"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnFeedingProfileActivity"
+                app:srcCompat="@drawable/ic_enter_gray" />
 
-        </ImageView>
+            <ImageView
+                android:id="@+id/line6"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/separator_gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnManagementProfileActivity">
 
-        <TextView
-            android:id="@+id/btnMovementProfileActivity"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/button_square"
-            android:gravity="start|center"
-            android:paddingHorizontal="24dp"
-            android:text="@string/movement"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/line6" />
+            </ImageView>
 
-        <ImageButton
-            android:id="@+id/btnNextMovement"
-            style="@style/Base.Widget.AppCompat.Button.Borderless"
-            android:layout_width="@dimen/button_square"
-            android:layout_height="@dimen/button_square"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnManagementProfileActivity"
-            app:srcCompat="@drawable/ic_enter_gray" />
+            <TextView
+                android:id="@+id/btnMovementProfileActivity"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/button_square"
+                android:gravity="start|center"
+                android:paddingHorizontal="24dp"
+                android:text="@string/movement"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/line6" />
 
-        <ImageView
-            android:id="@+id/line7"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:background="@color/separator_gray"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnMovementProfileActivity">
+            <ImageButton
+                android:id="@+id/btnNextMovement"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:layout_width="@dimen/button_square"
+                android:layout_height="@dimen/button_square"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnManagementProfileActivity"
+                app:srcCompat="@drawable/ic_enter_gray" />
 
-        </ImageView>
+            <ImageView
+                android:id="@+id/line7"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/separator_gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnMovementProfileActivity">
 
-        <TextView
-            android:id="@+id/btnVaccinesProfileActivity"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/button_square"
-            android:gravity="start|center"
-            android:paddingHorizontal="24dp"
-            android:text="@string/vaccines"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/line7" />
+            </ImageView>
 
-        <ImageButton
-            android:id="@+id/btnNextVaccines"
-            style="@style/Base.Widget.AppCompat.Button.Borderless"
-            android:layout_width="@dimen/button_square"
-            android:layout_height="@dimen/button_square"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnMovementProfileActivity"
-            app:srcCompat="@drawable/ic_enter_gray" />
+            <TextView
+                android:id="@+id/btnVaccinesProfileActivity"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/button_square"
+                android:gravity="start|center"
+                android:paddingHorizontal="24dp"
+                android:text="@string/vaccines"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/line7" />
 
-        <ImageView
-            android:id="@+id/line8"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:background="@color/separator_gray"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnVaccinesProfileActivity">
+            <ImageButton
+                android:id="@+id/btnNextVaccines"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:layout_width="@dimen/button_square"
+                android:layout_height="@dimen/button_square"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnMovementProfileActivity"
+                app:srcCompat="@drawable/ic_enter_gray" />
 
-        </ImageView>
+            <ImageView
+                android:id="@+id/line8"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/separator_gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnVaccinesProfileActivity">
 
-        <TextView
-            android:id="@+id/btnHealthProfileActivity"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/button_square"
-            android:gravity="start|center"
-            android:paddingHorizontal="24dp"
-            android:text="@string/health"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/line8" />
+            </ImageView>
 
-        <ImageButton
-            android:id="@+id/btnNextHealth"
-            style="@style/Base.Widget.AppCompat.Button.Borderless"
-            android:layout_width="@dimen/button_square"
-            android:layout_height="@dimen/button_square"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnVaccinesProfileActivity"
-            app:srcCompat="@drawable/ic_enter_gray" />
+            <TextView
+                android:id="@+id/btnHealthProfileActivity"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/button_square"
+                android:gravity="start|center"
+                android:paddingHorizontal="24dp"
+                android:text="@string/health"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/line8" />
+
+            <ImageButton
+                android:id="@+id/btnNextHealth"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:layout_width="@dimen/button_square"
+                android:layout_height="@dimen/button_square"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnVaccinesProfileActivity"
+                app:srcCompat="@drawable/ic_enter_gray" />
 
 
-    </android.support.constraint.ConstraintLayout>
-</android.support.v4.widget.NestedScrollView>
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v4.widget.NestedScrollView>
+</layout>
 

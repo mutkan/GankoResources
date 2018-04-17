@@ -1,6 +1,9 @@
 package com.example.cristian.myapplication.di.components
 
 import com.example.cristian.myapplication.di.ActivityScope
+import com.example.cristian.myapplication.ui.bovine.AddBovineActivity
+import com.example.cristian.myapplication.ui.bovine.ceba.AddCebaBvnActivity
+import com.example.cristian.myapplication.ui.bovine.ceba.CebaBvnActivity
 import com.example.cristian.myapplication.ui.bovine.feed.FeedBvnActivity
 import com.example.cristian.myapplication.ui.bovine.health.HealthBvnActivity
 import com.example.cristian.myapplication.ui.bovine.manage.ManageBvnActivity
@@ -11,7 +14,15 @@ import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
 @Module
-abstract class ActivityComponents{
+abstract class ActivityComponents {
+
+    @ActivityScope
+    @ContributesAndroidInjector()
+    abstract fun bindCebaBvnActivity(): CebaBvnActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector()
+    abstract fun bindAddCebaBvnActivity(): AddCebaBvnActivity
 
     @ActivityScope
     @ContributesAndroidInjector()
@@ -36,5 +47,9 @@ abstract class ActivityComponents{
     @ActivityScope
     @ContributesAndroidInjector()
     abstract fun bindMenuActivity(): MenuActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector()
+    abstract fun bindAddBovineActivity(): AddBovineActivity
 
 }
