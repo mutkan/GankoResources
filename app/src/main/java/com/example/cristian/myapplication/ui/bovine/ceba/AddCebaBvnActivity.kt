@@ -1,22 +1,22 @@
 package com.example.cristian.myapplication.ui.bovine.ceba
 
+import android.app.DatePickerDialog
 import android.arch.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.widget.DatePicker
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.Ceba
 import com.example.cristian.myapplication.di.Injectable
-import com.example.cristian.myapplication.util.LifeDisposable
-import com.example.cristian.myapplication.util.buildViewModel
-import com.example.cristian.myapplication.util.toDate
-import com.example.cristian.myapplication.util.validateForm
+import com.example.cristian.myapplication.util.*
 import com.jakewharton.rxbinding2.view.clicks
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_add_ceba.*
 import org.jetbrains.anko.toast
+import java.util.*
 import javax.inject.Inject
 
-class AddCebaBvnActivity : AppCompatActivity(),Injectable {
+class AddCebaBvnActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListener, Injectable {
 
     @Inject
     lateinit var factory: ViewModelProvider.Factory
@@ -24,7 +24,7 @@ class AddCebaBvnActivity : AppCompatActivity(),Injectable {
 
     val dis:LifeDisposable = LifeDisposable(this)
 
-    val idBovino = ""
+    val idBovino:String by lazy { intent.extras.getString("idBovino") }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,5 +49,20 @@ class AddCebaBvnActivity : AppCompatActivity(),Injectable {
                             toast(it.message!!)
                         }
                 )
+        dis add dateAddCebaBvn.clicks()
+                .subscribeByAction(
+                        onNext = {
+                            val datePicker = DatePickerDialog(this, AddMilkBvnActivity@ this,
+                                    Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH),
+                                    Calendar.getInstance().get(Calendar.DAY_OF_MONTH)).show()
+                        },
+                        onHttpError = {},
+                        onError = {}
+                )
     }
+
+    override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+        dateAddCebaBvn.text = "$dayOfMonth/$month/$year"
+    }
+
 }

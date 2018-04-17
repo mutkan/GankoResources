@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProvider
 import com.example.cristian.myapplication.di.ViewModelKey
 import com.example.cristian.myapplication.ui.account.AccountViewModel
 import com.example.cristian.myapplication.ui.bovine.BovineViewModel
+import com.example.cristian.myapplication.ui.bovine.ceba.CebaViewModel
 import com.example.cristian.myapplication.ui.bovine.feed.FeedBvnViewModel
 import com.example.cristian.myapplication.ui.bovine.health.HealthBvnViewModel
 import com.example.cristian.myapplication.ui.bovine.manage.ManageBvnViewModel
@@ -24,6 +25,10 @@ abstract class ViewModelModule{
     @Binds
     abstract fun bindViewModelFactory(factory: AppViewModelFactory): ViewModelProvider.Factory
 
+    @Binds
+    @IntoMap
+    @ViewModelKey(CebaViewModel::class)
+    abstract fun bindCebaViewModel(viewModel: CebaViewModel): ViewModel
 
     @Binds
     @IntoMap

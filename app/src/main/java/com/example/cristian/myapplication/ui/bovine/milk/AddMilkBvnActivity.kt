@@ -33,6 +33,10 @@ class AddMilkBvnActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListen
     val dis: LifeDisposable = LifeDisposable(this)
     lateinit var idBovino: String
 
+    val datePicker = DatePickerDialog(this, AddMilkBvnActivity@ this,
+            Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH),
+            Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_milk_bovine)
@@ -77,16 +81,18 @@ class AddMilkBvnActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListen
         dis add dateAddMilkBovine.clicks()
                 .subscribeByAction(
                         onNext = {
-                            val datePicker = DatePickerDialog(this, AddMilkBvnActivity@ this,
-                                    Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH),
-                                        Calendar.getInstance().get(Calendar.DAY_OF_MONTH)).show()
+                            datePicker.datePicker.tag = "hola"
+                            datePicker.show()
                         },
                         onHttpError = {},
                         onError = {}
                 )
     }
 
-    override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
-        dateAddMilkBovine.text = "$p3/$p2/$p1"
+    override fun onDateSet(p0: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+        when(p0!!.tag){
+            "hola" -> dateAddMilkBovine.text = "$dayOfMonth/$month/$year"
+        }
+
     }
 }

@@ -7,6 +7,9 @@
         <variable
             name="vacuna"
             type="com.example.cristian.myapplication.data.models.Vacuna"/>
+        <variable
+            name="position"
+            type="Integer"/>
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -22,7 +25,8 @@
             android:layout_marginTop="24dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="@string/vaccine_name" />
+            tools:text="@string/vaccine_name"
+            android:text="@{vacuna.nombre}"/>
 
         <TextView
             android:id="@+id/textView90"
@@ -41,7 +45,8 @@
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="@+id/textView90"
             app:layout_constraintTop_toBottomOf="@+id/textView90"
-            tools:text="20" />
+            tools:text="20"
+            android:text='@{vacuna.dosis+""}'/>
 
         <TextView
             android:id="@+id/textView92"
@@ -70,7 +75,8 @@
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="@+id/textView95"
             app:layout_constraintTop_toBottomOf="@+id/textView95"
-            tools:text="20" />
+            tools:text="20"
+            android:text="@{vacuna.valor}"/>
 
         <TextView
             android:id="@+id/textView95"

@@ -8,14 +8,14 @@ import java.util.*
 @Parcelize
 class Ceba() : CouchEntity(), Parcelable {
     var tipo: String? = null
-    var codigoBovino: String? = null
+    var bovino: String? = null
     var fecha: Date? = null
     var peso: Float? = null
     var gananciaPeso: Float? = null
 
-    constructor(tipo: String, codigoBovino: String, fecha: Date, peso: Float, gananciaPeso: Float) : this() {
+    constructor(tipo: String, bovino: String, fecha: Date, peso: Float, gananciaPeso: Float) : this() {
         this.tipo = tipo
-        this.codigoBovino = codigoBovino
+        this.bovino = bovino
         this.fecha = fecha
         this.peso = peso
         this.gananciaPeso = gananciaPeso
