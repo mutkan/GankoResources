@@ -19,6 +19,7 @@ class App: MultiDexApplication(),HasActivityInjector{
     override fun onCreate() {
         super.onCreate()
         AppInjector.init(this)
+
     }
 
 }

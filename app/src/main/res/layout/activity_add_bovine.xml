@@ -247,13 +247,15 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/page1">
 
-                    <EditText
+                    <TextView
                         android:id="@+id/bovineWeanedDate"
                         style="@style/edit_text"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:ems="10"
+                        android:clickable="true"
+                        android:focusable="false"
                         android:hint="@string/date_value"
                         android:inputType="date"
                         android:visibility='@{stateCheckBox == true ? View.VISIBLE : View.GONE}'
@@ -261,7 +263,7 @@
                         app:layout_constraintStart_toStartOf="@+id/textView72"
                         app:layout_constraintTop_toBottomOf="@+id/textView72" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/bovineBirthDate"
                         style="@style/edit_text"
                         android:layout_width="0dp"
@@ -270,6 +272,8 @@
                         android:ems="10"
                         android:hint="@string/date_value"
                         android:inputType="date"
+                        android:clickable="true"
+                        android:focusable="false"
                         app:layout_constraintEnd_toEndOf="@+id/textView71"
                         app:layout_constraintStart_toStartOf="@+id/textView71"
                         app:layout_constraintTop_toBottomOf="@+id/textView71" />
