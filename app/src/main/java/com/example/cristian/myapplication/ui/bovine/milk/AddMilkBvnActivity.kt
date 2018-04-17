@@ -31,7 +31,8 @@ class AddMilkBvnActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListen
     val viewModel: MilkBvnViewModel by lazy { buildViewModel<MilkBvnViewModel>(factory) }
 
     val dis: LifeDisposable = LifeDisposable(this)
-    lateinit var idBovino: String
+
+    val idBovino:String by lazy { intent.extras.getString(EXTRA_ID) }
 
     val datePicker = DatePickerDialog(this, AddMilkBvnActivity@ this,
             Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH),
@@ -40,7 +41,6 @@ class AddMilkBvnActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListen
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_milk_bovine)
-        idBovino = intent.getStringExtra("idBovino")
     }
 
     override fun onResume() {
@@ -80,7 +80,6 @@ class AddMilkBvnActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListen
         dis add dateAddMilkBovine.clicks()
                 .subscribeByAction(
                         onNext = {
-                            datePicker.datePicker.tag = "hola"
                             datePicker.show()
                         },
                         onHttpError = {},
@@ -89,9 +88,10 @@ class AddMilkBvnActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListen
     }
 
     override fun onDateSet(p0: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        when(p0!!.tag){
-            "hola" -> dateAddMilkBovine.text = "$dayOfMonth/$month/$year"
-        }
+            dateAddMilkBovine.text = "$dayOfMonth/$month/$year"
 
+    }
+    companion object {
+        val EXTRA_ID:String = "idBovino"
     }
 }

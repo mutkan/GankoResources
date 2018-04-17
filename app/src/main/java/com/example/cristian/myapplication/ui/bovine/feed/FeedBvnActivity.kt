@@ -24,8 +24,7 @@ class FeedBvnActivity : AppCompatActivity(), Injectable {
     @Inject
     lateinit var adapter: FeedBovineAdapter
 
-    //val idBovino:String by lazy{ intent.extras.getString(EXTRA_ID) }
-    lateinit var idBovino: String
+    val idBovino:String by lazy{ intent.extras.getString(EXTRA_ID) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,9 +32,6 @@ class FeedBvnActivity : AppCompatActivity(), Injectable {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setTitle("Alimentacion")
         recycler.adapter = adapter
-
-        //idBovino = intent.getStringExtra(EXTRA_ID)
-        idBovino = "1"
     }
 
     override fun onResume() {

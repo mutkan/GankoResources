@@ -26,8 +26,10 @@ class MilkBvnActivity : AppCompatActivity() , Injectable {
     @Inject
     lateinit var milkAdapter:ListMilkBovineAdapter
 
+    val idBovino:String by lazy { intent.extras.getString(EXTRA_ID) }
+
     val dis:LifeDisposable = LifeDisposable(this)
-    lateinit var idBovino:String
+
 
     var totalLitters:Int = 0
 
@@ -36,8 +38,6 @@ class MilkBvnActivity : AppCompatActivity() , Injectable {
         setContentView(R.layout.activity_list_milk_bovine)
         recyclerListMilkBovine.adapter = milkAdapter
         recyclerListMilkBovine.layoutManager = LinearLayoutManager(this)
-//        idBovino = intent.getStringExtra("idBovino")
-        idBovino = "1"
     }
 
     override fun onResume() {
@@ -64,6 +64,10 @@ class MilkBvnActivity : AppCompatActivity() , Injectable {
                     startActivity<AddMilkBvnActivity>("idBovino" to idBovino)
                 }
 
+    }
+
+    companion object {
+        val EXTRA_ID:String = "idBovino"
     }
 
 
