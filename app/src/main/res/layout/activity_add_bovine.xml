@@ -8,6 +8,10 @@
         <variable
             name="page"
             type="Integer" />
+        <variable
+            name="stateCheckBox"
+            type="Boolean"/>
+
         <import type="android.view.View"/>
     </data>
 
@@ -252,6 +256,7 @@
                         android:ems="10"
                         android:hint="@string/date_value"
                         android:inputType="date"
+                        android:visibility='@{stateCheckBox == true ? View.VISIBLE : View.GONE}'
                         app:layout_constraintEnd_toEndOf="@+id/textView72"
                         app:layout_constraintStart_toStartOf="@+id/textView72"
                         app:layout_constraintTop_toBottomOf="@+id/textView72" />
@@ -348,6 +353,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="@string/weaned_date"
+                        android:visibility='@{stateCheckBox == true ? View.VISIBLE : View.GONE}'
                         app:layout_constraintEnd_toEndOf="@+id/check_weaned"
                         app:layout_constraintStart_toStartOf="@+id/check_weaned"
                         app:layout_constraintTop_toBottomOf="@+id/check_weaned" />
@@ -359,8 +365,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:text="@string/purpose"
-                        app:layout_constraintEnd_toEndOf="@+id/bovineWeanedDate"
-                        app:layout_constraintStart_toStartOf="@+id/bovineWeanedDate"
+                        app:layout_constraintEnd_toEndOf="@+id/check_weaned"
+                        app:layout_constraintStart_toStartOf="@+id/check_weaned"
                         app:layout_constraintTop_toBottomOf="@+id/bovineWeanedDate" />
 
                     <RadioGroup
