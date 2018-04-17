@@ -19,5 +19,9 @@ class FarmViewModel @Inject constructor(private val db: CouchRx, private val use
     fun getAllByUser(usuarioId: String): Observable<List<Finca>> = db.listByExp2("usuarioId" equalEx usuarioId, Finca::class).applySchedulers()
     fun getFarmById(idFarm: String): Maybe<Finca> = db.oneById(idFarm, Finca::class).applySchedulers()
     fun getUserId(): String = userSession.userId
+    fun setFarm(farmId: String, farm: String): Observable<Unit> = Observable.fromCallable {
+        userSession.farmID = farmId
+        userSession.farm = farm
+    }.applySchedulers()
 
 }

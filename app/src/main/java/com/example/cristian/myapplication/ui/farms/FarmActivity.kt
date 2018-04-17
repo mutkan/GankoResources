@@ -14,6 +14,7 @@ import com.example.cristian.myapplication.databinding.ActivityListFarmBinding
 import com.example.cristian.myapplication.databinding.TemplateAlertDeleteFarmBinding
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.ListFarmAdapter
+import com.example.cristian.myapplication.ui.menu.MenuActivity
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
 import com.example.cristian.myapplication.util.text
@@ -37,7 +38,7 @@ class FarmActivity : AppCompatActivity(), Injectable {
     private val mAlert: AlertDialog by lazy { AlertDialog.Builder(this).create() }
     private lateinit var alertBinding: TemplateAlertDeleteFarmBinding
     private lateinit var binding: ActivityListFarmBinding
-    val isEmpty:ObservableBoolean = ObservableBoolean(false)
+    val isEmpty: ObservableBoolean = ObservableBoolean(false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,7 +69,7 @@ class FarmActivity : AppCompatActivity(), Injectable {
         dis add listFarmAdapter.clickEditFarm
                 .subscribeBy(
                         onNext = {
-                            startActivity<AddFarmActivity>("edit" to true, "farmId" to it)
+                            startActivity<AddFarmActivity>("edit" to true, "farm" to it)
                         }
                 )
         dis add listFarmAdapter.clickDeleteFarm
@@ -86,9 +87,11 @@ class FarmActivity : AppCompatActivity(), Injectable {
                 }
         )
         dis add listFarmAdapter.clickFarm
+                .flatMap { viewModel.setFarm(it._id!!, it.nombre) }
                 .subscribeBy(
                         onNext = {
-                            toast(it)
+                            startActivity<MenuActivity>()
+                            finish()
                         }
                 )
     }

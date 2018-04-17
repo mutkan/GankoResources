@@ -5,6 +5,7 @@ import android.graphics.Color
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.db.CouchRx
 import com.example.cristian.myapplication.data.models.Bovino
+import com.example.cristian.myapplication.data.preferences.UserSession
 import com.example.cristian.myapplication.util.applySchedulers
 import com.example.cristian.myapplication.util.equalEx
 import io.reactivex.Single
@@ -13,13 +14,13 @@ import javax.inject.Inject
 /**
  * Created by Ana Marin on 11/03/2018.
  */
-class MenuViewModel @Inject constructor(private val db: CouchRx) : ViewModel(){
+class MenuViewModel @Inject constructor(private val db: CouchRx, private val userSession: UserSession) : ViewModel(){
 
     //region Menu
     var content: Int = 2
 
     val data: List<MenuItem> = listOf(
-            MenuItem(MenuItem.TYPE_TITLE, titleText = "Nombre finca"),
+            MenuItem(MenuItem.TYPE_TITLE, titleText = userSession.farm),
             MenuItem(MenuItem.TYPE_BUTTON, icon = R.drawable.ic_back_white, title = R.string.change_farm),
             MenuItem(MenuItem.TYPE_MENU, R.color.img, R.drawable.ic_bovine, R.string.bovines),
             MenuItem(MenuItem.TYPE_MENU, R.color.img, R.drawable.ic_feed, R.string.feeding),
@@ -66,6 +67,8 @@ class MenuViewModel @Inject constructor(private val db: CouchRx) : ViewModel(){
         }
     }
     //endregion
+
+    fun getFarmId():String = userSession.farmID
 
     fun getBovine(idFinca: String): Single<List<Bovino>> =
             db.listByExp("finca" equalEx idFinca, Bovino::class)

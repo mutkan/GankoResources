@@ -11,6 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ui.bovine.milk.MilkBvnActivity" />
+        <activity android:name=".ui.bovine.ceba.CebaBvnActivity" />
         <activity android:name=".ui.bovine.health.HealthBvnActivity" />
         <activity android:name=".PrincipalActivity" />
         <activity android:name=".ui.bovine.feed.FeedBvnActivity" />
@@ -28,17 +29,16 @@
         </activity>
         <activity android:name=".ui.bovine.RemoveBovineActivity" />
         <activity android:name=".ui.bovine.AddBovineActivity" />
-        <activity android:name=".ui.bovine.milk.AddMilkBvnActivity" />
-        <activity android:name=".ui.bovine.movement.MovementBvnActivity" />
         <activity
             android:name=".ui.menu.MenuActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ui.bovine.milk.AddMilkBvnActivity" />
+        <activity android:name=".ui.bovine.movement.MovementBvnActivity" />
         <activity android:name=".ui.bovine.vaccination.VaccinationBvnActivity" />
-        <activity android:name=".ui.bovine.ceba.CebaBvnActivity" />
         <activity android:name=".ui.bovine.ceba.AddCebaBvnActivity" />
         <activity android:name=".ui.bovine.reproductive.ReproductiveBvnActivity" />
         <activity android:name=".ui.bovine.reproductive.add.AddZealActivity" />
-        <activity android:name=".ui.bovine.reproductive.add.AddServiceActivity"/>
+        <activity android:name=".ui.bovine.reproductive.add.AddServiceActivity" />
     </application>
 
 </manifest>

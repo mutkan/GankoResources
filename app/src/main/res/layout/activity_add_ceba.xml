@@ -27,7 +27,7 @@
         app:layout_constraintStart_toStartOf="@+id/dateAddCebaBvn"
         app:layout_constraintTop_toBottomOf="@+id/dateAddCebaBvn" />
 
-    <EditText
+    <TextView
         android:id="@+id/dateAddCebaBvn"
         style="@style/edit_text"
         android:layout_width="0dp"
@@ -36,7 +36,8 @@
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
         android:ems="10"
-        android:inputType="date"
+        android:clickable="true"
+        android:focusable="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/textView42"
         app:layout_constraintTop_toBottomOf="@+id/textView42"
@@ -62,7 +63,7 @@
         android:layout_width="@dimen/button_width"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:text="@string/btn_next"
+        android:text="@string/btn_Acept"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

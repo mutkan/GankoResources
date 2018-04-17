@@ -15,8 +15,8 @@ import javax.inject.Inject
 class ListFarmAdapter @Inject constructor(): RecyclerView.Adapter<ListFarmViewHolder>(){
 
     val clickDeleteFarm: PublishSubject<Finca> = PublishSubject.create()
-    val clickEditFarm: PublishSubject<String> = PublishSubject.create()
-    val clickFarm:PublishSubject<String> = PublishSubject.create()
+    val clickEditFarm: PublishSubject<Finca> = PublishSubject.create()
+    val clickFarm:PublishSubject<Finca> = PublishSubject.create()
     var farms:List<Finca> = emptyList()
         set(value) {
             field = value

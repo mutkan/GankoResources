@@ -11,7 +11,7 @@ import javax.inject.Inject
 class CebaViewModel @Inject constructor(private val db: CouchRx) : ViewModel() {
 
     fun getListCeba(idBovino: String): Single<List<Ceba>> =
-            db.listByExp("_id" equalEx idBovino, Ceba::class)
+            db.listByExp("bovino" equalEx idBovino, Ceba::class)
                     .applySchedulers()
 
     fun addCeba(ceba: Ceba): Single<String> =

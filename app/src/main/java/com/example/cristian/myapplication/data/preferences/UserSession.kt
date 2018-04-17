@@ -1,5 +1,7 @@
 package com.example.cristian.myapplication.data.preferences
 
+import android.app.Activity
+import android.content.Context
 import android.content.SharedPreferences
 import com.example.cristian.myapplication.util.save
 import javax.inject.Inject
@@ -27,8 +29,6 @@ class UserSession @Inject constructor(val prefs: SharedPreferences){
     var farmID: String
         get() = prefs.getString(KEY_FARM_ID, "")
         set(value) = prefs.save(KEY_FARM_ID to value)
-
-
 
     companion object {
         private val KEY_TOKEN = "token"

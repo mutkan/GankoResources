@@ -15,12 +15,13 @@
         <variable
             name="clickFarm"
             type="io.reactivex.subjects.PublishSubject"/>
+        <import type="android.support.v4.util.Pair"/>
     </data>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick='@{()->clickFarm.onNext(farm._id)}'>
+        android:onClick='@{()->clickFarm.onNext(farm)}'>
 
         <TextView
             android:id="@+id/farmName"
@@ -75,7 +76,7 @@
             android:text="@string/btn_edit"
             app:layout_constraintEnd_toStartOf="@+id/btnDeleteFarmTemplate"
             app:layout_constraintTop_toTopOf="@+id/btnDeleteFarmTemplate"
-            android:onClick='@{()->clickEditFarm.onNext(farm._id)}'/>
+            android:onClick='@{()->clickEditFarm.onNext(farm)}'/>
 
         <Button
             android:id="@+id/btnDeleteFarmTemplate"

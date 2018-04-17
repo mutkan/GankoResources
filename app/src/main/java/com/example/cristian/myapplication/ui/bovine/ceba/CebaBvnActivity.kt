@@ -1,6 +1,7 @@
 package com.example.cristian.myapplication.ui.bovine.ceba
 
 import android.arch.lifecycle.ViewModelProvider
+import android.arch.lifecycle.ViewModelProviders
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -27,11 +28,13 @@ class CebaBvnActivity : AppCompatActivity(),Injectable {
 
     private val dis:LifeDisposable = LifeDisposable(this)
 
-    var idBovino = "1"
+    val idBovino:String by lazy { intent.extras.getString(EXTRA_ID) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_ceba)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setTitle("Ceba")
         recyclerListCeba.adapter = cebaAdapter
         recyclerListCeba.layoutManager = LinearLayoutManager(this)
     }
@@ -53,5 +56,8 @@ class CebaBvnActivity : AppCompatActivity(),Injectable {
                 .subscribe {
                     startActivity<AddCebaBvnActivity>("idBovino" to idBovino)
                 }
+    }
+    companion object {
+        val EXTRA_ID:String = "idBovino"
     }
 }

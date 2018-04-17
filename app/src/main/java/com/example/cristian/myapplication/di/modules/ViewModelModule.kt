@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProvider
 import com.example.cristian.myapplication.di.ViewModelKey
 import com.example.cristian.myapplication.ui.account.AccountViewModel
 import com.example.cristian.myapplication.ui.bovine.BovineViewModel
+import com.example.cristian.myapplication.ui.bovine.ceba.CebaViewModel
 import com.example.cristian.myapplication.ui.bovine.feed.FeedBvnViewModel
 import com.example.cristian.myapplication.ui.bovine.health.HealthBvnViewModel
 import com.example.cristian.myapplication.ui.bovine.manage.ManageBvnViewModel
@@ -12,6 +13,7 @@ import com.example.cristian.myapplication.ui.bovine.milk.MilkBvnViewModel
 import com.example.cristian.myapplication.ui.bovine.movement.MovementBvnViewModel
 import com.example.cristian.myapplication.ui.bovine.vaccination.VaccinationBvnViewModel
 import com.example.cristian.myapplication.ui.farms.FarmViewModel
+import com.example.cristian.myapplication.ui.menu.MenuViewModel
 import com.example.cristian.myapplication.util.AppViewModelFactory
 import dagger.Binds
 import dagger.Module
@@ -23,6 +25,10 @@ abstract class ViewModelModule{
     @Binds
     abstract fun bindViewModelFactory(factory: AppViewModelFactory): ViewModelProvider.Factory
 
+    @Binds
+    @IntoMap
+    @ViewModelKey(CebaViewModel::class)
+    abstract fun bindCebaViewModel(viewModel: CebaViewModel): ViewModel
 
     @Binds
     @IntoMap
@@ -68,5 +74,10 @@ abstract class ViewModelModule{
     @IntoMap
     @ViewModelKey(VaccinationBvnViewModel::class)
     abstract fun bindVaccinationBvnViewModel(viewModel: VaccinationBvnViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MenuViewModel::class)
+    abstract fun bindMenuViewModel(viewModel: MenuViewModel): ViewModel
 
 }
