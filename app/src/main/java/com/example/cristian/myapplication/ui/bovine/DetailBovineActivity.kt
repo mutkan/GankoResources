@@ -11,6 +11,9 @@ import com.example.cristian.myapplication.databinding.ActivityBovineProfileBindi
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
+import com.example.cristian.myapplication.util.subscribeByAction
+import com.jakewharton.rxbinding2.view.clicks
+import org.jetbrains.anko.toast
 import javax.inject.Inject
 
 class DetailBovineActivity : AppCompatActivity() , Injectable {
@@ -29,67 +32,113 @@ class DetailBovineActivity : AppCompatActivity() , Injectable {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_bovine_profile)
+
     }
 
     override fun onResume() {
         super.onResume()
 
-        /*dis add btnMilkProfileActivity.clicks()
+        dis add binding.btnMilkProfileActivity.clicks()
                 .subscribeByAction(
                         onNext = {
                             nav.navigateToMilkBvnActivity(bovine._id!!)
+                        },
+                        onError = {
+                            toast(it.message!!)
+                        },
+                        onHttpError = {
+                            toast(it)
                         }
                 )
 
-           dis add btnReproduciveProfileActivity.clicks()
+           dis add binding.btnReproduciveProfileActivity.clicks()
                 .subscribeByAction(
                         onNext = {
                             nav.navigateToReproductiveBvnActivity(bovine._id!!)
+                        },
+                        onError = {
+                            toast(it.message!!)
+                        },
+                        onHttpError = {
+                            toast(it)
                         }
                 )
 
-           dis add btnMeatProfileActivity.clicks()
+           dis add binding.btnMeatProfileActivity.clicks()
                 .subscribeByAction(
                         onNext = {
                             nav.navigateToCebaBvnActivity(bovine._id!!)
+                        },
+                        onError = {
+                            toast(it.message!!)
+                        },
+                        onHttpError = {
+                            toast(it)
                         }
                 )
-           dis add btnFeedingProfileActivity.clicks()
+           dis add binding.btnFeedingProfileActivity.clicks()
                 .subscribeByAction(
                         onNext = {
                             nav.navigateToFeedBvnActivity(bovine._id!!)
+                        },
+                        onError = {
+                            toast(it.message!!)
+                        },
+                        onHttpError = {
+                            toast(it)
                         }
                 )
 
-           dis add btnManagementProfileActivity.clicks()
+           dis add binding.btnManagementProfileActivity.clicks()
                 .subscribeByAction(
                         onNext = {
                             nav.navigateToManageBvnActivity(bovine._id!!)
+                        },
+                        onError = {
+                            toast(it.message!!)
+                        },
+                        onHttpError = {
+                            toast(it)
                         }
                 )
 
-           dis add btnMovementProfileActivity.clicks()
+           dis add binding.btnMovementProfileActivity.clicks()
                 .subscribeByAction(
                         onNext = {
                             nav.navigateToMovementsBvnActivity(bovine._id!!)
+                        },
+                        onError = {
+                            toast(it.message!!)
+                        },
+                        onHttpError = {
+                            toast(it)
                         }
                 )
 
-           dis add btnVaccinesProfileActivity.clicks()
+           dis add binding.btnVaccinesProfileActivity.clicks()
                 .subscribeByAction(
                         onNext = {
                             nav.navigateToVaccinationBvnActivity(bovine._id!!)
+                        },
+                        onError = {
+                            toast(it.message!!)
+                        },
+                        onHttpError = {
+                            toast(it)
                         }
                 )
-           dis add btnHealthProfileActivity.clicks()
+           dis add binding.btnHealthProfileActivity.clicks()
                 .subscribeByAction(
                         onNext = {
                             nav.navigateToHealthBvnActivity(bovine._id!!)
+                        },
+                        onError = {
+                            toast(it.message!!)
+                        },
+                        onHttpError = {
+                            toast(it)
                         }
-                )  */
-
-
-
+                )
     }
 
 
