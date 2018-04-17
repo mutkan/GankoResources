@@ -49,7 +49,7 @@ class HealthBvnActivity : AppCompatActivity(), Injectable {
                         })
     }
     companion object {
-        val EXTRA_ID:String = "idBovino"
+        val EXTRA_ID: String = "idBovino"
     }
 
 }

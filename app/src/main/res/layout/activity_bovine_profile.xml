@@ -23,32 +23,23 @@
             <ImageView
                 android:id="@+id/banner"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="150dp"
                 android:scaleType="centerCrop"
-                app:layout_constraintBottom_toTopOf="@+id/guideImage"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="1.0"
                 app:srcCompat="@drawable/ic_launcher_background" />
-
-            <android.support.constraint.Guideline
-                android:id="@+id/guideImage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.3" />
 
             <TextView
                 android:id="@+id/nameBovineProfileActivity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="16dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/guideImage"
+                android:layout_marginTop="8dp"
                 android:text="@{bovine.nombre}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/banner"
                 tools:text="@string/bovine_name" />
 
             <TextView
@@ -158,9 +149,10 @@
 
             <TextView
                 android:id="@+id/btnMilkProfileActivity"
-                android:clickable="true"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/button_square"
+                android:clickable="true"
+                android:focusable="false"
                 android:gravity="left|center"
                 android:paddingHorizontal="24dp"
                 android:text="@string/milk"

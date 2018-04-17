@@ -16,7 +16,6 @@ import com.jakewharton.rxbinding2.view.clicks
 import com.jakewharton.rxbinding2.widget.checkedChanges
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_add_bovine.*
-import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
 import java.util.*
 import javax.inject.Inject
@@ -29,22 +28,24 @@ class AddBovineActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
     lateinit var factory: ViewModelProvider.Factory
     val viewModel: BovineViewModel by lazy { buildViewModel<BovineViewModel>(factory) }
 
-    //@Inject
-    //lateinit var session: UserSession
+    @Inject
+    lateinit var session: UserSession
 
     lateinit var binding: ActivityAddBovineBinding
 
     val dis: LifeDisposable = LifeDisposable(this)
 
-    val datePicker = DatePickerDialog(this, AddBovineActivity@ this,
-            Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH),
-            Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
+    lateinit var datePicker:DatePickerDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_add_bovine)
         binding.page = 1
-        //session.farmID = "1"
+        session.farmID = "1"
+        datePicker = DatePickerDialog(this,AddBovineActivity@ this,
+                Calendar.getInstance().get(Calendar.YEAR),
+                Calendar.getInstance().get(Calendar.MONTH),
+                Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
     }
 
     override fun onResume() {
@@ -87,15 +88,15 @@ class AddBovineActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
                         purpose.checkedRadioButtonId == R.id.meat -> "Ceba"
                         else -> "Ambos"
                     }
-                    viewModel.addBovine(Bovino(null, bovineIdentificationNumber.text(), null, null,
+                    viewModel.addBovine(Bovino(null,null,null,"", bovineIdentificationNumber.text(), null, null,
                             bovineName.text(), bovineBirthDate.text.toString().toDate(), null, sex, purpose,
                             bovineWeight.text().toInt(), bovineColor.text(), bovineRace.text(), motherId.text(), fatherId.text(),
                             null, previousBovineBirths.text().toInt(), null, null, null, null,
-                            null, null, check_weaned.isChecked, bovineWeanedDate.text.toString().toDate(),
+                            null, session.farmID, check_weaned.isChecked, bovineWeanedDate.text.toString().toDate(),
                             null, null, listOf(), listOf(), listOf()))
                 }.subscribeBy(
                         onNext = {
-                            toast("Bovino agragado exitosamente")
+                            toast("Bovino agregado exitosamente")
                             finish()
                         },
                         onComplete = {},

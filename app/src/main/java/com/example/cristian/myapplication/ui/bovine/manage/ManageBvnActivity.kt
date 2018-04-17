@@ -51,6 +51,6 @@ class ManageBvnActivity : AppCompatActivity() , Injectable {
     }
 
     companion object {
-        val EXTRA_ID: String = "ID_BOVINO"
+        val EXTRA_ID: String = "idBovino"
     }
 }

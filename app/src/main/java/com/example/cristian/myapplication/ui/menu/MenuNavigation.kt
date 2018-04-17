@@ -1,8 +1,12 @@
 package com.example.cristian.myapplication.ui.menu
 
+import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.preferences.UserSession
 import com.example.cristian.myapplication.di.ActivityScope
 import com.example.cristian.myapplication.ui.account.LoginActivity
+import com.example.cristian.myapplication.ui.menu.bovine.ListBovineFragment
+import com.example.cristian.myapplication.util.putFragment
+import kotlinx.android.synthetic.main.activity_menu.view.*
 import org.jetbrains.anko.startActivity
 import javax.inject.Inject
 
@@ -17,7 +21,7 @@ class MenuNavigation @Inject constructor(val activity: MenuActivity, val sesion:
     }
 
     fun navigateToBovines() {
-
+        activity.putFragment(R.id.content_frame,ListBovineFragment.instance())
     }
 
     fun navigateToFeeding() {

@@ -17,25 +17,27 @@ import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
 import javax.inject.Inject
 
-class MilkBvnActivity : AppCompatActivity() , Injectable {
+class MilkBvnActivity : AppCompatActivity(), Injectable {
 
     @Inject
     lateinit var factory: ViewModelProvider.Factory
     val viewModel: MilkBvnViewModel by lazy { buildViewModel<MilkBvnViewModel>(factory) }
 
     @Inject
-    lateinit var milkAdapter:ListMilkBovineAdapter
+    lateinit var milkAdapter: ListMilkBovineAdapter
 
     val idBovino:String by lazy { intent.extras.getString(EXTRA_ID) }
 
-    val dis:LifeDisposable = LifeDisposable(this)
+    val dis: LifeDisposable = LifeDisposable(this)
 
 
-    var totalLitters:Int = 0
+    var totalLitters: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_milk_bovine)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setTitle("Produccion de Leche")
         recyclerListMilkBovine.adapter = milkAdapter
         recyclerListMilkBovine.layoutManager = LinearLayoutManager(this)
     }
@@ -47,12 +49,14 @@ class MilkBvnActivity : AppCompatActivity() , Injectable {
         dis add viewModel.getMilkProduction(idBovino)
                 .subscribeBy(
                         onSuccess = {
+                            val average = if (it.size != 0) (totalLitters / it.size).toString()
+                            else "0"
                             milkAdapter.data = it
-                            for (production in it){
-                                totalLitters += production.litros.toInt()
+                            for (production in it) {
+                                totalLitters += production.litros!!.toInt()
                             }
                             totalListMilkBovine.text = totalLitters.toString()
-                            averageListMilkBovine.text = (totalLitters/it.size).toString()
+                            averageListMilkBovine.text = average
                         },
                         onError = {
                             toast(it.message!!)
@@ -67,9 +71,8 @@ class MilkBvnActivity : AppCompatActivity() , Injectable {
     }
 
     companion object {
-        val EXTRA_ID:String = "idBovino"
+        val EXTRA_ID: String = "idBovino"
     }
-
 
 
 }

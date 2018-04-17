@@ -32,15 +32,18 @@ class AddMilkBvnActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListen
 
     val dis: LifeDisposable = LifeDisposable(this)
 
-    val idBovino:String by lazy { intent.extras.getString(EXTRA_ID) }
+    val idBovino: String by lazy { intent.extras.getString(EXTRA_ID) }
 
-    val datePicker = DatePickerDialog(this, AddMilkBvnActivity@ this,
-            Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH),
-            Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
+    lateinit var datePicker: DatePickerDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_milk_bovine)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setTitle("Agregar Produccion de Leche")
+        datePicker = DatePickerDialog(this, AddMilkBvnActivity@ this,
+                Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH),
+                Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
     }
 
     override fun onResume() {
@@ -54,7 +57,7 @@ class AddMilkBvnActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListen
                     val jornada = if (timeOfDayAddMilkBovine.checkedRadioButtonId == R.id.morningAddMilkBovine) "Manana"
                     else "Tarde"
                     viewModel.addMilkProduction(
-                            Produccion(idBovino, jornada, it[1], it[0].toDate())
+                            Produccion(null, null, null, idBovino, jornada, it[1], it[0].toDate())
                     )
                 }.subscribeBy(
                         onComplete = {
@@ -79,20 +82,15 @@ class AddMilkBvnActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListen
                 }
 
         dis add dateAddMilkBovine.clicks()
-                .subscribeByAction(
-                        onNext = {
-                            datePicker.show()
-                        },
-                        onHttpError = {},
-                        onError = {}
-                )
+                .subscribe { datePicker.show() }
     }
 
     override fun onDateSet(p0: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-            dateAddMilkBovine.text = "$dayOfMonth/$month/$year"
+        dateAddMilkBovine.text = "$dayOfMonth/$month/$year"
 
     }
+
     companion object {
-        val EXTRA_ID:String = "idBovino"
+        val EXTRA_ID: String = "idBovino"
     }
 }
