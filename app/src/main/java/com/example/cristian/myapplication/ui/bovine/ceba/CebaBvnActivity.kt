@@ -28,7 +28,7 @@ class CebaBvnActivity : AppCompatActivity(),Injectable {
 
     private val dis:LifeDisposable = LifeDisposable(this)
 
-    var idBovino = "1"
+    val idBovino:String by lazy { intent.extras.getString(EXTRA_ID) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,5 +54,8 @@ class CebaBvnActivity : AppCompatActivity(),Injectable {
                 .subscribe {
                     startActivity<AddCebaBvnActivity>("idBovino" to idBovino)
                 }
+    }
+    companion object {
+        val EXTRA_ID:String = "idBovino"
     }
 }

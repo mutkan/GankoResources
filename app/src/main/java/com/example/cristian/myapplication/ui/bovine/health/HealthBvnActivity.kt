@@ -20,8 +20,7 @@ class HealthBvnActivity : AppCompatActivity(), Injectable {
     val viewModel: HealthBvnViewModel by lazy { buildViewModel<HealthBvnViewModel>(factory) }
     val dis: LifeDisposable = LifeDisposable(this)
 
-    //val idBovino:String by lazy{ intent.extras.getString(FeedBvnActivity.EXTRA_ID) }
-    lateinit var idBovino:String
+    val idBovino:String by lazy{ intent.extras.getString(EXTRA_ID) }
 
     @Inject
     lateinit var adapter: HealthBovineAdapter
@@ -33,8 +32,6 @@ class HealthBvnActivity : AppCompatActivity(), Injectable {
         supportActionBar?.setTitle("Sanidad")
         recyclerListHealthBovine.adapter = adapter
 
-        //idBovino = intent.getStringExtra(EXTRA_ID)
-        idBovino = "1"
 
     }
 
@@ -52,7 +49,7 @@ class HealthBvnActivity : AppCompatActivity(), Injectable {
                         })
     }
     companion object {
-        val EXTRA_ID:String = "ID_BOVINO"
+        val EXTRA_ID:String = "idBovino"
     }
 
 }

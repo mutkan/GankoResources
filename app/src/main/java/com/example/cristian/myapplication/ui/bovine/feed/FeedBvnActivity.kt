@@ -8,7 +8,6 @@ import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.FeedBovineAdapter
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
-import com.example.cristian.myapplication.util.subscribeByShot
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_list_feed_bovine.*
 import org.jetbrains.anko.toast
@@ -25,7 +24,6 @@ class FeedBvnActivity : AppCompatActivity(), Injectable {
     lateinit var adapter: FeedBovineAdapter
 
     val idBovino:String by lazy{ intent.extras.getString(EXTRA_ID) }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
