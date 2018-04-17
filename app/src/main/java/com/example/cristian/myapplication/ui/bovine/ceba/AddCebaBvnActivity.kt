@@ -61,7 +61,22 @@ class AddCebaBvnActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListene
                         onHttpError = {},
                         onError = {}
                 )
+
+        dis add btnCancelCebaBvn.clicks()
+                .subscribeByAction(
+                        onNext = {
+                            finish()
+                        },
+                        onError = {
+                            toast(it.message!!)
+                        },
+                        onHttpError = {
+                            toast(it)
+                        }
+                )
     }
+
+
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         dateAddCebaBvn.text = "$dayOfMonth/$month/$year"
