@@ -60,7 +60,7 @@ class AddBovineActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
         dis add bovineBirthDate.clicks()
                 .subscribeByAction(
                         onNext = {
-                            datePicker.datePicker.tag = "birthDate"
+                            datePicker.datePicker.tag = "birthdate"
                             datePicker.show()
                         },
                         onError = {},
@@ -70,7 +70,7 @@ class AddBovineActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
         dis add bovineWeanedDate.clicks()
                 .subscribeByAction(
                         onNext = {
-                            datePicker.datePicker.tag = "weanedDate"
+                            datePicker.datePicker.tag = "weaneddate"
                             datePicker.show()
                         },
                         onError = {},
@@ -157,8 +157,8 @@ class AddBovineActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         when (view!!.tag) {
-            "birthDate" -> bovineBirthDate.text = "$dayOfMonth/$month/$year"
-            "weanedDate" -> bovineWeanedDate.text = "$dayOfMonth/$month/$year"
+            "birthdate" -> bovineBirthDate.text = "$dayOfMonth/$month/$year"
+            "weaneddate" -> bovineWeanedDate.text = "$dayOfMonth/$month/$year"
         }
         //    dateAddMilkBovine.text = "$dayOfMonth/$month/$year"
     }
