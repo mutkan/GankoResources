@@ -45,6 +45,7 @@ class AddMilkBvnActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListen
 
     override fun onResume() {
         super.onResume()
+
         dis add btnAddMilkBovine.clicks()
                 .flatMap {
                     validateForm(R.string.empty_fields, dateAddMilkBovine.text.toString(), littersAddMilkBovine.text())
