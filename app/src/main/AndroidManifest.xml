@@ -36,6 +36,9 @@
         <activity android:name=".ui.bovine.vaccination.VaccinationBvnActivity" />
         <activity android:name=".ui.bovine.ceba.CebaBvnActivity" />
         <activity android:name=".ui.bovine.ceba.AddCebaBvnActivity" />
+        <activity android:name=".ui.bovine.reproductive.ReproductiveBvnActivity" />
+        <activity android:name=".ui.bovine.reproductive.add.AddZealActivity" />
+        <activity android:name=".ui.bovine.reproductive.add.AddServiceActivity"/>
     </application>
 
 </manifest>

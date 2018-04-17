@@ -1,6 +1,7 @@
 package com.example.cristian.myapplication.di.components
 
 import com.example.cristian.myapplication.di.ActivityScope
+import com.example.cristian.myapplication.di.modules.ReproductiveModule
 import com.example.cristian.myapplication.ui.bovine.ceba.AddCebaBvnActivity
 import com.example.cristian.myapplication.ui.bovine.ceba.CebaBvnActivity
 import com.example.cristian.myapplication.ui.bovine.feed.FeedBvnActivity
@@ -8,6 +9,7 @@ import com.example.cristian.myapplication.ui.bovine.health.HealthBvnActivity
 import com.example.cristian.myapplication.ui.bovine.manage.ManageBvnActivity
 import com.example.cristian.myapplication.ui.bovine.milk.AddMilkBvnActivity
 import com.example.cristian.myapplication.ui.bovine.milk.MilkBvnActivity
+import com.example.cristian.myapplication.ui.bovine.reproductive.ReproductiveBvnActivity
 import com.example.cristian.myapplication.ui.farms.AddFarmActivity
 import com.example.cristian.myapplication.ui.farms.FarmActivity
 import com.example.cristian.myapplication.ui.menu.MenuActivity
@@ -56,5 +58,9 @@ abstract class ActivityComponents{
     @ActivityScope
     @ContributesAndroidInjector()
     abstract fun bindAddFarmActivity(): AddFarmActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector(modules = [ReproductiveModule::class])
+    abstract fun bindReproductiveBvnActivity():ReproductiveBvnActivity
 
 }

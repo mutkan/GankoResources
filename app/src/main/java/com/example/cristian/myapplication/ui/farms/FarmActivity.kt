@@ -37,7 +37,7 @@ class FarmActivity : AppCompatActivity(), Injectable {
     private val mAlert: AlertDialog by lazy { AlertDialog.Builder(this).create() }
     private lateinit var alertBinding: TemplateAlertDeleteFarmBinding
     private lateinit var binding: ActivityListFarmBinding
-    val isEmpty:ObservableBoolean = ObservableBoolean(true)
+    val isEmpty:ObservableBoolean = ObservableBoolean(false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

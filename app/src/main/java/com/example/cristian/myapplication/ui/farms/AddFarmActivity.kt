@@ -1,11 +1,14 @@
 package com.example.cristian.myapplication.ui.farms
 
 import android.arch.lifecycle.ViewModelProvider
+import android.databinding.DataBindingUtil
+import android.databinding.ObservableBoolean
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.Finca
+import com.example.cristian.myapplication.databinding.ActivityAddFarmBinding
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
