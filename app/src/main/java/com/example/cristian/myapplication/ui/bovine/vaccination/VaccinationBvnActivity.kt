@@ -15,5 +15,6 @@ class VaccinationBvnActivity : AppCompatActivity() , Injectable {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
     }
 }
