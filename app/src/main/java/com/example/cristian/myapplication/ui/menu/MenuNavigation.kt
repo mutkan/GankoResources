@@ -1,9 +1,16 @@
 package com.example.cristian.myapplication.ui.menu
 
+import com.example.cristian.myapplication.data.preferences.UserSession
+import com.example.cristian.myapplication.di.ActivityScope
+import com.example.cristian.myapplication.ui.account.LoginActivity
+import org.jetbrains.anko.startActivity
+import javax.inject.Inject
+
 /**
  * Created by Ana Marin on 11/03/2018.
  */
-class MenuNavigation  {
+@ActivityScope
+class MenuNavigation @Inject constructor(val activity: MenuActivity, val sesion: UserSession){
 
     fun navigateToFarm() {
 
@@ -38,7 +45,11 @@ class MenuNavigation  {
     }
 
     fun navigateToLogout() {
+        sesion.logged = false
+        sesion.token = ""
 
+        activity.startActivity<LoginActivity>()
+        activity.finish()
     }
 
     fun navigateToDetail() {
