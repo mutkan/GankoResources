@@ -24,7 +24,11 @@ class AddCebaBvnActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListene
 
     val dis:LifeDisposable = LifeDisposable(this)
 
-    val idBovino:String by lazy { intent.extras.getString("idBovino") }
+    val idBovino:String by lazy { intent.extras.getString(EXTRA_ID) }
+
+    val datePicker = DatePickerDialog(this, AddMilkBvnActivity@ this,
+            Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH),
+            Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,9 +56,7 @@ class AddCebaBvnActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListene
         dis add dateAddCebaBvn.clicks()
                 .subscribeByAction(
                         onNext = {
-                            val datePicker = DatePickerDialog(this, AddMilkBvnActivity@ this,
-                                    Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH),
-                                    Calendar.getInstance().get(Calendar.DAY_OF_MONTH)).show()
+                            datePicker.show()
                         },
                         onHttpError = {},
                         onError = {}
@@ -65,4 +67,7 @@ class AddCebaBvnActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListene
         dateAddCebaBvn.text = "$dayOfMonth/$month/$year"
     }
 
+    companion object {
+        val EXTRA_ID:String = "idBovino"
+    }
 }

@@ -8,7 +8,6 @@ import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.FeedBovineAdapter
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
-import com.example.cristian.myapplication.util.subscribeByShot
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_list_feed_bovine.*
 import org.jetbrains.anko.toast
@@ -24,8 +23,7 @@ class FeedBvnActivity : AppCompatActivity(), Injectable {
     @Inject
     lateinit var adapter: FeedBovineAdapter
 
-    //val idBovino:String by lazy{ intent.extras.getString(EXTRA_ID) }
-    lateinit var idBovino: String
+    val idBovino:String by lazy{ intent.extras.getString(EXTRA_ID) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,8 +32,6 @@ class FeedBvnActivity : AppCompatActivity(), Injectable {
         supportActionBar?.setTitle("Alimentacion")
         recycler.adapter = adapter
 
-        //idBovino = intent.getStringExtra(EXTRA_ID)
-        idBovino = "1"
     }
 
     override fun onResume() {
@@ -53,6 +49,6 @@ class FeedBvnActivity : AppCompatActivity(), Injectable {
     }
 
     companion object {
-        val EXTRA_ID:String = "ID_BOVINO"
+        val EXTRA_ID:String = "idBovine"
     }
 }

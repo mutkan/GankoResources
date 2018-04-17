@@ -12,16 +12,19 @@ import android.support.v7.widget.GridLayoutManager
 import android.view.Menu
 import android.view.MenuItem
 import com.example.cristian.myapplication.R
+import com.example.cristian.myapplication.data.preferences.UserSession
 import com.example.cristian.myapplication.ui.adapters.MenuAdapter
 import com.example.cristian.myapplication.util.LifeDisposable
 import kotlinx.android.synthetic.main.activity_menu.*
+import javax.inject.Inject
 
 class MenuActivity : AppCompatActivity() {
 
     lateinit var toggle: ActionBarDrawerToggle
     var adapter: MenuAdapter = MenuAdapter()
     val dis: LifeDisposable = LifeDisposable(this)
-    var nav: MenuNavigation = MenuNavigation()
+    @Inject
+    lateinit var nav: MenuNavigation
     var phone: Boolean = true
     lateinit var menuViewModel: MenuViewModel
 
