@@ -192,6 +192,8 @@
 
     //Validate Form
     <string name="empty_fields">No Debe Haber Campos Vacios</string>
+    <string name="food_type">Tipo de alimento</string>
+    <string name="feed_kg_value">Valor por kilogramo</string>
 
 
 </resources>

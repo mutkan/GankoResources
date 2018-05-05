@@ -12,4 +12,5 @@
     <dimen name="menu_section_name">15sp</dimen>
     <dimen name="filter_margin">20dp</dimen>
     <dimen name="filter_width">200dp</dimen>
+    <dimen name="label_feed_select">26sp</dimen>
 </resources>
