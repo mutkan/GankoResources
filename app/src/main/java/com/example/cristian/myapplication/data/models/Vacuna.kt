@@ -6,8 +6,8 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 class Vacuna(
-        var nombre: String,
-        var dosis: Int,
-        var aplicaciones: List<Aplicacion>,
-        var valor:Int
-):Parcelable{}
+        var nombre: String? = null,
+        var dosis: Int? = null,
+        var aplicaciones: List<Aplicacion>? = listOf(),
+        var valor:Int? = null
+):Parcelable

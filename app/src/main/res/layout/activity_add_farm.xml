@@ -46,11 +46,10 @@
         android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="@string/farm_name"
-        android:inputType="textPersonName"
+        android:inputType="textCapWords"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/farmNameTxt"
-        app:layout_constraintTop_toBottomOf="@+id/farmNameTxt"
-        android:layout_marginRight="24dp" />
+        app:layout_constraintTop_toBottomOf="@+id/farmNameTxt" />
 
     <EditText
         android:id="@+id/farmLocation"
@@ -61,7 +60,7 @@
         android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="@string/farm_location"
-        android:inputType="text"
+        android:inputType="textCapWords"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/farmLocationTxt"
         app:layout_constraintTop_toBottomOf="@+id/farmLocationTxt" />

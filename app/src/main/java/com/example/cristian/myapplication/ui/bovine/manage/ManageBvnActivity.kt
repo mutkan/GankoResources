@@ -23,8 +23,8 @@ class ManageBvnActivity : AppCompatActivity() , Injectable {
     val viewModel: ManageBvnViewModel by lazy { buildViewModel<ManageBvnViewModel>(factory) }
     val dis: LifeDisposable = LifeDisposable(this)
 
-    //val idBovino:String by lazy{ intent.extras.getString(FeedBvnActivity.EXTRA_ID) }
-    lateinit var idBovino: String
+    val idBovino:String by lazy{ intent.extras.getString(EXTRA_ID) }
+
     @Inject
     lateinit var adapter: ManageBovineAdapter
 
@@ -34,8 +34,6 @@ class ManageBvnActivity : AppCompatActivity() , Injectable {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setTitle("Manejo")
         recycler.adapter = adapter
-
-        idBovino = "1"
     }
 
     override fun onResume() {
@@ -53,6 +51,6 @@ class ManageBvnActivity : AppCompatActivity() , Injectable {
     }
 
     companion object {
-        val EXTRA_ID: String = "ID_BOVINO"
+        val EXTRA_ID: String = "idBovino"
     }
 }

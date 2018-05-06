@@ -7,10 +7,13 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.couchbase.lite.internal.support.Log
 import com.example.cristian.myapplication.R
+import com.example.cristian.myapplication.di.FragmentScope
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.ListBovineAdapter
 import com.example.cristian.myapplication.ui.bovine.AddBovineActivity
+import com.example.cristian.myapplication.ui.bovine.DetailBovineActivity
 import com.example.cristian.myapplication.ui.menu.MenuViewModel
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
@@ -18,8 +21,8 @@ import com.jakewharton.rxbinding2.view.clicks
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.fragment_list_bovine.*
 import org.jetbrains.anko.support.v4.startActivity
-import javax.inject.Inject
 import org.jetbrains.anko.support.v4.toast
+import javax.inject.Inject
 
 class ListBovineFragment : Fragment(), Injectable {
 
@@ -31,7 +34,7 @@ class ListBovineFragment : Fragment(), Injectable {
     lateinit var adapter: ListBovineAdapter
     val dis: LifeDisposable = LifeDisposable(this)
 
-    lateinit var idFinca: String
+    private val idFinca: String by lazy { viewModel.getFarmId() }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -42,7 +45,6 @@ class ListBovineFragment : Fragment(), Injectable {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         recyclerListBovine.adapter = adapter
-        idFinca = "1"
     }
 
     override fun onResume() {
@@ -52,12 +54,25 @@ class ListBovineFragment : Fragment(), Injectable {
                 .subscribeBy(
                         onSuccess = {
                             adapter.bovines = it
+                            android.util.Log.d("BOVINOS", it.toString())
                         },
                         onError = {
                             toast(it.message!!)
                         }
                 )
 
+        dis add adapter.onClickBovine
+                .subscribeBy(
+                        onNext = {
+                            startActivity<DetailBovineActivity>(BOVINE to it)
+                        },
+                        onComplete = {
+                            Log.i("Bovine","On complete bovine")
+                        },
+                        onError = {
+                            toast(it.message!!)
+                        }
+                )
 
         dis add btnAddBovine.clicks()
                 .subscribe {
@@ -68,6 +83,13 @@ class ListBovineFragment : Fragment(), Injectable {
     fun goToAddBovine() {
         startActivity<AddBovineActivity>()
     }
+
+    companion object {
+        val BOVINE : String = "bovino"
+        val EXTRA_ID:String = "idBovino"
+        fun instance():ListBovineFragment = ListBovineFragment()
+    }
+
 
 
 }

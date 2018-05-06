@@ -1,9 +1,11 @@
 package com.example.cristian.myapplication.ui.menu
 
+import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
@@ -12,24 +14,42 @@ import android.support.v7.widget.GridLayoutManager
 import android.view.Menu
 import android.view.MenuItem
 import com.example.cristian.myapplication.R
+import com.example.cristian.myapplication.data.preferences.UserSession
+import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.MenuAdapter
+import com.example.cristian.myapplication.ui.bovine.milk.MilkBvnViewModel
+import com.example.cristian.myapplication.ui.menu.bovine.ListBovineFragment
 import com.example.cristian.myapplication.util.LifeDisposable
+import com.example.cristian.myapplication.util.buildViewModel
+import com.example.cristian.myapplication.util.putFragment
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.support.HasSupportFragmentInjector
 import kotlinx.android.synthetic.main.activity_menu.*
+import javax.inject.Inject
 
-class MenuActivity : AppCompatActivity() {
+class MenuActivity : AppCompatActivity(),Injectable,HasSupportFragmentInjector {
+
+    @Inject
+    lateinit var injector:DispatchingAndroidInjector<Fragment>
+    override fun supportFragmentInjector(): AndroidInjector<Fragment> = injector
+
+    @Inject
+    lateinit var factory: ViewModelProvider.Factory
+    val viewModel: MenuViewModel by lazy { buildViewModel<MenuViewModel>(factory) }
 
     lateinit var toggle: ActionBarDrawerToggle
     var adapter: MenuAdapter = MenuAdapter()
     val dis: LifeDisposable = LifeDisposable(this)
-    var nav: MenuNavigation = MenuNavigation()
+    @Inject
+    lateinit var nav: MenuNavigation
     var phone: Boolean = true
-    lateinit var menuViewModel: MenuViewModel
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu)
 
-        menuViewModel = ViewModelProviders.of(this).get(MenuViewModel::class.java)
         phone = resources.getBoolean(R.bool.phone)
 
         setSupportActionBar(toolbar)
@@ -38,17 +58,19 @@ class MenuActivity : AppCompatActivity() {
 
 
         recycler.adapter = adapter
-        adapter.items = menuViewModel.data
+        adapter.items = viewModel.data
 
         val gridManager: GridLayoutManager = GridLayoutManager(this, 2)
         gridManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup(){
-            override fun getSpanSize(position: Int): Int = when(menuViewModel.data[position].type){
+            override fun getSpanSize(position: Int): Int = when(viewModel.data[position].type){
                 MenuViewModel.MenuItem.TYPE_MENU -> 1
                 else -> 2
             }
         }
         recycler.layoutManager = gridManager
-        clickOnMenu(menuViewModel.content)
+        clickOnMenu(viewModel.content)
+
+        putFragment(R.id.content_frame,ListBovineFragment.instance())
 
     }
 
@@ -98,12 +120,12 @@ class MenuActivity : AppCompatActivity() {
 
     fun clickOnMenu(content: Int){
 
-        menuViewModel.content = content
-        val item = menuViewModel.data[content]
-        val colorID = menuViewModel.selectedColors[content-2]
+        viewModel.content = content
+        val item = viewModel.data[content]
+        val colorID = viewModel.selectedColors[content-2]
         val color = ContextCompat.getColor(this, colorID)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.statusBarColor = menuViewModel.getStatusBarColor(color)
+            window.statusBarColor = viewModel.getStatusBarColor(color)
         }
         supportActionBar?.setTitle(item.title)
         supportActionBar?.setBackgroundDrawable(ColorDrawable(color))

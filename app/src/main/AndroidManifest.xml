@@ -17,6 +17,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.bovine.milk.MilkBvnActivity" />
         <activity android:name=".ui.bovine.health.HealthBvnActivity" />
         <activity android:name=".PrincipalActivity" />
         <activity android:name=".ui.bovine.feed.FeedBvnActivity" />
@@ -26,18 +27,29 @@
         <activity android:name=".ui.account.RestorePassActivity" />
         <activity android:name=".ui.bovine.DetailBovineActivity" />
         <activity android:name=".ui.farms.AddFarmActivity" />
-        <activity android:name=".ui.farms.FarmActivity" />
+        <activity android:name=".ui.farms.FarmActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".ui.bovine.RemoveBovineActivity" />
         <activity android:name=".ui.bovine.AddBovineActivity" />
-        <activity android:name=".ui.bovine.milk.AddMilkBvnActivity" />
-        <activity android:name=".ui.bovine.movement.MovementBvnActivity" />
         <activity
             android:name=".ui.menu.MenuActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ui.bovine.milk.AddMilkBvnActivity" />
+        <activity android:name=".ui.bovine.movement.MovementBvnActivity" />
         <activity android:name=".ui.bovine.vaccination.VaccinationBvnActivity" />
+
         <!-- <activity android:name=".ui.bovine.ceba.CebaBvnActivity" /> -->
-        <activity android:name=".ui.bovine.ceba.AddCebaBvnActivity" />
+
         <activity android:name= ".ui.bovine.ceba.CebaBvnActivity"></activity>
+     <activity android:name=".ui.bovine.ceba.AddCebaBvnActivity" />
+        <activity android:name=".ui.bovine.reproductive.ReproductiveBvnActivity" />
+        <activity android:name=".ui.bovine.reproductive.add.AddZealActivity" />
+        <activity android:name=".ui.bovine.reproductive.add.AddServiceActivity" />
+
     </application>
 
 </manifest>

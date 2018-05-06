@@ -191,9 +191,15 @@
     <string name="average_milk">Promedio</string>
 
     //Validate Form
+<<<<<<< HEAD
     <string name="empty_fields">No Debe Haber Campos Vacios</string>
     <string name="food_type">Tipo de alimento</string>
     <string name="feed_kg_value">Valor por kilogramo</string>
+=======
+    <string name="empty_fields">No debe haber campos vacios</string>
+    <string name="finalize">Finalizar</string>
+    <string name="save">Guardar</string>
+>>>>>>> 4b9f0185b4ae556f3ba4e70b3300333907bfa610
 
 
 </resources>
