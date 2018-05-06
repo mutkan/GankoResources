@@ -44,6 +44,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation "com.android.support:design:$support_version"
+    implementation "com.android.support:cardview-v7:$support_version"
 
     //Rx
     implementation 'io.reactivex.rxjava2:rxjava:2.1.12'
@@ -77,6 +78,7 @@ dependencies {
     //couchbase
     implementation 'com.couchbase.lite:couchbase-lite-android:2.0.0-DB023'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.5'
+    implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.5"
 
     implementation 'com.android.support:multidex:1.0.3'
 

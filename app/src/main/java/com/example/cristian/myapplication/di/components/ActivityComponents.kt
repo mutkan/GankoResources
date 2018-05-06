@@ -1,6 +1,7 @@
 package com.example.cristian.myapplication.di.components
 
 import com.example.cristian.myapplication.di.ActivityScope
+import com.example.cristian.myapplication.di.modules.ReproductiveModule
 import com.example.cristian.myapplication.ui.bovine.AddBovineActivity
 import com.example.cristian.myapplication.ui.bovine.DetailBovineActivity
 import com.example.cristian.myapplication.ui.bovine.ceba.AddCebaBvnActivity
@@ -11,7 +12,10 @@ import com.example.cristian.myapplication.ui.bovine.manage.ManageBvnActivity
 import com.example.cristian.myapplication.ui.bovine.milk.AddMilkBvnActivity
 import com.example.cristian.myapplication.ui.bovine.milk.MilkBvnActivity
 import com.example.cristian.myapplication.ui.bovine.movement.MovementBvnActivity
+import com.example.cristian.myapplication.ui.bovine.reproductive.ReproductiveBvnActivity
 import com.example.cristian.myapplication.ui.bovine.vaccination.VaccinationBvnActivity
+import com.example.cristian.myapplication.ui.farms.AddFarmActivity
+import com.example.cristian.myapplication.ui.farms.FarmActivity
 import com.example.cristian.myapplication.ui.menu.MenuActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -50,6 +54,18 @@ abstract class ActivityComponents {
     @ActivityScope
     @ContributesAndroidInjector()
     abstract fun bindMenuActivity(): MenuActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector()
+    abstract fun bindFarmActivity(): FarmActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector()
+    abstract fun bindAddFarmActivity(): AddFarmActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector(modules = [ReproductiveModule::class])
+    abstract fun bindReproductiveBvnActivity(): ReproductiveBvnActivity
 
     @ActivityScope
     @ContributesAndroidInjector()

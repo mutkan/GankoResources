@@ -193,6 +193,7 @@
     //Validate Form
     <string name="empty_fields">No debe haber campos vacios</string>
     <string name="finalize">Finalizar</string>
+    <string name="save">Guardar</string>
 
 
 </resources>

@@ -6,6 +6,7 @@ import com.couchbase.lite.DatabaseConfiguration
 import com.couchbase.lite.IndexBuilder
 import com.couchbase.lite.ValueIndexItem
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import dagger.Module
 import dagger.Provides
 import javax.inject.Named
@@ -26,7 +27,7 @@ class CouchModule{
     }
 
     @Provides
-    fun provideMapper() = ObjectMapper()
+    fun provideMapper() = ObjectMapper().registerKotlinModule()
 
 
 }

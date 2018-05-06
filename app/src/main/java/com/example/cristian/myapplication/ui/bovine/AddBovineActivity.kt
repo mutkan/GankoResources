@@ -5,10 +5,10 @@ import android.arch.lifecycle.ViewModelProvider
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.widget.DatePicker
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.Bovino
-import com.example.cristian.myapplication.data.preferences.UserSession
 import com.example.cristian.myapplication.databinding.ActivityAddBovineBinding
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.util.*
@@ -27,14 +27,9 @@ class AddBovineActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
     @Inject
     lateinit var factory: ViewModelProvider.Factory
     val viewModel: BovineViewModel by lazy { buildViewModel<BovineViewModel>(factory) }
-
-    @Inject
-    lateinit var session: UserSession
-
+    private val farmId by lazy { viewModel.getFarmId() }
     lateinit var binding: ActivityAddBovineBinding
-
     val dis: LifeDisposable = LifeDisposable(this)
-
     lateinit var datePicker:DatePickerDialog
     var currentPhotoPath: String = ""
 
@@ -42,7 +37,6 @@ class AddBovineActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_add_bovine)
         binding.page = 1
-        session.farmID = "1"
         datePicker = DatePickerDialog(this,AddBovineActivity@ this,
                 Calendar.getInstance().get(Calendar.YEAR),
                 Calendar.getInstance().get(Calendar.MONTH),
@@ -93,7 +87,7 @@ class AddBovineActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
                             bovineName.text(), bovineBirthDate.text.toString().toDate(), null, sex, purpose,
                             bovineWeight.text().toInt(), bovineColor.text(), bovineRace.text(), motherId.text(), fatherId.text(),
                             null, previousBovineBirths.text().toInt(), null, null, null, null,
-                            null, session.farmID, check_weaned.isChecked, bovineWeanedDate.text.toString().toDate(),
+                            null, farmId, check_weaned.isChecked, bovineWeanedDate.text.toString().toDate(),
                             null, null, listOf(), listOf(), listOf()))
                 }.subscribeBy(
                         onNext = {
