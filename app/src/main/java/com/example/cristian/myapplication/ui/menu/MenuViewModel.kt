@@ -5,10 +5,12 @@ import android.graphics.Color
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.db.CouchRx
 import com.example.cristian.myapplication.data.models.Bovino
+import com.example.cristian.myapplication.data.models.Manage
 import com.example.cristian.myapplication.data.preferences.UserSession
 import com.example.cristian.myapplication.util.applySchedulers
 import com.example.cristian.myapplication.util.equalEx
 import io.reactivex.Single
+import io.reactivex.rxkotlin.toObservable
 import javax.inject.Inject
 
 /**
@@ -78,5 +80,16 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
             db.insert(bovino)
                     .applySchedulers()
 
+    fun getManagement(idFinca: String):Single<List<Manage>> =
+            getBovine(idFinca)
+                    .flatMapObservable {
+                        it.toObservable()
+                    }
+                    .flatMap {
+                        it.manejo!!.toObservable()
+
+                    }
+                    .toList()
+                    .applySchedulers()
 
 }

@@ -6,6 +6,7 @@ import com.example.cristian.myapplication.di.ActivityScope
 import com.example.cristian.myapplication.ui.account.LoginActivity
 import com.example.cristian.myapplication.ui.farms.FarmActivity
 import com.example.cristian.myapplication.ui.menu.bovine.ListBovineFragment
+import com.example.cristian.myapplication.ui.menu.management.ManageFragment
 import com.example.cristian.myapplication.util.putFragment
 import kotlinx.android.synthetic.main.activity_menu.view.*
 import org.jetbrains.anko.startActivity
@@ -35,7 +36,7 @@ class MenuNavigation @Inject constructor(val activity: MenuActivity, val sesion:
     }
 
     fun navigateToManage() {
-
+        activity.putFragment(R.id.content_frame,ManageFragment.instance())
     }
 
     fun navigateToMovements() {

@@ -40,6 +40,7 @@ dependencies {
     implementation "com.android.support:appcompat-v7:$support_version"
     implementation 'com.android.support.constraint:constraint-layout:1.1.0-beta6'
     implementation "com.android.support:support-v4:$support_version"
+    implementation 'com.android.support:support-v4:27.1.1'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
@@ -58,7 +59,6 @@ dependencies {
     implementation 'org.jetbrains.anko:anko-commons:0.10.4'
     implementation "org.jetbrains.anko:anko-appcompat-v7-commons:$anko_version"
 
-
     //Android Arch
     implementation "android.arch.lifecycle:extensions:$arch_version"
     kapt "android.arch.lifecycle:compiler:$arch_version"
@@ -76,7 +76,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
 
     //couchbase
-    implementation 'com.couchbase.lite:couchbase-lite-android:2.0.0-DB023'
+    implementation 'com.couchbase.lite:couchbase-lite-android:2.0.0'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.5'
     implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.5"
 

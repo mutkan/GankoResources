@@ -2,6 +2,7 @@ package com.example.cristian.myapplication.di.components
 
 import com.example.cristian.myapplication.di.ActivityScope
 import com.example.cristian.myapplication.di.modules.ReproductiveModule
+import com.example.cristian.myapplication.ui.account.LoginActivity
 import com.example.cristian.myapplication.ui.bovine.AddBovineActivity
 import com.example.cristian.myapplication.ui.bovine.DetailBovineActivity
 import com.example.cristian.myapplication.ui.bovine.ceba.AddCebaBvnActivity
@@ -22,6 +23,10 @@ import dagger.android.ContributesAndroidInjector
 
 @Module
 abstract class ActivityComponents {
+
+    @ActivityScope
+    @ContributesAndroidInjector()
+    abstract fun bindLoginActivity(): LoginActivity
 
     @ActivityScope
     @ContributesAndroidInjector()

@@ -195,5 +195,7 @@
     <string name="finalize">Finalizar</string>
     <string name="save">Guardar</string>
 
+    //empty list
+    <string name="empty_list">No se encontraron registros</string>
 
 </resources>
