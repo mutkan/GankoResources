@@ -36,6 +36,7 @@ class AddBovineActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
     val dis: LifeDisposable = LifeDisposable(this)
 
     lateinit var datePicker:DatePickerDialog
+    var currentPhotoPath: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
