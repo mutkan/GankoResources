@@ -36,7 +36,7 @@ class FeedBvnActivity : AppCompatActivity(), Injectable {
     override fun onResume() {
         super.onResume()
 
-        dis add viewModel.getFeedBovine(idBovino)
+     /*   dis add viewModel.getFeedBovine(idBovino)
                 .subscribeBy(
                         onSuccess = {
                             adapter.feed = it
@@ -45,6 +45,7 @@ class FeedBvnActivity : AppCompatActivity(), Injectable {
                             toast(it.message!!)
                         }
                 )
+                */
     }
 
     companion object {

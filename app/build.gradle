@@ -76,10 +76,8 @@ dependencies {
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
 
     //couchbase
-    implementation 'com.couchbase.lite:couchbase-lite-android:2.0.0-DB023'
+    implementation 'com.couchbase.lite:couchbase-lite-android:2.0.0'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.5'
     implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.5"
-
     implementation 'com.android.support:multidex:1.0.3'
-
 }
