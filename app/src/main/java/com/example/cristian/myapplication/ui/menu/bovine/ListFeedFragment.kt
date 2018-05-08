@@ -34,6 +34,10 @@ class ListFeedFragment : Fragment(), Injectable {
     val isEmpty: ObservableBoolean = ObservableBoolean(false)
     private val idFinca: String by lazy { viewModel.getFarmId() }
 
+    companion object {
+        fun instance():ListFeedFragment = ListFeedFragment()
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_list_feed, container, false)

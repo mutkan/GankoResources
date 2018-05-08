@@ -1,49 +1,22 @@
 package com.example.cristian.myapplication.ui.feed
-
-
-import android.arch.lifecycle.ViewModelProvider
-import android.databinding.ObservableBoolean
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
 import com.example.cristian.myapplication.R
-import com.example.cristian.myapplication.di.Injectable
-import com.example.cristian.myapplication.ui.adapters.ListFeedBovineAdapter
-import com.example.cristian.myapplication.ui.menu.MenuViewModel
-import com.example.cristian.myapplication.util.LifeDisposable
-import com.example.cristian.myapplication.util.buildViewModel
-import javax.inject.Inject
+import com.example.cristian.myapplication.ui.adapters.ListFeedSelectBovinesAdapter
+import com.example.cristian.myapplication.util.Data
+import kotlinx.android.synthetic.main.fragment_select_feed.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class SelectFeedFragment : Fragment() /*, Injectable*/ {
 
-/**
- * A simple [Fragment] subclass.
- *
- */
-class SelectFeedFragment : Fragment(), Injectable {
-
-    @Inject
-    lateinit var adapter: ListFeedBovineAdapter
-    val dis: LifeDisposable = LifeDisposable(this)
-
-    @Inject
-    lateinit var factory: ViewModelProvider.Factory
-    val viewModel: FeedViewModel by lazy { buildViewModel<MenuViewModel>(factory) }
-    val isEmpty: ObservableBoolean = ObservableBoolean(false)
-    private val idFinca: String by lazy { viewModel.getFarmId() }
-
+    val adapter:ListFeedSelectBovinesAdapter = ListFeedSelectBovinesAdapter()
     companion object {
-        fun newInstance(): SelectFeedFragment{
-            val fragment = SelectFeedFragment()
-            return fragment
-        }
+        fun instance(): SelectFeedFragment= SelectFeedFragment()
     }
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -51,8 +24,11 @@ class SelectFeedFragment : Fragment(), Injectable {
         return inflater.inflate(R.layout.fragment_select_feed, container, false)
     }
 
+    override fun onResume() {
+        super.onResume()
+        selectFeedBovines.adapter = adapter
+        selectFeedBovines.layoutManager = LinearLayoutManager(activity)
+        adapter.feedSelectbovines = Data.bovines
 
-
-
-
+    }
 }

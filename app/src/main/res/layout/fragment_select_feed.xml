@@ -1,103 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.feed.SelectFeedFragment">
+    xmlns:tools="http://schemas.android.com/tools">
+<data>
 
-    <!-- TODO: Update blank fragment layout -->
+</data>
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <CheckBox
-        android:id="@+id/checkBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:text="@string/select_all"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <CheckBox
+            android:id="@+id/checkBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
 
-    <View
-        android:id="@+id/view3"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/button_square"
-        android:background="@color/feed_primary"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+            android:buttonTint="@color/check_filter"
+            android:checked="true"
+            android:text="@string/select_all"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:textColor="@color/white"
-        android:textSize="@dimen/label_feed_select"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/view3"
-        tools:text="100" />
+        <View
+            android:id="@+id/view3"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/button_square"
+            android:background="@color/feed_primary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/textView22"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="@string/selected"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/textView9"
-        app:layout_constraintStart_toEndOf="@+id/textView9" />
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/label_feed_select"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/view3"
+            tools:text="100" />
 
-    <ImageView
-        android:id="@+id/unselectFeed"
-        android:layout_width="@dimen/login_icon"
-        android:layout_height="@dimen/login_icon"
-        android:layout_marginStart="24dp"
-        app:srcCompat="@drawable/ic_close"
-        app:layout_constraintBottom_toBottomOf="@+id/saveFeed"
-        app:layout_constraintStart_toStartOf="@+id/guideline9" />
+        <TextView
+            android:id="@+id/textView22"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/selected"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/textView9"
+            app:layout_constraintStart_toEndOf="@+id/textView9" />
 
-    <ImageView
-        android:id="@+id/saveFeed"
-        android:layout_width="@dimen/login_icon"
-        android:layout_height="@dimen/login_icon"
-        android:layout_marginStart="24dp"
-        app:srcCompat="@drawable/ic_save"
-        app:layout_constraintBottom_toBottomOf="@+id/continueSelectFeed"
-        app:layout_constraintStart_toEndOf="@+id/unselectFeed" />
+        <ImageView
+            android:id="@+id/unselectFeed"
+            android:layout_width="@dimen/login_icon"
+            android:layout_height="@dimen/login_icon"
+            android:layout_marginStart="24dp"
+            app:srcCompat="@drawable/ic_close"
+            app:layout_constraintBottom_toBottomOf="@+id/saveFeed"
+            app:layout_constraintStart_toStartOf="@+id/guideline9" />
 
-    <ImageView
-        android:id="@+id/continueSelectFeed"
-        android:layout_width="@dimen/login_icon"
-        android:layout_height="@dimen/login_icon"
-        android:layout_marginEnd="24dp"
-        android:layout_marginStart="24dp"
-        app:srcCompat="@drawable/ic_enter"
-        app:layout_constraintBottom_toBottomOf="@+id/textView22"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/saveFeed" />
+        <ImageView
+            android:id="@+id/saveFeed"
+            android:layout_width="@dimen/login_icon"
+            android:layout_height="@dimen/login_icon"
+            android:layout_marginStart="24dp"
+            app:srcCompat="@drawable/ic_save"
+            app:layout_constraintBottom_toBottomOf="@+id/continueSelectFeed"
+            app:layout_constraintStart_toEndOf="@+id/unselectFeed" />
 
-    <android.support.v7.widget.RecyclerView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/view3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox"
-        tools:listitem="@layout/template_select_feed" />
+        <ImageView
+            android:id="@+id/continueSelectFeed"
+            android:layout_width="@dimen/login_icon"
+            android:layout_height="@dimen/login_icon"
+            android:layout_marginEnd="24dp"
+            android:layout_marginStart="24dp"
+            app:srcCompat="@drawable/ic_enter"
+            app:layout_constraintBottom_toBottomOf="@+id/textView22"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/saveFeed" />
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/selectFeedBovines"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/view3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/checkBox"
+            tools:listitem="@layout/template_select_feed" />
 
-</android.support.constraint.ConstraintLayout>
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

@@ -14,7 +14,7 @@ import javax.inject.Inject
 /**
  * Created by Ana Marin on 20/03/2018.
  */
-class ListFeedSelectedAdapter@Inject constructor(): RecyclerView.Adapter<ListFeedSelectedAdapter.ListFeedSelectedHolder>(){
+class ListFeedSelectedAdapter @Inject constructor(): RecyclerView.Adapter<ListFeedSelectedAdapter.ListFeedSelectedHolder>(){
 
     var feedSelected: List<Feed> = emptyList()
         set(value) {

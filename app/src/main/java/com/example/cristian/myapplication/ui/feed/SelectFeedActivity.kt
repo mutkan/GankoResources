@@ -20,10 +20,10 @@ class SelectFeedActivity : AppCompatActivity() {
     private fun setupViewPager(selectFeedPager: ViewPager?) {
         val adapter = SelectFeedAdapter(supportFragmentManager)
 
-        val f1 = SelectFeedFragment.newInstance()
+        val f1 = SelectFeedFragment.instance()
         adapter.addFragment(f1, "Bovinos")
 
-        val f2 = GroupsFeedFragment.newInstance()
+        val f2 = GroupsFeedFragment.instance()
         adapter.addFragment(f2, "Grupos")
 
         selectFeedPager?.adapter = adapter

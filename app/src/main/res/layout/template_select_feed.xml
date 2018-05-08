@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    >
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
@@ -18,6 +16,7 @@
 
         <TextView
             android:id="@+id/nameBovineTemplate"
+            android:text="@{bovino.tipo}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
@@ -50,9 +49,9 @@
             android:id="@+id/breedBovineTemplate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/bovine_breed"
             app:layout_constraintStart_toStartOf="@+id/textView13"
-            app:layout_constraintTop_toBottomOf="@+id/textView13" />
+            app:layout_constraintTop_toBottomOf="@+id/textView13"
+            tools:text="@string/bovine_breed" />
 
         <TextView
             android:id="@+id/textView13"
@@ -86,9 +85,9 @@
             android:id="@+id/sexBovineTemplate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/female"
             app:layout_constraintStart_toStartOf="@+id/textView11"
-            app:layout_constraintTop_toBottomOf="@+id/textView11" />
+            app:layout_constraintTop_toBottomOf="@+id/textView11"
+            tools:text="@string/female" />
 
         <TextView
             android:id="@+id/textView17"
@@ -104,9 +103,9 @@
             android:id="@+id/purposeBovineTemplate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/milk"
             app:layout_constraintStart_toStartOf="@+id/textView17"
-            app:layout_constraintTop_toBottomOf="@+id/textView17" />
+            app:layout_constraintTop_toBottomOf="@+id/textView17"
+            tools:text="@string/milk" />
 
         <android.support.constraint.Guideline
             android:id="@+id/guideline"
@@ -126,12 +125,15 @@
 
         </FrameLayout>
 
-        <RadioButton
+        <CheckBox
             android:id="@+id/selectFeedBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginTop="8dp"
+            android:button="@drawable/toggle"
+            android:buttonTint="@color/check_filter"
+            android:checked="true"
             app:layout_constraintBottom_toTopOf="@+id/guideline4"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/guideline4" />
