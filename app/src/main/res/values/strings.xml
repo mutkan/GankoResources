@@ -24,7 +24,7 @@
     <string name="farm_name">Nombre de la Finca</string>
     <string name="change_farm">Cambiar Finca</string>
     <string name="bovines">BOVINOS</string>
-    <string name="milk">LECHE</string>
+    <string name="milk">VENTA DE LECHE</string>
     <string name="reproductive_uppercase">REPRODUCTIVO</string>
     <string name="meat_uppercase">CEBA</string>
     <string name="feeding">ALIMENTACIÓN</string>
@@ -197,5 +197,6 @@
 
     //empty list
     <string name="empty_list">No se encontraron registros</string>
+    <string name="race">Raza</string>
 
 </resources>

@@ -1,7 +1,6 @@
 package com.example.cristian.myapplication.ui.menu
 
 import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
@@ -14,10 +13,8 @@ import android.support.v7.widget.GridLayoutManager
 import android.view.Menu
 import android.view.MenuItem
 import com.example.cristian.myapplication.R
-import com.example.cristian.myapplication.data.preferences.UserSession
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.MenuAdapter
-import com.example.cristian.myapplication.ui.bovine.milk.MilkBvnViewModel
 import com.example.cristian.myapplication.ui.menu.bovine.ListBovineFragment
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
@@ -133,13 +130,15 @@ class MenuActivity : AppCompatActivity(),Injectable,HasSupportFragmentInjector {
 
         when(content){
             2-> nav.navigateToBovines()
-            3-> nav.navigateToFeeding()
-            4-> nav.navigateToManage()
-            5-> nav.navigateToMovements()
-            6-> nav.navigateToVaccination()
-            7-> nav.navigateToHealth()
-            8-> nav.navigateToPrairies()
-            9-> nav.navigateToReports()
+            3-> nav.navigateToMilk()
+            4-> nav.navigateToFeeding()
+            5-> nav.navigateToManage()
+            6-> nav.navigateToMovements()
+            7-> nav.navigateToVaccination()
+            8-> nav.navigateToHealth()
+            9-> nav.navigateToStraw()
+            10-> nav.navigateToPrairies()
+            11-> nav.navigateToReports()
         }
 
     }

@@ -25,11 +25,13 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
             MenuItem(MenuItem.TYPE_TITLE, titleText = userSession.farm),
             MenuItem(MenuItem.TYPE_BUTTON, icon = R.drawable.ic_back_white, title = R.string.change_farm),
             MenuItem(MenuItem.TYPE_MENU, R.color.img, R.drawable.ic_bovine, R.string.bovines),
+            MenuItem(MenuItem.TYPE_MENU, R.color.img, R.drawable.ic_milk, R.string.milk),
             MenuItem(MenuItem.TYPE_MENU, R.color.img, R.drawable.ic_feed, R.string.feeding),
             MenuItem(MenuItem.TYPE_MENU, R.color.img, R.drawable.ic_management, R.string.management),
             MenuItem(MenuItem.TYPE_MENU, R.color.img, R.drawable.ic_movements, R.string.movement),
             MenuItem(MenuItem.TYPE_MENU, R.color.img, R.drawable.ic_vaccine, R.string.vaccines),
             MenuItem(MenuItem.TYPE_MENU, R.color.img, R.drawable.ic_health, R.string.health),
+            MenuItem(MenuItem.TYPE_MENU, R.color.img, R.drawable.ic_straw, R.string.straw),
             MenuItem(MenuItem.TYPE_MENU, R.color.img, R.drawable.ic_prairies, R.string.prairies),
             MenuItem(MenuItem.TYPE_MENU, R.color.img, R.drawable.ic_reports, R.string.reports),
             MenuItem(MenuItem.TYPE_BUTTON, icon = R.drawable.ic_logout, title = R.string.logout)
@@ -38,11 +40,13 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
 
     val selectedColors: List<Int> = listOf(
             R.color.bovine_primary,
+            R.color.milk_primary,
             R.color.feed_primary,
             R.color.management_primary,
             R.color.movements_primary,
             R.color.vaccine_primary,
             R.color.health_primary,
+            R.color.straw_primary,
             R.color.prairie_primary,
             R.color.reports_primary
     )
@@ -81,6 +85,18 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     .applySchedulers()
 
     fun getManagement(idFinca: String):Single<List<Manage>> =
+            getBovine(idFinca)
+                    .flatMapObservable {
+                        it.toObservable()
+                    }
+                    .flatMap {
+                        it.manejo!!.toObservable()
+
+                    }
+                    .toList()
+                    .applySchedulers()
+
+    fun getStraw(idFinca: String):Single<List<Manage>> =
             getBovine(idFinca)
                     .flatMapObservable {
                         it.toObservable()
