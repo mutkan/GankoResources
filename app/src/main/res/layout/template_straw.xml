@@ -14,7 +14,7 @@
         tools:layout_editor_absoluteY="81dp">
 
         <TextView
-            android:id="@+id/txt_race"
+            android:id="@+id/raceText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
@@ -25,7 +25,7 @@
             tools:text="@string/race" />
 
         <TextView
-            android:id="@+id/txt_layette"
+            android:id="@+id/layetteText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
@@ -33,11 +33,12 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@color/menu_button_light"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_race"
-            tools:text="Canastilla" />
+            app:layout_constraintTop_toBottomOf="@+id/raceText"
+            tools:text="Canastilla"
+            />
 
         <TextView
-            android:id="@+id/txt_purpose"
+            android:id="@+id/purposeText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="24dp"
@@ -55,11 +56,11 @@
             android:layout_marginTop="24dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_layette"
+            app:layout_constraintTop_toBottomOf="@+id/layetteText"
             tools:text="@string/bull" />
 
         <TextView
-            android:id="@+id/txt_bull"
+            android:id="@+id/bullText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
@@ -77,11 +78,11 @@
             android:layout_marginTop="24dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             app:layout_constraintStart_toEndOf="@+id/text3477"
-            app:layout_constraintTop_toBottomOf="@+id/txt_layette"
+            app:layout_constraintTop_toBottomOf="@+id/layetteText"
             tools:text="@string/origin" />
 
         <TextView
-            android:id="@+id/txt_origin"
+            android:id="@+id/originText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -99,7 +100,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_origin"
+            app:layout_constraintTop_toBottomOf="@+id/originText"
             app:srcCompat="@color/menu_button_light" />
     </android.support.constraint.ConstraintLayout>
 </layout>
