@@ -24,7 +24,7 @@
     <string name="farm_name">Nombre de la Finca</string>
     <string name="change_farm">Cambiar Finca</string>
     <string name="bovines">BOVINOS</string>
-    <string name="milk">LECHE</string>
+    <string name="milk">VENTA DE LECHE</string>
     <string name="reproductive_uppercase">REPRODUCTIVO</string>
     <string name="meat_uppercase">CEBA</string>
     <string name="feeding">ALIMENTACIÓN</string>
@@ -193,6 +193,24 @@
     //Validate Form
     <string name="empty_fields">No debe haber campos vacios</string>
     <string name="finalize">Finalizar</string>
+    <string name="save">Guardar</string>
 
+    //empty list
+    <string name="empty_list">No se encontraron registros</string>
+
+    //straw fragment
+    <string name="race">Raza</string>
+    <string name="straw_id">Id de pajilla</string>
+    <string name="layette">Canastilla</string>
+    <string name="layette_number">Número de canastilla</string>
+    <string name="value">Valor</string>
+    <string name="money_value">Valor en pesos</string>
+
+    <string-array name="straw_type">
+        <item>Tipo A</item>
+        <item>Tipo B</item>
+        <item>Tipo C</item>
+        <item>Tipo D</item>
+    </string-array>
 
 </resources>

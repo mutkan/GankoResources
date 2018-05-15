@@ -34,7 +34,7 @@ class ListBovineFragment : Fragment(), Injectable {
     lateinit var adapter: ListBovineAdapter
     val dis: LifeDisposable = LifeDisposable(this)
 
-    lateinit var idFinca: String
+    private val idFinca: String by lazy { viewModel.getFarmId() }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -45,7 +45,6 @@ class ListBovineFragment : Fragment(), Injectable {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         recyclerListBovine.adapter = adapter
-        idFinca = "1"
     }
 
     override fun onResume() {
@@ -55,6 +54,7 @@ class ListBovineFragment : Fragment(), Injectable {
                 .subscribeBy(
                         onSuccess = {
                             adapter.bovines = it
+                            android.util.Log.d("BOVINOS", it.toString())
                         },
                         onError = {
                             toast(it.message!!)

@@ -5,28 +5,33 @@ import android.graphics.Color
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.db.CouchRx
 import com.example.cristian.myapplication.data.models.Bovino
+import com.example.cristian.myapplication.data.models.Manage
+import com.example.cristian.myapplication.data.preferences.UserSession
 import com.example.cristian.myapplication.util.applySchedulers
 import com.example.cristian.myapplication.util.equalEx
 import io.reactivex.Single
+import io.reactivex.rxkotlin.toObservable
 import javax.inject.Inject
 
 /**
  * Created by Ana Marin on 11/03/2018.
  */
-class MenuViewModel @Inject constructor(private val db: CouchRx) : ViewModel(){
+class MenuViewModel @Inject constructor(private val db: CouchRx, private val userSession: UserSession) : ViewModel(){
 
     //region Menu
     var content: Int = 2
 
     val data: List<MenuItem> = listOf(
-            MenuItem(MenuItem.TYPE_TITLE, titleText = "Nombre finca"),
+            MenuItem(MenuItem.TYPE_TITLE, titleText = userSession.farm),
             MenuItem(MenuItem.TYPE_BUTTON, icon = R.drawable.ic_back_white, title = R.string.change_farm),
             MenuItem(MenuItem.TYPE_MENU, R.color.img, R.drawable.ic_bovine, R.string.bovines),
+            MenuItem(MenuItem.TYPE_MENU, R.color.img, R.drawable.ic_milk, R.string.milk),
             MenuItem(MenuItem.TYPE_MENU, R.color.img, R.drawable.ic_feed, R.string.feeding),
             MenuItem(MenuItem.TYPE_MENU, R.color.img, R.drawable.ic_management, R.string.management),
             MenuItem(MenuItem.TYPE_MENU, R.color.img, R.drawable.ic_movements, R.string.movement),
             MenuItem(MenuItem.TYPE_MENU, R.color.img, R.drawable.ic_vaccine, R.string.vaccines),
             MenuItem(MenuItem.TYPE_MENU, R.color.img, R.drawable.ic_health, R.string.health),
+            MenuItem(MenuItem.TYPE_MENU, R.color.img, R.drawable.ic_straw, R.string.straw),
             MenuItem(MenuItem.TYPE_MENU, R.color.img, R.drawable.ic_prairies, R.string.prairies),
             MenuItem(MenuItem.TYPE_MENU, R.color.img, R.drawable.ic_reports, R.string.reports),
             MenuItem(MenuItem.TYPE_BUTTON, icon = R.drawable.ic_logout, title = R.string.logout)
@@ -35,11 +40,13 @@ class MenuViewModel @Inject constructor(private val db: CouchRx) : ViewModel(){
 
     val selectedColors: List<Int> = listOf(
             R.color.bovine_primary,
+            R.color.milk_primary,
             R.color.feed_primary,
             R.color.management_primary,
             R.color.movements_primary,
             R.color.vaccine_primary,
             R.color.health_primary,
+            R.color.straw_primary,
             R.color.prairie_primary,
             R.color.reports_primary
     )
@@ -67,6 +74,8 @@ class MenuViewModel @Inject constructor(private val db: CouchRx) : ViewModel(){
     }
     //endregion
 
+    fun getFarmId():String = userSession.farmID
+
     fun getBovine(idFinca: String): Single<List<Bovino>> =
             db.listByExp("finca" equalEx idFinca, Bovino::class)
                     .applySchedulers()
@@ -75,5 +84,28 @@ class MenuViewModel @Inject constructor(private val db: CouchRx) : ViewModel(){
             db.insert(bovino)
                     .applySchedulers()
 
+    fun getManagement(idFinca: String):Single<List<Manage>> =
+            getBovine(idFinca)
+                    .flatMapObservable {
+                        it.toObservable()
+                    }
+                    .flatMap {
+                        it.manejo!!.toObservable()
+
+                    }
+                    .toList()
+                    .applySchedulers()
+
+    fun getStraw(idFinca: String):Single<List<Manage>> =
+            getBovine(idFinca)
+                    .flatMapObservable {
+                        it.toObservable()
+                    }
+                    .flatMap {
+                        it.manejo!!.toObservable()
+
+                    }
+                    .toList()
+                    .applySchedulers()
 
 }
