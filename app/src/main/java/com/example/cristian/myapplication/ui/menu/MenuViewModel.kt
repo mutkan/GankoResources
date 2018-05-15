@@ -80,9 +80,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
             db.listByExp("finca" equalEx idFinca, Bovino::class)
                     .applySchedulers()
 
-    fun addBovine(bovino: Bovino): Single<String> =
-            db.insert(bovino)
-                    .applySchedulers()
+    fun deleteBovine(idBovino: String): Single<Unit> = db.remove(idBovino).applySchedulers()
 
     fun getManagement(idFinca: String):Single<List<Manage>> =
             getBovine(idFinca)

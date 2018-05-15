@@ -87,15 +87,21 @@ class AddBovineActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
                             bovineName.text(), bovineBirthDate.text.toString().toDate(), null, sex, purpose,
                             bovineWeight.text().toInt(), bovineColor.text(), bovineRace.text(), motherId.text(), fatherId.text(),
                             null, previousBovineBirths.text().toInt(), null, null, null, null,
-                            null, farmId, check_weaned.isChecked, bovineWeanedDate.text.toString().toDate(),
+                            null, farmId, check_weaned.isChecked,
+                            if (check_weaned.isChecked){bovineWeanedDate.text.toString().toDate()}
+                            else null,
                             null, null, listOf(), listOf(), listOf()))
                 }.subscribeBy(
                         onNext = {
                             toast("Bovino agregado exitosamente")
                             finish()
                         },
-                        onComplete = {},
-                        onError = {}
+                        onComplete = {
+                            toast("onComplete")
+                        },
+                        onError = {
+                            toast(it.message!!)
+                        }
                 )
 
         dis add btnNext.clicks()
