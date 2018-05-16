@@ -15,6 +15,7 @@ import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.ListBovineAdapter
 import com.example.cristian.myapplication.ui.bovine.AddBovineActivity
 import com.example.cristian.myapplication.ui.bovine.DetailBovineActivity
+import com.example.cristian.myapplication.ui.bovine.RemoveBovineActivity
 import com.example.cristian.myapplication.ui.menu.MenuViewModel
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
@@ -37,8 +38,6 @@ class ListBovineFragment : Fragment(), Injectable {
     @Inject
     lateinit var adapter: ListBovineAdapter
     val dis: LifeDisposable = LifeDisposable(this)
-
-    val deleteBovineSubject: PublishSubject<Bovino> = PublishSubject.create()
 
     private val idFinca: String by lazy { viewModel.getFarmId() }
 
@@ -82,25 +81,12 @@ class ListBovineFragment : Fragment(), Injectable {
 
         dis add adapter.onClickDelete
                 .subscribeByAction(
-                        onNext = { bovino ->
-                            alert(getString(R.string.are_you_sure_you_want_to_delete_the_bovine)) {
-                                title = getString(R.string.delete_bovine)
-                                positiveButton(getString(R.string.btn_Acept)) {
-                                    deleteBovineSubject.onNext(bovino)
-                                    toast(getString(R.string.bovine_deleted)) }
-                                negativeButton(getString(R.string.btn_cancel)) {}
-                            }.show()
-
+                        onNext = {
+                            startActivity<RemoveBovineActivity>(BOVINE to it)
                         },
                         onHttpError = {},
                         onError = {}
                 )
-
-        dis add deleteBovineSubject
-                .flatMapSingle {
-                    viewModel.deleteBovine(it._id!!)
-                }
-                .subscribe()
 
         dis add btnAddBovine.clicks()
                 .subscribe {

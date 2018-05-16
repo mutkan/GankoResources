@@ -146,6 +146,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginTop="8dp"
+            android:visibility="@{bovino.retirado == true ? View.GONE : View.VISIBLE}"
             android:onClick="@{()-> onClickDelete.onNext(bovino)}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/dateRemoveTemplate"
@@ -170,7 +171,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/remove"
             android:visibility='@{bovino.retirado == true ? View.VISIBLE : View.GONE}'
-
+            android:text='@{""+ bovino.fechaSalida}'
             app:layout_constraintEnd_toEndOf="@+id/textView50"
             app:layout_constraintTop_toBottomOf="@+id/textView50"
             tools:text="21/03/2018" />

@@ -210,12 +210,19 @@
     <string name="are_you_sure_you_want_to_delete_the_bovine">¿Está seguro que desea eliminar el Bovino?</string>
     <string name="delete_bovine">Eliminar Bovino</string>
     <string name="bovine_deleted">Bovino eliminado</string>
+    <string name="the_bovine_has_been_retired">El bovino ha sido retirado</string>
 
     <string-array name="straw_type">
         <item>Tipo A</item>
         <item>Tipo B</item>
         <item>Tipo C</item>
         <item>Tipo D</item>
+    </string-array>
+    
+    <string-array name="retirement_reason">
+        <item>Venta</item>
+        <item>Perdida</item>
+        <item>Muerte</item>
     </string-array>
 
 </resources>

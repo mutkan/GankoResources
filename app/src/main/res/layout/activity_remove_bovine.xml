@@ -1,117 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    >
 
-    <TextView
-        android:id="@+id/nameBovineRemoveBovine"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="@string/bovine_name" />
+    <data>
+        <variable
+            name="bovino"
+            type="com.example.cristian.myapplication.data.models.Bovino"/>
+    </data>
 
-    <TextView
-        android:id="@+id/codeBovineRemoveBovine"
-        style="@style/textview_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textColor="@color/colorAccent"
-        app:layout_constraintStart_toStartOf="@+id/nameBovineRemoveBovine"
-        app:layout_constraintTop_toBottomOf="@+id/nameBovineRemoveBovine"
-        tools:text="#23443" />
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/sexTextRemoveBovine"
-        style="@style/textview_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/sex"
-        app:layout_constraintStart_toStartOf="@+id/codeBovineRemoveBovine"
-        app:layout_constraintTop_toBottomOf="@+id/codeBovineRemoveBovine" />
+        <TextView
+            android:id="@+id/nameBovineRemoveBovine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="@{bovino.nombre}"
+            tools:text="@string/bovine_name" />
 
-    <TextView
-        android:id="@+id/sexRemoveBovine"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="@+id/sexTextRemoveBovine"
-        app:layout_constraintTop_toBottomOf="@+id/sexTextRemoveBovine"
-        tools:text="@string/female" />
+        <TextView
+            android:id="@+id/codeBovineRemoveBovine"
+            style="@style/textview_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/colorAccent"
+            app:layout_constraintStart_toStartOf="@+id/nameBovineRemoveBovine"
+            app:layout_constraintTop_toBottomOf="@+id/nameBovineRemoveBovine"
+            android:text='@{"#"+bovino.codigo}'
+            tools:text="#23443" />
 
-    <TextView
-        android:id="@+id/reasonTextRemoveBovine"
-        style="@style/textview_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/reason"
-        app:layout_constraintStart_toStartOf="@+id/sexRemoveBovine"
-        app:layout_constraintTop_toBottomOf="@+id/sexRemoveBovine" />
+        <TextView
+            android:id="@+id/sexTextRemoveBovine"
+            style="@style/textview_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/sex"
+            app:layout_constraintStart_toStartOf="@+id/codeBovineRemoveBovine"
+            app:layout_constraintTop_toBottomOf="@+id/codeBovineRemoveBovine" />
 
-    <Spinner
-        android:id="@+id/reasonSpinnerRemoveBovine"
-        style="@style/Base.Widget.AppCompat.Spinner.Underlined"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:layout_marginTop="8dp"
-        android:spinnerMode="dialog"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/reasonTextRemoveBovine"
-        app:layout_constraintTop_toBottomOf="@+id/reasonTextRemoveBovine" />
+        <TextView
+            android:id="@+id/sexRemoveBovine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="@+id/sexTextRemoveBovine"
+            app:layout_constraintTop_toBottomOf="@+id/sexTextRemoveBovine"
+            android:text="@{bovino.genero}"
+            tools:text="@string/female" />
 
-    <TextView
-        android:id="@+id/retirementDateTextRemoveBovine"
-        style="@style/textview_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/remove_date"
-        app:layout_constraintStart_toStartOf="@+id/reasonSpinnerRemoveBovine"
-        app:layout_constraintTop_toBottomOf="@+id/reasonSpinnerRemoveBovine" />
+        <TextView
+            android:id="@+id/reasonTextRemoveBovine"
+            style="@style/textview_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/reason"
+            app:layout_constraintStart_toStartOf="@+id/sexRemoveBovine"
+            app:layout_constraintTop_toBottomOf="@+id/sexRemoveBovine" />
 
-    <EditText
-        android:id="@+id/retirementDateRemoveBovine"
-        style="@style/edit_text"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:hint="@string/date_value"
-        android:inputType="date"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/retirementDateTextRemoveBovine"
-        app:layout_constraintTop_toBottomOf="@+id/retirementDateTextRemoveBovine" />
+        <Spinner
+            android:id="@+id/reasonSpinnerRemoveBovine"
+            style="@style/Base.Widget.AppCompat.Spinner.Underlined"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:layout_marginTop="8dp"
+            android:entries="@array/retirement_reason"
+            android:spinnerMode="dialog"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/reasonTextRemoveBovine"
+            app:layout_constraintTop_toBottomOf="@+id/reasonTextRemoveBovine" />
 
-    <Button
-        android:id="@+id/btnNextRemoveBovine"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="@dimen/button_width"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:text="@string/btn_next"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btnCancelRemoveBovine" />
+        <TextView
+            android:id="@+id/retirementDateTextRemoveBovine"
+            style="@style/textview_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/remove_date"
+            app:layout_constraintStart_toStartOf="@+id/reasonSpinnerRemoveBovine"
+            app:layout_constraintTop_toBottomOf="@+id/reasonSpinnerRemoveBovine" />
 
-    <Button
-        android:id="@+id/btnCancelRemoveBovine"
-        style="@style/Widget.AppCompat.Button.Borderless.Colored"
-        android:layout_width="@dimen/button_width"
-        android:layout_height="wrap_content"
-        android:text="@string/btn_cancel"
-        app:layout_constraintEnd_toStartOf="@+id/btnNextRemoveBovine"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/btnNextRemoveBovine" />
+        <TextView
+            android:id="@+id/retirementDateRemoveBovine"
+            style="@style/edit_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:hint="@string/date_value"
+            android:clickable="true"
+            android:focusable="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/retirementDateTextRemoveBovine"
+            app:layout_constraintTop_toBottomOf="@+id/retirementDateTextRemoveBovine" />
 
-</android.support.constraint.ConstraintLayout>
+        <Button
+            android:id="@+id/btnNextRemoveBovine"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="@string/btn_next"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/btnCancelRemoveBovine" />
+
+        <Button
+            android:id="@+id/btnCancelRemoveBovine"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_cancel"
+            app:layout_constraintEnd_toStartOf="@+id/btnNextRemoveBovine"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/btnNextRemoveBovine" />
+
+    </android.support.constraint.ConstraintLayout>
+</layout>
