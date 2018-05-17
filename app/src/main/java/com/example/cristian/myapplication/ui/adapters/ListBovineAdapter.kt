@@ -14,6 +14,7 @@ import javax.inject.Inject
 class ListBovineAdapter @Inject constructor():RecyclerView.Adapter<ListBovineAdapter.ListBovineHolder>() {
 
     val onClickBovine = PublishSubject.create<Bovino>()
+    val onClickDelete = PublishSubject.create<Bovino>()
 
     var bovines: List<Bovino> = emptyList()
         set(value) {
@@ -27,6 +28,7 @@ class ListBovineAdapter @Inject constructor():RecyclerView.Adapter<ListBovineAda
     override fun onBindViewHolder(holder: ListBovineHolder, position: Int) {
         holder.binding.bovino = bovines[position]
         holder.binding.onClickBovine = onClickBovine
+        holder.binding.onClickDelete = onClickDelete
     }
 
     override fun getItemCount(): Int = bovines.size

@@ -2,6 +2,7 @@ package com.example.cristian.myapplication.ui.bovine
 
 import android.app.DatePickerDialog
 import android.arch.lifecycle.ViewModelProvider
+import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -14,6 +15,7 @@ import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.util.*
 import com.jakewharton.rxbinding2.view.clicks
 import com.jakewharton.rxbinding2.widget.checkedChanges
+import com.squareup.picasso.Picasso
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_add_bovine.*
 import org.jetbrains.anko.toast
@@ -46,6 +48,17 @@ class AddBovineActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
     override fun onResume() {
         super.onResume()
 
+        dis add addBovinePhoto.clicks()
+                .flatMap { PhotoUtil.captureImage(this) }
+                .subscribe()
+
+        dis add PhotoUtil.processedImg
+                .subscribe {//Nombre de Archivo
+                    Log.i("SIIIII","FUNCIONA")
+                    Picasso.get().load(it)
+                            .into(imgBovino)
+                }
+
         dis add check_weaned.checkedChanges()
                 .subscribeBy(
                         onNext = {
@@ -56,7 +69,7 @@ class AddBovineActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
         dis add bovineBirthDate.clicks()
                 .subscribeByAction(
                         onNext = {
-                            datePicker.datePicker.tag = "birthDate"
+                            datePicker.datePicker.tag = "birthdate"
                             datePicker.show()
                         },
                         onError = {},
@@ -66,7 +79,7 @@ class AddBovineActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
         dis add bovineWeanedDate.clicks()
                 .subscribeByAction(
                         onNext = {
-                            datePicker.datePicker.tag = "weanedDate"
+                            datePicker.datePicker.tag = "weaneddate"
                             datePicker.show()
                         },
                         onError = {},
@@ -87,15 +100,21 @@ class AddBovineActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
                             bovineName.text(), bovineBirthDate.text.toString().toDate(), null, sex, purpose,
                             bovineWeight.text().toInt(), bovineColor.text(), bovineRace.text(), motherId.text(), fatherId.text(),
                             null, previousBovineBirths.text().toInt(), null, null, null, null,
-                            null, farmId, check_weaned.isChecked, bovineWeanedDate.text.toString().toDate(),
+                            null, farmId, check_weaned.isChecked,
+                            if (check_weaned.isChecked){bovineWeanedDate.text.toString().toDate()}
+                            else null,
                             null, null, listOf(), listOf(), listOf()))
                 }.subscribeBy(
                         onNext = {
                             toast("Bovino agregado exitosamente")
                             finish()
                         },
-                        onComplete = {},
-                        onError = {}
+                        onComplete = {
+                            toast("onComplete")
+                        },
+                        onError = {
+                            toast(it.message!!)
+                        }
                 )
 
         dis add btnNext.clicks()
@@ -153,10 +172,14 @@ class AddBovineActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         when (view!!.tag) {
-            "birthDate" -> bovineBirthDate.text = "$dayOfMonth/$month/$year"
-            "weanedDate" -> bovineWeanedDate.text = "$dayOfMonth/$month/$year"
+            "birthdate" -> bovineBirthDate.text = "$dayOfMonth/$month/$year"
+            "weaneddate" -> bovineWeanedDate.text = "$dayOfMonth/$month/$year"
         }
         //    dateAddMilkBovine.text = "$dayOfMonth/$month/$year"
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        PhotoUtil.processImage(this, requestCode, resultCode, 800, 800, data)
     }
 
 
