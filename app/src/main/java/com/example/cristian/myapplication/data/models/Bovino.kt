@@ -2,6 +2,7 @@ package com.example.cristian.myapplication.data.models
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
+import java.io.File
 import java.util.*
 
 @Parcelize
@@ -11,8 +12,7 @@ class Bovino(
         var type: String? = null,
         var tipo: String? = null,
         var codigo: String? = null,
-        var imagenRemota: String? = null,
-        var imagenLocal: String? = null,
+        var imagen: File? = null,
         var nombre: String? = null,
         var fechaNacimiento: Date? = null,
         var fechaIngreso: Date? = null,
