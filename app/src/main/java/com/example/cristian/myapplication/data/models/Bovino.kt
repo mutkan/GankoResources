@@ -41,6 +41,7 @@ class Bovino(
         var vacunas: List<Vacuna>? = listOf(),
         var sanidad: List<Sanidad>? = listOf(),
         var manejo: List<Manage>? = listOf()
+
 ) : Parcelable {
     init {
         type = javaClass.simpleName
