@@ -1,13 +1,9 @@
 package com.example.cristian.myapplication.ui.bovine.milk
 
-import android.app.Activity
 import android.app.DatePickerDialog
 import android.arch.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.text.Editable
-import android.text.SpannableString
-import android.text.SpannableStringBuilder
 import android.util.Log
 import android.widget.DatePicker
 import com.example.cristian.myapplication.R
@@ -15,9 +11,6 @@ import com.example.cristian.myapplication.data.models.Produccion
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.util.*
 import com.jakewharton.rxbinding2.view.clicks
-import com.jakewharton.rxbinding2.view.selected
-import dagger.android.AndroidInjector
-import dagger.android.HasActivityInjector
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_add_milk_bovine.*
 import org.jetbrains.anko.toast

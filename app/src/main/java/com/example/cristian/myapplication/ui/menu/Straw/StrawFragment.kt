@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.cristian.myapplication.R
+import com.example.cristian.myapplication.R.id.fabAddStrawFragment
+import com.example.cristian.myapplication.R.id.recyclerStraw
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.StrawAdapter
 import com.example.cristian.myapplication.ui.menu.MenuViewModel
