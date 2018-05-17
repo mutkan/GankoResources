@@ -32,7 +32,6 @@ object PhotoUtil {
     val processedImg: PublishSubject<File> = PublishSubject.create()
     private lateinit var fileImage: File
 
-
     fun captureImage(activity: AppCompatActivity): Observable<File> = RxPermissions(activity)
             .request(Manifest.permission.CAMERA)
             .flatMap { granted ->

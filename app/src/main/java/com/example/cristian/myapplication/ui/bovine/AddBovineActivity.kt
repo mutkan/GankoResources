@@ -19,6 +19,7 @@ import com.squareup.picasso.Picasso
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_add_bovine.*
 import org.jetbrains.anko.toast
+import java.io.File
 import java.util.*
 import javax.inject.Inject
 
@@ -33,7 +34,7 @@ class AddBovineActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
     lateinit var binding: ActivityAddBovineBinding
     val dis: LifeDisposable = LifeDisposable(this)
     lateinit var datePicker:DatePickerDialog
-    var currentPhotoPath: String = ""
+    var foto: File? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,8 +54,10 @@ class AddBovineActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
                 .subscribe()
 
         dis add PhotoUtil.processedImg
-                .subscribe {//Nombre de Archivo
-                    Log.i("SIIIII","FUNCIONA")
+                .subscribe {
+                    //Nombre de Archivo
+                    Log.i("SIIIII","YA FUNCA")
+                    foto = it
                     Picasso.get().load(it)
                             .into(imgBovino)
                 }
@@ -96,7 +99,7 @@ class AddBovineActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
                         purpose.checkedRadioButtonId == R.id.meat -> "Ceba"
                         else -> "Ambos"
                     }
-                    viewModel.addBovine(Bovino(null,null,null,"", bovineIdentificationNumber.text(), null, null,
+                    viewModel.addBovine(Bovino(null,null,null,"", bovineIdentificationNumber.text(), foto,
                             bovineName.text(), bovineBirthDate.text.toString().toDate(), null, sex, purpose,
                             bovineWeight.text().toInt(), bovineColor.text(), bovineRace.text(), motherId.text(), fatherId.text(),
                             null, previousBovineBirths.text().toInt(), null, null, null, null,
