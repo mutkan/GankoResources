@@ -64,7 +64,6 @@ class StrawFragment :Fragment(), Injectable {
 
     }
 
-
     companion object {
         fun instance(): StrawFragment = StrawFragment()
     }
