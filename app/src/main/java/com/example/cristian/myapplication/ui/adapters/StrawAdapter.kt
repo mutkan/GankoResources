@@ -6,13 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.Manage
+import com.example.cristian.myapplication.data.models.Straw
 import com.example.cristian.myapplication.databinding.TemplateStrawBinding
 import com.example.cristian.myapplication.util.inflate
 import javax.inject.Inject
 
 class StrawAdapter @Inject constructor(): RecyclerView.Adapter<StrawAdapter.StrawHolder>(){
 
-    var straw: List<Manage> = emptyList()
+    var straw: List<Straw> = emptyList()
         set(value) {
             field = value
             notifyDataSetChanged()

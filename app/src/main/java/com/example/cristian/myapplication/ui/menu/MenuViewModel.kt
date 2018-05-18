@@ -6,6 +6,7 @@ import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.db.CouchRx
 import com.example.cristian.myapplication.data.models.Bovino
 import com.example.cristian.myapplication.data.models.Manage
+import com.example.cristian.myapplication.data.models.Straw
 import com.example.cristian.myapplication.data.preferences.UserSession
 import com.example.cristian.myapplication.util.applySchedulers
 import com.example.cristian.myapplication.util.equalEx
@@ -94,16 +95,8 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     .toList()
                     .applySchedulers()
 
-    fun getStraw(idFinca: String):Single<List<Manage>> =
-            getBovine(idFinca)
-                    .flatMapObservable {
-                        it.toObservable()
-                    }
-                    .flatMap {
-                        it.manejo!!.toObservable()
-
-                    }
-                    .toList()
+    fun getStraw(idFinca: String):Single<List<Straw>> =
+            db.listByExp("idFarm" equalEx idFinca, Straw::class)
                     .applySchedulers()
 
 }
