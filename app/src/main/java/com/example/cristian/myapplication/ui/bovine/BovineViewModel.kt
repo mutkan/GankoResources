@@ -16,4 +16,6 @@ class BovineViewModel @Inject constructor(private val db: CouchRx, private val u
             db.insert(bovino)
                     .applySchedulers()
 
+    fun updateBovine(idBovine: String, bovine:Bovino ) = db.update(idBovine, bovine).applySchedulers()
+
 }

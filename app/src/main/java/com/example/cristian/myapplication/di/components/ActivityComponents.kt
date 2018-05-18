@@ -5,6 +5,7 @@ import com.example.cristian.myapplication.di.modules.ReproductiveModule
 import com.example.cristian.myapplication.ui.account.LoginActivity
 import com.example.cristian.myapplication.ui.bovine.AddBovineActivity
 import com.example.cristian.myapplication.ui.bovine.DetailBovineActivity
+import com.example.cristian.myapplication.ui.bovine.RemoveBovineActivity
 import com.example.cristian.myapplication.ui.bovine.ceba.AddCebaBvnActivity
 import com.example.cristian.myapplication.ui.bovine.ceba.CebaBvnActivity
 import com.example.cristian.myapplication.ui.bovine.feed.FeedBvnActivity
@@ -78,6 +79,10 @@ abstract class ActivityComponents {
 
     @ActivityScope
     @ContributesAndroidInjector()
+    abstract fun bindRemoveBovineActivity(): RemoveBovineActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector()
     abstract fun bindDetailBovineActivity(): DetailBovineActivity
 
     @ActivityScope
@@ -87,6 +92,8 @@ abstract class ActivityComponents {
     @ActivityScope
     @ContributesAndroidInjector()
     abstract fun bindMovementBvnActivity(): MovementBvnActivity
+
+
 
 
 }

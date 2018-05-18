@@ -9,17 +9,22 @@ import android.view.View
 import android.view.ViewGroup
 import com.couchbase.lite.internal.support.Log
 import com.example.cristian.myapplication.R
+import com.example.cristian.myapplication.data.models.Bovino
 import com.example.cristian.myapplication.di.FragmentScope
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.ListBovineAdapter
 import com.example.cristian.myapplication.ui.bovine.AddBovineActivity
 import com.example.cristian.myapplication.ui.bovine.DetailBovineActivity
+import com.example.cristian.myapplication.ui.bovine.RemoveBovineActivity
 import com.example.cristian.myapplication.ui.menu.MenuViewModel
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
+import com.example.cristian.myapplication.util.subscribeByAction
 import com.jakewharton.rxbinding2.view.clicks
 import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.fragment_list_bovine.*
+import org.jetbrains.anko.support.v4.alert
 import org.jetbrains.anko.support.v4.startActivity
 import org.jetbrains.anko.support.v4.toast
 import javax.inject.Inject
@@ -72,6 +77,15 @@ class ListBovineFragment : Fragment(), Injectable {
                         onError = {
                             toast(it.message!!)
                         }
+                )
+
+        dis add adapter.onClickDelete
+                .subscribeByAction(
+                        onNext = {
+                            startActivity<RemoveBovineActivity>(BOVINE to it)
+                        },
+                        onHttpError = {},
+                        onError = {}
                 )
 
         dis add btnAddBovine.clicks()

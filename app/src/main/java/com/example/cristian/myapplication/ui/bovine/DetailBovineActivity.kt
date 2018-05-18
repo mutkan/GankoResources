@@ -19,6 +19,7 @@ import com.example.cristian.myapplication.ui.bovine.vaccination.VaccinationBvnAc
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
 import com.jakewharton.rxbinding2.view.clicks
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_bovine_profile.*
 import org.jetbrains.anko.startActivity
 import javax.inject.Inject
@@ -38,6 +39,8 @@ class DetailBovineActivity : AppCompatActivity(), Injectable {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_bovine_profile)
         binding.bovine = bovine
+        Picasso.get().load(bovine.imagen!!)
+                .into(banner)
     }
 
     override fun onResume() {
