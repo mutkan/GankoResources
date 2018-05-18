@@ -24,7 +24,7 @@ class CouchRx @Inject constructor(private val db: Database
                                   , private val mapper: ObjectMapper) {
 
 
-    fun <T:Any> insert(doc: T): Single<String> = Single.create {
+    fun <T : Any> insert(doc: T): Single<String> = Single.create {
         val id = "${session.userId}.${UUID.randomUUID()}"
         val document = objectToDocument(doc, id)
         db.save(document)
@@ -105,24 +105,21 @@ class CouchRx @Inject constructor(private val db: Database
             .map { dictionaryToObject(it.first, it.second, it.third, kClass) }
             .toList()
 
-    fun <T : Any> listByExp2(expression: Expression, kClass: KClass<T>): Observable<List<T>> = Observable.create {e->
+    fun <T : Any> listByExp2(expression: Expression, kClass: KClass<T>): Observable<List<T>> = Observable.create { e ->
         val query = QueryBuilder
                 .select(SelectResult.all(), SelectResult.expression(Meta.id), SelectResult.expression(Meta.sequence))
                 .from(DataSource.database(db))
                 .where(expression andEx ("type" equalEx kClass.simpleName.toString()))
 
         query.addChangeListener { qc ->
-             e.onNext(qc.results.allResults().toObservable()
-                     .map {
-                         val id = it.getString("id")
-                         val sequence = it.getLong("sequence")
-                         val content = it.getDictionary(dbName)
-                         Triple(id, sequence, content)
-                     }
-                     .map { dictionaryToObject(it.first, it.second, it.third, kClass) }
-                     .toList()
-                     .blockingGet()
-                     )
+            if(qc.error == null) e.onNext(qc.results.allResults()
+                    .map {
+                        val id = it.getString("id")
+                        val sequence = it.getLong("sequence")
+                        val content = it.getDictionary(dbName)
+                        dictionaryToObject(id, sequence, content, kClass)
+                    })
+            else e.onError(qc.error)
         }
     }
 

@@ -15,6 +15,7 @@ import com.example.cristian.myapplication.ui.bovine.milk.AddMilkBvnActivity
 import com.example.cristian.myapplication.ui.bovine.milk.MilkBvnActivity
 import com.example.cristian.myapplication.ui.bovine.movement.MovementBvnActivity
 import com.example.cristian.myapplication.ui.bovine.reproductive.ReproductiveBvnActivity
+import com.example.cristian.myapplication.ui.bovine.reproductive.add.AddZealActivity
 import com.example.cristian.myapplication.ui.bovine.vaccination.VaccinationBvnActivity
 import com.example.cristian.myapplication.ui.farms.AddFarmActivity
 import com.example.cristian.myapplication.ui.farms.FarmActivity
@@ -93,7 +94,9 @@ abstract class ActivityComponents {
     @ContributesAndroidInjector()
     abstract fun bindMovementBvnActivity(): MovementBvnActivity
 
-
+    @ActivityScope
+    @ContributesAndroidInjector
+    abstract fun bindAddZealActivity(): AddZealActivity
 
 
 }

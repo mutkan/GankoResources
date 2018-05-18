@@ -15,6 +15,7 @@ import com.example.cristian.myapplication.ui.bovine.manage.ManageBvnActivity
 import com.example.cristian.myapplication.ui.bovine.milk.AddMilkBvnActivity
 import com.example.cristian.myapplication.ui.bovine.milk.MilkBvnActivity
 import com.example.cristian.myapplication.ui.bovine.movement.MovementBvnActivity
+import com.example.cristian.myapplication.ui.bovine.reproductive.ReproductiveBvnActivity
 import com.example.cristian.myapplication.ui.bovine.vaccination.VaccinationBvnActivity
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
@@ -49,8 +50,8 @@ class DetailBovineActivity : AppCompatActivity(), Injectable {
         dis add btnMilkProfileActivity.clicks()
                 .subscribe { startActivity<MilkBvnActivity>(EXTRA_ID to bovine._id) }
 
-//        dis add btnReproduciveProfileActivity.clicks()
-//                .subscribe { startActivity<CebaBvnActivity>(EXTRA_ID to bovine._id) }
+        dis add btnReproduciveProfileActivity.clicks()
+                .subscribe { startActivity<ReproductiveBvnActivity>(EXTRA_ID to bovine._id) }
 
         dis add btnMeatProfileActivity.clicks()
                 .subscribe { startActivity<CebaBvnActivity>(EXTRA_ID to bovine._id) }

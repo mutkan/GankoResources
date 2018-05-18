@@ -37,6 +37,7 @@ class Bovino(
         var destete: Boolean? = null,
         var fechaDestete: Date? = null,
         var celos: List<Date>? = null,
+        var fechaProximoCelo:Date? = null,
         var servicios: List<Servicio>? = listOf(),
         var vacunas: List<Vacuna>? = listOf(),
         var sanidad: List<Sanidad>? = listOf(),

@@ -11,6 +11,7 @@ import com.example.cristian.myapplication.ui.bovine.health.HealthBvnViewModel
 import com.example.cristian.myapplication.ui.bovine.manage.ManageBvnViewModel
 import com.example.cristian.myapplication.ui.bovine.milk.MilkBvnViewModel
 import com.example.cristian.myapplication.ui.bovine.movement.MovementBvnViewModel
+import com.example.cristian.myapplication.ui.bovine.reproductive.ReproductiveBvnViewModel
 import com.example.cristian.myapplication.ui.bovine.vaccination.VaccinationBvnViewModel
 import com.example.cristian.myapplication.ui.farms.FarmViewModel
 import com.example.cristian.myapplication.ui.menu.MenuViewModel
@@ -20,7 +21,7 @@ import dagger.Module
 import dagger.multibindings.IntoMap
 
 @Module
-abstract class ViewModelModule{
+abstract class ViewModelModule {
 
     @Binds
     abstract fun bindViewModelFactory(factory: AppViewModelFactory): ViewModelProvider.Factory
@@ -79,5 +80,10 @@ abstract class ViewModelModule{
     @IntoMap
     @ViewModelKey(MenuViewModel::class)
     abstract fun bindMenuViewModel(viewModel: MenuViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ReproductiveBvnViewModel::class)
+    abstract fun bindReproductiveBvnViewModel(viewModel: ReproductiveBvnViewModel): ViewModel
 
 }

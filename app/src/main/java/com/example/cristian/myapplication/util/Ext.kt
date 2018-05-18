@@ -96,3 +96,7 @@ fun String.toDate():Date{
     val format = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
     return format.parse(this)
 }
+fun Date.toStringFormat():String{
+    val format = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+    return format.format(this)
+}
