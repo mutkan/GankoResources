@@ -1,6 +1,7 @@
 package com.example.cristian.myapplication.di.components
 
 import com.example.cristian.myapplication.di.FragmentScope
+import com.example.cristian.myapplication.ui.menu.Straw.StrawFragment
 import com.example.cristian.myapplication.ui.menu.bovine.ListBovineFragment
 import com.example.cristian.myapplication.ui.menu.management.ManageFragment
 import dagger.Module
@@ -16,5 +17,9 @@ abstract class FragmentComponent{
     @FragmentScope
     @ContributesAndroidInjector()
     abstract fun bindListManageFragment(): ManageFragment
+
+    @FragmentScope
+    @ContributesAndroidInjector()
+    abstract fun bindListStrawFragment(): StrawFragment
 
 }

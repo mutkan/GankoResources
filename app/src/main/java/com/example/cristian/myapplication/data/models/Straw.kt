@@ -1,5 +1,9 @@
 package com.example.cristian.myapplication.data.models
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 class Straw(
         var idFarm: String? = null,
         var idStraw: String? =null,
@@ -11,5 +15,5 @@ class Straw(
         var origin: String? = null,
         var value: String? = null,
         var state: String? = null
-)
+):Parcelable
 

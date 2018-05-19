@@ -30,7 +30,7 @@ class StrawAddActivity : AppCompatActivity(), Injectable, AdapterView.OnItemSele
 
     val idBovino: String by lazy { intent.extras.getString(StrawAddActivity.EXTRA_ID) }
     lateinit var spinner: Spinner
-    lateinit var selectedItem: String
+    var selectedItem: String = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,6 +38,7 @@ class StrawAddActivity : AppCompatActivity(), Injectable, AdapterView.OnItemSele
         setContentView(R.layout.activity_add_straw)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setTitle(getString(R.string.add_straw))
+        spinner = type_spinner
         spinner.onItemSelectedListener
     }
 
@@ -59,12 +60,13 @@ class StrawAddActivity : AppCompatActivity(), Injectable, AdapterView.OnItemSele
                 }
                 .flatMapSingle {
                     viewModel.addStraw(
-                            Straw(farmId!!, it[0], selectedItem, it[1], null, null, it[2], it[3], it[4], null))
+                            Straw(farmId, it[0], selectedItem, it[1], null, null, it[2], it[3], it[4], null))
                 }.subscribeBy(
                         onComplete = {
                             toast("Completo")
                         },
                         onNext = {
+                            toast("Entrada agregada exitosamente"+it)
                             finish()
 
                         },
