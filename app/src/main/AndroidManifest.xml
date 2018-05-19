@@ -23,7 +23,16 @@
         <activity android:name=".ui.bovine.manage.ManageBvnActivity" />
         <activity android:name=".ui.account.SigninActivity" />
         <activity android:name=".ui.account.RestorePassActivity" />
-        <activity android:name=".ui.bovine.DetailBovineActivity" />
+        <activity android:name=".ui.bovine.DetailBovineActivity"
+            android:parentActivityName=".ui.menu.MenuActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.menu.MenuActivity"
+                />
+
+        </activity>
         <activity android:name=".ui.farms.AddFarmActivity" />
         <activity
             android:name=".ui.account.LoginActivity"
