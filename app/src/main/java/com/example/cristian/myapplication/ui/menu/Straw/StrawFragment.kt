@@ -4,9 +4,11 @@ package com.example.cristian.myapplication.ui.menu.Straw
 import android.arch.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.R.id.fabAddStrawFragment
 import com.example.cristian.myapplication.R.id.recyclerStraw
@@ -45,6 +47,7 @@ class StrawFragment :Fragment(), Injectable {
     override fun onResume() {
         super.onResume()
         recyclerStraw.adapter = adapter
+        recyclerStraw.layoutManager = LinearLayoutManager(activity)
 
         dis add viewModel.getStraw(idFinca)
                 .subscribeBy (
@@ -63,7 +66,6 @@ class StrawFragment :Fragment(), Injectable {
                 }
 
     }
-
 
     companion object {
         fun instance(): StrawFragment = StrawFragment()

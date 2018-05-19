@@ -4,6 +4,8 @@ import android.arch.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.view.View
+import android.widget.AdapterView
 import android.widget.Spinner
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.Straw
@@ -16,7 +18,8 @@ import kotlinx.android.synthetic.main.activity_add_straw.*
 import org.jetbrains.anko.toast
 import javax.inject.Inject
 
-class StrawAddActivity : AppCompatActivity(), Injectable{
+class StrawAddActivity : AppCompatActivity(), Injectable, AdapterView.OnItemSelectedListener{
+
 
     @Inject
     lateinit var factory: ViewModelProvider.Factory
@@ -27,6 +30,7 @@ class StrawAddActivity : AppCompatActivity(), Injectable{
 
     val idBovino: String by lazy { intent.extras.getString(StrawAddActivity.EXTRA_ID) }
     lateinit var spinner: Spinner
+    var selectedItem: String = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,7 +38,16 @@ class StrawAddActivity : AppCompatActivity(), Injectable{
         setContentView(R.layout.activity_add_straw)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setTitle(getString(R.string.add_straw))
-       // spinner = Spinner(this, R.string.straw_type)
+        spinner = type_spinner
+        spinner.onItemSelectedListener
+    }
+
+    override fun onNothingSelected(p0: AdapterView<*>?) {
+
+    }
+
+    override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+        selectedItem = spinner.selectedItem.toString()
     }
 
     override fun onResume() {
@@ -47,12 +60,13 @@ class StrawAddActivity : AppCompatActivity(), Injectable{
                 }
                 .flatMapSingle {
                     viewModel.addStraw(
-                            Straw(farmId!!, it[0], null, it[1], null, null, it[2], it[3], it[4], null))
+                            Straw(farmId, it[0], selectedItem, it[1], null, null, it[2], it[3], it[4], null))
                 }.subscribeBy(
                         onComplete = {
                             toast("Completo")
                         },
                         onNext = {
+                            toast("Entrada agregada exitosamente"+it)
                             finish()
 
                         },
