@@ -5,7 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     >
     <data>
-
+        <variable
+            name="straw"
+            type="com.example.cristian.myapplication.data.models.Straw"/>
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -22,7 +24,8 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="@string/race" />
+            tools:text="@string/race"
+            android:text="@{straw.race}"/>
 
         <TextView
             android:id="@+id/layetteText"
@@ -35,6 +38,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/raceText"
             tools:text="Canastilla"
+            android:text="@{straw.layette}"
             />
 
         <TextView
@@ -46,17 +50,17 @@
             android:textColor="@color/colorAccent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Propósito" />
+            tools:text="Propósito"
+            android:text="@{straw.purpose}"/>
 
         <TextView
             android:id="@+id/text3477"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
+            android:text="@string/bull"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layetteText"
+            tools:layout_editor_absoluteX="24dp"
+            tools:layout_editor_absoluteY="101dp"
             tools:text="@string/bull" />
 
         <TextView
@@ -68,7 +72,9 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text3477"
-            tools:text="Toro" />
+            tools:text="Toro"
+            android:text="@{straw.bull}"
+            android:textColor="@color/menu_button_light"/>
 
         <TextView
             android:id="@+id/textView33"
@@ -79,7 +85,8 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             app:layout_constraintStart_toEndOf="@+id/text3477"
             app:layout_constraintTop_toBottomOf="@+id/layetteText"
-            tools:text="@string/origin" />
+            tools:text="@string/origin"
+            android:text="@string/origin"/>
 
         <TextView
             android:id="@+id/originText"
@@ -90,7 +97,8 @@
             android:textColor="@color/menu_button_light"
             app:layout_constraintStart_toStartOf="@+id/textView33"
             app:layout_constraintTop_toBottomOf="@+id/textView33"
-            tools:text="Procedencia" />
+            tools:text="Procedencia"
+            android:text="@{straw.origin}"/>
 
         <ImageView
             android:id="@+id/imageView8"
@@ -101,6 +109,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/originText"
-            app:srcCompat="@color/menu_button_light" />
+            app:srcCompat="@color/line_template_straw" />
     </android.support.constraint.ConstraintLayout>
 </layout>

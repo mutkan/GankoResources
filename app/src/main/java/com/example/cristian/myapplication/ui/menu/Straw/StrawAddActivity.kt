@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.Spinner
@@ -40,6 +41,11 @@ class StrawAddActivity : AppCompatActivity(), Injectable, AdapterView.OnItemSele
         supportActionBar?.setTitle(getString(R.string.add_straw))
         spinner = type_spinner
         spinner.onItemSelectedListener
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        finish()
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onNothingSelected(p0: AdapterView<*>?) {
