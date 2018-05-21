@@ -98,7 +98,8 @@
             android:id="@+id/sexBovineTemplate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/female"
+            android:text="@{bovino.genero}"
+            tools:text="Hembra"
             app:layout_constraintStart_toStartOf="@+id/textView11"
             app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
@@ -171,7 +172,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/remove"
             android:visibility='@{bovino.retirado == true ? View.VISIBLE : View.GONE}'
-            android:text='@{""+ bovino.fechaSalida}'
+            android:text='@{"" + bovino.fechaSalida}'
             app:layout_constraintEnd_toEndOf="@+id/textView50"
             app:layout_constraintTop_toBottomOf="@+id/textView50"
             tools:text="21/03/2018" />

@@ -25,7 +25,7 @@ class StrawAdapter @Inject constructor(): RecyclerView.Adapter<StrawAdapter.Stra
     override fun getItemCount(): Int = straw.size
 
     override fun onBindViewHolder(holder: StrawHolder, position: Int) {
-
+        holder.binding?.straw  = straw[position]
     }
 
 
