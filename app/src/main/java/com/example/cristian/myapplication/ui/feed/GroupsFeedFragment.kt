@@ -19,6 +19,7 @@ import java.util.*
 
 class GroupsFeedFragment : Fragment() /*,Injectable*/ {
 
+
     val random:Random = Random()
     /*
     @Inject
