@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 <data>
-
+    <variable
+        name="handler"
+        type="com.example.cristian.myapplication.ui.adapters.ListFeedSelectBovinesAdapter"/>
 </data>
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -15,9 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="24dp"
-
             android:buttonTint="@color/check_filter"
-            android:checked="true"
             android:text="@string/select_all"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

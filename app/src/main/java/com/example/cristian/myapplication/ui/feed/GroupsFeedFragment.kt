@@ -13,6 +13,7 @@ import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.ui.adapters.ListGroupsAdapter
 import com.example.cristian.myapplication.util.Data
 import kotlinx.android.synthetic.main.fragment_groups_feed.*
+import kotlinx.android.synthetic.main.fragment_select_feed.*
 import java.util.*
 
 
@@ -86,6 +87,7 @@ class GroupsFeedFragment : Fragment() /*,Injectable*/ {
             group.color = color
         }
         adapter.groups = Data.grupos
+
     }
 
     companion object {
