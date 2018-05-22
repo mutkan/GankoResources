@@ -25,7 +25,8 @@ class ListFeedSelectBovinesAdapter @Inject constructor(): RecyclerView.Adapter<L
      holder.binding!!.selectFeedBtn.setOnCheckedChangeListener(null)
      holder.binding!!.selectFeedBtn.setChecked(bovino.seleccionado!!)
      holder.binding!!.selectFeedBtn.setOnCheckedChangeListener { compoundButton, b ->
-         if (b) bovino.seleccionado= true
+         if (b){ bovino.seleccionado= true
+                Log.d("seleccionados",""+bovino.tipo)}
          else{ bovino.seleccionado = false
                selectAll= false
 
