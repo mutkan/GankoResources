@@ -5,7 +5,7 @@ import kotlinx.android.parcel.Parcelize
 import java.util.*
 
 @Parcelize
-class Servicio(
+data class Servicio(
         var fecha: Date? = null,
         var fechaUltimoCelo: Date? = null,
         var condicionCorporal: Int? = null,
@@ -13,6 +13,6 @@ class Servicio(
         var codigoToro: String? = null,
         var pajilla: String? = null,
         var diagnosticos: List<Diagnostico>? = listOf(),
-        var parto: List<Parto>? = listOf(),
+        var parto: Parto? = null,
         var confirmacion: Boolean
 ):Parcelable

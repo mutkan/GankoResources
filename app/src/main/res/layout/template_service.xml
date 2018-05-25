@@ -15,34 +15,26 @@
 
 
         <TextView
-            android:id="@+id/fechaMontaTxt"
-            style="@style/textview_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="16dp"
-            android:text="Fecha Monta"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
             android:id="@+id/fechaMonta"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@+id/fechaMontaTxt"
-            app:layout_constraintTop_toBottomOf="@+id/fechaMontaTxt"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            android:textColor="@color/check_filter"
+            app:layout_constraintStart_toStartOf="@+id/serviceType"
+            app:layout_constraintTop_toBottomOf="@+id/serviceType"
             tools:text="20/02/2018" />
 
         <TextView
             android:id="@+id/fechaPalpacionTxt"
             style="@style/textview_label"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="16dp"
-            android:text="Fecha de Palpación"
-            app:layout_constraintStart_toEndOf="@+id/fechaNacimientoTxt"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/proposito"
+            app:layout_constraintTop_toTopOf="@+id/propositoTxt"
+            tools:text="Toro o Pajilla" />
 
         <TextView
             android:id="@+id/fechaPalpacion"
@@ -50,18 +42,16 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="@+id/fechaPalpacionTxt"
             app:layout_constraintTop_toBottomOf="@+id/fechaPalpacionTxt"
-            tools:text="20/02/2018" />
+            tools:text="465465478" />
 
         <TextView
             android:id="@+id/fechaNacimientoTxt"
             style="@style/textview_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="13dp"
             android:text="Fecha Nacimiento"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fechaMonta" />
+            tools:layout_editor_absoluteX="32dp"
+            tools:layout_editor_absoluteY="183dp" />
 
         <TextView
             android:id="@+id/fechaNacimiento"
@@ -76,16 +66,32 @@
             style="@style/textview_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Propósito"
-            app:layout_constraintStart_toStartOf="@+id/fechaPalpacionTxt"
-            tools:layout_editor_absoluteY="64dp" />
+            android:layout_marginTop="16dp"
+            android:text="Condición Corporal"
+            app:layout_constraintStart_toStartOf="@+id/fechaMonta"
+            app:layout_constraintTop_toBottomOf="@+id/fechaMonta" />
 
         <TextView
             android:id="@+id/proposito"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="16dp"
+            app:layout_constraintEnd_toStartOf="@+id/fechaPalpacionTxt"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/propositoTxt"
+            tools:text="1.5" />
+
+        <TextView
+            android:id="@+id/serviceType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@+id/propositoTxt"
-            app:layout_constraintTop_toBottomOf="@+id/propositoTxt"
-            tools:text="Leche" />
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Inceminación Artificial" />
+
     </android.support.constraint.ConstraintLayout>
 </layout>

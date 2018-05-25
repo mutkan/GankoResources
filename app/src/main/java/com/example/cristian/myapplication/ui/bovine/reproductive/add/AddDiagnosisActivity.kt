@@ -2,6 +2,7 @@ package com.example.cristian.myapplication.ui.bovine.reproductive.add
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import com.example.cristian.myapplication.R
 
 class AddDiagnosisActivity : AppCompatActivity() {
 

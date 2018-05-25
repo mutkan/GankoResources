@@ -219,7 +219,7 @@
         <item>Tipo C</item>
         <item>Tipo D</item>
     </string-array>
-    
+
     <string-array name="retirement_reason">
         <item>Venta</item>
         <item>Perdida</item>
