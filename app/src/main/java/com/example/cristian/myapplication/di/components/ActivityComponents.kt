@@ -1,6 +1,7 @@
 package com.example.cristian.myapplication.di.components
 
 import com.example.cristian.myapplication.di.ActivityScope
+import com.example.cristian.myapplication.di.modules.FeedModule
 import com.example.cristian.myapplication.di.modules.ReproductiveModule
 import com.example.cristian.myapplication.ui.account.LoginActivity
 import com.example.cristian.myapplication.ui.bovine.AddBovineActivity
@@ -19,6 +20,7 @@ import com.example.cristian.myapplication.ui.bovine.reproductive.add.AddZealActi
 import com.example.cristian.myapplication.ui.bovine.vaccination.VaccinationBvnActivity
 import com.example.cristian.myapplication.ui.farms.AddFarmActivity
 import com.example.cristian.myapplication.ui.farms.FarmActivity
+import com.example.cristian.myapplication.ui.feed.SelectFeedActivity
 import com.example.cristian.myapplication.ui.menu.MenuActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -97,6 +99,10 @@ abstract class ActivityComponents {
     @ActivityScope
     @ContributesAndroidInjector
     abstract fun bindAddZealActivity(): AddZealActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector(modules = [FeedModule::class])
+    abstract fun bindSelectFeedActivity(): SelectFeedActivity
 
 
 }

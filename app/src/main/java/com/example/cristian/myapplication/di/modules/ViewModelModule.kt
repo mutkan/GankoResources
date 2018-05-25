@@ -14,6 +14,7 @@ import com.example.cristian.myapplication.ui.bovine.movement.MovementBvnViewMode
 import com.example.cristian.myapplication.ui.bovine.reproductive.ReproductiveBvnViewModel
 import com.example.cristian.myapplication.ui.bovine.vaccination.VaccinationBvnViewModel
 import com.example.cristian.myapplication.ui.farms.FarmViewModel
+import com.example.cristian.myapplication.ui.feed.FeedViewModel
 import com.example.cristian.myapplication.ui.menu.MenuViewModel
 import com.example.cristian.myapplication.util.AppViewModelFactory
 import dagger.Binds
@@ -85,5 +86,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(ReproductiveBvnViewModel::class)
     abstract fun bindReproductiveBvnViewModel(viewModel: ReproductiveBvnViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(FeedViewModel::class)
+    abstract fun bindFeedViewModel(viewModel: FeedViewModel):ViewModel
+
 
 }

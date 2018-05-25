@@ -22,11 +22,9 @@ fun ViewGroup.inflate(layout: Int) = LayoutInflater.from(context).inflate(layout
 
 fun EditText.text(): String = text.toString()
 
-inline fun <reified T : ViewModel> AppCompatActivity.buildViewModel(factory: ViewModelProvider.Factory): T
-        = ViewModelProviders.of(this, factory).get(T::class.java)
+inline fun <reified T : ViewModel> AppCompatActivity.buildViewModel(factory: ViewModelProvider.Factory): T = ViewModelProviders.of(this, factory).get(T::class.java)
 
-inline fun <reified T : ViewModel> Fragment.buildViewModel(factory: ViewModelProvider.Factory): T
-        = ViewModelProviders.of(this, factory).get(T::class.java)
+inline fun <reified T : ViewModel> Fragment.buildViewModel(factory: ViewModelProvider.Factory): T = ViewModelProviders.of(this, factory).get(T::class.java)
 
 
 fun SharedPreferences.save(vararg data: Pair<String, Any>) {
@@ -44,8 +42,7 @@ fun SharedPreferences.save(vararg data: Pair<String, Any>) {
 }
 
 fun AppCompatActivity.validateForm(message: Int,
-                                   vararg fields: String): Observable<List<String>>
-        = Observable.create<List<String>> {
+                                   vararg fields: String): Observable<List<String>> = Observable.create<List<String>> {
     if (fields.contains("")) toast(message)
     else it.onNext(fields.toList())
     it.onComplete()
@@ -64,7 +61,7 @@ fun Fragment.putFragment(container: Int, fragment: Fragment) {
             .commit()
 }
 
-fun AppCompatActivity.addFragment(container: Int, fragment: Fragment, backStack:Boolean = true) {
+fun AppCompatActivity.addFragment(container: Int, fragment: Fragment, backStack: Boolean = true) {
     val transaction = supportFragmentManager.beginTransaction()
             .add(container, fragment)
     if (backStack) transaction.addToBackStack(null)
@@ -81,22 +78,24 @@ fun Fragment.addFragment(container: Int, fragment: Fragment, backStack: Boolean 
 
 
 @BindingAdapter("app:dateFormat")
-fun applyFormat(textView: TextView, date: Date){
+fun applyFormat(textView: TextView, date: Date?) {
     val format = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-    textView.text = format.format(date)
+    textView.text = if (date != null) format.format(date) else ""
 }
 
-fun Float.currencyFormat(): String{
+fun Float.currencyFormat(): String {
     val currencyFormat = NumberFormat.getCurrencyInstance()
     currencyFormat.currency = Currency.getInstance(Locale.getDefault())
     currencyFormat.maximumFractionDigits = 0
-    return currencyFormat.format(this).replace(",",".",true)
+    return currencyFormat.format(this).replace(",", ".", true)
 }
-fun String.toDate():Date{
+
+fun String.toDate(): Date {
     val format = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
     return format.parse(this)
 }
-fun Date.toStringFormat():String{
+
+fun Date.toStringFormat(): String {
     val format = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
     return format.format(this)
 }

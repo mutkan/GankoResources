@@ -7,6 +7,7 @@ import com.example.cristian.myapplication.ui.account.LoginActivity
 import com.example.cristian.myapplication.ui.farms.FarmActivity
 import com.example.cristian.myapplication.ui.menu.Straw.StrawFragment
 import com.example.cristian.myapplication.ui.menu.bovine.ListBovineFragment
+import com.example.cristian.myapplication.ui.menu.bovine.ListFeedFragment
 import com.example.cristian.myapplication.ui.menu.management.ManageFragment
 import com.example.cristian.myapplication.util.putFragment
 import kotlinx.android.synthetic.main.activity_menu.view.*
@@ -32,7 +33,7 @@ class MenuNavigation @Inject constructor(val activity: MenuActivity, val sesion:
     }
 
     fun navigateToFeeding() {
-
+        activity.putFragment(R.id.content_frame,ListFeedFragment.instance())
     }
 
     fun navigateToHealth() {

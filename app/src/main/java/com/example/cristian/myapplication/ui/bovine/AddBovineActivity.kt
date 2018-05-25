@@ -33,14 +33,14 @@ class AddBovineActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
     private val farmId by lazy { viewModel.getFarmId() }
     lateinit var binding: ActivityAddBovineBinding
     val dis: LifeDisposable = LifeDisposable(this)
-    lateinit var datePicker:DatePickerDialog
+    lateinit var datePicker: DatePickerDialog
     var foto: File? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_add_bovine)
         binding.page = 1
-        datePicker = DatePickerDialog(this,AddBovineActivity@ this,
+        datePicker = DatePickerDialog(this, AddBovineActivity@ this,
                 Calendar.getInstance().get(Calendar.YEAR),
                 Calendar.getInstance().get(Calendar.MONTH),
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
@@ -56,7 +56,7 @@ class AddBovineActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
         dis add PhotoUtil.processedImg
                 .subscribe {
                     //Nombre de Archivo
-                    Log.i("SIIIII","YA FUNCA")
+                    Log.i("SIIIII", "YA FUNCA")
                     foto = it
                     Picasso.get().load(it)
                             .into(imgBovino)
@@ -99,14 +99,15 @@ class AddBovineActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
                         purpose.checkedRadioButtonId == R.id.meat -> "Ceba"
                         else -> "Ambos"
                     }
-                    viewModel.addBovine(Bovino(null,null,null,"", bovineIdentificationNumber.text(), foto,
+                    viewModel.addBovine(Bovino(null, null, null, "", bovineIdentificationNumber.text(), foto,
                             bovineName.text(), bovineBirthDate.text.toString().toDate(), null, sex, purpose,
                             bovineWeight.text().toInt(), bovineColor.text(), bovineRace.text(), motherId.text(), fatherId.text(),
                             null, previousBovineBirths.text().toInt(), null, null, null, null,
                             null, farmId, check_weaned.isChecked,
-                            if (check_weaned.isChecked){bovineWeanedDate.text.toString().toDate()}
-                            else null,
-                            null, null, listOf(), listOf(), listOf()))
+                            if (check_weaned.isChecked) {
+                                bovineWeanedDate.text.toString().toDate()
+                            } else null,
+                            null, null, false, listOf(), listOf(), listOf()))
                 }.subscribeBy(
                         onNext = {
                             toast("Bovino agregado exitosamente")
