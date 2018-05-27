@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModelProvider
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.widget.Toolbar
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.Bovino
 import com.example.cristian.myapplication.databinding.ActivityBovineProfileBinding
@@ -19,6 +20,7 @@ import com.example.cristian.myapplication.ui.bovine.vaccination.VaccinationBvnAc
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
 import com.jakewharton.rxbinding2.view.clicks
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_bovine_profile.*
 import org.jetbrains.anko.startActivity
 import javax.inject.Inject
@@ -37,7 +39,16 @@ class DetailBovineActivity : AppCompatActivity(), Injectable {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_bovine_profile)
+        setSupportActionBar(toolbarBvnProfile)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back_white)
         binding.bovine = bovine
+        binding.sex = bovine.genero == "Hembra"
+        if (bovine.imagen != null) {
+            Picasso.get().load(bovine.imagen!!)
+                    .into(banner)
+        }
     }
 
     override fun onResume() {

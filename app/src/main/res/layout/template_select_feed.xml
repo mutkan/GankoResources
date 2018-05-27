@@ -28,6 +28,7 @@
 
         <TextView
             android:id="@+id/codeBovineTemplate"
+            android:text="@{bovino.tipo}"
             android:textColor="@color/colorAccent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

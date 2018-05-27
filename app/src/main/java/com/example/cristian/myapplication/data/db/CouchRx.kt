@@ -10,6 +10,11 @@ import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.rxkotlin.toObservable
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
+import java.io.InputStream
+import java.net.URL
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Named
@@ -20,23 +25,16 @@ import kotlin.reflect.KClass
 @Singleton
 class CouchRx @Inject constructor(private val db: Database
                                   , @Named("dbName") private val dbName: String
+                                  , private val folder: File
                                   , private val session: UserSession
                                   , private val mapper: ObjectMapper) {
 
 
-    fun <T:Any> insert(doc: T): Single<String> = Single.create {
-        val id = "${session.userId}.${UUID.randomUUID()}"
-        val document = objectToDocument(doc, id)
+    fun <T : Any> insert(doc: T): Single<String> = Single.create {
+        val document = objectToDocument(doc)
+        document.setArray("channels", MutableArray().addString(session.userId))
         db.save(document)
-        it.onSuccess(id)
-
-    }
-
-    fun <T : Any> insertGenId(doc: T): Single<String> = Single.create {
-        val id = "${UUID.randomUUID()}"
-        val document = objectToDocument(doc, id)
-        db.save(document)
-        it.onSuccess(id)
+        it.onSuccess(document.id)
     }
 
     fun <T : Any> update(id: String, doc: T): Single<Unit> = Single.create {
@@ -72,6 +70,8 @@ class CouchRx @Inject constructor(private val db: Database
                 .from(DataSource.database(db))
                 .where(expression andEx ("type" equalEx kClass.simpleName.toString()))
 
+
+
         it.onSuccess(query.execute())
     }
             .flatMapObservable { it.toObservable() }
@@ -105,33 +105,125 @@ class CouchRx @Inject constructor(private val db: Database
             .map { dictionaryToObject(it.first, it.second, it.third, kClass) }
             .toList()
 
-    fun <T : Any> listByExp2(expression: Expression, kClass: KClass<T>): Observable<List<T>> = Observable.create {e->
+    fun ListObsByQuery(query: Query): Observable<ResultSet> = Observable.create { emitter ->
+        query.addChangeListener {
+            if (it.error == null) emitter.onNext(it.results)
+            else emitter.onError(it.error)
+        }
+    }
+
+    fun <T : Any> listObsByExp(expression: Expression, kClass: KClass<T>): Observable<List<T>> = Observable.create<ResultSet> { emitter ->
         val query = QueryBuilder
                 .select(SelectResult.all(), SelectResult.expression(Meta.id), SelectResult.expression(Meta.sequence))
                 .from(DataSource.database(db))
                 .where(expression andEx ("type" equalEx kClass.simpleName.toString()))
+        query.addChangeListener {
+            if (it.error == null) emitter.onNext(it.results)
+            else emitter.onError(it.error)
+        }
+    }
+            .flatMap { result ->
+                result.toObservable()
+                        .map {
+                            val id = it.getString("id")
+                            val sequence = it.getLong("sequence")
+                            val content = it.getDictionary(dbName)
+                            Triple(id, sequence, content)
+                        }
+                        .map { dictionaryToObject(it.first, it.second, it.third, kClass) }
+                        .toList().toObservable()
 
-        query.addChangeListener { qc ->
-             e.onNext(qc.results.allResults().toObservable()
-                     .map {
-                         val id = it.getString("id")
-                         val sequence = it.getLong("sequence")
-                         val content = it.getDictionary(dbName)
-                         Triple(id, sequence, content)
-                     }
-                     .map { dictionaryToObject(it.first, it.second, it.third, kClass) }
-                     .toList()
-                     .blockingGet()
-                     )
+            }
+
+    fun getFile(id: String, name: String): Maybe<File> {
+        val file = File(folder, name)
+        return if (file.exists()) {
+            Maybe.just(file)
+        } else {
+            Maybe.create<InputStream> {
+                try {
+                    val doc = db.getDocument(id)
+                    val files:Dictionary? = doc.getDictionary("files")
+                    val blob:Blob? = files?.getBlob(name)
+                    val input = blob?.contentStream
+                    if (input != null && blob != null) it.onSuccess(input)
+                    else it.onComplete()
+                } catch (e: Exception) {
+                    it.onError(e)
+                }
+            }
+                    .flatMap {
+                        val outStream = FileOutputStream(file)
+                        val buffer = ByteArray(8 * 1024)
+                        var bytesRead: Int = it.read(buffer)
+                        while (bytesRead != -1) {
+                            outStream.write(buffer, 0, bytesRead)
+                            bytesRead = it.read(buffer)
+                        }
+                        outStream.close()
+                        it.close()
+                        Maybe.just(file)
+                    }
+
         }
     }
 
+//    fun removeBlob(id:String, field:String) =
 
-    private fun objectToDocument(obj: Any, id: String): MutableDocument {
-        val map = mapper.convertValue(obj, Map::class.java) as MutableMap<String, Any>
-        if (map.containsKey("_id")) map.remove("_id")
-        return MutableDocument(id, map)
+    fun putBlob(id: String, name: String, contentType: String, path: String): Single<Pair<String, String>> {
+        val file = File(path)
+        return putBlobAny(id, name, contentType, FileInputStream(file))
     }
+
+    fun putBlob(id: String, name: String, contentType: String, file: File): Single<Pair<String, String>> =
+            putBlobAny(id, name, contentType, FileInputStream(file))
+
+    fun putBlob(id: String, name: String, contentType: String, input: InputStream): Single<Pair<String, String>> =
+            putBlobAny(id, name, contentType, input)
+
+    fun putBlob(id: String, name: String, contentType: String, bytes: ByteArray): Single<Pair<String, String>> =
+            putBlobAny(id, name, contentType, bytes)
+
+    fun putBlob(id: String, name: String, contentType: String, url: URL): Single<Pair<String, String>> =
+            putBlobAny(id, name, contentType, url)
+
+    private fun putBlobAny(id: String, name: String, contentType: String, data: Any): Single<Pair<String, String>> =
+            Single.create {
+                try {
+                    val document = db.getDocument(id).toMutable()
+                    val files:MutableDictionary = document.getDictionary("files") ?: MutableDictionary()
+
+                    val blob = when (data) {
+                        is InputStream -> Blob(contentType, data)
+                        is ByteArray -> Blob(contentType, data)
+                        is URL -> Blob(contentType, data)
+                        else -> null
+                    }
+
+                    files.setBlob(name, blob)
+                    document.setDictionary("files", files)
+                    db.save(document)
+                    (data as? InputStream)?.close()
+                    it.onSuccess(id to name)
+                } catch (e: Exception) {
+                    it.onError(e)
+                }
+            }
+
+
+    private fun objectToDocument(obj: Any, id: String? = null): MutableDocument {
+        val map = mapper.convertValue(obj, Map::class.java) as MutableMap<String, Any>
+        if (map.contains("_id")) map.remove("_id")
+        if (map.contains("_sequence") && id == null) map.remove("_sequence")
+        return if (id != null) MutableDocument(id, map) else MutableDocument(map)
+    }
+
+    private fun objectToMap(obj: Any): Map<String, Any> {
+        val map = mapper.convertValue(obj, Map::class.java) as MutableMap<String, Any>
+        map.remove("_id")
+        return map
+    }
+
 
     private fun <T : Any> dictionaryToObject(id: String, sequence: Long, dictionary: Dictionary, kClass: KClass<T>): T {
         val map = dictionary.toMap()
@@ -140,11 +232,13 @@ class CouchRx @Inject constructor(private val db: Database
         return mapper.convertValue(map, kClass.java)
     }
 
+
     private fun <T : Any> mapToObject(id: String, sequence: Long, map: MutableMap<String, Any>, kClass: KClass<T>): T {
         map["_id"] = id
         map["_sequence"] = sequence
         return mapper.convertValue(map, kClass.java)
     }
+
 
 
 }

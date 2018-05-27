@@ -9,6 +9,10 @@
         <variable
             name="bovine"
             type="com.example.cristian.myapplication.data.models.Bovino"/>
+        <variable
+            name="sex"
+            type="Boolean"/>
+        <import type="android.view.View"/>
     </data>
 
     <android.support.v4.widget.NestedScrollView
@@ -23,13 +27,20 @@
             <ImageView
                 android:id="@+id/banner"
                 android:layout_width="0dp"
-                android:layout_height="150dp"
+                android:layout_height="200dp"
                 android:scaleType="centerCrop"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_launcher_background" />
+                app:srcCompat="@drawable/default_photo_bovine" />
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbarBvnProfile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                app:titleTextColor="@color/white" />
 
             <TextView
                 android:id="@+id/nameBovineProfileActivity"
@@ -156,6 +167,7 @@
                 android:gravity="left|center"
                 android:paddingHorizontal="24dp"
                 android:text="@string/milk"
+                android:visibility='@{ sex == true ? View.VISIBLE : View.GONE}'
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/line1" />
@@ -167,13 +179,16 @@
                 android:layout_height="@dimen/button_square"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/line1"
-                app:srcCompat="@drawable/ic_add" />
+                android:visibility='@{ sex == true ? View.VISIBLE : View.GONE}'
+                app:srcCompat="@drawable/ic_add"
+                />
 
             <ImageView
                 android:id="@+id/line2"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:background="@color/separator_gray"
+                android:visibility='@{ sex == true ? View.VISIBLE : View.GONE}'
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btnMilkProfileActivity">
@@ -186,6 +201,7 @@
                 android:layout_height="@dimen/button_square"
                 android:gravity="start|center"
                 android:paddingHorizontal="24dp"
+                android:visibility='@{ sex == true ? View.VISIBLE : View.GONE}'
                 android:text="@string/reproductive_uppercase"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -196,6 +212,7 @@
                 style="@style/Base.Widget.AppCompat.Button.Borderless"
                 android:layout_width="@dimen/button_square"
                 android:layout_height="@dimen/button_square"
+                android:visibility='@{ sex == true ? View.VISIBLE : View.GONE}'
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btnMilkProfileActivity"
                 app:srcCompat="@drawable/ic_enter_gray" />
@@ -206,6 +223,7 @@
                 android:layout_height="1dp"
                 android:background="@color/separator_gray"
                 app:layout_constraintEnd_toEndOf="parent"
+                android:visibility='@{ sex == true ? View.VISIBLE : View.GONE}'
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btnReproduciveProfileActivity">
 

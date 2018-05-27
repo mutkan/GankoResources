@@ -2,10 +2,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.cristian.myapplication">
 
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+
     <application
         android:name=".App"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/gankobovinos"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -24,12 +29,23 @@
         <activity android:name=".ui.bovine.manage.ManageBvnActivity" />
         <activity android:name=".ui.account.SigninActivity" />
         <activity android:name=".ui.account.RestorePassActivity" />
-        <activity android:name=".ui.bovine.DetailBovineActivity" />
+        <activity android:name=".ui.bovine.DetailBovineActivity"
+            android:parentActivityName=".ui.menu.MenuActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.menu.MenuActivity"
+                />
+
+        </activity>
         <activity android:name=".ui.farms.AddFarmActivity" />
-        <activity android:name=".ui.account.LoginActivity"
+        <activity
+            android:name=".ui.account.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -39,7 +55,7 @@
             android:name=".ui.menu.MenuActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ui.bovine.milk.AddMilkBvnActivity" />
-        <activity android:name=".ui.farms.FarmActivity"/>
+        <activity android:name=".ui.farms.FarmActivity" />
         <activity android:name=".ui.bovine.movement.MovementBvnActivity" />
         <activity android:name=".ui.bovine.vaccination.VaccinationBvnActivity" />
 
@@ -50,7 +66,21 @@
         <activity android:name=".ui.bovine.reproductive.ReproductiveBvnActivity" />
         <activity android:name=".ui.bovine.reproductive.add.AddZealActivity" />
         <activity android:name=".ui.bovine.reproductive.add.AddServiceActivity" />
+<<<<<<< HEAD
 
+=======
+        <activity android:name=".ui.menu.Straw.StrawAddActivity"></activity>
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+>>>>>>> e6a54db3461172cdd43998523242f505b7ba1999
     </application>
 
 </manifest>
