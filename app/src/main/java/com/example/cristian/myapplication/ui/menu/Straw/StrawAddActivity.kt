@@ -1,6 +1,7 @@
 package com.example.cristian.myapplication.ui.menu.Straw
 
 import android.arch.lifecycle.ViewModelProvider
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
@@ -39,6 +40,7 @@ class StrawAddActivity : AppCompatActivity(), Injectable, AdapterView.OnItemSele
         setContentView(R.layout.activity_add_straw)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setTitle(getString(R.string.add_straw))
+        //supportActionBar?.setBackgroundDrawable(ColorDrawable(resources.getColor(R.color.straw_primary)))
         spinner = type_spinner
         spinner.onItemSelectedListener
     }
