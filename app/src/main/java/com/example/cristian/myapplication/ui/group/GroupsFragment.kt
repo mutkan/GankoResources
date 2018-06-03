@@ -1,4 +1,4 @@
-package com.example.cristian.myapplication.ui.feed
+package com.example.cristian.myapplication.ui.group
 
 
 import android.arch.lifecycle.ViewModelProvider
@@ -14,16 +14,16 @@ import android.view.ViewGroup
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.ListGroupsAdapter
+import com.example.cristian.myapplication.ui.feed.FeedViewModel
 import com.example.cristian.myapplication.util.Data
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
 import kotlinx.android.synthetic.main.fragment_groups_feed.*
-import kotlinx.android.synthetic.main.fragment_select_feed.*
 import java.util.*
 import javax.inject.Inject
 
 
-class GroupsFeedFragment : Fragment(), Injectable {
+class GroupsFragment : Fragment(), Injectable {
 
 
     val random:Random = Random()
@@ -63,7 +63,7 @@ class GroupsFeedFragment : Fragment(), Injectable {
     }
 
     companion object {
-        fun instance(): GroupsFeedFragment = GroupsFeedFragment()
+        fun instance(): GroupsFragment = GroupsFragment()
     }
 
 }

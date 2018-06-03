@@ -8,21 +8,17 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.di.Injectable
-import com.example.cristian.myapplication.ui.adapters.ListBovineAdapter
 import com.example.cristian.myapplication.ui.adapters.ListFeedBovineAdapter
-import com.example.cristian.myapplication.ui.feed.SelectFeedActivity
+import com.example.cristian.myapplication.ui.group.SelectActivity
 import com.example.cristian.myapplication.ui.menu.MenuViewModel
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
 import com.jakewharton.rxbinding2.view.clicks
 import io.reactivex.rxkotlin.subscribeBy
-import kotlinx.android.synthetic.main.fragment_list_bovine.*
 import kotlinx.android.synthetic.main.fragment_list_feed.*
 import org.jetbrains.anko.support.v4.startActivity
-import org.jetbrains.anko.support.v4.toast
 import javax.inject.Inject
 
 class ListFeedFragment : Fragment(), Injectable {
@@ -66,7 +62,7 @@ class ListFeedFragment : Fragment(), Injectable {
         dis add floatingActionButton3.clicks()
                 .subscribeBy(
                         onNext = {
-                            startActivity<SelectFeedActivity>()
+                            startActivity<SelectActivity>()
                         }
                 )
     }

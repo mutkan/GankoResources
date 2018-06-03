@@ -1,8 +1,6 @@
 package com.example.cristian.myapplication.ui.adapters
 
-import android.databinding.DataBindingUtil
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import com.example.cristian.myapplication.R

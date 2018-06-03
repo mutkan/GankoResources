@@ -1,30 +1,27 @@
-package com.example.cristian.myapplication.ui.feed
+package com.example.cristian.myapplication.ui.group
 import android.arch.lifecycle.ViewModelProvider
-import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.cristian.myapplication.R
-import com.example.cristian.myapplication.databinding.FragmentSelectFeedBinding
-import com.example.cristian.myapplication.ui.adapters.ListFeedSelectBovinesAdapter
+import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.SelectBovinesAdapter
-import com.example.cristian.myapplication.util.Data
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.jakewharton.rxbinding2.view.clicks
 import kotlinx.android.synthetic.main.fragment_select_feed.*
 import javax.inject.Inject
 
-class SelectFeedFragment : Fragment() /*, Injectable*/ {
+class SelectFragment : Fragment() , Injectable {
 
     val adapter: SelectBovinesAdapter = SelectBovinesAdapter()
     val dis: LifeDisposable = LifeDisposable(this)
 
     @Inject
     lateinit var factory:ViewModelProvider.Factory
+
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -48,7 +45,7 @@ class SelectFeedFragment : Fragment() /*, Injectable*/ {
     }
 
     companion object {
-        fun instance(): SelectFeedFragment= SelectFeedFragment()
+        fun instance(): SelectFragment = SelectFragment()
     }
 
 

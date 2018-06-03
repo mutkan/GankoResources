@@ -1,4 +1,4 @@
-package com.example.cristian.myapplication.ui.feed
+package com.example.cristian.myapplication.ui.group
 
 import android.databinding.DataBindingUtil
 import android.support.v7.app.AppCompatActivity
@@ -11,10 +11,9 @@ import com.example.cristian.myapplication.ui.adapters.SelectFeedAdapter
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
-import kotlinx.android.synthetic.main.activity_select_feed.*
 import javax.inject.Inject
 
-class SelectFeedActivity : AppCompatActivity(), HasSupportFragmentInjector {
+class SelectActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
     lateinit var binding: ActivitySelectFeedBinding
     @Inject
@@ -31,10 +30,10 @@ class SelectFeedActivity : AppCompatActivity(), HasSupportFragmentInjector {
     private fun setupViewPager(selectFeedPager: ViewPager?) {
         val adapter = SelectFeedAdapter(supportFragmentManager)
 
-        val f1 = SelectFeedFragment.instance()
+        val f1 = SelectFragment.instance()
         adapter.addFragment(f1, "Bovinos")
 
-        val f2 = GroupsFeedFragment.instance()
+        val f2 = GroupsFragment.instance()
         adapter.addFragment(f2, "Grupos")
 
         selectFeedPager?.adapter = adapter

@@ -20,7 +20,7 @@ import com.example.cristian.myapplication.ui.bovine.reproductive.add.AddZealActi
 import com.example.cristian.myapplication.ui.bovine.vaccination.VaccinationBvnActivity
 import com.example.cristian.myapplication.ui.farms.AddFarmActivity
 import com.example.cristian.myapplication.ui.farms.FarmActivity
-import com.example.cristian.myapplication.ui.feed.SelectFeedActivity
+import com.example.cristian.myapplication.ui.group.SelectActivity
 import com.example.cristian.myapplication.ui.menu.MenuActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -102,7 +102,7 @@ abstract class ActivityComponents {
 
     @ActivityScope
     @ContributesAndroidInjector(modules = [FeedModule::class])
-    abstract fun bindSelectFeedActivity(): SelectFeedActivity
+    abstract fun bindSelectFeedActivity(): SelectActivity
 
 
 }
