@@ -54,7 +54,7 @@ class FarmActivity : AppCompatActivity(), Injectable {
         super.onResume()
         dis add viewModel.getAllByUser(userId)
                 .subscribeBy(
-                        onNext = {
+                        onSuccess = {
                             isEmpty.set(it.isEmpty())
                             listFarmAdapter.farms = it
                         }
