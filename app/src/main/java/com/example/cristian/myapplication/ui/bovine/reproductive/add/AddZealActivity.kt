@@ -53,4 +53,5 @@ class AddZealActivity : AppCompatActivity(), Injectable {
                 )
 
     }
+
 }

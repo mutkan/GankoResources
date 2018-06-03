@@ -14,6 +14,8 @@ import com.example.cristian.myapplication.databinding.ActivityAddBovineBinding
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.util.*
 import com.jakewharton.rxbinding2.view.clicks
+import com.jakewharton.rxbinding2.widget.RxRadioGroup
+import com.jakewharton.rxbinding2.widget.checked
 import com.jakewharton.rxbinding2.widget.checkedChanges
 import com.squareup.picasso.Picasso
 import io.reactivex.rxkotlin.subscribeBy
@@ -62,6 +64,12 @@ class AddBovineActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
                             .into(imgBovino)
                 }
 
+
+        dis add sexBovine.checkedChanges()
+                .subscribe {
+                    binding.stateSex = male.isChecked
+                }
+
         dis add check_weaned.checkedChanges()
                 .subscribeBy(
                         onNext = {
@@ -90,7 +98,6 @@ class AddBovineActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
                 )
 
         dis add btnFinalize.clicks()
-                .flatMap { validateForm(R.string.empty_fields, fatherId.text.toString(), motherId.text.toString()) }
                 .flatMapSingle {
                     val sex = if (sexBovine.checkedRadioButtonId == R.id.male) "Macho"
                     else "Hembra"
@@ -102,7 +109,9 @@ class AddBovineActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
                     viewModel.addBovine(Bovino(null,null,null,"", bovineIdentificationNumber.text(), foto,
                             bovineName.text(), bovineBirthDate.text.toString().toDate(), null, sex, purpose,
                             bovineWeight.text().toInt(), bovineColor.text(), bovineRace.text(), motherId.text(), fatherId.text(),
-                            null, previousBovineBirths.text().toInt(), null, null, null, null,
+                            null,
+                            if (male.isChecked) null else previousBovineBirths.text().toInt(),
+                            null, false, null, null,
                             null, farmId, check_weaned.isChecked,
                             if (check_weaned.isChecked){bovineWeanedDate.text.toString().toDate()}
                             else null,
@@ -126,8 +135,8 @@ class AddBovineActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
                         validateForm(R.string.empty_fields, bovineIdentificationNumber.text.toString(),
                                 bovineName.text.toString(), bovineRace.text.toString(),
                                 if (sexBovine.checkedRadioButtonId == R.id.male) "Macho"
-                                else "Hembra",
-                                previousBovineBirths.text.toString())
+                                else "Hembra"
+                                )
                     else {
                         val bvnWeanedDate: String
                         if (check_weaned.isChecked) bvnWeanedDate = bovineWeanedDate.text.toString()

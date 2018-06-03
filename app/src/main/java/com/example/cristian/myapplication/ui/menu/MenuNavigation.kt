@@ -20,6 +20,7 @@ import javax.inject.Inject
 class MenuNavigation @Inject constructor(val activity: MenuActivity, val sesion: UserSession){
 
     fun navigateToFarm() {
+        sesion.farm = ""
         activity.startActivity<FarmActivity>()
         activity.finish()
     }
@@ -60,8 +61,7 @@ class MenuNavigation @Inject constructor(val activity: MenuActivity, val sesion:
     }
 
     fun navigateToLogout() {
-        sesion.logged = false
-        sesion.token = ""
+        sesion.destroysession()
 
         activity.startActivity<LoginActivity>()
         activity.finish()

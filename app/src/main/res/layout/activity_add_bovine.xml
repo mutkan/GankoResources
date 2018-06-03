@@ -11,6 +11,9 @@
         <variable
             name="stateCheckBox"
             type="Boolean"/>
+        <variable
+            name="stateSex"
+            type="Boolean"/>
 
         <import type="android.view.View"/>
     </data>
@@ -109,10 +112,13 @@
                         android:ems="10"
                         android:hint="@string/previous_number_of_births"
                         android:inputType="number"
+                        android:visibility='@{stateSex == true ? View.GONE : View.VISIBLE}'
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@+id/textView67"
+                        app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="@+id/textView67"
-                        app:layout_constraintTop_toBottomOf="@+id/textView67" />
+                        app:layout_constraintTop_toBottomOf="@+id/textView67"
+                        app:layout_constraintVertical_bias="1.0" />
 
                     <TextView
                         android:id="@+id/textView64"
@@ -207,6 +213,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:text="@string/number_of_births"
+                        android:visibility='@{stateSex == true ? View.GONE : View.VISIBLE}'
                         app:layout_constraintEnd_toEndOf="@+id/sexBovine"
                         app:layout_constraintStart_toStartOf="@+id/sexBovine"
                         app:layout_constraintTop_toBottomOf="@+id/sexBovine" />
