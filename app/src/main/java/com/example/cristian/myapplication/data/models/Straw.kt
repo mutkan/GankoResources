@@ -9,7 +9,7 @@ class Straw(
         var idStraw: String? =null,
         var typeStraw: String? = null,
         var layette: String? = null,
-        var race: String? = null,
+        var breed: String? = null,
         var purpose: String? = null,
         var bull: String? = null,
         var origin: String? = null,

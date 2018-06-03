@@ -80,14 +80,14 @@ class MenuActivity : AppCompatActivity(),Injectable,HasSupportFragmentInjector {
                         drawer.closeDrawers()
                         when (it) {
                             1 -> nav.navigateToFarm()
-                            in 2..9 -> clickOnMenu(it)
-                            10 -> nav.navigateToLogout()
+                            in 2..11 -> clickOnMenu(it)
+                            12 -> nav.navigateToLogout()
                         }
                     }else{
                         when (it) {
                             1 -> nav.navigateToFarm()
-                            in 2..9 -> clickOnMenu(it)
-                            10 -> nav.navigateToLogout()
+                            in 2..11 -> clickOnMenu(it)
+                            12 -> nav.navigateToLogout()
                         }
                     }
                 }
