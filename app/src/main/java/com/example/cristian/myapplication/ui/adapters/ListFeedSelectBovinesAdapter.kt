@@ -9,50 +9,38 @@ import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.Bovino
 import com.example.cristian.myapplication.databinding.TemplateSelectFeedBinding
 import com.example.cristian.myapplication.util.inflate
+import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
-class ListFeedSelectBovinesAdapter @Inject constructor(): RecyclerView.Adapter<ListFeedSelectBovinesAdapter.ListFeedSelectBovinesHolder>(){
+class SelectBovinesAdapter @Inject constructor(): RecyclerView.Adapter<SelectBovinesAdapter.SelectBovinesHolder>(){
 
-    var selectAll:Boolean= false
-    var feedSelectbovines: List<Bovino> = emptyList()
+    val onSelectBovine:PublishSubject<BovineSelect> = PublishSubject.create()
+    var data: List<BovineSelect> = emptyList()
         set(value) {
             field = value
             notifyDataSetChanged()
         }
 
-    override fun onBindViewHolder(holder: ListFeedSelectBovinesHolder, position: Int) {
-    var bovino:Bovino = feedSelectbovines.get(position)
-     holder.binding!!.selectFeedBtn.setOnCheckedChangeListener(null)
-     holder.binding!!.selectFeedBtn.setChecked(bovino.seleccionado!!)
-     holder.binding!!.selectFeedBtn.setOnCheckedChangeListener { compoundButton, b ->
-         if (b){ bovino.seleccionado= true
-                Log.d("seleccionados",""+bovino.tipo)}
-         else{ bovino.seleccionado = false
-               selectAll= false
-
-         }
-     }
-     holder.binding!!.selectFeedBtn.setChecked(bovino.seleccionado!!)
-        //Select all
-        if (selectAll) holder.binding!!.selectFeedBtn.setChecked(true)
-        else holder.binding!!.selectFeedBtn.setChecked(false)
-
-
+    override fun onBindViewHolder(holder: SelectBovinesHolder, position: Int) {
+        holder.bind(data[position], onSelectBovine)
     }
 
-    override fun getItemCount(): Int = feedSelectbovines.size
+    override fun getItemCount(): Int = data.size
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListFeedSelectBovinesHolder
-            = ListFeedSelectBovinesHolder(parent.inflate(R.layout.template_select_feed))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SelectBovinesHolder
+            = SelectBovinesHolder(parent.inflate(R.layout.template_select_feed))
 
 
-    class ListFeedSelectBovinesHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val binding : TemplateSelectFeedBinding? = DataBindingUtil.bind(itemView)
 
-    }
+    class SelectBovinesHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val binding : TemplateSelectFeedBinding = TemplateSelectFeedBinding.bind(itemView)
 
-    fun selectAll(n:Int){
-        selectAll = n==1
-    notifyDataSetChanged()
+        fun bind(bovine:BovineSelect, selectedBovine:PublishSubject<BovineSelect>){
+            binding.bovino = bovine
+            binding.onSelect = selectedBovine
+        }
     }
 }
+
+
+class BovineSelect(val bovine: Bovino, var selected:Boolean = false)
