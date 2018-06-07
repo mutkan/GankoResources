@@ -30,6 +30,14 @@ class UserSession @Inject constructor(val prefs: SharedPreferences){
         get() = prefs.getString(KEY_FARM_ID, "")
         set(value) = prefs.save(KEY_FARM_ID to value)
 
+    fun destroysession(){
+        token = ""
+        logged = false
+        userId = ""
+        farm = ""
+        farmID = ""
+    }
+
     companion object {
         private val KEY_TOKEN = "token"
         private val KEY_LOGGED = "logged"

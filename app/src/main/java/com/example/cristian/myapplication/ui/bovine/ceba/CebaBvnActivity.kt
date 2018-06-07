@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.view.MenuItem
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.ListCebaBovineAdapter
@@ -57,6 +58,12 @@ class CebaBvnActivity : AppCompatActivity(),Injectable {
                     startActivity<AddCebaBvnActivity>("idBovino" to idBovino)
                 }
     }
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
+    }
+
     companion object {
         val EXTRA_ID:String = "idBovino"
     }

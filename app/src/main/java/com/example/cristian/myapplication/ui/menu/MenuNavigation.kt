@@ -8,8 +8,8 @@ import com.example.cristian.myapplication.ui.farms.FarmActivity
 import com.example.cristian.myapplication.ui.menu.Straw.StrawFragment
 import com.example.cristian.myapplication.ui.menu.bovine.ListBovineFragment
 import com.example.cristian.myapplication.ui.menu.management.ManageFragment
+import com.example.cristian.myapplication.ui.menu.meadow.MeadowFragment
 import com.example.cristian.myapplication.util.putFragment
-import kotlinx.android.synthetic.main.activity_menu.view.*
 import org.jetbrains.anko.startActivity
 import javax.inject.Inject
 
@@ -20,6 +20,7 @@ import javax.inject.Inject
 class MenuNavigation @Inject constructor(val activity: MenuActivity, val sesion: UserSession){
 
     fun navigateToFarm() {
+        sesion.farm = ""
         activity.startActivity<FarmActivity>()
         activity.finish()
     }
@@ -51,8 +52,8 @@ class MenuNavigation @Inject constructor(val activity: MenuActivity, val sesion:
 
     }
 
-    fun navigateToPrairies() {
-
+    fun navigateToMeadow() {
+        activity.putFragment(R.id.content_frame, MeadowFragment.instance())
     }
 
     fun navigateToVaccination() {
@@ -60,8 +61,7 @@ class MenuNavigation @Inject constructor(val activity: MenuActivity, val sesion:
     }
 
     fun navigateToLogout() {
-        sesion.logged = false
-        sesion.token = ""
+        sesion.destroysession()
 
         activity.startActivity<LoginActivity>()
         activity.finish()

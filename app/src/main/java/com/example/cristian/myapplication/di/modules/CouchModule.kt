@@ -5,11 +5,15 @@ import com.couchbase.lite.Database
 import com.couchbase.lite.DatabaseConfiguration
 import com.couchbase.lite.IndexBuilder
 import com.couchbase.lite.ValueIndexItem
+import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import dagger.Module
 import dagger.Provides
+import java.io.File
 import javax.inject.Named
+import javax.inject.Singleton
 
 @Module
 class CouchModule{
@@ -27,7 +31,16 @@ class CouchModule{
     }
 
     @Provides
-    fun provideMapper() = ObjectMapper().registerKotlinModule()
+    @Singleton
+    fun provideFolderName(context: Context): File = context.filesDir
+
+    @Provides
+    fun provideMapper() : ObjectMapper {
+      val mapper = ObjectMapper().registerKotlinModule()
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
+        return mapper
+    }
 
 
 }

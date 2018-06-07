@@ -48,6 +48,12 @@ class HealthBvnActivity : AppCompatActivity(), Injectable {
                             toast(it.message!!)
                         })
     }
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
+    }
+
     companion object {
         val EXTRA_ID: String = "idBovino"
     }

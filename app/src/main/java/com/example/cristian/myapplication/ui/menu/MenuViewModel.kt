@@ -8,6 +8,7 @@ import com.example.cristian.myapplication.data.models.Bovino
 import com.example.cristian.myapplication.data.models.Manage
 import com.example.cristian.myapplication.data.models.Straw
 import com.example.cristian.myapplication.data.preferences.UserSession
+import com.example.cristian.myapplication.util.andEx
 import com.example.cristian.myapplication.util.applySchedulers
 import com.example.cristian.myapplication.util.equalEx
 import io.reactivex.Single
@@ -78,7 +79,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     fun getFarmId():String = userSession.farmID
 
     fun getBovine(idFinca: String): Single<List<Bovino>> =
-            db.listByExp("finca" equalEx idFinca, Bovino::class)
+            db.listByExp("finca" equalEx idFinca andEx ("retirado" equalEx false), Bovino::class)
                     .applySchedulers()
 
     fun deleteBovine(idBovino: String): Single<Unit> = db.remove(idBovino).applySchedulers()

@@ -142,7 +142,7 @@
     <string name="number_of_baskets">Numero de Canastilla</string>
     <string name="type">Tipo</string>
     <string name="bull_name">Nombre del Toro</string>
-    <string name="origin_name">Nombre de Procedencia</string>
+    <string name="origin_name">Nombre de la procedencia</string>
     <string name="date_value">dd / mm / yyyy</string>
     <string name="button_plus">+</string>
     <string name="menu_open">Menu abierto</string>
@@ -212,6 +212,9 @@
     <string name="bovine_deleted">Bovino eliminado</string>
     <string name="the_bovine_has_been_retired">El bovino ha sido retirado</string>
     <string name="add_straw">Agregar Pajilla</string>
+    <string name="straw_type">Tipo</string>
+    <string name="straw_value">Valor</string>
+    <string name="straw_breed">Raza</string>
 
     <string-array name="straw_type">
         <item>Tipo A</item>
@@ -219,7 +222,7 @@
         <item>Tipo C</item>
         <item>Tipo D</item>
     </string-array>
-    
+
     <string-array name="retirement_reason">
         <item>Venta</item>
         <item>Perdida</item>

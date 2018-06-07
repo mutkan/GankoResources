@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModelProvider
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.widget.Toolbar
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.Bovino
 import com.example.cristian.myapplication.databinding.ActivityBovineProfileBinding
@@ -39,9 +40,16 @@ class DetailBovineActivity : AppCompatActivity(), Injectable {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_bovine_profile)
+        setSupportActionBar(toolbarBvnProfile)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back_white)
         binding.bovine = bovine
-        Picasso.get().load(bovine.imagen!!)
-                .into(banner)
+        binding.sex = bovine.genero == "Hembra"
+        if (bovine.imagen != null) {
+            Picasso.get().load(bovine.imagen!!)
+                    .into(banner)
+        }
     }
 
     override fun onResume() {
@@ -56,23 +64,49 @@ class DetailBovineActivity : AppCompatActivity(), Injectable {
         dis add btnReproduciveProfileActivity.clicks()
                 .subscribe { startActivity<ReproductiveBvnActivity>(EXTRA_ID to bovine._id) }
 
+        dis add btnNextReproductive.clicks()
+                .subscribe { startActivity<ReproductiveBvnActivity>(EXTRA_ID to bovine._id) }
+
         dis add btnMeatProfileActivity.clicks()
+                .subscribe { startActivity<CebaBvnActivity>(EXTRA_ID to bovine._id) }
+
+        dis add btnNextMeat.clicks()
                 .subscribe { startActivity<CebaBvnActivity>(EXTRA_ID to bovine._id) }
 
         dis add btnFeedingProfileActivity.clicks()
                 .subscribe { startActivity<FeedBvnActivity>(EXTRA_ID to bovine._id) }
 
+        dis add btnNextFeeding.clicks()
+                .subscribe { startActivity<FeedBvnActivity>(EXTRA_ID to bovine._id) }
+
         dis add btnManagementProfileActivity.clicks()
+                .subscribe { startActivity<ManageBvnActivity>(EXTRA_ID to bovine._id) }
+
+        dis add btnNextManagement.clicks()
                 .subscribe { startActivity<ManageBvnActivity>(EXTRA_ID to bovine._id) }
 
         dis add btnMovementProfileActivity.clicks()
                 .subscribe { startActivity<MovementBvnActivity>(EXTRA_ID to bovine._id) }
 
+        dis add btnNextMovement.clicks()
+                .subscribe { startActivity<MovementBvnActivity>(EXTRA_ID to bovine._id) }
+
         dis add btnVaccinesProfileActivity.clicks()
+                .subscribe { startActivity<VaccinationBvnActivity>(EXTRA_ID to bovine._id) }
+
+        dis add btnNextVaccines.clicks()
                 .subscribe { startActivity<VaccinationBvnActivity>(EXTRA_ID to bovine._id) }
 
         dis add btnHealthProfileActivity.clicks()
                 .subscribe { startActivity<HealthBvnActivity>(EXTRA_ID to bovine._id) }
+
+        dis add btnNextHealth.clicks()
+                .subscribe { startActivity<HealthBvnActivity>(EXTRA_ID to bovine._id) }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
     }
 
     companion object {

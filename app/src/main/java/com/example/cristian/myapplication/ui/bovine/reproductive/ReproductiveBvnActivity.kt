@@ -29,6 +29,16 @@ class ReproductiveBvnActivity : AppCompatActivity(),HasSupportFragmentInjector {
         binding.pager.adapter = adapter
         setSupportActionBar(binding.toolbar)
         binding.tabs.setupWithViewPager(binding.pager)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back_white)
     }
+
     override fun supportFragmentInjector(): AndroidInjector<Fragment> = injector
+
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
+    }
+
 }

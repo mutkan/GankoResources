@@ -20,6 +20,7 @@ import com.example.cristian.myapplication.ui.bovine.vaccination.VaccinationBvnAc
 import com.example.cristian.myapplication.ui.farms.AddFarmActivity
 import com.example.cristian.myapplication.ui.farms.FarmActivity
 import com.example.cristian.myapplication.ui.menu.MenuActivity
+import com.example.cristian.myapplication.ui.menu.Straw.StrawAddActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -97,6 +98,12 @@ abstract class ActivityComponents {
     @ActivityScope
     @ContributesAndroidInjector
     abstract fun bindAddZealActivity(): AddZealActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector()
+    abstract fun bindAddStrawActivity(): StrawAddActivity
+
+
 
 
 }
