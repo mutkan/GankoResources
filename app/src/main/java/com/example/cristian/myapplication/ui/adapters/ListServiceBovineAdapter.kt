@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.Servicio
-import com.example.cristian.myapplication.databinding.TemplateServiceBinding
+import com.example.cristian.myapplication.databinding.TemplateListServiceBinding
 import com.example.cristian.myapplication.util.inflate
 import javax.inject.Inject
 
@@ -18,7 +18,7 @@ class ListServiceAdapter @Inject constructor() : RecyclerView.Adapter<ServiceVie
             notifyDataSetChanged()
         }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ServiceViewHolder = ServiceViewHolder(parent.inflate(R.layout.template_service))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ServiceViewHolder = ServiceViewHolder(parent.inflate(R.layout.template_list_service))
 
     override fun getItemCount(): Int = services.size
 
@@ -28,6 +28,6 @@ class ListServiceAdapter @Inject constructor() : RecyclerView.Adapter<ServiceVie
 }
 
 class ServiceViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    val binding: TemplateServiceBinding = DataBindingUtil.bind(itemView)!!
+    val binding: TemplateListServiceBinding = DataBindingUtil.bind(itemView)!!
 
 }

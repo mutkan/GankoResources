@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="service"
+            type="com.example.cristian.myapplication.data.models.Servicio"/>
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/serviceType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Inseminación Artificial" />
+
+        <TextView
+            android:id="@+id/serviceDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/check_filter"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/serviceType"
+            tools:text="20/05/2018" />
+
+        <TextView
+            android:id="@+id/bullOrStraw"
+            style="@style/textview_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            app:layout_constraintStart_toEndOf="@+id/bodyConditionTxt"
+            app:layout_constraintTop_toTopOf="@+id/bodyConditionTxt"
+            tools:text="Id Toro / Pajilla" />
+
+        <TextView
+            android:id="@+id/bullOrStrawCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@+id/bullOrStraw"
+            app:layout_constraintTop_toBottomOf="@+id/bullOrStraw"
+            tools:text="12548asda" />
+
+        <TextView
+            android:id="@+id/bodyConditionTxt"
+            style="@style/textview_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Condición Corporal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/serviceDate" />
+
+        <TextView
+            android:id="@+id/bodyCondition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@+id/bodyConditionTxt"
+            app:layout_constraintTop_toBottomOf="@+id/bodyConditionTxt"
+            tools:text="1.5" />
+
+        <Button
+            android:id="@+id/btnAddDiagnosis"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Diagnóstico"
+            android:visibility="visible"
+            app:layout_constraintBottom_toTopOf="@+id/div"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lastDiagnosis" />
+
+        <ImageView
+            android:id="@+id/div"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@color/line_template_straw" />
+
+        <TextView
+            android:id="@+id/pregnancyConfirmedTxt"
+            style="@style/textview_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Preñez Confirmada"
+            app:layout_constraintStart_toStartOf="@+id/bullOrStrawCode"
+            app:layout_constraintTop_toTopOf="@+id/lastDiagnosisTxt" />
+
+        <TextView
+            android:id="@+id/pregnancyConfirmed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@+id/pregnancyConfirmedTxt"
+            app:layout_constraintTop_toBottomOf="@+id/pregnancyConfirmedTxt"
+            tools:text="Si" />
+
+        <TextView
+            android:id="@+id/lastDiagnosisTxt"
+            style="@style/textview_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Último Diagnóstico"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bodyCondition" />
+
+        <TextView
+            android:id="@+id/lastDiagnosis"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@+id/lastDiagnosisTxt"
+            app:layout_constraintTop_toBottomOf="@+id/lastDiagnosisTxt"
+            tools:text="12/06/2018" />
+
+        <TextView
+            android:id="@+id/novelty"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:gravity="end"
+            android:textColor="@color/remove"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/serviceType"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Aborto" />
+
+        <Button
+            android:id="@+id/btnAddBirth"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Parto"
+            app:layout_constraintBottom_toTopOf="@+id/div"
+            app:layout_constraintEnd_toStartOf="@+id/btnAddNovelty"
+            app:layout_constraintTop_toBottomOf="@+id/lastDiagnosis" />
+
+        <Button
+            android:id="@+id/btnAddNovelty"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Novedad"
+            app:layout_constraintBottom_toTopOf="@+id/div"
+            app:layout_constraintEnd_toStartOf="@+id/btnAddDiagnosis"
+            app:layout_constraintTop_toBottomOf="@+id/lastDiagnosis" />
+    </android.support.constraint.ConstraintLayout>
+</layout>
