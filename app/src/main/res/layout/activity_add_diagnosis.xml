@@ -38,7 +38,7 @@
         android:layout_marginStart="16dp"
         android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pregnancyConfirmationTxt ">
+        app:layout_constraintTop_toBottomOf="@+id/pregnancyConfirmationTxt">
 
         <RadioButton
             android:id="@+id/pregnant"
@@ -56,7 +56,7 @@
     </RadioGroup>
 
     <TextView
-        android:id="@+id/pregnancyConfirmationTxt "
+        android:id="@+id/pregnancyConfirmationTxt"
         style="@style/textview_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
         app:layout_constraintTop_toBottomOf="@+id/date" />
 
     <TextView
-        android:id="@+id/possibleChildbirthTxt"
+        android:id="@+id/possibleBirthTxt"
         style="@style/textview_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -78,13 +78,13 @@
         app:layout_constraintTop_toBottomOf="@+id/pregnancyConfirmation" />
 
     <TextView
-        android:id="@+id/possibleChildbirth"
+        android:id="@+id/possibleBirth"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/possibleChildbirthTxt"
+        app:layout_constraintTop_toBottomOf="@+id/possibleBirthTxt"
         tools:text="12/12/2018" />
 
     <TextView
@@ -96,7 +96,7 @@
         android:layout_marginTop="8dp"
         android:text="Novedad"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/possibleChildbirth" />
+        app:layout_constraintTop_toBottomOf="@+id/possibleBirth" />
 
     <Spinner
         android:id="@+id/noveltySpinner"
@@ -111,26 +111,26 @@
         app:layout_constraintTop_toBottomOf="@+id/noveltyTxt" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/btnCancel"
         style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:text="@string/btn_cancel"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/button4"
+        app:layout_constraintEnd_toStartOf="@+id/btnAccept"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/btnAccept"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/btn_Acept"
-        app:layout_constraintBottom_toBottomOf="@+id/button3"
+        app:layout_constraintBottom_toBottomOf="@+id/btnCancel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/button3"
-        app:layout_constraintTop_toTopOf="@+id/button3" />
+        app:layout_constraintStart_toEndOf="@+id/btnCancel"
+        app:layout_constraintTop_toTopOf="@+id/btnCancel" />
 </android.support.constraint.ConstraintLayout>

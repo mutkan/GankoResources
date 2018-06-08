@@ -68,7 +68,8 @@
 
         <activity android:name=".ui.menu.Movement.MovementActivity" />
         <activity android:name=".ui.menu.meadow.MeadowFragment" />
-        <activity android:name=".ui.bovine.reproductive.add.AddDiagnosisActivity"></activity>
+        <activity android:name=".ui.bovine.reproductive.add.AddDiagnosisActivity" />
+        <activity android:name=".ui.bovine.reproductive.add.AddBirthActivity"></activity>
     </application>
 
 </manifest>
