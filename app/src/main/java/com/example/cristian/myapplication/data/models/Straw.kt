@@ -22,5 +22,9 @@ class Straw(
         type = javaClass.simpleName
     }
 
+    override fun toString(): String {
+        return this.bull!!
+    }
+
 }
 

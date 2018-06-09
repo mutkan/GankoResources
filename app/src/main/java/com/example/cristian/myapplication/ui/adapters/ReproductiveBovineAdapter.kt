@@ -11,7 +11,7 @@ import javax.inject.Inject
 class ReproductiveBovineAdapter @Inject constructor(val activity: ReproductiveBvnActivity) : FragmentStatePagerAdapter(activity.supportFragmentManager) {
     override fun getItem(position: Int): Fragment  = when(position){
         0 -> ListZealFragment.instance(activity.idBovino)
-        else -> ListServiceFragment.instance()
+        else -> ListServiceFragment.instance(activity.idBovino)
     }
 
     override fun getCount(): Int = 2

@@ -61,8 +61,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
                     android:ems="10"
+                    android:clickable="true"
+                    android:focusable="false"
                     android:hint="dd/mm/aaaa"
-                    android:inputType="textPersonName"
+                    android:inputType="date"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/dateTxt"
                     app:layout_constraintTop_toBottomOf="@+id/dateTxt" />
@@ -94,14 +96,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Monta Natural " />
+                        android:checked="true"
+                        android:text="@string/monta_natural" />
 
                     <RadioButton
                         android:id="@+id/artificialInsemination"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Inseminación Artificial" />
+                        android:text="@string/inseminaci_n_artificial" />
                 </RadioGroup>
 
                 <Spinner

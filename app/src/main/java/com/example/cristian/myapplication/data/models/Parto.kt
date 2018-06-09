@@ -10,5 +10,6 @@ data class Parto(
         var intervalo: Int,
         var diasVacios: Int,
         var sexoCria: String,
+        var numero:Int,
         var estadoCria: String
 ):Parcelable

@@ -47,4 +47,7 @@ class Bovino(
     init {
         type = javaClass.simpleName
     }
+    override fun toString(): String {
+        return this.codigo!!
+    }
 }

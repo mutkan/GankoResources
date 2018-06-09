@@ -6,6 +6,7 @@
         <variable
             name="service"
             type="com.example.cristian.myapplication.data.models.Servicio"/>
+        <import type="android.view.View"/>
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -18,6 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
+            android:text='@{service.empadre}'
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -30,6 +32,7 @@
             android:layout_marginStart="16dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@color/check_filter"
+            app:dateFormat='@{service.fecha}'
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/serviceType"
             tools:text="20/05/2018" />
@@ -40,6 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:text='@{service.pajilla == null ? "Id Toro" : "Pajilla"}'
             app:layout_constraintStart_toEndOf="@+id/bodyConditionTxt"
             app:layout_constraintTop_toTopOf="@+id/bodyConditionTxt"
             tools:text="Id Toro / Pajilla" />
@@ -48,6 +52,7 @@
             android:id="@+id/bullOrStrawCode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text='@{service.codigoToro ?? service.pajilla}'
             app:layout_constraintStart_toStartOf="@+id/bullOrStraw"
             app:layout_constraintTop_toBottomOf="@+id/bullOrStraw"
             tools:text="12548asda" />
@@ -67,6 +72,7 @@
             android:id="@+id/bodyCondition"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text='@{""+service.condicionCorporal}'
             app:layout_constraintStart_toStartOf="@+id/bodyConditionTxt"
             app:layout_constraintTop_toBottomOf="@+id/bodyConditionTxt"
             tools:text="1.5" />
@@ -79,10 +85,10 @@
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
             android:text="Diagnóstico"
-            android:visibility="visible"
+            android:visibility='@{service.diagnosticos.size() == 0 ? View.VISIBLE : View.GONE}'
             app:layout_constraintBottom_toTopOf="@+id/div"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lastDiagnosis" />
+            app:layout_constraintTop_toBottomOf="@+id/posParto" />
 
         <ImageView
             android:id="@+id/div"
@@ -99,6 +105,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Preñez Confirmada"
+            android:visibility="visible"
             app:layout_constraintStart_toStartOf="@+id/bullOrStrawCode"
             app:layout_constraintTop_toTopOf="@+id/lastDiagnosisTxt" />
 
@@ -106,6 +113,8 @@
             android:id="@+id/pregnancyConfirmed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text='@{service.confirmacion != null ? (service.confirmacion ? "Si" : "No") : ""}'
+            android:visibility="visible"
             app:layout_constraintStart_toStartOf="@+id/pregnancyConfirmedTxt"
             app:layout_constraintTop_toBottomOf="@+id/pregnancyConfirmedTxt"
             tools:text="Si" />
@@ -118,6 +127,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:text="Último Diagnóstico"
+            android:visibility="visible"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/bodyCondition" />
 
@@ -125,9 +135,11 @@
             android:id="@+id/lastDiagnosis"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:dateFormat='@{service.fecha}'
             app:layout_constraintStart_toStartOf="@+id/lastDiagnosisTxt"
             app:layout_constraintTop_toBottomOf="@+id/lastDiagnosisTxt"
-            tools:text="12/06/2018" />
+            tools:text="20/06/2018" />
 
         <TextView
             android:id="@+id/novelty"
@@ -137,7 +149,9 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:gravity="end"
+            android:text='@{service.novedad ?? ""}'
             android:textColor="@color/remove"
+            android:visibility='@{service.novedad != null ? View.VISIBLE : View.GONE}'
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/serviceType"
@@ -153,9 +167,10 @@
             android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
             android:text="Parto"
+            android:visibility='@{service.confirmacion != null ? (service.parto.size() == 0 ? View.VISIBLE : View.GONE) : View.GONE}'
             app:layout_constraintBottom_toTopOf="@+id/div"
             app:layout_constraintEnd_toStartOf="@+id/btnAddNovelty"
-            app:layout_constraintTop_toBottomOf="@+id/lastDiagnosis" />
+            app:layout_constraintTop_toBottomOf="@+id/posParto" />
 
         <Button
             android:id="@+id/btnAddNovelty"
@@ -166,8 +181,32 @@
             android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
             android:text="Novedad"
+            android:visibility='@{service.diagnosticos.size() != 0  ? View.VISIBLE : View.GONE}'
             app:layout_constraintBottom_toTopOf="@+id/div"
             app:layout_constraintEnd_toStartOf="@+id/btnAddDiagnosis"
-            app:layout_constraintTop_toBottomOf="@+id/lastDiagnosis" />
+            app:layout_constraintTop_toBottomOf="@+id/posParto" />
+
+        <TextView
+            android:id="@+id/posPartoTxt"
+            style="@style/textview_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Posible Fecha de Parto"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pregnancyConfirmed" />
+
+        <TextView
+            android:id="@+id/posParto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:visibility="visible"
+            app:dateFormat='@{service.posFechaParto}'
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/posPartoTxt"
+            tools:text="20/12/2018" />
     </android.support.constraint.ConstraintLayout>
 </layout>

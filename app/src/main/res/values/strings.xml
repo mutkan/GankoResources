@@ -215,6 +215,8 @@
     <string name="straw_type">Tipo</string>
     <string name="straw_value">Valor</string>
     <string name="straw_breed">Raza</string>
+    <string name="monta_natural">Monta Natural</string>
+    <string name="inseminaci_n_artificial">Inseminación Artificial</string>
 
     <string-array name="straw_type">
         <item>Tipo A</item>

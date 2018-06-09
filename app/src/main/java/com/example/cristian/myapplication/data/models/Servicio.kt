@@ -14,5 +14,7 @@ data class Servicio(
         var pajilla: String? = null,
         var diagnosticos: List<Diagnostico>? = listOf(),
         var parto: List<Parto>? = listOf(),
-        var confirmacion: Boolean
+        var confirmacion: Boolean? = null,
+        var novedad:String? = null,
+        var posFechaParto:Date? = null
 ):Parcelable
