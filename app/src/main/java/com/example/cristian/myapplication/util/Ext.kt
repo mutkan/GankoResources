@@ -5,12 +5,15 @@ import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.content.SharedPreferences
 import android.databinding.BindingAdapter
+import android.graphics.drawable.ColorDrawable
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
+import com.example.cristian.myapplication.R
 import io.reactivex.Observable
 import org.jetbrains.anko.toast
 import java.text.NumberFormat
@@ -42,6 +45,52 @@ fun SharedPreferences.save(vararg data: Pair<String, Any>) {
     }
     editor.apply()
 }
+
+fun AppCompatActivity.fixColor(content: Int){
+    when(content){
+        2-> {
+            supportActionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this, R.color.bovine_primary)))
+            window.statusBarColor = ContextCompat.getColor(this, R.color.bovine_dark)
+        }
+        3-> {
+            supportActionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this, R.color.milk_primary)))
+            window.statusBarColor = ContextCompat.getColor(this, R.color.milk_dark)
+        }
+        4-> {
+            supportActionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this, R.color.feed_primary)))
+            window.statusBarColor = ContextCompat.getColor(this, R.color.feed_dark)
+        }
+        5-> {
+            supportActionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this, R.color.management_primary)))
+            window.statusBarColor = ContextCompat.getColor(this, R.color.management_dark)
+        }
+        6-> {
+            supportActionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this, R.color.movements_primary)))
+            window.statusBarColor = ContextCompat.getColor(this, R.color.movements_dark)
+        }
+        7-> {
+            supportActionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this, R.color.vaccine_primary)))
+            window.statusBarColor = ContextCompat.getColor(this, R.color.vaccine_dark)
+        }
+        8-> {
+            supportActionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this, R.color.health_primary)))
+            window.statusBarColor = ContextCompat.getColor(this, R.color.health_dark)
+        }
+        9-> {
+            supportActionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this, R.color.straw_primary)))
+            window.statusBarColor = ContextCompat.getColor(this, R.color.straw_dark)
+        }
+        10-> {
+            supportActionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this, R.color.prairie_primary)))
+            window.statusBarColor = ContextCompat.getColor(this, R.color.prairie_dark)
+        }
+        11-> {
+            supportActionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this, R.color.reports_primary)))
+            window.statusBarColor = ContextCompat.getColor(this, R.color.reports_dark)
+        }
+    }
+}
+
 
 fun AppCompatActivity.validateForm(message: Int,
                                    vararg fields: String): Observable<List<String>>

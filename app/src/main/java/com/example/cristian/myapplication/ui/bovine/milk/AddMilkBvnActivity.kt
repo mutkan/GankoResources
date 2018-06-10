@@ -2,7 +2,9 @@ package com.example.cristian.myapplication.ui.bovine.milk
 
 import android.app.DatePickerDialog
 import android.arch.lifecycle.ViewModelProvider
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.widget.DatePicker
@@ -37,6 +39,7 @@ class AddMilkBvnActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListen
         datePicker = DatePickerDialog(this, AddMilkBvnActivity@ this,
                 Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH),
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
+        fixColor(3)
     }
 
     override fun onResume() {
