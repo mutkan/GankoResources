@@ -229,4 +229,12 @@
         <item>Muerte</item>
     </string-array>
 
+    <!--Groups-->
+    <string-array name="select_titles">
+        <item>Bovinos</item>
+        <item>Grupos</item>
+    </string-array>
+    <string name="remove_group">¿ Desea eliminar el grupo ?</string>
+    <string name="group_removed">Grupo eliminado</string>
+
 </resources>

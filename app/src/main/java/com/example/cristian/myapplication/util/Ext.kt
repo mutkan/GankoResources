@@ -15,7 +15,10 @@ import android.widget.EditText
 import android.widget.TextView
 import com.example.cristian.myapplication.R
 import io.reactivex.Observable
+import org.jetbrains.anko.noButton
+import org.jetbrains.anko.support.v4.alert
 import org.jetbrains.anko.toast
+import org.jetbrains.anko.yesButton
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -148,4 +151,17 @@ fun Float.currencyFormat(): String{
 fun String.toDate():Date{
     val format = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
     return format.parse(this)
+}
+
+fun <T> Fragment.dialog(msg:Int, data:T) = Observable.create<T>{emitter->
+    alert(msg){
+        yesButton {
+            emitter.onNext(data)
+            emitter.onComplete()
+        }
+
+        noButton {
+            emitter.onComplete()
+        }
+    }.show()
 }
