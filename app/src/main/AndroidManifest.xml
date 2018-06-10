@@ -2,10 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.cristian.myapplication">
 
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".App"
@@ -23,15 +22,12 @@
         <activity android:name=".ui.bovine.manage.ManageBvnActivity" />
         <activity android:name=".ui.account.SigninActivity" />
         <activity android:name=".ui.account.RestorePassActivity" />
-        <activity android:name=".ui.bovine.DetailBovineActivity"
-            android:parentActivityName=".ui.menu.MenuActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            >
+        <activity
+            android:name=".ui.bovine.DetailBovineActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.menu.MenuActivity"
-                />
-
+                android:value=".ui.menu.MenuActivity" />
         </activity>
         <activity android:name=".ui.farms.AddFarmActivity" />
         <activity
@@ -56,7 +52,7 @@
         <activity android:name=".ui.bovine.reproductive.ReproductiveBvnActivity" />
         <activity android:name=".ui.bovine.reproductive.add.AddZealActivity" />
         <activity android:name=".ui.bovine.reproductive.add.AddServiceActivity" />
-        <activity android:name=".ui.menu.Straw.StrawAddActivity"></activity>
+        <activity android:name=".ui.menu.Straw.StrawAddActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -67,6 +63,9 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
+        <activity android:name=".ui.menu.Movement.MovementActivity" />
+        <activity android:name=".ui.menu.meadow.MeadowFragment"></activity>
     </application>
 
 </manifest>

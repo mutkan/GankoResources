@@ -172,7 +172,7 @@ class MenuActivity : AppCompatActivity(),Injectable,HasSupportFragmentInjector {
             7-> nav.navigateToVaccination()
             8-> nav.navigateToHealth()
             9-> nav.navigateToStraw()
-            10-> nav.navigateToPrairies()
+            10-> nav.navigateToMeadow()
             11-> nav.navigateToReports()
         }
 

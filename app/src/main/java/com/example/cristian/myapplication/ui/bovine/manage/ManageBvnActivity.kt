@@ -50,6 +50,11 @@ class ManageBvnActivity : AppCompatActivity() , Injectable {
                 )
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
+    }
+
     companion object {
         val EXTRA_ID: String = "idBovino"
     }

@@ -130,9 +130,13 @@ fun Fragment.addFragment(container: Int, fragment: Fragment, backStack: Boolean 
 
 
 @BindingAdapter("app:dateFormat")
-fun applyFormat(textView: TextView, date: Date){
-    val format = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-    textView.text = format.format(date)
+fun applyFormat(textView: TextView, date: Date?){
+    if(date!=null){
+        val format = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        textView.text = format.format(date)
+    }else textView.text = ""
+
+
 }
 
 fun Float.currencyFormat(): String{

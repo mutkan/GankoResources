@@ -34,7 +34,6 @@ class CouchModule{
     @Singleton
     fun provideFolderName(context: Context): File = context.filesDir
 
-
     @Provides
     fun provideMapper() : ObjectMapper {
       val mapper = ObjectMapper().registerKotlinModule()

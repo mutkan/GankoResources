@@ -2,9 +2,7 @@ package com.example.cristian.myapplication.ui.bovine.milk
 
 import android.app.DatePickerDialog
 import android.arch.lifecycle.ViewModelProvider
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.widget.DatePicker
@@ -37,7 +35,11 @@ class AddMilkBvnActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListen
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setTitle("Agregar Produccion de Leche")
         datePicker = DatePickerDialog(this, AddMilkBvnActivity@ this,
-                Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH),
+                Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH)+1,
+                Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
+
+        onDateSet(null,Calendar.getInstance().get(Calendar.YEAR),
+                Calendar.getInstance().get(Calendar.MONTH)+1,
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
         fixColor(3)
     }
@@ -84,6 +86,11 @@ class AddMilkBvnActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListen
     override fun onDateSet(p0: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         dateAddMilkBovine.text = "$dayOfMonth/$month/$year"
 
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
     }
 
     companion object {

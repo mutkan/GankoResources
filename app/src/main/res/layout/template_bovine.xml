@@ -172,7 +172,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/remove"
             android:visibility='@{bovino.retirado == true ? View.VISIBLE : View.GONE}'
-            android:text='@{"" + bovino.fechaSalida}'
+            app:dateFormat='@{bovino.fechaSalida }'
             app:layout_constraintEnd_toEndOf="@+id/textView50"
             app:layout_constraintTop_toBottomOf="@+id/textView50"
             tools:text="21/03/2018" />
