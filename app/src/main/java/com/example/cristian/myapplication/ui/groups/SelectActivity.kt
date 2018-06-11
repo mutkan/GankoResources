@@ -41,6 +41,7 @@ class SelectActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> = injector
 
+
     companion object {
         const val DATA_GROUP = "groups"
         const val DATA_BOVINES = "bovines"

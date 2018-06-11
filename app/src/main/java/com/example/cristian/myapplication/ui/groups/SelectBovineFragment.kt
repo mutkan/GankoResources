@@ -46,11 +46,12 @@ class SelectBovineFragment : Fragment(), Injectable {
 
         btnNext.clicks()
                 .subscribe {
+                    val keys = selecteds.keys.toTypedArray()
                     if (createGroup) {
-                        startActivity<SaveGroupActivity>(SaveGroupActivity.DATA_BOVINES to selecteds)
+                        startActivity<SaveGroupActivity>(SaveGroupActivity.DATA_BOVINES to keys)
                     } else {
                         val data = Intent()
-                        data.putExtra(SelectActivity.DATA_BOVINES, selecteds.keys.toTypedArray())
+                        data.putExtra(SelectActivity.DATA_BOVINES, keys)
                         activity!!.setResult(Activity.RESULT_OK, data)
                     }
                 }

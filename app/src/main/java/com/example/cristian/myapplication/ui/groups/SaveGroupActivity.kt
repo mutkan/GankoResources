@@ -6,14 +6,14 @@ import com.example.cristian.myapplication.R
 
 class SaveGroupActivity : AppCompatActivity() {
 
+    val selecteds:Array<String> by lazy { intent.extras.getStringArray(DATA_BOVINES) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_save_group)
     }
 
     companion object {
-
-        val DATA_BOVINES = "dataBovines"
-
+        const val DATA_BOVINES = "dataBovines"
     }
 }
