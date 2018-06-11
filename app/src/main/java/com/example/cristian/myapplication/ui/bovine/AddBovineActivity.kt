@@ -17,6 +17,7 @@ import com.jakewharton.rxbinding2.view.clicks
 import com.jakewharton.rxbinding2.widget.RxRadioGroup
 import com.jakewharton.rxbinding2.widget.checked
 import com.jakewharton.rxbinding2.widget.checkedChanges
+import com.jakewharton.rxbinding2.widget.itemSelections
 import com.squareup.picasso.Picasso
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_add_bovine.*
@@ -35,14 +36,14 @@ class AddBovineActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
     private val farmId by lazy { viewModel.getFarmId() }
     lateinit var binding: ActivityAddBovineBinding
     val dis: LifeDisposable = LifeDisposable(this)
-    lateinit var datePicker:DatePickerDialog
+    lateinit var datePicker: DatePickerDialog
     var foto: File? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_add_bovine)
         binding.page = 1
-        datePicker = DatePickerDialog(this,AddBovineActivity@ this,
+        datePicker = DatePickerDialog(this, AddBovineActivity@ this,
                 Calendar.getInstance().get(Calendar.YEAR),
                 Calendar.getInstance().get(Calendar.MONTH),
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
@@ -58,7 +59,7 @@ class AddBovineActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
         dis add PhotoUtil.processedImg
                 .subscribe {
                     //Nombre de Archivo
-                    Log.i("SIIIII","YA FUNCA")
+                    Log.i("SIIIII", "YA FUNCA")
                     foto = it
                     Picasso.get().load(it)
                             .into(imgBovino)
@@ -74,6 +75,13 @@ class AddBovineActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
                 .subscribeBy(
                         onNext = {
                             binding.stateCheckBox = it
+                        }
+                )
+
+        dis add spinnerOrigin.itemSelections()
+                .subscribeBy(
+                        onNext = {
+                            binding.stateOrigin = it == 1
                         }
                 )
 
@@ -97,6 +105,16 @@ class AddBovineActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
                         onHttpError = {}
                 )
 
+        dis add purchaseDate.clicks()
+                .subscribeByAction(
+                        onNext = {
+                            datePicker.datePicker.tag = "purchasedate"
+                            datePicker.show()
+                        },
+                        onError = {},
+                        onHttpError = {}
+                )
+
         dis add btnFinalize.clicks()
                 .flatMapSingle {
                     val sex = if (sexBovine.checkedRadioButtonId == R.id.male) "Macho"
@@ -106,15 +124,19 @@ class AddBovineActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
                         purpose.checkedRadioButtonId == R.id.meat -> "Ceba"
                         else -> "Ambos"
                     }
-                    viewModel.addBovine(Bovino(null,null,null,"", bovineIdentificationNumber.text(), foto,
-                            bovineName.text(), bovineBirthDate.text.toString().toDate(), null, sex, purpose,
+                    viewModel.addBovine(Bovino(null, null, null, "", bovineIdentificationNumber.text(), foto,
+                            bovineName.text(), bovineBirthDate.text.toString().toDate(),
+                            if (spinnerOrigin.selectedItem.toString() == "Compra") purchaseDate.text.toString().toDate()
+                            else null
+                            , sex, purpose,
                             bovineWeight.text().toInt(), bovineColor.text(), bovineRace.text(), motherId.text(), fatherId.text(),
                             null,
                             if (male.isChecked) null else previousBovineBirths.text().toInt(),
-                            null, false, null, null,
+                            purchasePrice.text().toInt(), spinnerOrigin.selectedItem.toString(), false, null, null,
                             null, farmId, check_weaned.isChecked,
-                            if (check_weaned.isChecked){bovineWeanedDate.text.toString().toDate()}
-                            else null,
+                            if (check_weaned.isChecked) {
+                                bovineWeanedDate.text.toString().toDate()
+                            } else null,
                             null, null, listOf(), listOf(), listOf()))
                 }.subscribeBy(
                         onNext = {
@@ -133,11 +155,11 @@ class AddBovineActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
                 .flatMap {
                     if (binding.page == 1)
                         validateForm(R.string.empty_fields, bovineIdentificationNumber.text.toString(),
-                                bovineName.text.toString(), bovineRace.text.toString(),
+                                bovineName.text.toString(), bovineRace.text.toString(), spinnerOrigin.selectedItem.toString(),
                                 if (sexBovine.checkedRadioButtonId == R.id.male) "Macho"
                                 else "Hembra"
-                                )
-                    else {
+                        )
+                    else if (binding.page == 2) {
                         val bvnWeanedDate: String
                         if (check_weaned.isChecked) bvnWeanedDate = bovineWeanedDate.text.toString()
                         else bvnWeanedDate = "NoWeaned"
@@ -148,6 +170,13 @@ class AddBovineActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
                                     purpose.checkedRadioButtonId == R.id.meat -> "Ceba"
                                     else -> "Ambos"
                                 }
+                        )
+                    } else {
+                        validateForm(R.string.empty_fields,
+                                if (spinnerOrigin.selectedItem == "Compra") purchaseDate.text.toString()
+                                else "No Aplica",
+                                if (spinnerOrigin.selectedItem == "Compra") purchasePrice.text.toString()
+                                else "No Aplica"
                         )
                     }
                 }
@@ -184,8 +213,9 @@ class AddBovineActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         when (view!!.tag) {
-            "birthdate" -> bovineBirthDate.text = "$dayOfMonth/$month/$year"
-            "weaneddate" -> bovineWeanedDate.text = "$dayOfMonth/$month/$year"
+            "birthdate" -> bovineBirthDate.text = "$dayOfMonth/${month + 1}/$year"
+            "weaneddate" -> bovineWeanedDate.text = "$dayOfMonth/${month + 1}/$year"
+            "purchasedate" -> purchaseDate.text = "$dayOfMonth/${month + 1}/$year"
         }
         //    dateAddMilkBovine.text = "$dayOfMonth/$month/$year"
     }
