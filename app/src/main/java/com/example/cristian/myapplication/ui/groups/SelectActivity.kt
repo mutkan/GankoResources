@@ -18,8 +18,6 @@ class SelectActivity : AppCompatActivity(), HasSupportFragmentInjector {
     @Inject
     lateinit var injector:DispatchingAndroidInjector<Fragment>
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_select)
@@ -33,6 +31,7 @@ class SelectActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
         tabs.setupWithViewPager(pager)
 
+        supportActionBar?.title = getString(R.string.select_title)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -44,6 +43,7 @@ class SelectActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
     companion object {
         const val DATA_GROUP = "groups"
+        const val DATA_BOVINES = "bovines"
     }
 
 }

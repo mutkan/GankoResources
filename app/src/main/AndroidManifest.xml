@@ -52,7 +52,7 @@
         <activity android:name=".ui.bovine.reproductive.ReproductiveBvnActivity" />
         <activity android:name=".ui.bovine.reproductive.add.AddZealActivity" />
         <activity android:name=".ui.bovine.reproductive.add.AddServiceActivity" />
-        <activity android:name=".ui.menu.Straw.StrawAddActivity" />
+        <activity android:name=".ui.menu.straw.StrawAddActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -64,8 +64,10 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".ui.menu.Movement.MovementActivity" />
-        <activity android:name=".ui.menu.meadow.MeadowFragment"></activity>
+        <activity android:name=".ui.menu.movement.MovementActivity" />
+        <activity android:name=".ui.groups.SaveGroupActivity" />
+        <activity android:name=".ui.groups.SelectActivity"/>
+        <activity android:name=".ui.groups.BovineSelectedActivity"/>
     </application>
 
 </manifest>

@@ -32,7 +32,8 @@ class SelectAdapter @Inject constructor() : RecyclerView.Adapter<SelectAdapter.S
 
     fun select(bovine: Bovino){
         val prev = selecteds[bovine._id] ?: false
-        selecteds[bovine._id!!] = !prev
+        if(prev) selecteds.remove(bovine._id)
+        else selecteds[bovine._id!!] = true
         notifyDataSetChanged()
         onSelectBovine.onNext(bovine)
     }

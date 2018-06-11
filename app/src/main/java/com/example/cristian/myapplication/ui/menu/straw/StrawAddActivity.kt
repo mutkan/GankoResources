@@ -1,9 +1,7 @@
-package com.example.cristian.myapplication.ui.menu.Straw
+package com.example.cristian.myapplication.ui.menu.straw
 
 import android.arch.lifecycle.ViewModelProvider
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import com.example.cristian.myapplication.R

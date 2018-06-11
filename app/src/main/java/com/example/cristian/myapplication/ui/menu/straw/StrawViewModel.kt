@@ -1,8 +1,7 @@
-package com.example.cristian.myapplication.ui.menu.Straw
+package com.example.cristian.myapplication.ui.menu.straw
 
 import android.arch.lifecycle.ViewModel
 import com.example.cristian.myapplication.data.db.CouchRx
-import com.example.cristian.myapplication.data.models.Manage
 import com.example.cristian.myapplication.data.models.Straw
 import com.example.cristian.myapplication.util.applySchedulers
 import io.reactivex.Single

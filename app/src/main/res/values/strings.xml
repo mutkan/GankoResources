@@ -236,5 +236,7 @@
     </string-array>
     <string name="remove_group">¿ Desea eliminar el grupo ?</string>
     <string name="group_removed">Grupo eliminado</string>
+    <string name="select_clear">¿ Desea limpiar la selección ?</string>
+    <string name="select_title">Seleccionar bovinos</string>
 
 </resources>
