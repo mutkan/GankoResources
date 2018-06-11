@@ -13,6 +13,7 @@ import com.example.cristian.myapplication.util.applySchedulers
 import com.example.cristian.myapplication.util.equalEx
 import io.reactivex.Single
 import io.reactivex.rxkotlin.toObservable
+import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
 /**
@@ -22,6 +23,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
 
     //region Menu
     var content: Int = 2
+    val querySubject = PublishSubject.create<String>()
 
     val data: List<MenuItem> = listOf(
             MenuItem(MenuItem.TYPE_TITLE, titleText = userSession.farm),
