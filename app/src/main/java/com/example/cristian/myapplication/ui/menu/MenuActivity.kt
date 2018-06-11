@@ -1,6 +1,8 @@
 package com.example.cristian.myapplication.ui.menu
 
+import android.app.SearchManager
 import android.arch.lifecycle.ViewModelProvider
+import android.content.Context
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
@@ -12,7 +14,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
+import android.widget.SearchView
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.MenuAdapter
@@ -20,13 +22,15 @@ import com.example.cristian.myapplication.ui.menu.bovine.ListBovineFragment
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
 import com.example.cristian.myapplication.util.putFragment
-import com.jakewharton.rxbinding2.view.visible
+import com.jakewharton.rxbinding2.widget.RxSearchView
+import com.jakewharton.rxbinding2.widget.queryTextChanges
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
+import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.activity_menu.*
-import kotlinx.android.synthetic.main.fragment_filter.*
 import javax.inject.Inject
+
 
 class MenuActivity : AppCompatActivity(),Injectable,HasSupportFragmentInjector {
 
@@ -101,8 +105,18 @@ class MenuActivity : AppCompatActivity(),Injectable,HasSupportFragmentInjector {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         this.menu = menu
         menuInflater.inflate(R.menu.toolbar_menu, menu)
+        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        val searchView = menu.findItem(R.id.search_toolbar).actionView as SearchView
+        searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(componentName))
+
+        dis add searchView.queryTextChanges()
+                .doOnNext { viewModel.querySubject.onNext(it.toString()) }
+                .subscribe()
+
         return super.onCreateOptionsMenu(menu)
     }
+
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)

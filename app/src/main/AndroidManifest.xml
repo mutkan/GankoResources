@@ -28,6 +28,11 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.menu.MenuActivity" />
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data android:name="android.app.searchable"
+                android:resource="@xml/search" />
         </activity>
         <activity android:name=".ui.farms.AddFarmActivity" />
         <activity

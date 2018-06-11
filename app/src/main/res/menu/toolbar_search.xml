@@ -5,6 +5,7 @@
         android:id="@+id/search_toolbar"
         android:icon="@drawable/ic_search"
         app:showAsAction="ifRoom"
-        android:title="Buscar">
+        android:title="Buscar"
+        app:actionViewClass="android.widget.SearchView">
     </item>
 </menu>
