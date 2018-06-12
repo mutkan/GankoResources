@@ -28,6 +28,11 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.menu.MenuActivity" />
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data android:name="android.app.searchable"
+                android:resource="@xml/search" />
         </activity>
         <activity android:name=".ui.farms.AddFarmActivity" />
         <activity
@@ -52,7 +57,7 @@
         <activity android:name=".ui.bovine.reproductive.ReproductiveBvnActivity" />
         <activity android:name=".ui.bovine.reproductive.add.AddZealActivity" />
         <activity android:name=".ui.bovine.reproductive.add.AddServiceActivity" />
-        <activity android:name=".ui.menu.Straw.StrawAddActivity" />
+        <activity android:name=".ui.menu.straw.StrawAddActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -64,10 +69,13 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".ui.menu.Movement.MovementActivity" />
         <activity android:name=".ui.menu.meadow.ManageMeadowActivity" />
         <activity android:name=".ui.menu.meadow.aforo.AddAforoActivity" />
         <activity android:name=".ui.menu.meadow.mantenimiento.AddMantenimientoActivity"/>
+        <activity android:name=".ui.menu.movement.MovementActivity" />
+        <activity android:name=".ui.groups.SaveGroupActivity" />
+        <activity android:name=".ui.groups.SelectActivity"/>
+        <activity android:name=".ui.groups.BovineSelectedActivity"/>
     </application>
 
 </manifest>
