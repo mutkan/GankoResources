@@ -1,4 +1,4 @@
-package com.example.cristian.myapplication.ui.menu.Movement
+package com.example.cristian.myapplication.ui.menu.movement
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle

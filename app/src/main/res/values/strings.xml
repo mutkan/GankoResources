@@ -215,6 +215,12 @@
     <string name="straw_type">Tipo</string>
     <string name="straw_value">Valor</string>
     <string name="straw_breed">Raza</string>
+    <string name="meadow_size_text">Tamaño de la pradera</string>
+    <string name="graminea_type">Tipo de Graminea</string>
+    <string name="manteinance">Mantenimiento</string>
+    <string name="aforo">Aforo</string>
+    <string name="aforo_average">Promedio</string>
+    <string name="sample_quantity">Cantidad de muestras</string>
     <string name="date_of_purchase">Fecha de compra</string>
     <string name="purchase_price">Precio de compra</string>
 
@@ -235,5 +241,28 @@
         <item>Perdida</item>
         <item>Muerte</item>
     </string-array>
+
+    <string-array name="gramineas_type">
+        <item>Selecciona una</item>
+        <item>Pasto Castillo</item>
+        <item>Pasto Barrera</item>
+        <item>Pasto king grass</item>
+        <item>Maralfalfa</item>
+    </string-array>
+
+    <string-array name="meadow_size_unit">
+        <item>m²</item>
+        <item>Hectareas</item>
+    </string-array>
+
+    <!--Groups-->
+    <string-array name="select_titles">
+        <item>Bovinos</item>
+        <item>Grupos</item>
+    </string-array>
+    <string name="remove_group">¿ Desea eliminar el grupo ?</string>
+    <string name="group_removed">Grupo eliminado</string>
+    <string name="select_clear">¿ Desea limpiar la selección ?</string>
+    <string name="select_title">Seleccionar bovinos</string>
 
 </resources>
