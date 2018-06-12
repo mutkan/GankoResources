@@ -42,6 +42,8 @@ class AddBovineActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_add_bovine)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        title = getString(R.string.add_bovine)
         binding.page = 1
         datePicker = DatePickerDialog(this, AddBovineActivity@ this,
                 Calendar.getInstance().get(Calendar.YEAR),
@@ -157,7 +159,10 @@ class AddBovineActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
                         validateForm(R.string.empty_fields, bovineIdentificationNumber.text.toString(),
                                 bovineName.text.toString(), bovineRace.text.toString(), spinnerOrigin.selectedItem.toString(),
                                 if (sexBovine.checkedRadioButtonId == R.id.male) "Macho"
-                                else "Hembra"
+                                else "Hembra",
+                                if (sexBovine.checkedRadioButtonId == R.id.male) "No Previous Births"
+                                else previousBovineBirths.text.toString()
+
                         )
                     else if (binding.page == 2) {
                         val bvnWeanedDate: String
@@ -203,12 +208,9 @@ class AddBovineActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
 
     }
 
-    private fun plusPage() {
-        binding.page = binding.page!!.plus(1)
-    }
-
-    private fun minusPage() {
-        binding.page = binding.page!!.minus(1)
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
@@ -223,6 +225,15 @@ class AddBovineActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         PhotoUtil.processImage(this, requestCode, resultCode, 800, 800, data)
     }
+
+    private fun plusPage() {
+        binding.page = binding.page!!.plus(1)
+    }
+
+    private fun minusPage() {
+        binding.page = binding.page!!.minus(1)
+    }
+
 
 
 }
