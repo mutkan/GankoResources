@@ -106,3 +106,11 @@ infix fun Expression.orEx(expression: Expression): Expression = this.and(express
 
 infix fun Expression.betweenEx(expressions:List<Expression>) =
         this.between(expressions[0], expressions[1])
+
+// IS NULL
+fun String.equalNull(): Expression = Expression.property(this)
+        .isNullOrMissing
+
+//IS NOT NULL
+fun String.equalNotNull():Expression = Expression.property(this)
+        .notNullOrMissing()

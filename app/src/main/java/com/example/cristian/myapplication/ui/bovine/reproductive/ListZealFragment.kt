@@ -11,6 +11,8 @@ import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.databinding.FragmentListZealBinding
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.ListZealAdapter
+import com.example.cristian.myapplication.ui.bovine.reproductive.ListServiceFragment.Companion.ARG_ID
+import com.example.cristian.myapplication.ui.bovine.reproductive.add.AddServiceActivity
 import com.example.cristian.myapplication.ui.bovine.reproductive.add.AddZealActivity
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
@@ -50,16 +52,31 @@ class ListZealFragment : Fragment(), Injectable {
                         }
                 )
 
+        dis add viewModel.getOnServiceForBovine(idBovino)
+                .subscribeBy(
+                        onSuccess = {
+                            listZealAdapter.activeService = it.isNotEmpty()
+                        }
+                )
+
         dis add fabAddZeal.clicks()
                 .subscribeBy(
                         onNext = {
                             startActivity<AddZealActivity>(ID_BOVINO to idBovino)
                         }
                 )
+
+        dis add listZealAdapter.clickAddService.subscribeBy(
+                onNext = {
+                    startActivity<AddServiceActivity>(ARG_ID to idBovino, ARG_ZEAL to it.toStringFormat())
+                }
+
+        )
     }
 
     companion object {
         const val ID_BOVINO: String = "idBovino"
+        const val ARG_ZEAL:String = "celo"
         fun instance(idBovino: String): ListZealFragment = ListZealFragment().apply {
             arguments = Bundle().apply {
                 putString(ID_BOVINO, idBovino)

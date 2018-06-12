@@ -77,7 +77,7 @@
                     android:layout_marginEnd="16dp"
                     android:ems="10"
                     android:hint="Condición Corporal"
-                    android:inputType="textPersonName"
+                    android:inputType="numberDecimal"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/bodyConditionTxt"
                     app:layout_constraintTop_toBottomOf="@+id/bodyConditionTxt" />

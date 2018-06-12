@@ -2,16 +2,13 @@ package com.example.cristian.myapplication.ui.bovine.reproductive
 
 import android.arch.lifecycle.ViewModel
 import android.util.Log
-import com.couchbase.lite.QueryBuilder
-import com.couchbase.lite.SelectResult
 import com.example.cristian.myapplication.data.db.CouchRx
-import com.example.cristian.myapplication.data.models.Bovino
-import com.example.cristian.myapplication.data.models.Servicio
-import com.example.cristian.myapplication.data.models.Straw
+import com.example.cristian.myapplication.data.models.*
 import com.example.cristian.myapplication.data.preferences.UserSession
 import com.example.cristian.myapplication.util.andEx
 import com.example.cristian.myapplication.util.applySchedulers
 import com.example.cristian.myapplication.util.equalEx
+import com.example.cristian.myapplication.util.toStringFormat
 import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -43,12 +40,82 @@ class ReproductiveBvnViewModel @Inject constructor(private val db: CouchRx, priv
             }
             .applySchedulers()
 
-    fun getServicesForBovine(idBovino: String): Maybe<List<Servicio>> = db.oneById(idBovino,Bovino::class).map { it.servicios }
+    fun updateServicio(idBovino: String, servicio: Servicio) = db.oneById(idBovino, Bovino::class)
+            .flatMapSingleElement { b ->
+                val servicios = b.servicios!!.toMutableList()
+                servicios[0] = servicio
+                b.servicios = servicios.toList()
+                db.update(idBovino, b)
+            }.applySchedulers()
+
+    fun addParto(idBovino: String, servicio: Servicio) = db.oneById(idBovino, Bovino::class)
+            .flatMapSingleElement { b ->
+                b.partos = b.partos?.plus(1) ?: 1
+                val servicios = b.servicios!!.toMutableList()
+                servicios[0] = servicio
+                b.servicios = servicios.toList()
+                db.update(idBovino, b)
+            }.applySchedulers()
+
+    fun getOnServiceForBovine(idBovino: String): Single<List<Servicio>> = db.oneById(idBovino, Bovino::class).flatMapObservable { it.servicios?.toObservable() }
+            .filter {
+                it.finalizado!!.not()
+            }.toList().applySchedulers()
+
+    fun getServicesHistoryForBovine(idBovino: String): Single<List<Servicio>> = db.oneById(idBovino, Bovino::class).flatMapObservable { it.servicios?.toObservable() }
+            .filter {
+                it.finalizado!!
+            }.toList().applySchedulers()
+
+    fun getEmptyDaysForBovine(idBovino: String, servicioActual: Date): Single<Long> = db.oneById(idBovino, Bovino::class)
+            .flatMapObservable {
+                it.servicios?.toObservable() ?: Observable.just(Servicio())
+            }.filter {
+                it.parto != null
+            }.toList()
+            .map {
+                if (it.isNotEmpty()) {
+                    val ultimoParto = it.last().fecha!!.time
+                    val dif = servicioActual.time - ultimoParto
+                    return@map TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS)
+                } else {
+                    0L
+                }
+            }
+
+    fun getLastBirthAndEmptyDays(idBovino: String, servicioActual: Date): Single<Pair<Long, Date?>> =
+            db.oneById(idBovino, Bovino::class)
+                    .flatMapObservable {
+                        it.servicios?.toObservable() ?: Observable.just(Servicio())
+                    }.filter {
+                        it.parto != null
+                    }.toList()
+                    .map {
+                        if (it.isNotEmpty()) {
+                            val ultimoParto = it.last().parto!!.fecha
+                            val dif = servicioActual.time - ultimoParto.time
+                            val diasVacios = TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS)
+                            return@map diasVacios to ultimoParto
+                        } else {
+                            0L to null
+                        }
+                    }
+
+    fun getBirths(idBovino: String): Single<List<Parto>> = db.oneById(idBovino, Bovino::class)
+            .flatMapObservable {
+                it.servicios?.toObservable() ?: Observable.just(Servicio())
+            }.filter {
+                it.parto != null
+            }.map {
+                it.parto!!
+            }
+            .toList()
+
 
     fun insertService(idBovino: String, servicio: Servicio): Single<Unit> = db.oneById(idBovino, Bovino::class)
             .flatMapSingle { bovino ->
                 val s = bovino.servicios?.toMutableList() ?: mutableListOf()
-                s.add(servicio)
+                s.add(0,servicio)
                 bovino.servicios = s.toList()
                 db.update(idBovino, bovino)
             }.applySchedulers()

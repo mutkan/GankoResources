@@ -5,5 +5,5 @@ import kotlinx.android.parcel.Parcelize
 import java.util.*
 
 @Parcelize
-data class Diagnostico(var fecha: Date,
-                  var confirmacion:Boolean) : Parcelable
+data class Novedad(val fecha: Date,
+                   val novedad: String) : Parcelable

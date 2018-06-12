@@ -14,6 +14,7 @@ import com.example.cristian.myapplication.data.models.Straw
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.bovine.reproductive.ListServiceFragment.Companion.ARG_ID
 import com.example.cristian.myapplication.ui.bovine.reproductive.ListZealFragment
+import com.example.cristian.myapplication.ui.bovine.reproductive.ListZealFragment.Companion.ARG_ZEAL
 import com.example.cristian.myapplication.ui.bovine.reproductive.ReproductiveBvnViewModel
 import com.example.cristian.myapplication.util.*
 import com.jakewharton.rxbinding2.view.clicks
@@ -32,6 +33,7 @@ class AddServiceActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
     lateinit var factory: ViewModelProvider.Factory
     val viewModel: ReproductiveBvnViewModel by lazy { buildViewModel<ReproductiveBvnViewModel>(factory) }
     private val idBovino: String by lazy { intent.getStringExtra(ARG_ID) ?: "" }
+    private val celo: Date by lazy { intent.getStringExtra(ARG_ZEAL).toDate() }
     private val dis: LifeDisposable = LifeDisposable(this)
     private val calendar: Calendar by lazy { Calendar.getInstance() }
     private val strawAdapter: ArrayAdapter<Straw> by lazy { ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, mutableListOf<Straw>()) }
@@ -47,7 +49,6 @@ class AddServiceActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_service)
         title = "Agregar Servicio"
-        Log.d("ID", idBovino)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back_white)
     }
@@ -116,6 +117,9 @@ class AddServiceActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
                 .subscribeBy(
                         onNext = {
                             finish()
+                        },
+                        onError = {
+                            Log.e("ERROR AGREGAR SERVICO", it.message, it)
                         }
                 )
 
@@ -131,13 +135,13 @@ class AddServiceActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
 
     private fun createService(params: List<String>): Single<Servicio> {
         val fecha = params[0].toDate()
-        val condicion = params[1].toInt()
+        val condicion = params[1].toDouble()
         val montaN = getString(R.string.monta_natural)
         val inseminacion = getString(R.string.inseminaci_n_artificial)
         val empadre = if (serviceType.checkedRadioButtonId == R.id.naturalMating) montaN else inseminacion
         val codigoToro = if (empadre == montaN) bullCodeOrStrawSpinner.selectedItem.toString() else null
         val pajilla = if (empadre == inseminacion) bullCodeOrStrawSpinner.selectedItem.toString() else null
-        val servicio = Servicio(fecha, bovino.celos?.lastOrNull(), condicion, empadre, codigoToro, pajilla, listOf(), listOf(), null, null, null)
+        val servicio = Servicio(fecha, celo, condicion, empadre, codigoToro, pajilla, null, null, null, null, false)
         return Single.just(servicio)
     }
 

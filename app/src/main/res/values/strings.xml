@@ -217,6 +217,8 @@
     <string name="straw_breed">Raza</string>
     <string name="monta_natural">Monta Natural</string>
     <string name="inseminaci_n_artificial">Inseminación Artificial</string>
+    <string name="onService">En Servicio</string>
+    <string name="services">Servicios</string>
 
     <string-array name="straw_type">
         <item>Tipo A</item>

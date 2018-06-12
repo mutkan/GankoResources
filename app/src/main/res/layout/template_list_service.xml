@@ -2,11 +2,32 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
         <variable
             name="service"
-            type="com.example.cristian.myapplication.data.models.Servicio"/>
-        <import type="android.view.View"/>
+            type="com.example.cristian.myapplication.data.models.Servicio" />
+
+        <variable
+            name="position"
+            type="Integer" />
+
+        <variable
+            name="clickAddDiagnostico"
+            type="io.reactivex.subjects.PublishSubject" />
+
+        <variable
+            name="clickAddNovedad"
+            type="io.reactivex.subjects.PublishSubject" />
+
+        <variable
+            name="clickAddParto"
+            type="io.reactivex.subjects.PublishSubject" />
+
+        <import type="android.view.View" />
+
+        <import type="android.support.v4.util.Pair" />
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -42,7 +63,7 @@
             style="@style/textview_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="32dp"
             android:text='@{service.pajilla == null ? "Id Toro" : "Pajilla"}'
             app:layout_constraintStart_toEndOf="@+id/bodyConditionTxt"
             app:layout_constraintTop_toTopOf="@+id/bodyConditionTxt"
@@ -84,8 +105,9 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
+            android:onClick='@{()->clickAddDiagnostico.onNext(Pair.create(service,position))}'
             android:text="Diagnóstico"
-            android:visibility='@{service.diagnosticos.size() == 0 ? View.VISIBLE : View.GONE}'
+            android:visibility='@{service.diagnostico == null ? View.VISIBLE : View.GONE}'
             app:layout_constraintBottom_toTopOf="@+id/div"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/posParto" />
@@ -105,7 +127,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Preñez Confirmada"
-            android:visibility="visible"
+            android:visibility='@{service.diagnostico != null ?  View.VISIBLE : View.GONE}'
             app:layout_constraintStart_toStartOf="@+id/bullOrStrawCode"
             app:layout_constraintTop_toTopOf="@+id/lastDiagnosisTxt" />
 
@@ -113,8 +135,8 @@
             android:id="@+id/pregnancyConfirmed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text='@{service.confirmacion != null ? (service.confirmacion ? "Si" : "No") : ""}'
-            android:visibility="visible"
+            android:text='@{service.diagnostico.confirmacion ? "Si" : "No"}'
+            android:visibility='@{service.diagnostico != null  ?  View.VISIBLE : View.GONE}'
             app:layout_constraintStart_toStartOf="@+id/pregnancyConfirmedTxt"
             app:layout_constraintTop_toBottomOf="@+id/pregnancyConfirmedTxt"
             tools:text="Si" />
@@ -126,8 +148,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:text="Último Diagnóstico"
-            android:visibility="visible"
+            android:text="Fecha de Diagnóstico"
+            android:visibility='@{service.diagnostico != null ? View.VISIBLE : View.GONE}'
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/bodyCondition" />
 
@@ -135,10 +157,13 @@
             android:id="@+id/lastDiagnosis"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="visible"
-            app:dateFormat='@{service.fecha}'
+            android:layout_marginBottom="8dp"
+            android:visibility='@{service.diagnostico != null ? View.VISIBLE : View.GONE}'
+            app:dateFormat='@{service.diagnostico != null ? service.diagnostico.fecha : null}'
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/lastDiagnosisTxt"
             app:layout_constraintTop_toBottomOf="@+id/lastDiagnosisTxt"
+            app:layout_constraintVertical_bias="0.0"
             tools:text="20/06/2018" />
 
         <TextView
@@ -149,7 +174,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:gravity="end"
-            android:text='@{service.novedad ?? ""}'
+            android:text='@{service.novedad.novedad ?? ""}'
             android:textColor="@color/remove"
             android:visibility='@{service.novedad != null ? View.VISIBLE : View.GONE}'
             app:layout_constraintEnd_toEndOf="parent"
@@ -166,8 +191,9 @@
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
+            android:onClick='@{()->clickAddParto.onNext(Pair.create(service,position))}'
             android:text="Parto"
-            android:visibility='@{service.confirmacion != null ? (service.parto.size() == 0 ? View.VISIBLE : View.GONE) : View.GONE}'
+            android:visibility='@{service.diagnostico.confirmacion ? (service.parto == null ? (service.novedad == null ? View.VISIBLE : View.GONE) : View.GONE) : View.GONE}'
             app:layout_constraintBottom_toTopOf="@+id/div"
             app:layout_constraintEnd_toStartOf="@+id/btnAddNovelty"
             app:layout_constraintTop_toBottomOf="@+id/posParto" />
@@ -180,8 +206,9 @@
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
+            android:onClick='@{()->clickAddNovedad.onNext(Pair.create(service,position))}'
             android:text="Novedad"
-            android:visibility='@{service.diagnosticos.size() != 0  ? View.VISIBLE : View.GONE}'
+            android:visibility='@{service.diagnostico.confirmacion  ? (service.novedad == null ? View.VISIBLE : View.GONE) : View.GONE}'
             app:layout_constraintBottom_toTopOf="@+id/div"
             app:layout_constraintEnd_toStartOf="@+id/btnAddDiagnosis"
             app:layout_constraintTop_toBottomOf="@+id/posParto" />
@@ -194,7 +221,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:text="Posible Fecha de Parto"
-            android:visibility="visible"
+            android:visibility='@{service.diagnostico.confirmacion  ?  View.VISIBLE : View.GONE}'
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/pregnancyConfirmed" />
 
@@ -202,11 +229,29 @@
             android:id="@+id/posParto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:layout_marginStart="16dp"
-            android:visibility="visible"
+            android:visibility='@{service.diagnostico.confirmacion  ?  View.VISIBLE : View.GONE}'
             app:dateFormat='@{service.posFechaParto}'
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/posPartoTxt"
+            app:layout_constraintVertical_bias="0.0"
             tools:text="20/12/2018" />
+
+        <TextView
+            android:id="@+id/noveltyDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="1dp"
+            android:gravity="end"
+            app:dateFormat='@{service.novedad.fecha}'
+            android:textColor="@color/remove"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/novelty"
+            app:layout_constraintTop_toBottomOf="@+id/novelty"
+            tools:text="20/06/2018" />
     </android.support.constraint.ConstraintLayout>
 </layout>
