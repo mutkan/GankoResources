@@ -1,6 +1,7 @@
 package com.example.cristian.myapplication.di.components
 
 import com.example.cristian.myapplication.di.ActivityScope
+import com.example.cristian.myapplication.di.modules.MeadowModule
 import com.example.cristian.myapplication.di.modules.ReproductiveModule
 import com.example.cristian.myapplication.ui.account.LoginActivity
 import com.example.cristian.myapplication.ui.bovine.AddBovineActivity
@@ -20,6 +21,9 @@ import com.example.cristian.myapplication.ui.farms.AddFarmActivity
 import com.example.cristian.myapplication.ui.farms.FarmActivity
 import com.example.cristian.myapplication.ui.menu.MenuActivity
 import com.example.cristian.myapplication.ui.menu.Straw.StrawAddActivity
+import com.example.cristian.myapplication.ui.menu.meadow.ManageMeadowActivity
+import com.example.cristian.myapplication.ui.menu.meadow.aforo.AddAforoActivity
+import com.example.cristian.myapplication.ui.menu.meadow.mantenimiento.AddMantenimientoActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -97,6 +101,18 @@ abstract class ActivityComponents {
     @ActivityScope
     @ContributesAndroidInjector()
     abstract fun bindAddStrawActivity(): StrawAddActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector(modules = [MeadowModule::class])
+    abstract fun bindManageMeadowActivity(): ManageMeadowActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector()
+    abstract fun bindAddAforoActivity(): AddAforoActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector()
+    abstract fun bindAddMantenimientoActivity(): AddMantenimientoActivity
 
 
 

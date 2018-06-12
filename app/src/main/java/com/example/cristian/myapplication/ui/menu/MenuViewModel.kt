@@ -6,6 +6,7 @@ import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.db.CouchRx
 import com.example.cristian.myapplication.data.models.Bovino
 import com.example.cristian.myapplication.data.models.Manage
+import com.example.cristian.myapplication.data.models.Pradera
 import com.example.cristian.myapplication.data.models.Straw
 import com.example.cristian.myapplication.data.preferences.UserSession
 import com.example.cristian.myapplication.util.andEx
@@ -13,12 +14,13 @@ import com.example.cristian.myapplication.util.applySchedulers
 import com.example.cristian.myapplication.util.equalEx
 import io.reactivex.Single
 import io.reactivex.rxkotlin.toObservable
+import io.reactivex.rxkotlin.zipWith
 import javax.inject.Inject
 
 /**
  * Created by Ana Marin on 11/03/2018.
  */
-class MenuViewModel @Inject constructor(private val db: CouchRx, private val userSession: UserSession) : ViewModel(){
+class MenuViewModel @Inject constructor(private val db: CouchRx, private val userSession: UserSession) : ViewModel() {
 
     //region Menu
     var content: Int = 2
@@ -53,7 +55,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
             R.color.reports_primary
     )
 
-    fun getStatusBarColor(color: Int): Int{
+    fun getStatusBarColor(color: Int): Int {
         var red = Color.red(color) - 45
         var green = Color.green(color) - 45
         var blue = Color.blue(color) - 45
@@ -65,8 +67,8 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
         return Color.rgb(red, green, blue)
     }
 
-    class MenuItem( val type: Int, var color: Int = 0, val icon: Int = 0, val title: Int = 0,
-                    val titleText: String? = null){
+    class MenuItem(val type: Int, var color: Int = 0, val icon: Int = 0, val title: Int = 0,
+                   val titleText: String? = null) {
 
         companion object {
             val TYPE_TITLE: Int = 0
@@ -76,7 +78,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     }
     //endregion
 
-    fun getFarmId():String = userSession.farmID
+    fun getFarmId(): String = userSession.farmID
 
     fun getBovine(idFinca: String): Single<List<Bovino>> =
             db.listByExp("finca" equalEx idFinca andEx ("retirado" equalEx false), Bovino::class)
@@ -84,7 +86,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
 
     fun deleteBovine(idBovino: String): Single<Unit> = db.remove(idBovino).applySchedulers()
 
-    fun getManagement(idFinca: String):Single<List<Manage>> =
+    fun getManagement(idFinca: String): Single<List<Manage>> =
             getBovine(idFinca)
                     .flatMapObservable {
                         it.toObservable()
@@ -96,8 +98,22 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     .toList()
                     .applySchedulers()
 
-    fun getStraw(idFinca: String):Single<List<Straw>> =
+    fun getStraw(idFinca: String): Single<List<Straw>> =
             db.listByExp("idFarm" equalEx idFinca, Straw::class)
                     .applySchedulers()
 
+    fun getMeadows(idFinca: String): Single<Pair<List<Pradera>, Long>> =
+            db.listByExp("idFinca" equalEx idFinca, Pradera::class)
+                    .map {
+                        it.toObservable().toList()
+                    }.flatMap {
+                        it.zipWith(it.flatMapObservable { it.toObservable() }.filter { it.isEmptyMeadow == false }.count())
+                    }
+                    .applySchedulers()
+
+    fun saveMeadow(pradera: Pradera): Single<String> =
+            db.insert(pradera).applySchedulers()
+
+    fun updateMeadow(id: String, pradera: Pradera): Single<Unit> =
+            db.update(id, pradera).applySchedulers()
 }

@@ -84,7 +84,7 @@ class AddMilkBvnActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListen
     }
 
     override fun onDateSet(p0: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        dateAddMilkBovine.text = "$dayOfMonth/$month/$year"
+        dateAddMilkBovine.text = "$dayOfMonth/${month+1}/$year"
 
     }
 

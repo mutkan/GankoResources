@@ -65,7 +65,9 @@
         </provider>
 
         <activity android:name=".ui.menu.Movement.MovementActivity" />
-        <activity android:name=".ui.menu.meadow.MeadowFragment"></activity>
+        <activity android:name=".ui.menu.meadow.ManageMeadowActivity" />
+        <activity android:name=".ui.menu.meadow.aforo.AddAforoActivity" />
+        <activity android:name=".ui.menu.meadow.mantenimiento.AddMantenimientoActivity"/>
     </application>
 
 </manifest>
