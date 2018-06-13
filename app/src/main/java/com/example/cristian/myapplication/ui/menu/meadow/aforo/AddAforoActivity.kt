@@ -39,6 +39,8 @@ class AddAforoActivity : AppCompatActivity(), Injectable {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_aforo)
         title = "Agregar Aforo"
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
     }
 
     override fun onResume() {
@@ -134,7 +136,13 @@ class AddAforoActivity : AppCompatActivity(), Injectable {
         }.show()
         super.onBackPressed()
     }
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
+    }
     companion object {
         const val MEADOW = "meadow"
     }
+
 }

@@ -9,6 +9,7 @@ import com.example.cristian.myapplication.ui.menu.straw.StrawFragment
 import com.example.cristian.myapplication.ui.menu.bovine.ListBovineFragment
 import com.example.cristian.myapplication.ui.menu.management.ManageFragment
 import com.example.cristian.myapplication.ui.menu.meadow.MeadowFragment
+import com.example.cristian.myapplication.ui.menu.movement.MovementFragment
 import com.example.cristian.myapplication.util.putFragment
 import org.jetbrains.anko.startActivity
 import javax.inject.Inject
@@ -49,7 +50,7 @@ class MenuNavigation @Inject constructor(val activity: MenuActivity, val sesion:
     }
 
     fun navigateToMovements() {
-
+        activity.putFragment(R.id.content_frame,MovementFragment.instance())
     }
 
     fun navigateToMeadow() {

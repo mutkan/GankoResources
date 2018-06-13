@@ -4,10 +4,7 @@ import android.arch.lifecycle.ViewModel
 import android.graphics.Color
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.db.CouchRx
-import com.example.cristian.myapplication.data.models.Bovino
-import com.example.cristian.myapplication.data.models.Manage
-import com.example.cristian.myapplication.data.models.Pradera
-import com.example.cristian.myapplication.data.models.Straw
+import com.example.cristian.myapplication.data.models.*
 import com.example.cristian.myapplication.data.preferences.UserSession
 import com.example.cristian.myapplication.util.andEx
 import com.example.cristian.myapplication.util.applySchedulers
@@ -118,4 +115,21 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
 
     fun updateMeadow(id: String, pradera: Pradera): Single<Unit> =
             db.update(id, pradera).applySchedulers()
+
+    fun getUsedMeadows(idFinca: String): Single<MutableList<Pradera>> =
+            db.listByExp("idFinca" equalEx idFinca, Pradera::class)
+                    .flatMapObservable { it.toObservable() }
+                    .filter { it.available == false }
+                    .toList().applySchedulers()
+
+    fun getUnusedMeadows(idFinca: String): Single<MutableList<Pradera>> =
+            db.listByExp("idFinca" equalEx idFinca, Pradera::class)
+                    .flatMapObservable { it.toObservable() }
+                    .filter { it.available == true }
+                    .toList()
+                    .applySchedulers()
+
+    fun getGroups(idFinca: String): Single<List<Group>> =
+            db.listByExp("idFinca" equalEx idFinca, Group::class)
+                    .applySchedulers()
 }
