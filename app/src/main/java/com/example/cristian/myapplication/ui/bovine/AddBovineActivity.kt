@@ -128,13 +128,13 @@ class AddBovineActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
                     }
                     viewModel.addBovine(Bovino(null, null, null, "", bovineIdentificationNumber.text(), foto,
                             bovineName.text(), bovineBirthDate.text.toString().toDate(),
-                            if (spinnerOrigin.selectedItem.toString() == "Compra") purchaseDate.text.toString().toDate()
-                            else null
+                            if (spinnerOrigin.selectedItem.toString() == "Compra") purchaseDate.text.toString().toDate() else null
                             , sex, purpose,
                             bovineWeight.text().toInt(), bovineColor.text(), bovineRace.text(), motherId.text(), fatherId.text(),
                             null,
                             if (male.isChecked) null else previousBovineBirths.text().toInt(),
-                            purchasePrice.text().toInt(), spinnerOrigin.selectedItem.toString(), false, null, null,
+                            if (spinnerOrigin.selectedItem.toString() == "Compra") purchasePrice.text().toInt() else null
+                            , spinnerOrigin.selectedItem.toString(), false, null, null,
                             null, farmId, check_weaned.isChecked,
                             if (check_weaned.isChecked) {
                                 bovineWeanedDate.text.toString().toDate()
@@ -149,7 +149,7 @@ class AddBovineActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
                             toast("onComplete")
                         },
                         onError = {
-                            toast(it.message!!)
+                            toast(it.message!! + "SI AQUI")
                         }
                 )
 
@@ -233,7 +233,6 @@ class AddBovineActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
     private fun minusPage() {
         binding.page = binding.page!!.minus(1)
     }
-
 
 
 }
