@@ -37,6 +37,9 @@ class AddCebaBvnActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListen
         datePicker = DatePickerDialog(this, AddMilkBvnActivity@ this,
                 Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH),
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
+        onDateSet(null, Calendar.getInstance().get(Calendar.YEAR),
+                Calendar.getInstance().get(Calendar.MONTH) + 1,
+                Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
 
     }
 
@@ -45,7 +48,7 @@ class AddCebaBvnActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListen
         dis add btnAddCebaBvn.clicks()
                 .flatMap { validateForm(R.string.empty_fields, dateAddCebaBvn.text.toString(), weightAddCebaBvn.text.toString()) }
                 .flatMapSingle {
-                    viewModel.addCeba(Ceba(null, null, null, "", idBovino, it[0].toDate(), it[1].toFloat(), 0f))
+                    viewModel.addCeba(Ceba(null, null, null, "", idBovino, it[0].toDate(), it[1].toFloat(), 0f,false))
                 }
                 .subscribeBy(
                         onNext = {

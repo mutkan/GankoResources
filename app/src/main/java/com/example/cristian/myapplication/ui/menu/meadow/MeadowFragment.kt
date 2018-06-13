@@ -131,6 +131,7 @@ class MeadowFragment : Fragment(), Injectable {
                                 else -> {
                                     meadow.isUsedMeadow = false
                                     meadow.isEmptyMeadow = true
+                                    meadow.available = null
                                     identificador -= 1
                                     meadow.identificador = null
                                     meadow.tamano = 0f
