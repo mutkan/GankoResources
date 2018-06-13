@@ -7,7 +7,7 @@ import com.example.cristian.myapplication.util.applySchedulers
 import io.reactivex.Single
 import javax.inject.Inject
 
-class StrawViewModel @Inject constructor(private val db: CouchRx) : ViewModel() {
+class StrawViewModel @Inject constructor (private val db: CouchRx) : ViewModel() {
 
     fun addStraw(straw: Straw): Single<String> =
             db.insert(straw)

@@ -11,10 +11,7 @@ import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.Bovino
 import com.example.cristian.myapplication.databinding.ActivityRemoveBovineBinding
 import com.example.cristian.myapplication.di.Injectable
-import com.example.cristian.myapplication.util.LifeDisposable
-import com.example.cristian.myapplication.util.buildViewModel
-import com.example.cristian.myapplication.util.subscribeByAction
-import com.example.cristian.myapplication.util.toDate
+import com.example.cristian.myapplication.util.*
 import com.jakewharton.rxbinding2.view.clicks
 import kotlinx.android.synthetic.main.activity_remove_bovine.*
 import org.jetbrains.anko.toast
@@ -37,6 +34,8 @@ class RemoveBovineActivity : AppCompatActivity() , Injectable, DatePickerDialog.
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_remove_bovine)
         binding.bovino = bovine
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        title = getString(R.string.remove_bovine)
         datePicker = DatePickerDialog(this, RemoveBovineActivity@ this,
                 Calendar.getInstance().get(Calendar.YEAR),
                 Calendar.getInstance().get(Calendar.MONTH),
@@ -50,6 +49,7 @@ class RemoveBovineActivity : AppCompatActivity() , Injectable, DatePickerDialog.
                 .subscribe { datePicker.show() }
 
         dis add btnNextRemoveBovine.clicks()
+                .flatMap { validateForm(R.string.empty_fields, retirementDateRemoveBovine.text.toString()) }
                 .flatMapSingle {
                     val bovino = bovine
                     bovino.retirado = true
@@ -73,6 +73,11 @@ class RemoveBovineActivity : AppCompatActivity() , Injectable, DatePickerDialog.
         dis add btnCancelRemoveBovine.clicks()
                 .subscribe { finish() }
 
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {

@@ -221,12 +221,19 @@
     <string name="aforo">Aforo</string>
     <string name="aforo_average">Promedio</string>
     <string name="sample_quantity">Cantidad de muestras</string>
+    <string name="date_of_purchase">Fecha de compra</string>
+    <string name="purchase_price">Precio de compra</string>
 
     <string-array name="straw_type">
         <item>Tipo A</item>
         <item>Tipo B</item>
         <item>Tipo C</item>
         <item>Tipo D</item>
+    </string-array>
+
+    <string-array name="origin">
+        <item>Nacimiento</item>
+        <item>Compra</item>
     </string-array>
 
     <string-array name="retirement_reason">

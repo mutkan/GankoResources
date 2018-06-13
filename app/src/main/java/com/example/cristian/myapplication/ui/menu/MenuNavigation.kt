@@ -31,6 +31,7 @@ class MenuNavigation @Inject constructor(val activity: MenuActivity, val sesion:
     }
 
     fun navigateToMilk() {
+
     }
 
     fun navigateToFeeding() {

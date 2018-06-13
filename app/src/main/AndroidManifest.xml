@@ -73,7 +73,9 @@
         <activity android:name=".ui.menu.meadow.aforo.AddAforoActivity" />
         <activity android:name=".ui.menu.meadow.mantenimiento.AddMantenimientoActivity"/>
         <activity android:name=".ui.groups.SaveGroupActivity" />
-        <activity android:name=".ui.groups.SelectActivity"/>
+        <activity android:name=".ui.groups.SelectActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
         <activity android:name=".ui.groups.BovineSelectedActivity"/>
     </application>
 
