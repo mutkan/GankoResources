@@ -31,6 +31,7 @@ import org.jetbrains.anko.support.v4.selector
 import org.jetbrains.anko.support.v4.startActivity
 import org.jetbrains.anko.support.v4.toast
 import org.jetbrains.anko.yesButton
+import java.util.*
 import javax.inject.Inject
 
 class MeadowFragment : Fragment(), Injectable {
@@ -106,6 +107,8 @@ class MeadowFragment : Fragment(), Injectable {
                                 if (et.text() != "") {
                                     meadow.isUsedMeadow = true
                                     meadow.isEmptyMeadow = false
+                                    meadow.available = true
+                                    meadow.fechaSalida = Date()
                                     identificador += 1
                                     meadow.identificador = identificador
                                     meadow.tamano = et.text().toFloat()
@@ -128,6 +131,7 @@ class MeadowFragment : Fragment(), Injectable {
                                 else -> {
                                     meadow.isUsedMeadow = false
                                     meadow.isEmptyMeadow = true
+                                    meadow.available = null
                                     identificador -= 1
                                     meadow.identificador = null
                                     meadow.tamano = 0f

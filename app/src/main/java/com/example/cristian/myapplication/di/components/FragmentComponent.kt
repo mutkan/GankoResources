@@ -8,6 +8,9 @@ import com.example.cristian.myapplication.ui.menu.meadow.MeadowFragment
 import com.example.cristian.myapplication.ui.menu.meadow.aforo.AforoFragment
 import com.example.cristian.myapplication.ui.menu.meadow.mantenimiento.MaintenanceFragment
 import com.example.cristian.myapplication.ui.menu.meadow.size.SizeFragment
+import com.example.cristian.myapplication.ui.menu.movement.MeadowUnusedFragment
+import com.example.cristian.myapplication.ui.menu.movement.MeadowUsedFragment
+import com.example.cristian.myapplication.ui.menu.movement.MovementFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -29,5 +32,17 @@ abstract class FragmentComponent{
     @FragmentScope
     @ContributesAndroidInjector()
     abstract fun bindMeadowFragment(): MeadowFragment
+
+    @FragmentScope
+    @ContributesAndroidInjector()
+    abstract fun bindMeadowUnusedFragment(): MeadowUnusedFragment
+
+    @FragmentScope
+    @ContributesAndroidInjector()
+    abstract fun bindMeadowUsedFragment(): MeadowUsedFragment
+
+    @FragmentScope
+    @ContributesAndroidInjector()
+    abstract fun bindMovementFragment(): MovementFragment
 
 }

@@ -12,6 +12,7 @@ import com.example.cristian.myapplication.util.buildViewModel
 import com.example.cristian.myapplication.util.subscribeByShot
 import com.jakewharton.rxbinding2.view.clicks
 import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.rxkotlin.toObservable
 import kotlinx.android.synthetic.main.activity_list_milk_bovine.*
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
@@ -45,16 +46,16 @@ class MilkBvnActivity : AppCompatActivity(), Injectable {
     override fun onResume() {
         super.onResume()
 
-        totalLitters = 0
         dis add viewModel.getMilkProduction(idBovino)
                 .subscribeBy(
                         onSuccess = {
-                            val average = if (it.size != 0) (totalLitters / it.size).toString()
-                            else "0"
+                            totalLitters = 0
                             milkAdapter.data = it
                             for (production in it) {
                                 totalLitters += production.litros!!.toInt()
                             }
+                            val average = if (it.isNotEmpty()) (totalLitters / it.size).toString()
+                            else "0"
                             totalListMilkBovine.text = totalLitters.toString()
                             averageListMilkBovine.text = average
                         },

@@ -30,12 +30,18 @@ class ManageMeadowActivity : AppCompatActivity(), Injectable, HasSupportFragment
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_manage_meadow)
         title = "Administrar pradera "+meadow.identificador
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         manageTab.setupWithViewPager(managePager)
     }
 
     override fun onResume() {
         super.onResume()
         managePager.adapter = adapter
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
     }
 
     companion object {
