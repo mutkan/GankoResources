@@ -12,7 +12,8 @@ class Ceba(var _id: String? = null,
            var bovino: String? = null,
            var fecha: Date? = null,
            var peso: Float? = null,
-           var gananciaPeso: Float? = null): Parcelable {
+           var gananciaPeso: Float? = null,
+           var eliminado:Boolean? = null): Parcelable {
     init {
         type = javaClass.simpleName
     }

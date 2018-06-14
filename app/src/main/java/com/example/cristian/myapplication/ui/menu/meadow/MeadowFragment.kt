@@ -31,6 +31,7 @@ import org.jetbrains.anko.support.v4.selector
 import org.jetbrains.anko.support.v4.startActivity
 import org.jetbrains.anko.support.v4.toast
 import org.jetbrains.anko.yesButton
+import java.util.*
 import javax.inject.Inject
 
 class MeadowFragment : Fragment(), Injectable {
@@ -106,6 +107,8 @@ class MeadowFragment : Fragment(), Injectable {
                                 if (et.text() != "") {
                                     meadow.isUsedMeadow = true
                                     meadow.isEmptyMeadow = false
+                                    meadow.available = true
+                                    meadow.fechaSalida = Date()
                                     identificador += 1
                                     meadow.identificador = identificador
                                     meadow.tamano = et.text().toFloat()
@@ -124,10 +127,11 @@ class MeadowFragment : Fragment(), Injectable {
                         val options = listOf("Administrar", "Remover")
                         selector("Seleccione una opcion", options, { dialogInterface, i ->
                             when (i) {
-                                0 -> startActivity<ManageMeadowActivity>(MEADOW to meadow)
+                                0 -> startActivity<ManageMeadowActivity>(MEADOWID to meadow._id!!)
                                 else -> {
                                     meadow.isUsedMeadow = false
                                     meadow.isEmptyMeadow = true
+                                    meadow.available = null
                                     identificador -= 1
                                     meadow.identificador = null
                                     meadow.tamano = 0f
@@ -162,7 +166,7 @@ class MeadowFragment : Fragment(), Injectable {
     }
 
     companion object {
-        const val MEADOW = "meadow"
+        const val MEADOWID = "meadow"
         fun instance(): MeadowFragment = MeadowFragment()
     }
 }

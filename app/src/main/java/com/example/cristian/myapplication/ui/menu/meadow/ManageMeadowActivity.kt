@@ -1,5 +1,6 @@
 package com.example.cristian.myapplication.ui.menu.meadow
 
+import android.arch.lifecycle.ViewModelProvider
 import android.databinding.DataBindingUtil
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -10,6 +11,9 @@ import com.example.cristian.myapplication.data.models.Pradera
 import com.example.cristian.myapplication.databinding.ActivityManageMeadowBinding
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.ManageMeadowAdapter
+import com.example.cristian.myapplication.ui.menu.MenuViewModel
+import com.example.cristian.myapplication.util.LifeDisposable
+import com.example.cristian.myapplication.util.buildViewModel
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
@@ -22,23 +26,40 @@ class ManageMeadowActivity : AppCompatActivity(), Injectable, HasSupportFragment
     lateinit var injector: DispatchingAndroidInjector<Fragment>
     override fun supportFragmentInjector(): AndroidInjector<Fragment> = injector
 
-    val meadow: Pradera by lazy { intent.getParcelableExtra<Pradera>(MEADOW) }
+    val idMeadow: String by lazy { intent.getStringExtra(MEADOWID) }
     lateinit var binding: ActivityManageMeadowBinding
-    val adapter: ManageMeadowAdapter by lazy { ManageMeadowAdapter(this, supportFragmentManager, meadow) }
+    lateinit var adapter: ManageMeadowAdapter
+
+    @Inject
+    lateinit var factory: ViewModelProvider.Factory
+    val viewModel: MenuViewModel by lazy { buildViewModel<MenuViewModel>(factory) }
+
+    val dis = LifeDisposable(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_manage_meadow)
-        title = "Administrar pradera "+meadow.identificador
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         manageTab.setupWithViewPager(managePager)
     }
 
     override fun onResume() {
         super.onResume()
-        managePager.adapter = adapter
+
+        dis add viewModel.getMeadow(idMeadow)
+                .subscribe {
+                    title = "Administrar pradera "+it.identificador
+                    adapter = ManageMeadowAdapter(this, supportFragmentManager, it)
+                    managePager.adapter = adapter
+                }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
     }
 
     companion object {
-        const val MEADOW = "meadow"
+        const val MEADOWID = "meadow"
     }
 }

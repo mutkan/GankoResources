@@ -34,6 +34,8 @@ class AddMantenimientoActivity : AppCompatActivity(), DatePickerDialog.OnDateSet
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_mantenimiento)
         title = "Agregar Mantenimiento"
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         datePicker = DatePickerDialog(this, AddMantenimientoActivity@ this,
                 Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH),
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
@@ -106,6 +108,11 @@ class AddMantenimientoActivity : AppCompatActivity(), DatePickerDialog.OnDateSet
     override fun onDateSet(p0: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         maintenanceDate.text = "$dayOfMonth/${month+1}/$year"
 
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
     }
     companion object {
         const val MEADOW = "meadow"

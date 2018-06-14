@@ -36,6 +36,8 @@
     <string name="prairies">PRADERAS</string>
     <string name="reports">REPORTES</string>
     <string name="logout">Cerrar Sesión</string>
+    <string name="menu_groups">GRUPOS</string>
+    <string name="notifications">NOTIFICACIONES</string>
 
     <string name="vaccine">Vacuna</string>
     <string name="bovine_name">Nombre del Bovino</string>
@@ -271,10 +273,28 @@
         <item>Bovinos</item>
         <item>Grupos</item>
     </string-array>
+
+    <string-array name="event_type">
+        <item>Castración</item>
+        <item>Secado</item>
+        <item>Otro</item>
+    </string-array>
+
     <string name="remove_group">¿ Desea eliminar el grupo ?</string>
     <string name="group_removed">Grupo eliminado</string>
     <string name="select_clear">¿ Desea limpiar la selección ?</string>
     <string name="select_title">Seleccionar bovinos</string>
+    <string name="id_group">ID Grupo</string>
+    <string name="event_type">Tipo de evento</string>
+    <string name="other_which">¿Otro?¿Cuál?</string>
+    <string name="which_other_event_type">¿Cuál otro tipo de evento?</string>
+    <string name="write_the_other_event_type">Escríba el otro tipo de evento</string>
+    <string name="event_date">Fecha del evento</string>
+    <string name="treatment_or_strategy">Tramiento o estrategia</string>
+    <string name="treatment_or_strategy_applied">Tratamiento o estrategia aplicado</string>
+    <string name="product_applied">Producto aplicado</string>
+    <string name="frecuency_in_days">Frecuencia en días</string>
+    <string name="write_your_observations">Escríba sus observaciones</string>
 
 
 </resources>

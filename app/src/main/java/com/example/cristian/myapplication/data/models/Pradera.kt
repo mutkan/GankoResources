@@ -19,7 +19,9 @@ class Pradera(
         var fechaOcupacion: Date? = null,
         var fechaSalida: Date? = null,
         var mantenimiento: MutableList<Mantenimiento>? = mutableListOf(),
-        var aforo: MutableList<Aforo>? = mutableListOf()
+        var aforo: MutableList<Aforo>? = mutableListOf(),
+        var group: String? = null,
+        var available: Boolean? = null
 ) : Parcelable {
     init {
         type = javaClass.simpleName

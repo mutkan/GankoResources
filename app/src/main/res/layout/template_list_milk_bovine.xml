@@ -18,7 +18,9 @@
             android:id="@+id/jornadaListMilkBovine"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{produccion.jornada}"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:text="sin jornada"
             android:textAppearance="@android:style/TextAppearance.Material.Small"
             app:layout_constraintEnd_toStartOf="@+id/guideline8"
             app:layout_constraintStart_toStartOf="@+id/guideline7"
@@ -29,19 +31,14 @@
             android:id="@+id/littersListMilkBovine"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="64dp"
-            android:text='@{produccion.litros}'
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:text='@{produccion.litros+" Lts"}'
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guideline8"
             app:layout_constraintTop_toTopOf="@+id/jornadaListMilkBovine"
-            tools:text="20" />
-
-        <TextView
-            android:id="@+id/textView82"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/liters"
-            app:layout_constraintStart_toEndOf="@+id/littersListMilkBovine"
-            app:layout_constraintTop_toTopOf="@+id/littersListMilkBovine" />
+            tools:text="20 Lts
+" />
 
         <FrameLayout
             android:id="@+id/frameLayout4"
@@ -60,14 +57,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.41" />
+            app:layout_constraintGuide_percent="0.33" />
 
         <android.support.constraint.Guideline
             android:id="@+id/guideline8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.56" />
+            app:layout_constraintGuide_percent="0.67" />
 
         <TextView
             android:id="@+id/dateListMilkBovine"
