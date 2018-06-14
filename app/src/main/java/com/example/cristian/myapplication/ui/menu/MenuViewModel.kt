@@ -106,6 +106,10 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
             db.listByExp("idFarm" equalEx idFinca, Straw::class)
                     .applySchedulers()
 
+    fun getFeed(idFinca: String): Single<List<Feed>> =
+            db.listByExp("idFarm" equalEx idFinca, Feed::class)
+                    .applySchedulers()
+
     fun getMeadows(idFinca: String): Single<Pair<List<Pradera>, Long>> =
             db.listByExp("idFinca" equalEx idFinca, Pradera::class)
                     .map {
