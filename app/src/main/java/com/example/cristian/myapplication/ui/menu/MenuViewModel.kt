@@ -9,6 +9,7 @@ import com.example.cristian.myapplication.data.preferences.UserSession
 import com.example.cristian.myapplication.util.andEx
 import com.example.cristian.myapplication.util.applySchedulers
 import com.example.cristian.myapplication.util.equalEx
+import io.reactivex.Maybe
 import io.reactivex.Single
 import io.reactivex.rxkotlin.toObservable
 import io.reactivex.rxkotlin.zipWith
@@ -109,6 +110,9 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                         it.zipWith(it.flatMapObservable { it.toObservable() }.filter { it.isEmptyMeadow == false }.count())
                     }
                     .applySchedulers()
+
+    fun getMeadow(id:String): Maybe<Pradera> =
+            db.oneById(id,Pradera::class).applySchedulers()
 
     fun saveMeadow(pradera: Pradera): Single<String> =
             db.insert(pradera).applySchedulers()

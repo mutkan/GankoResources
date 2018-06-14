@@ -127,7 +127,7 @@ class MeadowFragment : Fragment(), Injectable {
                         val options = listOf("Administrar", "Remover")
                         selector("Seleccione una opcion", options, { dialogInterface, i ->
                             when (i) {
-                                0 -> startActivity<ManageMeadowActivity>(MEADOW to meadow)
+                                0 -> startActivity<ManageMeadowActivity>(MEADOWID to meadow._id!!)
                                 else -> {
                                     meadow.isUsedMeadow = false
                                     meadow.isEmptyMeadow = true
@@ -166,7 +166,7 @@ class MeadowFragment : Fragment(), Injectable {
     }
 
     companion object {
-        const val MEADOW = "meadow"
+        const val MEADOWID = "meadow"
         fun instance(): MeadowFragment = MeadowFragment()
     }
 }
