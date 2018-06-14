@@ -1,6 +1,264 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnSaveManage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/constrain"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/idGroupLabel"
+                style="@style/textview_label"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="24dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/id_group"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/idGroup"
+                android:layout_width="0dp"
+                android:layout_height="23dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="@+id/idGroupLabel"
+                app:layout_constraintStart_toStartOf="@+id/idGroupLabel"
+                app:layout_constraintTop_toBottomOf="@+id/idGroupLabel"
+                tools:text="14323232" />
+
+            <TextView
+                android:id="@+id/eventType"
+                style="@style/textview_label"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/event_type"
+                app:layout_constraintEnd_toEndOf="@+id/idGroup"
+                app:layout_constraintStart_toStartOf="@+id/idGroup"
+                app:layout_constraintTop_toBottomOf="@+id/idGroup" />
+
+            <Spinner
+                android:id="@+id/spinnerEventType"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:entries="@array/event_type"
+                app:layout_constraintEnd_toEndOf="@+id/eventType"
+                app:layout_constraintStart_toStartOf="@+id/eventType"
+                app:layout_constraintTop_toBottomOf="@+id/eventType" />
+
+            <TextView
+                android:id="@+id/whichLabel"
+                style="@style/textview_label"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/other_which"
+                app:layout_constraintEnd_toEndOf="@+id/spinnerEventType"
+                app:layout_constraintStart_toStartOf="@+id/spinnerEventType"
+                app:layout_constraintTop_toBottomOf="@+id/spinnerEventType" />
+
+            <EditText
+                android:id="@+id/otherWhich"
+                style="@style/edit_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:ems="10"
+                android:hint="@string/write_the_other_event_type"
+                android:inputType="textAutoCorrect"
+                app:layout_constraintEnd_toEndOf="@+id/whichLabel"
+                app:layout_constraintStart_toStartOf="@+id/whichLabel"
+                app:layout_constraintTop_toBottomOf="@+id/whichLabel" />
+
+            <TextView
+                android:id="@+id/eventDateLabel"
+                style="@style/textview_label"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/event_date"
+                app:layout_constraintEnd_toEndOf="@+id/otherWhich"
+                app:layout_constraintStart_toStartOf="@+id/otherWhich"
+                app:layout_constraintTop_toBottomOf="@+id/otherWhich" />
+
+            <TextView
+                android:id="@+id/eventDate"
+                style="@style/edit_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:clickable="true"
+                android:focusable="false"
+                android:hint="@string/date_value"
+                app:layout_constraintEnd_toEndOf="@+id/eventDateLabel"
+                app:layout_constraintStart_toStartOf="@+id/eventDateLabel"
+                app:layout_constraintTop_toBottomOf="@+id/eventDateLabel" />
+
+            <TextView
+                android:id="@+id/treatmentLabel"
+                style="@style/textview_label"
+                android:layout_width="0dp"
+                android:layout_height="24dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/treatment_or_strategy"
+                app:layout_constraintEnd_toEndOf="@+id/eventDate"
+                app:layout_constraintStart_toStartOf="@+id/eventDate"
+                app:layout_constraintTop_toBottomOf="@+id/eventDate" />
+
+            <EditText
+                android:id="@+id/treatment"
+                style="@style/edit_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:ems="10"
+                android:hint="@string/treatment_or_strategy_applied"
+                android:inputType="textAutoCorrect"
+                app:layout_constraintEnd_toEndOf="@+id/treatmentLabel"
+                app:layout_constraintStart_toStartOf="@+id/treatmentLabel"
+                app:layout_constraintTop_toBottomOf="@+id/treatmentLabel" />
+
+            <TextView
+                android:id="@+id/productLabel"
+                style="@style/textview_label"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/product"
+                app:layout_constraintEnd_toEndOf="@+id/treatment"
+                app:layout_constraintStart_toStartOf="@+id/treatment"
+                app:layout_constraintTop_toBottomOf="@+id/treatment" />
+
+            <EditText
+                android:id="@+id/product"
+                style="@style/edit_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:ems="10"
+                android:hint="@string/product_applied"
+                android:inputType="textAutoCorrect"
+                app:layout_constraintEnd_toEndOf="@+id/productLabel"
+                app:layout_constraintStart_toStartOf="@+id/productLabel"
+                app:layout_constraintTop_toBottomOf="@+id/productLabel" />
+
+            <TextView
+                android:id="@+id/frecuencyLabel"
+                style="@style/textview_label"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/frecuency"
+                app:layout_constraintEnd_toEndOf="@+id/product"
+                app:layout_constraintStart_toStartOf="@+id/product"
+                app:layout_constraintTop_toBottomOf="@+id/product" />
+
+            <EditText
+                android:id="@+id/frecuency"
+                style="@style/edit_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:ems="10"
+                android:hint="@string/frecuency_in_days"
+                android:inputType="number"
+                app:layout_constraintEnd_toEndOf="@+id/frecuencyLabel"
+                app:layout_constraintStart_toStartOf="@+id/frecuencyLabel"
+                app:layout_constraintTop_toBottomOf="@+id/frecuencyLabel" />
+
+            <TextView
+                android:id="@+id/productPriceLabel"
+                style="@style/textview_label"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/price"
+                app:layout_constraintEnd_toEndOf="@+id/frecuency"
+                app:layout_constraintStart_toStartOf="@+id/frecuency"
+                app:layout_constraintTop_toBottomOf="@+id/frecuency" />
+
+            <EditText
+                android:id="@+id/productPrice"
+                style="@style/edit_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:ems="10"
+                android:hint="@string/product_price"
+                android:inputType="number"
+                app:layout_constraintEnd_toEndOf="@+id/productPriceLabel"
+                app:layout_constraintStart_toStartOf="@+id/productPriceLabel"
+                app:layout_constraintTop_toBottomOf="@+id/productPriceLabel" />
+
+            <TextView
+                android:id="@+id/observationsLabel"
+                style="@style/textview_label"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/Observations"
+                app:layout_constraintEnd_toEndOf="@+id/productPrice"
+                app:layout_constraintStart_toStartOf="@+id/productPrice"
+                app:layout_constraintTop_toBottomOf="@+id/productPrice" />
+
+            <EditText
+                android:id="@+id/observations"
+                style="@style/edit_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:layout_marginTop="8dp"
+                android:ems="10"
+                android:hint="@string/write_your_observations"
+                android:inputType="text"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/observationsLabel"
+                app:layout_constraintStart_toStartOf="@+id/observationsLabel"
+                app:layout_constraintTop_toBottomOf="@+id/observationsLabel" />
+        </android.support.constraint.ConstraintLayout>
+
+
+    </android.support.v4.widget.NestedScrollView>
+
+    <Button
+        android:id="@+id/btnSaveManage"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btnCancelManage" />
+
+    <Button
+        android:id="@+id/btnCancelManage"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_cancel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnSaveManage"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
 </android.support.constraint.ConstraintLayout>
+
