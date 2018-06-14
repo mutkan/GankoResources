@@ -11,6 +11,9 @@
         <variable
             name="stateCheckBox"
             type="Boolean"/>
+        <variable
+            name="stateSex"
+            type="Boolean"/>
 
         <import type="android.view.View"/>
     </data>
@@ -28,12 +31,12 @@
             android:text="@string/btn_back"
             android:visibility='@{page == 1 ? View.GONE : View.VISIBLE}'
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btnNext"
+            app:layout_constraintEnd_toStartOf="@+id/btnAddFeed"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/btnCancel" />
+            app:layout_constraintStart_toEndOf="@+id/btnCancelFeed" />
 
         <Button
-            android:id="@+id/btnCancel"
+            android:id="@+id/btnCancelFeed"
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -47,7 +50,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
-            android:id="@+id/btnNext"
+            android:id="@+id/btnAddFeed"
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -71,7 +74,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/btnNext" />
+            app:layout_constraintStart_toEndOf="@+id/btnAddFeed" />
 
         <android.support.v4.widget.NestedScrollView
             android:id="@+id/nested"
@@ -109,10 +112,13 @@
                         android:ems="10"
                         android:hint="@string/previous_number_of_births"
                         android:inputType="number"
+                        android:visibility='@{stateSex == true ? View.GONE : View.VISIBLE}'
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@+id/textView67"
+                        app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="@+id/textView67"
-                        app:layout_constraintTop_toBottomOf="@+id/textView67" />
+                        app:layout_constraintTop_toBottomOf="@+id/textView67"
+                        app:layout_constraintVertical_bias="1.0" />
 
                     <TextView
                         android:id="@+id/textView64"
@@ -207,6 +213,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:text="@string/number_of_births"
+                        android:visibility='@{stateSex == true ? View.GONE : View.VISIBLE}'
                         app:layout_constraintEnd_toEndOf="@+id/sexBovine"
                         app:layout_constraintStart_toStartOf="@+id/sexBovine"
                         app:layout_constraintTop_toBottomOf="@+id/sexBovine" />

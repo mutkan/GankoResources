@@ -31,7 +31,7 @@ class LoginActivity : AppCompatActivity(), Injectable {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         if (session.logged){
-            startActivity<MenuActivity>()
+            if(session.farm == "") startActivity<FarmActivity>() else startActivity<MenuActivity>()
             finish()
         }
 

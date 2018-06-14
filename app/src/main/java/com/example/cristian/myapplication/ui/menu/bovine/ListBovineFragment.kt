@@ -2,6 +2,8 @@ package com.example.cristian.myapplication.ui.menu.bovine
 
 
 import android.arch.lifecycle.ViewModelProvider
+import android.databinding.DataBindingUtil
+import android.databinding.ObservableBoolean
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -10,6 +12,8 @@ import android.view.ViewGroup
 import com.couchbase.lite.internal.support.Log
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.Bovino
+import com.example.cristian.myapplication.databinding.FragmentListBovineBinding
+import com.example.cristian.myapplication.databinding.TemplateZealBinding
 import com.example.cristian.myapplication.di.FragmentScope
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.ListBovineAdapter
@@ -38,18 +42,22 @@ class ListBovineFragment : Fragment(), Injectable {
     @Inject
     lateinit var adapter: ListBovineAdapter
     val dis: LifeDisposable = LifeDisposable(this)
+    lateinit var binding: FragmentListBovineBinding
 
     private val idFinca: String by lazy { viewModel.getFarmId() }
+    val isEmpty: ObservableBoolean = ObservableBoolean(false)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_list_bovine, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_list_bovine, container, false )
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         recyclerListBovine.adapter = adapter
+        binding.isEmpty = isEmpty
     }
 
     override fun onResume() {
@@ -58,6 +66,7 @@ class ListBovineFragment : Fragment(), Injectable {
         dis add viewModel.getBovine(idFinca)
                 .subscribeBy(
                         onSuccess = {
+                            isEmpty.set(it.isEmpty())
                             adapter.bovines = it
                             android.util.Log.d("BOVINOS", it.toString())
                         },

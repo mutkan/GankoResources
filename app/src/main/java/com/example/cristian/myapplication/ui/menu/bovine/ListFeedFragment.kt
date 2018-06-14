@@ -53,13 +53,13 @@ class ListFeedFragment : Fragment(), Injectable {
 
     override fun onResume() {
         super.onResume()
-        dis add viewModel.getAllFeed(idFinca)
+      /*  dis add viewModel.getAllFeed(idFinca)
                 .subscribeBy(
                         onNext = {
                             isEmpty.set(it.isEmpty())
                             adapter.feed = it
                         }
                 )
-    }
+    */}
 
 }

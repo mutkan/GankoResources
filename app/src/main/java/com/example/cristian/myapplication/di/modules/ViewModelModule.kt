@@ -84,12 +84,10 @@ abstract class ViewModelModule{
 
     @Binds
     @IntoMap
-<<<<<<< HEAD
     @ViewModelKey(FeedViewModel::class)
     abstract fun bindFeedViewModel(viewModel: FeedViewModel):ViewModel
-=======
+
     @ViewModelKey(StrawViewModel::class)
     abstract fun bindStrawViewModel(viewModel: StrawViewModel): ViewModel
->>>>>>> e6a54db3461172cdd43998523242f505b7ba1999
 
 }

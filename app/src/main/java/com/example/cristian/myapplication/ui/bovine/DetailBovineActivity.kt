@@ -16,6 +16,7 @@ import com.example.cristian.myapplication.ui.bovine.manage.ManageBvnActivity
 import com.example.cristian.myapplication.ui.bovine.milk.AddMilkBvnActivity
 import com.example.cristian.myapplication.ui.bovine.milk.MilkBvnActivity
 import com.example.cristian.myapplication.ui.bovine.movement.MovementBvnActivity
+import com.example.cristian.myapplication.ui.bovine.reproductive.ReproductiveBvnActivity
 import com.example.cristian.myapplication.ui.bovine.vaccination.VaccinationBvnActivity
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
@@ -60,26 +61,52 @@ class DetailBovineActivity : AppCompatActivity(), Injectable {
         dis add btnMilkProfileActivity.clicks()
                 .subscribe { startActivity<MilkBvnActivity>(EXTRA_ID to bovine._id) }
 
-//        dis add btnReproduciveProfileActivity.clicks()
-//                .subscribe { startActivity<CebaBvnActivity>(EXTRA_ID to bovine._id) }
+        dis add btnReproduciveProfileActivity.clicks()
+                .subscribe { startActivity<ReproductiveBvnActivity>(EXTRA_ID to bovine._id) }
+
+        dis add btnNextReproductive.clicks()
+                .subscribe { startActivity<ReproductiveBvnActivity>(EXTRA_ID to bovine._id) }
 
         dis add btnMeatProfileActivity.clicks()
+                .subscribe { startActivity<CebaBvnActivity>(EXTRA_ID to bovine._id) }
+
+        dis add btnNextMeat.clicks()
                 .subscribe { startActivity<CebaBvnActivity>(EXTRA_ID to bovine._id) }
 
         dis add btnFeedingProfileActivity.clicks()
                 .subscribe { startActivity<FeedBvnActivity>(EXTRA_ID to bovine._id) }
 
+        dis add btnNextFeeding.clicks()
+                .subscribe { startActivity<FeedBvnActivity>(EXTRA_ID to bovine._id) }
+
         dis add btnManagementProfileActivity.clicks()
+                .subscribe { startActivity<ManageBvnActivity>(EXTRA_ID to bovine._id) }
+
+        dis add btnNextManagement.clicks()
                 .subscribe { startActivity<ManageBvnActivity>(EXTRA_ID to bovine._id) }
 
         dis add btnMovementProfileActivity.clicks()
                 .subscribe { startActivity<MovementBvnActivity>(EXTRA_ID to bovine._id) }
 
+        dis add btnNextMovement.clicks()
+                .subscribe { startActivity<MovementBvnActivity>(EXTRA_ID to bovine._id) }
+
         dis add btnVaccinesProfileActivity.clicks()
+                .subscribe { startActivity<VaccinationBvnActivity>(EXTRA_ID to bovine._id) }
+
+        dis add btnNextVaccines.clicks()
                 .subscribe { startActivity<VaccinationBvnActivity>(EXTRA_ID to bovine._id) }
 
         dis add btnHealthProfileActivity.clicks()
                 .subscribe { startActivity<HealthBvnActivity>(EXTRA_ID to bovine._id) }
+
+        dis add btnNextHealth.clicks()
+                .subscribe { startActivity<HealthBvnActivity>(EXTRA_ID to bovine._id) }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
     }
 
     companion object {

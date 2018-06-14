@@ -73,11 +73,10 @@ class GroupsFeedFragment : Fragment() /*,Injectable*/ {
     }
 
     override fun onResume() {
-        super.onResume()
-        recyclerListGroups.adapter= adapter
-        recyclerListGroups.layoutManager = LinearLayoutManager(activity)
+        super.onResume()}
+
         //Data pruebas
-        for(group in Data.grupos)
+  /*      for(group in Data.grupos)
         {
             var red = random.nextInt(255)
             var green = random.nextInt(255)
@@ -88,7 +87,7 @@ class GroupsFeedFragment : Fragment() /*,Injectable*/ {
         }
         adapter.groups = Data.grupos
 
-    }
+    }*/
 
     companion object {
         fun instance(): GroupsFeedFragment = GroupsFeedFragment()

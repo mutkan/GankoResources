@@ -11,7 +11,9 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import dagger.Module
 import dagger.Provides
+import java.io.File
 import javax.inject.Named
+import javax.inject.Singleton
 
 @Module
 class CouchModule{
@@ -29,8 +31,12 @@ class CouchModule{
     }
 
     @Provides
+    @Singleton
+    fun provideFolderName(context: Context): File = context.filesDir
+
+    @Provides
     fun provideMapper() : ObjectMapper {
-      val mapper = ObjectMapper()
+      val mapper = ObjectMapper().registerKotlinModule()
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
         mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
         return mapper

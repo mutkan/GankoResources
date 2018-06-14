@@ -35,7 +35,7 @@ class SelectFeedFragment : Fragment() /*, Injectable*/ {
         }
         selectFeedBovines.adapter = adapter
         selectFeedBovines.layoutManager = LinearLayoutManager(activity)
-        adapter.feedSelectbovines = Data.bovines
+
     }
 
 

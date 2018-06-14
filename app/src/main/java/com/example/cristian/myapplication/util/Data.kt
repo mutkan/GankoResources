@@ -15,12 +15,4 @@ object Data {
             Group("Grupo 5",878, 700, listOf("brtgf","hiuehfe8","wedwd2"))
     )
 
-    var bovines : MutableList<Bovino> = mutableListOf(
-            Bovino("w12wedw",232342,"no se","mani manito","Cebu","Manto")
-            , Bovino("w12wedw",232342,"no se","mani manito","Cebu","Manto")
-            , Bovino("w12wedw",232342,"no se","mani manito","Cebu","Manto")
-            , Bovino("w12wedw",232342,"no se","mani manito","Cebu","Manto")
-
-
-    )
 }

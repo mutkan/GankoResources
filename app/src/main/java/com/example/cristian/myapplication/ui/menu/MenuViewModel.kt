@@ -9,6 +9,7 @@ import com.example.cristian.myapplication.data.models.Feed
 import com.example.cristian.myapplication.data.models.Manage
 import com.example.cristian.myapplication.data.models.Straw
 import com.example.cristian.myapplication.data.preferences.UserSession
+import com.example.cristian.myapplication.util.andEx
 import com.example.cristian.myapplication.util.applySchedulers
 import com.example.cristian.myapplication.util.equalEx
 import io.reactivex.Observable
@@ -80,7 +81,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     fun getFarmId():String = userSession.farmID
 
     fun getBovine(idFinca: String): Single<List<Bovino>> =
-            db.listByExp("finca" equalEx idFinca, Bovino::class)
+            db.listByExp("finca" equalEx idFinca andEx ("retirado" equalEx false), Bovino::class)
                     .applySchedulers()
 
     fun deleteBovine(idBovino: String): Single<Unit> = db.remove(idBovino).applySchedulers()
@@ -97,13 +98,22 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     .toList()
                     .applySchedulers()
 
-<<<<<<< HEAD
-    fun getAllFeed(Idfinca: String): Observable<List<Feed>> =
-            db.listByExp2("Idfinca" equalEx Idfinca, Feed::class)
-=======
+    fun getAllFeed(Idfinca: String): Single<List<Feed>> =
+            db.listByExp("Idfinca" equalEx Idfinca, Feed::class)
     fun getStraw(idFinca: String):Single<List<Straw>> =
             db.listByExp("idFarm" equalEx idFinca, Straw::class)
->>>>>>> e6a54db3461172cdd43998523242f505b7ba1999
                     .applySchedulers()
+
+
+    // Filtros
+
+    fun getMilkPurpose(Idfinca: String):Single<List<Bovino>> =
+            db.listByExp("Idfinca" equalEx Idfinca andEx ("proposito" equalEx "leche"),Bovino::class)
+
+    fun getCebaPurpose(Idfinca: String):Single<List<Bovino>> =
+            db.listByExp("Idfinca" equalEx Idfinca andEx ("proposito" equalEx "Ceba"),Bovino::class)
+
+    fun getCebaAndMilkPurpose(Idfinca: String):Single<List<Bovino>> =
+            db.listByExp("Idfinca" equalEx Idfinca andEx ("proposito" equalEx "leche y ceba"),Bovino::class)
 
 }
