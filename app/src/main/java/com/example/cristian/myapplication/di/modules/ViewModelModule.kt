@@ -14,8 +14,10 @@ import com.example.cristian.myapplication.ui.bovine.movement.MovementBvnViewMode
 import com.example.cristian.myapplication.ui.bovine.reproductive.ReproductiveBvnViewModel
 import com.example.cristian.myapplication.ui.bovine.vaccination.VaccinationBvnViewModel
 import com.example.cristian.myapplication.ui.farms.FarmViewModel
+import com.example.cristian.myapplication.ui.groups.GroupViewModel
 import com.example.cristian.myapplication.ui.menu.MenuViewModel
-import com.example.cristian.myapplication.ui.menu.Straw.StrawViewModel
+import com.example.cristian.myapplication.ui.menu.meadow.MeadowViewModel
+import com.example.cristian.myapplication.ui.menu.straw.StrawViewModel
 import com.example.cristian.myapplication.util.AppViewModelFactory
 import dagger.Binds
 import dagger.Module
@@ -91,6 +93,16 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(StrawViewModel::class)
     abstract fun bindStrawViewModel(viewModel: StrawViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MeadowViewModel::class)
+    abstract fun bindMeadowViewModel(viewModel: MeadowViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(GroupViewModel::class)
+    abstract fun bindGroupViewModel(viewModel: GroupViewModel): ViewModel
 
 
 }

@@ -1,7 +1,6 @@
-package com.example.cristian.myapplication.ui.menu.Straw
+package com.example.cristian.myapplication.ui.menu.straw
 
 import android.arch.lifecycle.ViewModelProvider
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
@@ -11,6 +10,7 @@ import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.menu.MenuViewModel
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
+import com.example.cristian.myapplication.util.fixColor
 import com.example.cristian.myapplication.util.validateForm
 import com.jakewharton.rxbinding2.view.clicks
 import io.reactivex.rxkotlin.subscribeBy
@@ -35,8 +35,7 @@ class StrawAddActivity : AppCompatActivity(), Injectable{
         setContentView(R.layout.activity_add_straw)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setTitle(getString(R.string.add_straw))
-        supportActionBar?.setBackgroundDrawable(ColorDrawable(resources.getColor(R.color.straw_primary)))
-        window.statusBarColor = resources.getColor(R.color.straw_dark)
+        fixColor(9)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {

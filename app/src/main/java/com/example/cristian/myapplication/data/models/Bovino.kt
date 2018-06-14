@@ -26,6 +26,7 @@ class Bovino(
         var lote: Int? = null,
         var partos: Int? = null,
         var precioCompra: Int? = null,
+        var procedencia: String? = null,
 
         var retirado: Boolean? = null,
         var fechaSalida: Date? = null,

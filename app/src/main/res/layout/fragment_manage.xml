@@ -6,19 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.menu.management.ManageFragment">
 
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabAddManageFragment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="16dp"
-        android:clickable="true"
-        android:src="@drawable/ic_add"
-        app:fabSize="normal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerListManageFragment"
         android:layout_width="0dp"
@@ -28,4 +15,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/template_manage_bovine" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btnAddManageFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:clickable="true"
+        android:src="@drawable/ic_add"
+        app:fabSize="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 </android.support.constraint.ConstraintLayout>
