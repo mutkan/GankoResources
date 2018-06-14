@@ -36,6 +36,8 @@
     <string name="prairies">PRADERAS</string>
     <string name="reports">REPORTES</string>
     <string name="logout">Cerrar Sesión</string>
+    <string name="menu_groups">GRUPOS</string>
+    <string name="notifications">NOTIFICACIONES</string>
 
     <string name="vaccine">Vacuna</string>
     <string name="bovine_name">Nombre del Bovino</string>

@@ -1,6 +1,8 @@
 package com.example.cristian.myapplication.di.components
 
 import com.example.cristian.myapplication.di.FragmentScope
+import com.example.cristian.myapplication.ui.groups.SelectBovineFragment
+import com.example.cristian.myapplication.ui.groups.SelectGroupFragment
 import com.example.cristian.myapplication.ui.menu.straw.StrawFragment
 import com.example.cristian.myapplication.ui.menu.bovine.ListBovineFragment
 import com.example.cristian.myapplication.ui.menu.management.ManageFragment
@@ -44,5 +46,15 @@ abstract class FragmentComponent{
     @FragmentScope
     @ContributesAndroidInjector()
     abstract fun bindMovementFragment(): MovementFragment
+
+    @FragmentScope
+    @ContributesAndroidInjector()
+    abstract fun bindSelectGroupFragment(): SelectGroupFragment
+
+    @FragmentScope
+    @ContributesAndroidInjector()
+    abstract fun bindSelectBovineFragment(): SelectBovineFragment
+
+
 
 }

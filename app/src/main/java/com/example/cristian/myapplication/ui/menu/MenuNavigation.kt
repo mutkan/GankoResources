@@ -5,6 +5,7 @@ import com.example.cristian.myapplication.data.preferences.UserSession
 import com.example.cristian.myapplication.di.ActivityScope
 import com.example.cristian.myapplication.ui.account.LoginActivity
 import com.example.cristian.myapplication.ui.farms.FarmActivity
+import com.example.cristian.myapplication.ui.groups.SelectGroupFragment
 import com.example.cristian.myapplication.ui.menu.straw.StrawFragment
 import com.example.cristian.myapplication.ui.menu.bovine.ListBovineFragment
 import com.example.cristian.myapplication.ui.menu.management.ManageFragment
@@ -28,6 +29,10 @@ class MenuNavigation @Inject constructor(val activity: MenuActivity, val sesion:
 
     fun navigateToBovines() {
         activity.putFragment(R.id.content_frame,ListBovineFragment.instance())
+    }
+
+    fun navigateToGroups() {
+        //activity.putFragment(R.id.content_frame, SelectGroupFragment.instance(true))
     }
 
     fun navigateToMilk() {
@@ -59,6 +64,10 @@ class MenuNavigation @Inject constructor(val activity: MenuActivity, val sesion:
     }
 
     fun navigateToVaccination() {
+
+    }
+
+    fun navigateToNotification() {
 
     }
 

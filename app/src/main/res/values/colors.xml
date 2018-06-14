@@ -11,6 +11,8 @@
     <color name="separator_gray">#a6a6a6</color>
     <color name="bovine_primary">#00b050</color>
     <color name="bovine_dark">#00a249</color>
+    <color name="group_primary">#00cc99</color>
+    <color name="group_dark">#00b888</color>
     <color name="milk_primary">#00b0f0</color>
     <color name="milk_dark">#009ed6</color>
     <color name="feed_primary">#993366</color>
@@ -29,6 +31,8 @@
     <color name="prairie_dark">#27467d</color>
     <color name="reports_primary">#cddc39</color>
     <color name="reports_dark">#baca24</color>
+    <color name="notification_primary">#f44336</color>
+    <color name="notification_dark">#cf190b</color>
     <color name="background_menu">#262626</color>
     <color name="img">#333333</color>
     <color name="menu_button">#404040</color>

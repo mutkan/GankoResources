@@ -16,6 +16,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.SearchView
 import com.example.cristian.myapplication.R
+import com.example.cristian.myapplication.R.id.*
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.MenuAdapter
 import com.example.cristian.myapplication.ui.menu.bovine.ListBovineFragment
@@ -88,14 +89,14 @@ class MenuActivity : AppCompatActivity(),Injectable,HasSupportFragmentInjector {
                         drawer.closeDrawers()
                         when (it) {
                             1 -> nav.navigateToFarm()
-                            in 2..11 -> clickOnMenu(it)
-                            12 -> nav.navigateToLogout()
+                            in 2..13 -> clickOnMenu(it)
+                            14 -> nav.navigateToLogout()
                         }
                     }else{
                         when (it) {
                             1 -> nav.navigateToFarm()
-                            in 2..11 -> clickOnMenu(it)
-                            12 -> nav.navigateToLogout()
+                            in 2..13 -> clickOnMenu(it)
+                            144 -> nav.navigateToLogout()
                         }
                     }
                 }
@@ -174,20 +175,22 @@ class MenuActivity : AppCompatActivity(),Injectable,HasSupportFragmentInjector {
 
         if(!firsttime) when(content){
             2-> showMenu1()
-            in 3..11-> showMenu2()
+            in 3..13-> showMenu2()
         }
 
         when(content){
             2-> nav.navigateToBovines()
-            3-> nav.navigateToMilk()
-            4-> nav.navigateToFeeding()
-            5-> nav.navigateToManage()
-            6-> nav.navigateToMovements()
-            7-> nav.navigateToVaccination()
-            8-> nav.navigateToHealth()
-            9-> nav.navigateToStraw()
-            10-> nav.navigateToMeadow()
-            11-> nav.navigateToReports()
+            3-> nav.navigateToGroups()
+            4-> nav.navigateToMilk()
+            5-> nav.navigateToFeeding()
+            6-> nav.navigateToManage()
+            7-> nav.navigateToMovements()
+            8-> nav.navigateToVaccination()
+            9-> nav.navigateToHealth()
+            10-> nav.navigateToStraw()
+            11-> nav.navigateToMeadow()
+            12-> nav.navigateToReports()
+            13-> nav.navigateToNotification()
         }
 
     }
