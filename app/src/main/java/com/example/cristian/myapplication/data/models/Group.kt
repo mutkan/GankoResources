@@ -5,14 +5,14 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 class Group(
-    val _id:String? = null,
-    val idFinca:String,
-    var nombre:String,
-    var numero:Int,
-    var color:Int,
-    var bovines:List<String> = emptyList(),
-    var type:String? = null
-) : Parcelable{
+        val _id: String? = null,
+        var _sequence: Long? = null,
+        var type: String? = null,
+        val finca: String,
+        var nombre: String,
+        var color: Int,
+        var bovines: List<String> = emptyList()
+) : Parcelable {
 
     init {
         type = javaClass.simpleName

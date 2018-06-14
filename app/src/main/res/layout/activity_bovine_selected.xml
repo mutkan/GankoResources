@@ -6,4 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.groups.BovineSelectedActivity">
 
+
+
 </android.support.constraint.ConstraintLayout>

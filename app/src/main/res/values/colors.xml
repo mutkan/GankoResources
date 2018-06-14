@@ -8,7 +8,7 @@
     <color name="login_gray">#a6a6a6</color>
     <color name="login_gray_transparent">#cc2b2b2b</color>
     <color name="edit_text_gray">#9f9f9f</color>
-    <color name="separator_gray">#a6a6a6</color>
+    <color name="separator_gray">#ddd</color>
     <color name="bovine_primary">#00b050</color>
     <color name="bovine_dark">#00a249</color>
     <color name="group_primary">#00cc99</color>
@@ -43,7 +43,8 @@
     <color name="line_template">#d9d9d9</color>
     <color name="white">#ffffff</color>
     <color name="remove">#640000</color>
-
+    <color name="section">#f2f2f2</color>
+    <color name="colorPicker">#777</color>
     <!--Filtro -->
     <color name="check_filter">#009999</color>
     <color name="section_name_filter">#7E7E73</color>

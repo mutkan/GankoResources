@@ -49,7 +49,7 @@ class SelectGroupFragment : Fragment(), Injectable {
         dis add adapter.onClick
                 .subscribe { group ->
                     if (editable) {
-                        startActivity<AddGroupActivity>(AddGroupActivity.EXTRA_GROUP to group)
+                        startActivity<SaveGroupActivity>(SaveGroupActivity.EXTRAS_GROUP to group)
                     } else {
                         val intent = Intent()
                         intent.putExtra(SelectActivity.DATA_GROUP, group)

@@ -13,15 +13,16 @@ import android.view.ViewGroup
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.groups.adapters.SelectAdapter
+import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
 import com.example.cristian.myapplication.util.dialog
 import com.jakewharton.rxbinding2.view.clicks
 import kotlinx.android.synthetic.main.fragment_select_bovine.*
 import org.jetbrains.anko.support.v4.startActivity
+import org.jetbrains.anko.support.v4.startActivityForResult
 import javax.inject.Inject
 
 class SelectBovineFragment : Fragment(), Injectable {
-
 
     @Inject
     lateinit var factory: ViewModelProvider.Factory
@@ -30,6 +31,8 @@ class SelectBovineFragment : Fragment(), Injectable {
     val createGroup: Boolean by lazy { arguments?.getBoolean(ARG_EDITABLE) ?: false }
     val selecteds: HashMap<String, Boolean> = HashMap()
     val adapter: SelectAdapter = SelectAdapter()
+
+    val dis:LifeDisposable = LifeDisposable(this)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -41,14 +44,15 @@ class SelectBovineFragment : Fragment(), Injectable {
         adapter.selecteds = selecteds
         list.adapter = adapter
 
-        viewModel.listBovines(0)
-                .subscribe { bovines -> adapter.data = bovines }
+        dis add viewModel.listBovines(0)
+                .subscribe {
+                    bovines -> adapter.data = bovines }
 
-        btnNext.clicks()
+        dis add btnNext.clicks()
                 .subscribe {
                     val keys = selecteds.keys.toTypedArray()
                     if (createGroup) {
-                        startActivity<SaveGroupActivity>(SaveGroupActivity.DATA_BOVINES to keys)
+                        startActivityForResult<SaveGroupActivity>(REQUEST_SAVE,SaveGroupActivity.EXTRAS_BOVINES to keys)
                     } else {
                         val data = Intent()
                         data.putExtra(SelectActivity.DATA_BOVINES, keys)
@@ -56,20 +60,21 @@ class SelectBovineFragment : Fragment(), Injectable {
                     }
                 }
 
-        btnClear.clicks()
+        dis add btnClear.clicks()
                 .flatMap { dialog(R.string.select_clear, 0) }
                 .subscribe {
+                    adapter.notifyDataSetChanged()
                     selecteds.clear()
                     number.text = "0"
                     hideBar()
                 }
 
-        btnList.clicks()
+        dis add btnList.clicks()
                 .subscribe {
                     startActivity<BovineSelectedActivity>(BovineSelectedActivity.EXTRA_SELECTED to selecteds)
                 }
 
-        adapter.onSelectBovine
+        dis add adapter.onSelectBovine
                 .subscribe {
                     val size = selecteds.size
                     number.text = "$size"
@@ -81,19 +86,23 @@ class SelectBovineFragment : Fragment(), Injectable {
     }
 
     private fun hideBar() {
+
         TransitionManager.beginDelayedTransition(bottomBar)
         bottomBar.visibility = View.GONE
+        bottomBar.translationY = resources.getDimension(R.dimen.select_bar)
     }
 
     private fun showBar() {
         TransitionManager.beginDelayedTransition(bottomBar)
         bottomBar.visibility = View.VISIBLE
+        bottomBar.translationY = 0f
     }
 
 
     companion object {
 
         private const val ARG_EDITABLE = "edtiable"
+        const val REQUEST_SAVE = 101
 
         @JvmStatic
         fun instance(createGroup: Boolean): SelectBovineFragment = SelectBovineFragment().apply {

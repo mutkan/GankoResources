@@ -284,5 +284,15 @@
     <string name="product_applied">Producto aplicado</string>
     <string name="frecuency_in_days">Frecuencia en días</string>
     <string name="write_your_observations">Escríba sus observaciones</string>
+    <string name="add_group_title">Selecciona los Bovinos</string>
+    <string name="group_selected">Bovinos Seleccionados</string>
+    <string name="group_name">Nombre del grupo</string>
+    <string name="group_color">Color</string>
+    <string name="group_form_error">Agrega un nombre y selecciona un color</string>
+    <string name="group_added">Grupo Agregado</string>
+    <string name="group_updated">Grupo Actualizado</string>
+    <string name="group_add">Agregar Grupo</string>
+    <string name="group_update">Actualizar Grupo</string>
+
 
 </resources>
