@@ -293,6 +293,7 @@
     <string name="group_updated">Grupo Actualizado</string>
     <string name="group_add">Agregar Grupo</string>
     <string name="group_update">Actualizar Grupo</string>
+    <string name="there_are_not_registered_milk_sales">No hay ventas de leche registradas</string>
 
 
 </resources>

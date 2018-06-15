@@ -8,7 +8,7 @@
     <data>
         <variable
             name="isEmpty"
-            type="android.databinding.ObservableBoolean"/>
+            type="Boolean"/>
         <import type="android.view.View"/>
     </data>
 
@@ -20,6 +20,7 @@
             android:id="@+id/recyclerListBovine"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:visibility='@{isEmpty == false ? View.VISIBLE : View.GONE}'
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -43,8 +44,8 @@
             android:id="@+id/emptyMsg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility='@{isEmpty ? View.VISIBLE : View.GONE}'
-            android:text="No hay bovinos registradas"
+            android:visibility='@{isEmpty == false ? View.VISIBLE : View.GONE}'
+            android:text="No hay bovinos registrados"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
