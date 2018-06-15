@@ -19,30 +19,30 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button5"
+        android:id="@+id/btnCancel"
         style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:layout_width="@dimen/button_width"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:text="@string/btn_cancel"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/button6"
+        app:layout_constraintEnd_toStartOf="@+id/btnAddMilk"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/button6"
+        android:id="@+id/btnAddMilk"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="@dimen/button_width"
         android:layout_height="wrap_content"
         android:text="@string/btn_add"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/button5"
-        app:layout_constraintTop_toTopOf="@+id/button5" />
+        app:layout_constraintStart_toEndOf="@+id/btnCancel"
+        app:layout_constraintTop_toTopOf="@+id/btnCancel" />
 
     <EditText
-        android:id="@+id/editText7"
+        android:id="@+id/dateAddMilk"
         style="@style/edit_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView28" />
 
     <Spinner
-        android:id="@+id/spinner2"
+        android:id="@+id/spinnerAddMilk"
         style="@style/Widget.AppCompat.Spinner.Underlined"
         android:layout_width="0dp"
         android:layout_height="52dp"
@@ -68,7 +68,7 @@
         android:layout_marginRight="19dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText7" />
+        app:layout_constraintTop_toBottomOf="@+id/dateAddMilk" />
 
     <TextView
         android:id="@+id/textView32"
@@ -77,11 +77,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="@string/price_per_liter"
-        app:layout_constraintStart_toStartOf="@+id/spinner2"
-        app:layout_constraintTop_toBottomOf="@+id/spinner2" />
+        app:layout_constraintStart_toStartOf="@+id/spinnerAddMilk"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerAddMilk" />
 
     <EditText
-        android:id="@+id/editText9"
+        android:id="@+id/priceAddMilk"
         style="@style/edit_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -102,8 +102,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="@string/number_of_litters"
-        app:layout_constraintStart_toStartOf="@+id/editText9"
-        app:layout_constraintTop_toBottomOf="@+id/editText9" />
+        app:layout_constraintStart_toStartOf="@+id/priceAddMilk"
+        app:layout_constraintTop_toBottomOf="@+id/priceAddMilk" />
 
     <TextView
         android:id="@+id/textView35"
@@ -112,11 +112,11 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
         android:text="@string/operation_type"
-        app:layout_constraintBottom_toBottomOf="@+id/spinner2"
-        app:layout_constraintStart_toStartOf="@+id/spinner2" />
+        app:layout_constraintBottom_toBottomOf="@+id/spinnerAddMilk"
+        app:layout_constraintStart_toStartOf="@+id/spinnerAddMilk" />
 
     <EditText
-        android:id="@+id/editText10"
+        android:id="@+id/litterAddMilk"
         style="@style/edit_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
