@@ -276,7 +276,7 @@
                 <android.support.constraint.ConstraintLayout
                     android:id="@+id/page2"
                     android:layout_width="0dp"
-                    android:layout_height="472dp"
+                    android:layout_height="wrap_content"
                     android:visibility='@{page == 2 ? View.VISIBLE : View.GONE}'
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
