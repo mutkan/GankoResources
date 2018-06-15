@@ -13,6 +13,7 @@ import com.example.cristian.myapplication.ui.menu.meadow.size.SizeFragment
 import com.example.cristian.myapplication.ui.menu.movement.MeadowUnusedFragment
 import com.example.cristian.myapplication.ui.menu.movement.MeadowUsedFragment
 import com.example.cristian.myapplication.ui.menu.movement.MovementFragment
+import com.example.cristian.myapplication.ui.menu.vaccines.VaccinesFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -54,6 +55,12 @@ abstract class FragmentComponent{
     @FragmentScope
     @ContributesAndroidInjector()
     abstract fun bindSelectBovineFragment(): SelectBovineFragment
+
+    @FragmentScope
+    @ContributesAndroidInjector()
+    abstract fun bindVaccinesFragment(): VaccinesFragment
+
+
 
 
 
