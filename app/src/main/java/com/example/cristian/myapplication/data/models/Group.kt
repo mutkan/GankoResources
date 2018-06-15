@@ -3,16 +3,19 @@ package com.example.cristian.myapplication.data.models
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
-
 @Parcelize
- data class  Group(
-        var nombre:String?=null,
-        var numero:Int?=null,
-        var color:Int?=null,
-        var BovinesId : List<String>? = null,
-        var type: String? = null
-): Parcelable {
-     init {
-         type = javaClass.simpleName
-     }
- }
+class Group(
+        val _id: String? = null,
+        var _sequence: Long? = null,
+        var type: String? = null,
+        val finca: String,
+        var nombre: String,
+        var color: Int,
+        var bovines: List<String> = emptyList()
+) : Parcelable {
+
+    init {
+        type = javaClass.simpleName
+    }
+
+}

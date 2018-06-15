@@ -1,6 +1,8 @@
 package com.example.cristian.myapplication.ui.menu
 
+import android.app.SearchManager
 import android.arch.lifecycle.ViewModelProvider
+import android.content.Context
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
@@ -12,18 +14,24 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.SearchView
 import com.example.cristian.myapplication.R
+import com.example.cristian.myapplication.R.id.*
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.MenuAdapter
 import com.example.cristian.myapplication.ui.menu.bovine.ListBovineFragment
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
 import com.example.cristian.myapplication.util.putFragment
+import com.jakewharton.rxbinding2.widget.RxSearchView
+import com.jakewharton.rxbinding2.widget.queryTextChanges
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
+import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.activity_menu.*
 import javax.inject.Inject
+
 
 class MenuActivity : AppCompatActivity(),Injectable,HasSupportFragmentInjector {
 
@@ -41,6 +49,8 @@ class MenuActivity : AppCompatActivity(),Injectable,HasSupportFragmentInjector {
     @Inject
     lateinit var nav: MenuNavigation
     var phone: Boolean = true
+    var state: Int = 1
+    lateinit var menu: Menu
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,8 +75,7 @@ class MenuActivity : AppCompatActivity(),Injectable,HasSupportFragmentInjector {
             }
         }
         recycler.layoutManager = gridManager
-        clickOnMenu(viewModel.content)
-
+        clickOnMenu(viewModel.content, true)
         putFragment(R.id.content_frame,ListBovineFragment.instance())
 
     }
@@ -80,24 +89,35 @@ class MenuActivity : AppCompatActivity(),Injectable,HasSupportFragmentInjector {
                         drawer.closeDrawers()
                         when (it) {
                             1 -> nav.navigateToFarm()
-                            in 2..11 -> clickOnMenu(it)
-                            12 -> nav.navigateToLogout()
+                            in 2..13 -> clickOnMenu(it)
+                            14 -> nav.navigateToLogout()
                         }
                     }else{
                         when (it) {
                             1 -> nav.navigateToFarm()
-                            in 2..11 -> clickOnMenu(it)
-                            12 -> nav.navigateToLogout()
+                            in 2..13 -> clickOnMenu(it)
+                            144 -> nav.navigateToLogout()
                         }
                     }
                 }
 
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        this.menu = menu
         menuInflater.inflate(R.menu.toolbar_menu, menu)
+        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        val searchView = menu.findItem(R.id.search_toolbar).actionView as SearchView
+        searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(componentName))
+
+        dis add searchView.queryTextChanges()
+                .doOnNext { viewModel.querySubject.onNext(it.toString()) }
+                .subscribe()
+
         return super.onCreateOptionsMenu(menu)
     }
+
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
@@ -115,7 +135,32 @@ class MenuActivity : AppCompatActivity(),Injectable,HasSupportFragmentInjector {
         return super.onOptionsItemSelected(item)
     }
 
-    fun clickOnMenu(content: Int){
+    companion object {
+        val MENU1 = 1
+        val MENU2 = 2
+    }
+
+    fun showMenu1(){
+        state = MENU1
+        onPrepareOptionsMenu(menu)
+    }
+    fun showMenu2(){
+        state = MENU2
+        onPrepareOptionsMenu(menu)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        menu?.clear()
+        if (state == MENU1){
+            menuInflater.inflate(R.menu.toolbar_menu, menu)
+        }else{
+            menuInflater.inflate(R.menu.toolbar_search, menu)
+        }
+
+        return super.onPrepareOptionsMenu(menu)
+    }
+
+    fun clickOnMenu(content: Int, firsttime:Boolean = false){
 
         viewModel.content = content
         val item = viewModel.data[content]
@@ -128,20 +173,26 @@ class MenuActivity : AppCompatActivity(),Injectable,HasSupportFragmentInjector {
         supportActionBar?.setBackgroundDrawable(ColorDrawable(color))
         adapter.selectItem(content, colorID)
 
+        if(!firsttime) when(content){
+            2-> showMenu1()
+            in 3..13-> showMenu2()
+        }
+
         when(content){
             2-> nav.navigateToBovines()
-            3-> nav.navigateToMilk()
-            4-> nav.navigateToFeeding()
-            5-> nav.navigateToManage()
-            6-> nav.navigateToMovements()
-            7-> nav.navigateToVaccination()
-            8-> nav.navigateToHealth()
-            9-> nav.navigateToStraw()
-            10-> nav.navigateToMeadow()
-            11-> nav.navigateToReports()
+            3-> nav.navigateToGroups()
+            4-> nav.navigateToMilk()
+            5-> nav.navigateToFeeding()
+            6-> nav.navigateToManage()
+            7-> nav.navigateToMovements()
+            8-> nav.navigateToVaccination()
+            9-> nav.navigateToHealth()
+            10-> nav.navigateToStraw()
+            11-> nav.navigateToMeadow()
+            12-> nav.navigateToReports()
+            13-> nav.navigateToNotification()
         }
 
     }
-
 
 }

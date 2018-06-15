@@ -36,6 +36,8 @@
     <string name="prairies">PRADERAS</string>
     <string name="reports">REPORTES</string>
     <string name="logout">Cerrar Sesión</string>
+    <string name="menu_groups">GRUPOS</string>
+    <string name="notifications">NOTIFICACIONES</string>
 
     <string name="vaccine">Vacuna</string>
     <string name="bovine_name">Nombre del Bovino</string>
@@ -219,6 +221,14 @@
     <string name="straw_type">Tipo</string>
     <string name="straw_value">Valor</string>
     <string name="straw_breed">Raza</string>
+    <string name="meadow_size_text">Tamaño de la pradera</string>
+    <string name="graminea_type">Tipo de Graminea</string>
+    <string name="manteinance">Mantenimiento</string>
+    <string name="aforo">Aforo</string>
+    <string name="aforo_average">Promedio</string>
+    <string name="sample_quantity">Cantidad de muestras</string>
+    <string name="date_of_purchase">Fecha de compra</string>
+    <string name="purchase_price">Precio de compra</string>
 
     <string-array name="straw_type">
         <item>Tipo A</item>
@@ -227,10 +237,66 @@
         <item>Tipo D</item>
     </string-array>
 
+    <string-array name="origin">
+        <item>Nacimiento</item>
+        <item>Compra</item>
+    </string-array>
+
     <string-array name="retirement_reason">
         <item>Venta</item>
         <item>Perdida</item>
         <item>Muerte</item>
     </string-array>
+
+    <string-array name="gramineas_type">
+        <item>Selecciona una</item>
+        <item>Pasto Castillo</item>
+        <item>Pasto Barrera</item>
+        <item>Pasto king grass</item>
+        <item>Maralfalfa</item>
+    </string-array>
+
+    <string-array name="meadow_size_unit">
+        <item>m²</item>
+        <item>Hectareas</item>
+    </string-array>
+
+    <!--Groups-->
+    <string-array name="select_titles">
+        <item>Bovinos</item>
+        <item>Grupos</item>
+    </string-array>
+
+    <string-array name="event_type">
+        <item>Castración</item>
+        <item>Secado</item>
+        <item>Otro</item>
+    </string-array>
+
+    <string name="remove_group">¿ Desea eliminar el grupo ?</string>
+    <string name="group_removed">Grupo eliminado</string>
+    <string name="select_clear">¿ Desea limpiar la selección ?</string>
+    <string name="select_title">Seleccionar bovinos</string>
+    <string name="id_group">ID Grupo</string>
+    <string name="event_type">Tipo de evento</string>
+    <string name="other_which">¿Otro?¿Cuál?</string>
+    <string name="which_other_event_type">¿Cuál otro tipo de evento?</string>
+    <string name="write_the_other_event_type">Escríba el otro tipo de evento</string>
+    <string name="event_date">Fecha del evento</string>
+    <string name="treatment_or_strategy">Tramiento o estrategia</string>
+    <string name="treatment_or_strategy_applied">Tratamiento o estrategia aplicado</string>
+    <string name="product_applied">Producto aplicado</string>
+    <string name="frecuency_in_days">Frecuencia en días</string>
+    <string name="write_your_observations">Escríba sus observaciones</string>
+    <string name="add_group_title">Selecciona los Bovinos</string>
+    <string name="group_selected">Bovinos Seleccionados</string>
+    <string name="group_name">Nombre del grupo</string>
+    <string name="group_color">Color</string>
+    <string name="group_form_error">Agrega un nombre y selecciona un color</string>
+    <string name="group_added">Grupo Agregado</string>
+    <string name="group_updated">Grupo Actualizado</string>
+    <string name="group_add">Agregar Grupo</string>
+    <string name="group_update">Actualizar Grupo</string>
+
 
 </resources>

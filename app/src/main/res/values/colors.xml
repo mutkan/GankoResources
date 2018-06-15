@@ -8,9 +8,11 @@
     <color name="login_gray">#a6a6a6</color>
     <color name="login_gray_transparent">#cc2b2b2b</color>
     <color name="edit_text_gray">#9f9f9f</color>
-    <color name="separator_gray">#a6a6a6</color>
+    <color name="separator_gray">#ddd</color>
     <color name="bovine_primary">#00b050</color>
     <color name="bovine_dark">#00a249</color>
+    <color name="group_primary">#00cc99</color>
+    <color name="group_dark">#00b888</color>
     <color name="milk_primary">#00b0f0</color>
     <color name="milk_dark">#009ed6</color>
     <color name="feed_primary">#993366</color>
@@ -29,6 +31,8 @@
     <color name="prairie_dark">#27467d</color>
     <color name="reports_primary">#cddc39</color>
     <color name="reports_dark">#baca24</color>
+    <color name="notification_primary">#f44336</color>
+    <color name="notification_dark">#cf190b</color>
     <color name="background_menu">#262626</color>
     <color name="img">#333333</color>
     <color name="menu_button">#404040</color>
@@ -40,9 +44,15 @@
     <color name="white">#ffffff</color>
     <color name="label_add_feed">#d9d9d9</color>
     <color name="remove">#640000</color>
-
+    <color name="section">#f2f2f2</color>
+    <color name="colorPicker">#777</color>
     <!--Filtro -->
     <color name="check_filter">#009999</color>
     <color name="section_name_filter">#7e7e73</color>
     <color name="next_zeal_background">#f2f2f2</color>
+
+    <!--Pradera -->
+    <color name="empty_meadow">#ff0000</color>
+    <color name="full_meadow">#00ff00</color>
+    <color name="unused_meadow">#ffffff</color>
 </resources>

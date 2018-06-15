@@ -18,8 +18,7 @@ import javax.inject.Singleton
     AppModule::class,
     NetModule::class,
     ViewModelModule::class,
-    CouchModule::class,
-    FragmentComponent::class
+    CouchModule::class
 ])
 interface AppComponent {
 

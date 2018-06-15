@@ -12,5 +12,7 @@ import javax.inject.Inject
 
 class FeedBvnViewModel @Inject constructor(private val db: CouchRx):ViewModel(){
 
+    fun getFeedBovine(idBovino: String): Single<List<Feed>> =
+            db.listByExp("bovino" equalEx idBovino, Feed::class)
 
 }

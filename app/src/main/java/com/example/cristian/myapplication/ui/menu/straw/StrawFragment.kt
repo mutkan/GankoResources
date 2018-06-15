@@ -1,4 +1,4 @@
-package com.example.cristian.myapplication.ui.menu.Straw
+package com.example.cristian.myapplication.ui.menu.straw
 
 
 import android.arch.lifecycle.ViewModelProvider
@@ -8,19 +8,14 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import com.example.cristian.myapplication.R
-import com.example.cristian.myapplication.R.id.fabAddStrawFragment
-import com.example.cristian.myapplication.R.id.recyclerStraw
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.StrawAdapter
 import com.example.cristian.myapplication.ui.menu.MenuViewModel
-import com.example.cristian.myapplication.ui.menu.management.ManageFragment
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
 import com.jakewharton.rxbinding2.view.clicks
 import io.reactivex.rxkotlin.subscribeBy
-import kotlinx.android.synthetic.main.fragment_manage.*
 import kotlinx.android.synthetic.main.fragment_straw.*
 import org.jetbrains.anko.support.v4.startActivity
 import org.jetbrains.anko.support.v4.toast

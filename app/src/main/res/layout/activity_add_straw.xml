@@ -15,7 +15,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:context=".ui.menu.Straw.StrawAddActivity">
+        tools:context=".ui.menu.straw.StrawAddActivity">
 
         <LinearLayout
             android:layout_width="match_parent"

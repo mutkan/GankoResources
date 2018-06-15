@@ -16,5 +16,4 @@ abstract class ReproductiveModule {
     @ContributesAndroidInjector
     abstract fun bindListServiceFragment():ListServiceFragment
 
-
 }

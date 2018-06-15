@@ -12,6 +12,9 @@
             name="stateCheckBox"
             type="Boolean"/>
         <variable
+            name="stateOrigin"
+            type="Boolean"/>
+        <variable
             name="stateSex"
             type="Boolean"/>
 
@@ -56,7 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:text="@string/btn_next"
-            android:visibility='@{page == 3 ? View.GONE : View.VISIBLE}'
+            android:visibility='@{page == 4 ? View.GONE : View.VISIBLE}'
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btnFinalize"
             app:layout_constraintHorizontal_bias="0.5"
@@ -70,7 +73,7 @@
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:text="@string/btn_add"
-            android:visibility='@{page == 3 ? View.VISIBLE : View.GONE}'
+            android:visibility='@{page == 4 ? View.VISIBLE : View.GONE}'
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -95,7 +98,7 @@
                 <android.support.constraint.ConstraintLayout
                     android:id="@+id/page1"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="470dp"
                     android:visibility='@{page == 1 ? View.VISIBLE : View.GONE}'
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="1.0"
@@ -173,12 +176,12 @@
                         style="@style/textview_label"
                         android:layout_width="0dp"
                         android:layout_height="13dp"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="8dp"
                         android:text="@string/sex"
                         app:layout_constraintEnd_toEndOf="@+id/bovineRace"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="@+id/bovineRace"
-                        app:layout_constraintTop_toBottomOf="@+id/bovineRace" />
+                        app:layout_constraintTop_toBottomOf="@+id/spinnerOrigin" />
 
                     <TextView
                         android:id="@+id/textView51"
@@ -187,7 +190,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="24dp"
                         android:layout_marginStart="24dp"
-                        android:layout_marginTop="24dp"
+                        android:layout_marginTop="16dp"
                         android:text="@string/number"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -211,7 +214,7 @@
                         style="@style/textview_label"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="8dp"
                         android:text="@string/number_of_births"
                         android:visibility='@{stateSex == true ? View.GONE : View.VISIBLE}'
                         app:layout_constraintEnd_toEndOf="@+id/sexBovine"
@@ -245,12 +248,35 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/textView64"
                         app:layout_constraintTop_toBottomOf="@+id/textView64" />
+
+                    <TextView
+                        android:id="@+id/textView25"
+                        style="@style/textview_label"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/origin"
+                        app:layout_constraintEnd_toEndOf="@+id/bovineRace"
+                        app:layout_constraintStart_toStartOf="@+id/bovineRace"
+                        app:layout_constraintTop_toBottomOf="@+id/bovineRace" />
+
+                    <Spinner
+                        android:id="@+id/spinnerOrigin"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:entries="@array/origin"
+                        android:spinnerMode="dialog"
+                        app:layout_constraintEnd_toEndOf="@+id/textView25"
+                        app:layout_constraintStart_toStartOf="@+id/textView25"
+                        app:layout_constraintTop_toBottomOf="@+id/textView25" />
+
                 </android.support.constraint.ConstraintLayout>
 
                 <android.support.constraint.ConstraintLayout
                     android:id="@+id/page2"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="472dp"
                     android:visibility='@{page == 2 ? View.VISIBLE : View.GONE}'
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -422,9 +448,8 @@
                 <android.support.constraint.ConstraintLayout
                     android:id="@+id/page3"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_height="wrap_content"
                     android:visibility='@{page == 3 ? View.VISIBLE : View.GONE}'
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
@@ -435,10 +460,12 @@
                         style="@style/edit_text"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
                         android:layout_marginTop="8dp"
                         android:ems="10"
                         android:hint="@string/mother_id_text"
                         android:inputType="number"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@+id/textView75"
                         app:layout_constraintStart_toStartOf="@+id/textView75"
                         app:layout_constraintTop_toBottomOf="@+id/textView75" />
@@ -463,33 +490,98 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="24dp"
                         android:layout_marginStart="24dp"
-                        android:layout_marginTop="24dp"
+                        android:layout_marginTop="16dp"
                         android:text="@string/father_id"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toBottomOf="@+id/purchasePrice" />
 
                     <TextView
                         android:id="@+id/textView75"
                         style="@style/textview_label"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
+                        android:layout_marginTop="16dp"
                         android:text="@string/mother_id"
                         app:layout_constraintEnd_toEndOf="@+id/fatherId"
                         app:layout_constraintStart_toStartOf="@+id/fatherId"
                         app:layout_constraintTop_toBottomOf="@+id/fatherId" />
 
+                    <TextView
+                        android:id="@+id/textView40"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/date_of_purchase"
+                        android:visibility='@{stateOrigin == true ? View.VISIBLE : View.GONE}'
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/purchaseDate"
+                        style="@style/edit_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:hint="@string/date_value"
+                        android:visibility='@{stateOrigin == true ? View.VISIBLE : View.GONE}'
+                        app:layout_constraintEnd_toEndOf="@+id/textView40"
+                        app:layout_constraintStart_toStartOf="@+id/textView40"
+                        app:layout_constraintTop_toBottomOf="@+id/textView40" />
+
+                    <TextView
+                        android:id="@+id/textView79"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/purchase_price"
+                        android:visibility='@{stateOrigin == true ? View.VISIBLE : View.GONE}'
+                        app:layout_constraintEnd_toEndOf="@+id/purchaseDate"
+                        app:layout_constraintStart_toStartOf="@+id/purchaseDate"
+                        app:layout_constraintTop_toBottomOf="@+id/purchaseDate" />
+
+                    <EditText
+                        android:id="@+id/purchasePrice"
+                        style="@style/edit_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginTop="8dp"
+                        android:ems="10"
+                        android:hint="@string/purchase_price"
+                        android:inputType="number"
+                        android:visibility='@{stateOrigin == true ? View.VISIBLE : View.GONE}'
+                        app:layout_constraintEnd_toEndOf="@+id/textView79"
+                        app:layout_constraintStart_toStartOf="@+id/textView79"
+                        app:layout_constraintTop_toBottomOf="@+id/textView79" />
+
+                </android.support.constraint.ConstraintLayout>
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/page4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:visibility='@{page == 4 ? View.VISIBLE : View.GONE}'
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/page3">
+
                     <android.support.constraint.ConstraintLayout
                         android:id="@+id/addBovinePhoto"
                         android:layout_width="0dp"
                         android:layout_height="250dp"
-                        android:layout_marginTop="24dp"
                         android:background="@color/img"
-                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/motherId">
+                        app:layout_constraintTop_toTopOf="parent">
 
                         <ImageView
                             android:id="@+id/iconAddPhoto"
@@ -523,8 +615,8 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
-                    </android.support.constraint.ConstraintLayout>
 
+                    </android.support.constraint.ConstraintLayout>
                 </android.support.constraint.ConstraintLayout>
 
             </android.support.constraint.ConstraintLayout>

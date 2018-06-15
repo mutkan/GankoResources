@@ -1,7 +1,10 @@
 package com.example.cristian.myapplication.di.components
 
 import com.example.cristian.myapplication.di.ActivityScope
+import com.example.cristian.myapplication.di.modules.AddGroupModule
+import com.example.cristian.myapplication.di.modules.MeadowModule
 import com.example.cristian.myapplication.di.modules.ReproductiveModule
+import com.example.cristian.myapplication.di.modules.SelectModule
 import com.example.cristian.myapplication.ui.account.LoginActivity
 import com.example.cristian.myapplication.ui.bovine.AddBovineActivity
 import com.example.cristian.myapplication.ui.bovine.DetailBovineActivity
@@ -19,8 +22,14 @@ import com.example.cristian.myapplication.ui.bovine.vaccination.VaccinationBvnAc
 import com.example.cristian.myapplication.ui.farms.AddFarmActivity
 import com.example.cristian.myapplication.ui.farms.FarmActivity
 import com.example.cristian.myapplication.ui.feed.AddFeedActivity
+import com.example.cristian.myapplication.ui.groups.AddGroupActivity
+import com.example.cristian.myapplication.ui.groups.SaveGroupActivity
+import com.example.cristian.myapplication.ui.groups.SelectActivity
 import com.example.cristian.myapplication.ui.menu.MenuActivity
-import com.example.cristian.myapplication.ui.menu.Straw.StrawAddActivity
+import com.example.cristian.myapplication.ui.menu.meadow.ManageMeadowActivity
+import com.example.cristian.myapplication.ui.menu.meadow.aforo.AddAforoActivity
+import com.example.cristian.myapplication.ui.menu.meadow.mantenimiento.AddMantenimientoActivity
+import com.example.cristian.myapplication.ui.menu.straw.StrawAddActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -60,7 +69,7 @@ abstract class ActivityComponents {
     abstract fun bindManageBvnActivity(): ManageBvnActivity
 
     @ActivityScope
-    @ContributesAndroidInjector()
+    @ContributesAndroidInjector(modules = [FragmentComponent::class])
     abstract fun bindMenuActivity(): MenuActivity
 
     @ActivityScope
@@ -102,6 +111,28 @@ abstract class ActivityComponents {
     @ActivityScope
     @ContributesAndroidInjector()
     abstract  fun bindAddFeedActivity(): AddFeedActivity
+    @ActivityScope
+    @ContributesAndroidInjector(modules = [MeadowModule::class])
+    abstract fun bindManageMeadowActivity(): ManageMeadowActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector()
+    abstract fun bindAddAforoActivity(): AddAforoActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector()
+    abstract fun bindAddMantenimientoActivity(): AddMantenimientoActivity
 
 
+    @ActivityScope
+    @ContributesAndroidInjector(modules = [SelectModule::class])
+    abstract fun bindSelectActivity(): SelectActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector(modules = [AddGroupModule::class])
+    abstract fun bindAddGroupActivity(): AddGroupActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector
+    abstract fun bindSaveGroupActivity(): SaveGroupActivity
 }

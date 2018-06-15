@@ -25,7 +25,7 @@ android {
         experimental = true
     }
     dataBinding {
-        enabled = true
+        enabled true
     }
 
 }
@@ -86,5 +86,8 @@ dependencies {
     implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.5"
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.android.support:gridlayout-v7:27.1.1'
+
+    //ColorPicker
+    implementation 'com.github.QuadFlask:colorpicker:0.0.13'
 
 }
