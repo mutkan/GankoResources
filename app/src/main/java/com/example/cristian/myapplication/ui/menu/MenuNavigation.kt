@@ -32,7 +32,7 @@ class MenuNavigation @Inject constructor(val activity: MenuActivity, val sesion:
     }
 
     fun navigateToGroups() {
-        //activity.putFragment(R.id.content_frame, SelectGroupFragment.instance(true))
+        activity.putFragment(R.id.content_frame, SelectGroupFragment.instance(true))
     }
 
     fun navigateToMilk() {

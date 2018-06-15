@@ -92,7 +92,7 @@ fun AppCompatActivity.fixColor(content: Int) {
             supportActionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this, R.color.reports_primary)))
             window.statusBarColor = ContextCompat.getColor(this, R.color.reports_dark)
         }
-        11-> {
+        12-> {
             supportActionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this, R.color.group_primary)))
             window.statusBarColor = ContextCompat.getColor(this, R.color.group_dark)
         }

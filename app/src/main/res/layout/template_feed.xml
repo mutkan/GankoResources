@@ -6,7 +6,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     >
     <data>
-
+        <variable
+            name="feed"
+            type="com.example.cristian.myapplication.data.models.Feed"/>
     </data>
 
     <android.support.constraint.ConstraintLayout

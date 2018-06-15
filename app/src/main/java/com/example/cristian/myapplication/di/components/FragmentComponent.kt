@@ -52,9 +52,6 @@ abstract class FragmentComponent{
     @ContributesAndroidInjector()
     abstract fun bindSelectGroupFragment(): SelectGroupFragment
 
-    @FragmentScope
-    @ContributesAndroidInjector()
-    abstract fun bindSelectBovineFragment(): SelectBovineFragment
 
     @FragmentScope
     @ContributesAndroidInjector()

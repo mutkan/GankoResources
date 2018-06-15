@@ -19,6 +19,8 @@
     <android.support.constraint.ConstraintLayout
         android:id="@+id/bottomBar"
         android:layout_width="match_parent"
+        android:visibility="gone"
+        android:translationY="@dimen/select_bar"
         android:layout_height="@dimen/select_bar"
         android:background="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -112,7 +114,11 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/divider"
             app:layout_constraintTop_toTopOf="parent" />
+
+
     </android.support.constraint.ConstraintLayout>
+
+
 
 
 </android.support.constraint.ConstraintLayout>

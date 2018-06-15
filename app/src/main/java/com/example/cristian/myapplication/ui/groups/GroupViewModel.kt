@@ -5,6 +5,8 @@ import com.example.cristian.myapplication.data.db.CouchRx
 import com.example.cristian.myapplication.data.models.Bovino
 import com.example.cristian.myapplication.data.models.Group
 import com.example.cristian.myapplication.data.preferences.UserSession
+import com.example.cristian.myapplication.util.andEx
+import com.example.cristian.myapplication.util.applySchedulers
 import com.example.cristian.myapplication.util.equalEx
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -15,19 +17,30 @@ class GroupViewModel @Inject constructor(private val db: CouchRx,
 
     private val pageSize = 30
 
+    fun farmId():String = session.farmID
+
     fun list(): Single<List<Group>> =
-            db.listByExp("idFinca" equalEx session.farmID, Group::class)
+            db.listByExp("finca" equalEx session.farmID, Group::class)
+                    .applySchedulers()
 
     fun listObservable(): Observable<List<Group>> =
-            db.listObsByExp("idFinca" equalEx session.farmID, Group::class)
+            db.listObsByExp("finca" equalEx session.farmID, Group::class)
+                    .applySchedulers()
 
-    fun add(group: Group):Single<String> = db.insert(group)
+    fun add(group: Group):Single<Unit> = db.insert(group)
+            .map { Unit }
+            .applySchedulers()
+
+    fun update(id:String, group: Group):Single<Unit> = db.update(id, group)
+            .applySchedulers()
 
     fun remove(id:String):Single<Unit> = db.remove(id)
+            .applySchedulers()
 
     fun listBovines(page:Int):Single<List<Bovino>>{
         val skip = page * pageSize
-        return db.listByExp("idfinca" equalEx  session.farmID, Bovino::class, pageSize, skip)
+        return db.listByExp("finca" equalEx  session.farmID andEx ("retirado" equalEx false), Bovino::class, pageSize, skip)
+                .applySchedulers()
     }
 
 }

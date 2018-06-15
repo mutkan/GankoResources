@@ -1,6 +1,7 @@
 package com.example.cristian.myapplication.di.components
 
 import com.example.cristian.myapplication.di.ActivityScope
+import com.example.cristian.myapplication.di.modules.AddGroupModule
 import com.example.cristian.myapplication.di.modules.MeadowModule
 import com.example.cristian.myapplication.di.modules.ReproductiveModule
 import com.example.cristian.myapplication.di.modules.SelectModule
@@ -24,6 +25,8 @@ import com.example.cristian.myapplication.ui.bovine.reproductive.add.AddZealActi
 import com.example.cristian.myapplication.ui.bovine.vaccination.VaccinationBvnActivity
 import com.example.cristian.myapplication.ui.farms.AddFarmActivity
 import com.example.cristian.myapplication.ui.farms.FarmActivity
+import com.example.cristian.myapplication.ui.groups.AddGroupActivity
+import com.example.cristian.myapplication.ui.groups.SaveGroupActivity
 import com.example.cristian.myapplication.ui.groups.SelectActivity
 import com.example.cristian.myapplication.ui.menu.MenuActivity
 import com.example.cristian.myapplication.ui.menu.meadow.ManageMeadowActivity
@@ -69,7 +72,7 @@ abstract class ActivityComponents {
     abstract fun bindManageBvnActivity(): ManageBvnActivity
 
     @ActivityScope
-    @ContributesAndroidInjector()
+    @ContributesAndroidInjector(modules = [FragmentComponent::class])
     abstract fun bindMenuActivity(): MenuActivity
 
     @ActivityScope
@@ -141,5 +144,11 @@ abstract class ActivityComponents {
     @ContributesAndroidInjector(modules = [SelectModule::class])
     abstract fun bindSelectActivity(): SelectActivity
 
+    @ActivityScope
+    @ContributesAndroidInjector(modules = [AddGroupModule::class])
+    abstract fun bindAddGroupActivity(): AddGroupActivity
 
+    @ActivityScope
+    @ContributesAndroidInjector
+    abstract fun bindSaveGroupActivity(): SaveGroupActivity
 }
