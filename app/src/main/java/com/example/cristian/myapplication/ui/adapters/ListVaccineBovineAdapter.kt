@@ -24,7 +24,7 @@ class ListVaccineBovineAdapter @Inject constructor():RecyclerView.Adapter<ListVa
     override fun getItemCount(): Int = data.size
 
     override fun onBindViewHolder(holder: ListVaccineBovineHolder, position: Int) =
-            holder!!.bind(data[position])
+            holder.bind(data[position])
 
     class ListVaccineBovineHolder(itemList:View):RecyclerView.ViewHolder(itemList){
         val binding : TemplateListVaccineBovineBinding = DataBindingUtil.bind(itemList)!!

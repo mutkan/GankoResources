@@ -28,10 +28,13 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.menu.MenuActivity" />
+
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
-            <meta-data android:name="android.app.searchable"
+
+            <meta-data
+                android:name="android.app.searchable"
                 android:resource="@xml/search" />
         </activity>
         <activity android:name=".ui.farms.AddFarmActivity" />
@@ -72,15 +75,17 @@
         </provider>
 
         <activity android:name=".ui.bovine.reproductive.add.AddDiagnosisActivity" />
-        <activity android:name=".ui.bovine.reproductive.add.AddBirthActivity"></activity>
+        <activity android:name=".ui.bovine.reproductive.add.AddBirthActivity" />
         <activity android:name=".ui.menu.meadow.ManageMeadowActivity" />
         <activity android:name=".ui.menu.meadow.aforo.AddAforoActivity" />
-        <activity android:name=".ui.menu.meadow.mantenimiento.AddMantenimientoActivity"/>
+        <activity android:name=".ui.menu.meadow.mantenimiento.AddMantenimientoActivity" />
         <activity android:name=".ui.groups.SaveGroupActivity" />
-        <activity android:name=".ui.groups.SelectActivity" android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".ui.groups.AddGroupActivity"/>
-        <activity android:name=".ui.groups.BovineSelectedActivity"/>
-
+        <activity
+            android:name=".ui.groups.SelectActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ui.groups.AddGroupActivity" />
+        <activity android:name=".ui.groups.BovineSelectedActivity" />
+        <activity android:name=".ui.menu.vaccines.AddVaccineActivity"></activity>
     </application>
 
 </manifest>
