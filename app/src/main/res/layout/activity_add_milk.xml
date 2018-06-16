@@ -59,23 +59,22 @@
     <Spinner
         android:id="@+id/spinnerAddMilk"
         style="@style/Widget.AppCompat.Spinner.Underlined"
+        android:entries="@array/milk_production"
         android:layout_width="0dp"
         android:layout_height="52dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="32dp"
         android:layout_marginEnd="19dp"
-        android:layout_marginRight="19dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dateAddMilk" />
+        app:layout_constraintTop_toBottomOf="@+id/textView35" />
 
     <TextView
         android:id="@+id/textView32"
         style="@style/textview_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:text="@string/price_per_liter"
         app:layout_constraintStart_toStartOf="@+id/spinnerAddMilk"
         app:layout_constraintTop_toBottomOf="@+id/spinnerAddMilk" />
@@ -88,8 +87,9 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
         android:layout_marginRight="24dp"
+        android:hint="@string/price"
         android:ems="10"
-        android:inputType="textPersonName"
+        android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/textView32"
         app:layout_constraintTop_toBottomOf="@+id/textView32"
@@ -100,7 +100,7 @@
         style="@style/textview_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:text="@string/number_of_litters"
         app:layout_constraintStart_toStartOf="@+id/priceAddMilk"
         app:layout_constraintTop_toBottomOf="@+id/priceAddMilk" />
@@ -110,10 +110,10 @@
         style="@style/textview_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
+        android:layout_marginTop="16dp"
         android:text="@string/operation_type"
-        app:layout_constraintBottom_toBottomOf="@+id/spinnerAddMilk"
-        app:layout_constraintStart_toStartOf="@+id/spinnerAddMilk" />
+        app:layout_constraintStart_toStartOf="@+id/spinnerAddMilk"
+        app:layout_constraintTop_toBottomOf="@+id/dateAddMilk" />
 
     <EditText
         android:id="@+id/litterAddMilk"
@@ -124,8 +124,8 @@
         android:layout_marginEnd="24dp"
         android:layout_marginRight="24dp"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="@string/number_of_litters"
+        android:hint="@string/number_of_litters"
+        android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/textView34"
         app:layout_constraintTop_toBottomOf="@+id/textView34" />

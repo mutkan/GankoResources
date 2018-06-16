@@ -64,5 +64,9 @@ class MilkFragment : Fragment(), Injectable {
                 }
     }
 
+    companion object {
+        fun instance(): MilkFragment = MilkFragment()
+    }
+
 
 }

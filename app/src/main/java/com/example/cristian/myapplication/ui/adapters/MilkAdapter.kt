@@ -6,13 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.Produccion
+import com.example.cristian.myapplication.data.models.SalidaLeche
 import com.example.cristian.myapplication.databinding.TemplateListMilkBinding
 import com.example.cristian.myapplication.util.inflate
 import javax.inject.Inject
 
 class MilkAdapter @Inject constructor(): RecyclerView.Adapter<MilkAdapter.MilkHolder>(){
 
-    var milk: List<Produccion> = emptyList()
+    var milk: List<SalidaLeche> = emptyList()
         set(value) {
             field = value
             notifyDataSetChanged()

@@ -302,5 +302,12 @@
     <string name="product_value">Valor del producto</string>
     <string name="attention_value">Valor de la atención</string>
 
+    <string-array name="milk_production">
+        <item>Litros vendidos</item>
+        <item>Litros perdidos</item>
+        <item>Litros regalados</item>
+        <item>Consumo propio</item>
+    </string-array>
+
 
 </resources>

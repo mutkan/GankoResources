@@ -29,6 +29,7 @@ import com.example.cristian.myapplication.ui.menu.MenuActivity
 import com.example.cristian.myapplication.ui.menu.meadow.ManageMeadowActivity
 import com.example.cristian.myapplication.ui.menu.meadow.aforo.AddAforoActivity
 import com.example.cristian.myapplication.ui.menu.meadow.mantenimiento.AddMantenimientoActivity
+import com.example.cristian.myapplication.ui.menu.milk.AddMilkActivity
 import com.example.cristian.myapplication.ui.menu.straw.StrawAddActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -136,4 +137,8 @@ abstract class ActivityComponents {
     @ActivityScope
     @ContributesAndroidInjector
     abstract fun bindBovineSelectedActivity(): BovineSelectedActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector
+    abstract fun bindAddMilkActivity(): AddMilkActivity
 }

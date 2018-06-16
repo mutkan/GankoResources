@@ -10,6 +10,7 @@ import com.example.cristian.myapplication.ui.menu.meadow.MeadowFragment
 import com.example.cristian.myapplication.ui.menu.meadow.aforo.AforoFragment
 import com.example.cristian.myapplication.ui.menu.meadow.mantenimiento.MaintenanceFragment
 import com.example.cristian.myapplication.ui.menu.meadow.size.SizeFragment
+import com.example.cristian.myapplication.ui.menu.milk.MilkFragment
 import com.example.cristian.myapplication.ui.menu.movement.MeadowUnusedFragment
 import com.example.cristian.myapplication.ui.menu.movement.MeadowUsedFragment
 import com.example.cristian.myapplication.ui.menu.movement.MovementFragment
@@ -50,6 +51,11 @@ abstract class FragmentComponent{
     @FragmentScope
     @ContributesAndroidInjector()
     abstract fun bindSelectGroupFragment(): SelectGroupFragment
+
+    @FragmentScope
+    @ContributesAndroidInjector()
+    abstract fun bindMilkFragment(): MilkFragment
+
 
 
 

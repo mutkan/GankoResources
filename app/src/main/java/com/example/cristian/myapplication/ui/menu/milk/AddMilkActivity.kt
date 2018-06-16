@@ -8,7 +8,9 @@ import android.util.Log
 import android.widget.DatePicker
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.Produccion
+import com.example.cristian.myapplication.data.models.SalidaLeche
 import com.example.cristian.myapplication.di.Injectable
+import com.example.cristian.myapplication.ui.menu.MenuViewModel
 import com.example.cristian.myapplication.util.*
 import com.jakewharton.rxbinding2.view.clicks
 import io.reactivex.rxkotlin.subscribeBy
@@ -26,13 +28,15 @@ class AddMilkActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDate
     val dis: LifeDisposable = LifeDisposable(this)
     val idBovino: String by lazy { intent.extras.getString(AddMilkActivity.EXTRA_ID) }
     lateinit var datePicker: DatePickerDialog
+    val menuViewModel: MenuViewModel by lazy { buildViewModel<MenuViewModel>(factory) }
+    private val farmId by lazy { menuViewModel.getFarmId() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_milk)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setTitle("Agregar Produccion de Leche")
+        supportActionBar?.setTitle("Agregar Produccion de leche")
         datePicker = DatePickerDialog(this, AddMilkBvnActivity@ this,
                 Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH)+1,
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
@@ -54,7 +58,7 @@ class AddMilkActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDate
                 }
                 .flatMapSingle {
                     viewModel.addMilkProduction(
-                           // Produccion(null, null, null, idBovino, it[1], it[0].toDate())
+                            SalidaLeche(farmId, null, it[0].toDate(), it[1], it[2].toInt(), it[3].toInt(), it[2].toInt()*it[3].toInt())
                     )
                 }.subscribeBy(
                         onComplete = {
@@ -73,19 +77,24 @@ class AddMilkActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDate
 
                 )
 
-        dis add btnCancelMilkBovine.clicks()
+        dis add btnCancel.clicks()
                 .subscribe {
                     finish()
                 }
 
-        dis add dateAddMilkBovine.clicks()
+        dis add dateAddMilk.clicks()
                 .subscribe { datePicker.show() }
     }
 
     override fun onDateSet(p0: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        dateAddMilkBovine.text = "$dayOfMonth/${month+1}/$year"
-
+        dateAddMilk.setText("$dayOfMonth/${month+1}/$year")
     }
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
+    }
+
     companion object {
         val EXTRA_ID: String = "idBovino"
     }

@@ -11,6 +11,7 @@ import com.example.cristian.myapplication.ui.menu.bovine.ListBovineFragment
 import com.example.cristian.myapplication.ui.menu.management.ManageFragment
 import com.example.cristian.myapplication.ui.menu.meadow.MeadowFragment
 import com.example.cristian.myapplication.ui.menu.milk.ListMilkFragment
+import com.example.cristian.myapplication.ui.menu.milk.MilkFragment
 import com.example.cristian.myapplication.ui.menu.movement.MovementFragment
 import com.example.cristian.myapplication.util.putFragment
 import org.jetbrains.anko.startActivity
@@ -37,7 +38,7 @@ class MenuNavigation @Inject constructor(val activity: MenuActivity, val sesion:
     }
 
     fun navigateToMilk() {
-        activity.putFragment(R.id.content_frame, ListMilkFragment.instance())
+        activity.putFragment(R.id.content_frame, MilkFragment.instance())
     }
 
     fun navigateToFeeding() {
