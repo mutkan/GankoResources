@@ -5,6 +5,7 @@ import com.example.cristian.myapplication.ui.groups.SelectBovineFragment
 import com.example.cristian.myapplication.ui.groups.SelectGroupFragment
 import com.example.cristian.myapplication.ui.menu.straw.StrawFragment
 import com.example.cristian.myapplication.ui.menu.bovine.ListBovineFragment
+import com.example.cristian.myapplication.ui.menu.health.HealthFragment
 import com.example.cristian.myapplication.ui.menu.management.ManageFragment
 import com.example.cristian.myapplication.ui.menu.meadow.MeadowFragment
 import com.example.cristian.myapplication.ui.menu.meadow.aforo.AforoFragment
@@ -55,6 +56,10 @@ abstract class FragmentComponent{
     @FragmentScope
     @ContributesAndroidInjector()
     abstract fun bindMilkFragment(): MilkFragment
+
+    @FragmentScope
+    @ContributesAndroidInjector()
+    abstract fun bindHealthFragment(): HealthFragment
 
 
 
