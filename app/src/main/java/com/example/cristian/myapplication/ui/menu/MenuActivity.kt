@@ -138,6 +138,12 @@ class MenuActivity : AppCompatActivity(),Injectable,HasSupportFragmentInjector {
     companion object {
         val MENU1 = 1
         val MENU2 = 2
+        val NOMENU = 3
+    }
+
+    fun noMenu(){
+        state = NOMENU
+        onPrepareOptionsMenu(menu)
     }
 
     fun showMenu1(){
@@ -153,8 +159,10 @@ class MenuActivity : AppCompatActivity(),Injectable,HasSupportFragmentInjector {
         menu?.clear()
         if (state == MENU1){
             menuInflater.inflate(R.menu.toolbar_menu, menu)
-        }else{
+        }else if(state == MENU2){
             menuInflater.inflate(R.menu.toolbar_search, menu)
+        }else{
+            menu?.clear()
         }
 
         return super.onPrepareOptionsMenu(menu)
@@ -175,7 +183,9 @@ class MenuActivity : AppCompatActivity(),Injectable,HasSupportFragmentInjector {
 
         if(!firsttime) when(content){
             2-> showMenu1()
-            in 3..13-> showMenu2()
+            in 3..6-> showMenu2()
+            7-> noMenu()
+            in 8..13-> showMenu2()
         }
 
         when(content){

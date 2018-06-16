@@ -2,6 +2,7 @@ package com.example.cristian.myapplication.ui.groups
 
 import android.app.Activity
 import android.arch.lifecycle.ViewModelProvider
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
@@ -72,11 +73,12 @@ class SaveGroupActivity : AppCompatActivity(), Injectable {
 
         number.text = "${bovines.size}"
         color = if (isAdd) ContextCompat.getColor(this, R.color.colorPicker) else  group?.color!!
+        colorPicker.setCardBackgroundColor(color)
 
         name.setText(group?.nombre ?: "")
 
         dis add selection.clicks()
-                .subscribe { startActivityForResult<BovineSelectedActivity>(101, BovineSelectedActivity.EXTRA_SELECTED to bovines) }
+                .subscribe { startActivityForResult<BovineSelectedActivity>(101, BovineSelectedActivity.EXTRA_SELECTED to bovines.toTypedArray()) }
 
         dis add btnCancel.clicks()
                 .subscribe { finish() }
@@ -110,6 +112,12 @@ class SaveGroupActivity : AppCompatActivity(), Injectable {
                 .doOnSuccess { toast(R.string.group_updated) }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if(resultCode == Activity.RESULT_OK){
+            bovines = data!!.extras.getStringArray(BovineSelectedActivity.DATA_ITEMS).toList()
+            number.text = "${bovines.size}"
+        }
+    }
 
     companion object {
         const val EXTRAS_BOVINES = "dataBovines"

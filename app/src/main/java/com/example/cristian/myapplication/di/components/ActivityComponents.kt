@@ -23,12 +23,14 @@ import com.example.cristian.myapplication.ui.farms.AddFarmActivity
 import com.example.cristian.myapplication.ui.farms.FarmActivity
 import com.example.cristian.myapplication.ui.feed.AddFeedActivity
 import com.example.cristian.myapplication.ui.groups.AddGroupActivity
+import com.example.cristian.myapplication.ui.groups.BovineSelectedActivity
 import com.example.cristian.myapplication.ui.groups.SaveGroupActivity
 import com.example.cristian.myapplication.ui.groups.SelectActivity
 import com.example.cristian.myapplication.ui.menu.MenuActivity
 import com.example.cristian.myapplication.ui.menu.meadow.ManageMeadowActivity
 import com.example.cristian.myapplication.ui.menu.meadow.aforo.AddAforoActivity
 import com.example.cristian.myapplication.ui.menu.meadow.mantenimiento.AddMantenimientoActivity
+import com.example.cristian.myapplication.ui.menu.milk.AddMilkActivity
 import com.example.cristian.myapplication.ui.menu.straw.StrawAddActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -135,4 +137,12 @@ abstract class ActivityComponents {
     @ActivityScope
     @ContributesAndroidInjector
     abstract fun bindSaveGroupActivity(): SaveGroupActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector
+    abstract fun bindBovineSelectedActivity(): BovineSelectedActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector
+    abstract fun bindAddMilkActivity(): AddMilkActivity
 }

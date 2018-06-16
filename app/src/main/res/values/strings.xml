@@ -297,6 +297,21 @@
     <string name="group_updated">Grupo Actualizado</string>
     <string name="group_add">Agregar Grupo</string>
     <string name="group_update">Actualizar Grupo</string>
+    <string name="there_are_not_registered_milk_sales">No hay ventas de leche registradas</string>
+    <string name="restore">Deshacer</string>
+    <string name="bovine" />
+    <string name="disease">Enfermedad</string>
+    <string name="diagnosis">Diagnóstico</string>
+    <string name="dose_frequency">Frecuencia de las dosis</string>
+    <string name="product_value">Valor del producto</string>
+    <string name="attention_value">Valor de la atención</string>
+
+    <string-array name="milk_production">
+        <item>Litros vendidos</item>
+        <item>Litros perdidos</item>
+        <item>Litros regalados</item>
+        <item>Consumo propio</item>
+    </string-array>
 
 
 </resources>

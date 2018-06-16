@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.ui.groups.adapters.SelectPagerAdapter
+import com.example.cristian.myapplication.util.fixColor
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
@@ -17,10 +18,12 @@ class SelectActivity : AppCompatActivity(), HasSupportFragmentInjector {
     @Inject
     lateinit var injector:DispatchingAndroidInjector<Fragment>
 
+    val color by lazy { intent.extras.getInt(EXTRA_COLOR, 12) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_select)
-
+        fixColor(color)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
@@ -44,6 +47,7 @@ class SelectActivity : AppCompatActivity(), HasSupportFragmentInjector {
     companion object {
         const val DATA_GROUP = "groups"
         const val DATA_BOVINES = "bovines"
+        const val EXTRA_COLOR = "color"
     }
 
 }

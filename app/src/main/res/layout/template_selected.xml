@@ -5,24 +5,24 @@
 
     <data>
         <import type="android.view.View"/>
+
+        <variable
+            name="position"
+            type="int"/>
+
         <variable
             name="bovino"
             type="com.example.cristian.myapplication.data.models.Bovino"/>
 
         <variable
-            name="handler"
-            type="com.example.cristian.myapplication.ui.groups.adapters.SelectAdapter"/>
-
-        <variable
-            name="selected"
-            type="boolean"/>
+            name="onRemove"
+            type="io.reactivex.subjects.PublishSubject"/>
 
     </data>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="@{()-> handler.select(bovino)}"
         >
 
         <TextView
@@ -141,36 +141,25 @@
 
         </FrameLayout>
 
-        <ImageView
-            android:visibility="@{selected ? View.GONE : View.VISIBLE}"
-            android:id="@+id/selectFeedBtn"
-            android:layout_width="@dimen/checkBovine"
-            android:layout_height="@dimen/checkBovine"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="8dp"
-            app:srcCompat="@drawable/ic_uncheck_circle"
-            app:layout_constraintBottom_toTopOf="@+id/guideline4"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline4" />
-
-        <ImageView
-            android:visibility="@{selected ? View.VISIBLE: View.GONE}"
-            android:id="@+id/selectFeedBtn2"
-            android:layout_width="@dimen/checkBovine"
-            android:layout_height="@dimen/checkBovine"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="8dp"
-            app:srcCompat="@drawable/ic_check_circle"
-            app:layout_constraintBottom_toTopOf="@+id/guideline4"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline4" />
-
         <android.support.constraint.Guideline
             android:id="@+id/guideline4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.5" />
+
+        <ImageView
+            android:id="@+id/btnRemove"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="@{()->onRemove.onNext(position)}"
+            android:layout_width="@dimen/select_icon_action"
+            android:layout_height="@dimen/select_icon_action"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_close" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>

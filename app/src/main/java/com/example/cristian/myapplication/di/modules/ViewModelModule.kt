@@ -17,6 +17,7 @@ import com.example.cristian.myapplication.ui.groups.GroupViewModel
 import com.example.cristian.myapplication.ui.feed.FeedViewModel
 import com.example.cristian.myapplication.ui.menu.MenuViewModel
 import com.example.cristian.myapplication.ui.menu.meadow.MeadowViewModel
+import com.example.cristian.myapplication.ui.menu.milk.MilkViewModel
 import com.example.cristian.myapplication.ui.menu.straw.StrawViewModel
 import com.example.cristian.myapplication.util.AppViewModelFactory
 import dagger.Binds
@@ -101,5 +102,10 @@ abstract class ViewModelModule{
     @IntoMap
     @ViewModelKey(GroupViewModel::class)
     abstract fun bindGroupViewModel(viewModel: GroupViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MilkViewModel::class)
+    abstract fun bindMilkViewModel(viewModel: MilkViewModel): ViewModel
 
 }

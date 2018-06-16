@@ -106,6 +106,14 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
             db.listByExp("idFarm" equalEx idFinca, Straw::class)
                     .applySchedulers()
 
+    fun getHealth(idFinca: String): Single<List<Sanidad>> =
+            db.listByExp("idFarm" equalEx idFinca, Sanidad::class)
+                    .applySchedulers()
+
+    fun getMilk(idFinca: String): Single<List<SalidaLeche>> =
+            db.listByExp("idFarm" equalEx idFinca, SalidaLeche::class)
+                    .applySchedulers()
+
     fun getFeed(idFinca: String): Single<List<Feed>> =
             db.listByExp("idFarm" equalEx idFinca, Feed::class)
                     .applySchedulers()
