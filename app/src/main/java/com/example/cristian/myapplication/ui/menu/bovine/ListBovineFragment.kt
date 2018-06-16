@@ -105,13 +105,13 @@ class ListBovineFragment : Fragment(), Injectable {
                     goToAddBovine()
                 }
 
-        check_milk.setOnCheckedChangeListener { compoundButton, b -> if (b) filter.milk_purpose=true
+        check_milk.setOnCheckedChangeListener { _, b -> filter.milk_purpose = b
         filterBovines()     }
-        check_meat.setOnCheckedChangeListener { compoundButton, b -> if (b) filter.meat_purpose=true
+        check_meat.setOnCheckedChangeListener { _, b -> filter.meat_purpose=b
         filterBovines()     }
-        check_both.setOnCheckedChangeListener { compoundButton, b -> if (b) filter.both_purpose=true
+        check_both.setOnCheckedChangeListener { _, b -> filter.both_purpose=b
         filterBovines()     }
-        check_retired.setOnCheckedChangeListener { compoundButton, b -> if (b) filter.retired=true
+        check_retired.setOnCheckedChangeListener { _, b -> filter.retired=b
         filterBovines()     }
 
     }
@@ -127,7 +127,6 @@ class ListBovineFragment : Fragment(), Injectable {
                                 filter.both_purpose -> {it.filter { it.proposito == "ambos" } }
                                 filter.retired      -> {it.filter { it.retirado == true     } }
                            }
-
                             adapter.bovines = it
                         },
                         onError = {
