@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import com.couchbase.lite.internal.support.Log
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.Bovino
+import com.example.cristian.myapplication.data.models.Filter
 import com.example.cristian.myapplication.databinding.FragmentListBovineBinding
 import com.example.cristian.myapplication.databinding.TemplateZealBinding
 import com.example.cristian.myapplication.di.FragmentScope
@@ -25,8 +26,10 @@ import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
 import com.example.cristian.myapplication.util.subscribeByAction
 import com.jakewharton.rxbinding2.view.clicks
+import com.jakewharton.rxbinding2.view.selected
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.PublishSubject
+import kotlinx.android.synthetic.main.fragment_filter.*
 import kotlinx.android.synthetic.main.fragment_list_bovine.*
 import org.jetbrains.anko.support.v4.alert
 import org.jetbrains.anko.support.v4.startActivity
@@ -43,7 +46,7 @@ class ListBovineFragment : Fragment(), Injectable {
     lateinit var adapter: ListBovineAdapter
     val dis: LifeDisposable = LifeDisposable(this)
     lateinit var binding: FragmentListBovineBinding
-
+    private var filter:Filter = Filter()
     private val idFinca: String by lazy { viewModel.getFarmId() }
     val isEmpty: ObservableBoolean = ObservableBoolean(false)
 
@@ -101,8 +104,37 @@ class ListBovineFragment : Fragment(), Injectable {
                 .subscribe {
                     goToAddBovine()
                 }
+
+        check_milk.setOnCheckedChangeListener { compoundButton, b -> if (b) filter.milk_purpose=true
+        filterBovines()     }
+        check_meat.setOnCheckedChangeListener { compoundButton, b -> if (b) filter.meat_purpose=true
+        filterBovines()     }
+        check_both.setOnCheckedChangeListener { compoundButton, b -> if (b) filter.both_purpose=true
+        filterBovines()     }
+        check_retired.setOnCheckedChangeListener { compoundButton, b -> if (b) filter.retired=true
+        filterBovines()     }
+
     }
 
+    fun filterBovines(){
+        dis add viewModel.getBovinesFilter(idFinca,filter)
+                .subscribeBy(
+                        onSuccess = {
+                            isEmpty.set(it.isEmpty())
+
+                           when{filter.milk_purpose -> {it.filter { it.proposito == "leche" } }
+                                filter.meat_purpose -> {it.filter { it.proposito == "carne" } }
+                                filter.both_purpose -> {it.filter { it.proposito == "ambos" } }
+                                filter.retired      -> {it.filter { it.retirado == true     } }
+                           }
+
+                            adapter.bovines = it
+                        },
+                        onError = {
+                            toast(it.message!!)
+                        }
+                )
+    }
     fun goToAddBovine() {
         startActivity<AddBovineActivity>()
     }

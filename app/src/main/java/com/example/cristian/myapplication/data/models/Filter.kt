@@ -5,10 +5,10 @@ import kotlinx.android.parcel.Parcelize
 import java.util.*
 
 @Parcelize
-class Filter(var proposito_leche: Boolean= false,
-             var proposito_ceba: Boolean = false,
-             var proposito_Ambos: Boolean = false,
-             var retirado: Boolean = false,
+class Filter(var milk_purpose: Boolean= false,
+             var meat_purpose: Boolean = false,
+             var both_purpose: Boolean = false,
+             var retired: Boolean = false,
              var type: String? = null)
     : Parcelable {
     init {

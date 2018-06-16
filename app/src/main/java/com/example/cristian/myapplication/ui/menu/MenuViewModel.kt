@@ -154,14 +154,19 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     .applySchedulers()
 
     // Filtros
-
-    fun getMilkPurpose(Idfinca: String):Single<List<Bovino>> =
+    //Proposito
+    fun getMilkPurpose(Idfinca: String,filter:Filter):Single<List<Bovino>> =
             db.listByExp("Idfinca" equalEx Idfinca andEx ("proposito" equalEx "leche"),Bovino::class)
 
-    fun getCebaPurpose(Idfinca: String):Single<List<Bovino>> =
-            db.listByExp("Idfinca" equalEx Idfinca andEx ("proposito" equalEx "Ceba"),Bovino::class)
+    fun getCebaPurpose(Idfinca: String,filter: Filter):Single<List<Bovino>> =
+            db.listByExp("Idfinca" equalEx Idfinca andEx ("proposito" equalEx "ceba"),Bovino::class)
 
-    fun getCebaAndMilkPurpose(Idfinca: String):Single<List<Bovino>> =
+    fun getCebaAndMilkPurpose(Idfinca: String,filter: Filter):Single<List<Bovino>> =
             db.listByExp("Idfinca" equalEx Idfinca andEx ("proposito" equalEx "leche y ceba"),Bovino::class)
+
+    fun getBovinesFilter(Idfinca: String,filter: Filter):Single<List<Bovino>> =
+            db.listByExp("Idfinca" equalEx Idfinca ,Bovino::class)
+
+
 
 }
