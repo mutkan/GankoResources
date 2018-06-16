@@ -25,7 +25,7 @@ android {
         experimental = true
     }
     dataBinding {
-        enabled true
+        enabled = true
     }
 
 }
@@ -37,6 +37,7 @@ def anko_version = "0.10.4"
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    //noinspection GradleCompatible
     implementation "com.android.support:appcompat-v7:$support_version"
     implementation 'com.android.support.constraint:constraint-layout:1.1.0-beta6'
     implementation "com.android.support:support-v4:$support_version"
@@ -83,11 +84,10 @@ dependencies {
     implementation 'com.couchbase.lite:couchbase-lite-android:2.0.0'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.5'
     implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.5"
-
     implementation 'com.android.support:multidex:1.0.3'
-
     implementation 'com.android.support:gridlayout-v7:27.1.1'
 
     //ColorPicker
     implementation 'com.github.QuadFlask:colorpicker:0.0.13'
+
 }

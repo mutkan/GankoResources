@@ -90,7 +90,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
 
     fun deleteBovine(idBovino: String): Single<Unit> = db.remove(idBovino).applySchedulers()
 
-    fun getManagement(idFinca: String): Single<List<Manage>> =
+    fun getManagement(idFinca: String):Single<List<Manage>> =
             getBovine(idFinca)
                     .flatMapObservable {
                         it.toObservable()
@@ -102,8 +102,16 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     .toList()
                     .applySchedulers()
 
-    fun getStraw(idFinca: String): Single<List<Straw>> =
+    fun getStraw(idFinca: String):Single<List<Straw>> =
             db.listByExp("idFarm" equalEx idFinca, Straw::class)
+                    .applySchedulers()
+
+    fun getHealth(idFinca: String): Single<List<Sanidad>> =
+            db.listByExp("idFarm" equalEx idFinca, Sanidad::class)
+                    .applySchedulers()
+
+    fun getMilk(idFinca: String): Single<List<SalidaLeche>> =
+            db.listByExp("idFarm" equalEx idFinca, SalidaLeche::class)
                     .applySchedulers()
 
     fun getFeed(idFinca: String): Single<List<Feed>> =
@@ -144,4 +152,16 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     fun getGroups(idFinca: String): Single<List<Group>> =
             db.listByExp("idFinca" equalEx idFinca, Group::class)
                     .applySchedulers()
+
+    // Filtros
+
+    fun getMilkPurpose(Idfinca: String):Single<List<Bovino>> =
+            db.listByExp("Idfinca" equalEx Idfinca andEx ("proposito" equalEx "leche"),Bovino::class)
+
+    fun getCebaPurpose(Idfinca: String):Single<List<Bovino>> =
+            db.listByExp("Idfinca" equalEx Idfinca andEx ("proposito" equalEx "Ceba"),Bovino::class)
+
+    fun getCebaAndMilkPurpose(Idfinca: String):Single<List<Bovino>> =
+            db.listByExp("Idfinca" equalEx Idfinca andEx ("proposito" equalEx "leche y ceba"),Bovino::class)
+
 }

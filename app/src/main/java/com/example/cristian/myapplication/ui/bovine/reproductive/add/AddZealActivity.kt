@@ -45,7 +45,7 @@ class AddZealActivity : AppCompatActivity(), Injectable {
                             toast("OK :v")
                         }
                 )
-        dis add btnCancel.clicks()
+        dis add btnCancelFeed.clicks()
                 .subscribeBy(
                         onNext = {
                             finish()

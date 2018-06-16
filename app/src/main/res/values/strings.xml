@@ -193,9 +193,13 @@
     <string name="average_milk">Promedio</string>
 
     //Validate Form
-    <string name="empty_fields">No debe haber campos vacios</string>
+
+    <string name="empty_fields">No Debe Haber Campos Vacios</string>
+    <string name="food_type">Tipo de alimento</string>
+    <string name="feed_kg_value">Valor por kilogramo</string>
     <string name="finalize">Finalizar</string>
     <string name="save">Guardar</string>
+
 
     //empty list
     <string name="empty_list">No se encontraron registros</string>
@@ -293,7 +297,21 @@
     <string name="group_updated">Grupo Actualizado</string>
     <string name="group_add">Agregar Grupo</string>
     <string name="group_update">Actualizar Grupo</string>
+    <string name="there_are_not_registered_milk_sales">No hay ventas de leche registradas</string>
     <string name="restore">Deshacer</string>
+    <string name="bovine" />
+    <string name="disease">Enfermedad</string>
+    <string name="diagnosis">Diagnóstico</string>
+    <string name="dose_frequency">Frecuencia de las dosis</string>
+    <string name="product_value">Valor del producto</string>
+    <string name="attention_value">Valor de la atención</string>
+
+    <string-array name="milk_production">
+        <item>Litros vendidos</item>
+        <item>Litros perdidos</item>
+        <item>Litros regalados</item>
+        <item>Consumo propio</item>
+    </string-array>
 
 
 </resources>

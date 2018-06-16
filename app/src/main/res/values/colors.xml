@@ -42,12 +42,13 @@
     <color name="textview_label">#000000</color>
     <color name="line_template">#d9d9d9</color>
     <color name="white">#ffffff</color>
+    <color name="label_add_feed">#d9d9d9</color>
     <color name="remove">#640000</color>
     <color name="section">#f2f2f2</color>
     <color name="colorPicker">#777</color>
     <!--Filtro -->
     <color name="check_filter">#009999</color>
-    <color name="section_name_filter">#7E7E73</color>
+    <color name="section_name_filter">#7e7e73</color>
     <color name="next_zeal_background">#f2f2f2</color>
 
     <!--Pradera -->
