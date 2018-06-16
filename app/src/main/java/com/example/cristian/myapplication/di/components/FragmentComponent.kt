@@ -2,19 +2,12 @@ package com.example.cristian.myapplication.di.components
 
 import com.example.cristian.myapplication.di.FragmentScope
 
-import com.example.cristian.myapplication.ui.feed.GroupsFeedFragment
-import com.example.cristian.myapplication.ui.feed.SelectFeedFragment
-
-import com.example.cristian.myapplication.ui.groups.SelectBovineFragment
 import com.example.cristian.myapplication.ui.groups.SelectGroupFragment
 import com.example.cristian.myapplication.ui.menu.straw.StrawFragment
 import com.example.cristian.myapplication.ui.menu.bovine.ListBovineFragment
 import com.example.cristian.myapplication.ui.menu.bovine.ListFeedFragment
 import com.example.cristian.myapplication.ui.menu.management.ManageFragment
 import com.example.cristian.myapplication.ui.menu.meadow.MeadowFragment
-import com.example.cristian.myapplication.ui.menu.meadow.aforo.AforoFragment
-import com.example.cristian.myapplication.ui.menu.meadow.mantenimiento.MaintenanceFragment
-import com.example.cristian.myapplication.ui.menu.meadow.size.SizeFragment
 import com.example.cristian.myapplication.ui.menu.movement.MeadowUnusedFragment
 import com.example.cristian.myapplication.ui.menu.movement.MeadowUsedFragment
 import com.example.cristian.myapplication.ui.menu.movement.MovementFragment

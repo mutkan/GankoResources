@@ -102,8 +102,6 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     .toList()
                     .applySchedulers()
 
-    fun getAllFeed(Idfinca: String): Single<List<Feed>> =
-            db.listByExp("Idfinca" equalEx Idfinca, Feed::class)
     fun getStraw(idFinca: String):Single<List<Straw>> =
             db.listByExp("idFarm" equalEx idFinca, Straw::class)
                     .applySchedulers()
