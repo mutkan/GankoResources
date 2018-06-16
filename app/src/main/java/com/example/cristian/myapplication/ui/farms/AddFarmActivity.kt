@@ -59,7 +59,7 @@ class AddFarmActivity : AppCompatActivity(), Injectable {
                             finish()
                         }
                 )
-        dis add btnCancel.clicks()
+        dis add btnCancelFeed.clicks()
                 .subscribeBy(
                         onNext = {
                             finish()

@@ -65,13 +65,13 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:text="@string/btn_add"
-        app:layout_constraintBottom_toBottomOf="@+id/btnCancel"
+        app:layout_constraintBottom_toBottomOf="@+id/btnCancelFeed"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btnCancel" />
+        app:layout_constraintStart_toEndOf="@+id/btnCancelFeed" />
 
     <Button
-        android:id="@+id/btnCancel"
+        android:id="@+id/btnCancelFeed"
         style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

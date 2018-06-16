@@ -14,6 +14,7 @@ import com.example.cristian.myapplication.ui.bovine.movement.MovementBvnViewMode
 import com.example.cristian.myapplication.ui.bovine.vaccination.VaccinationBvnViewModel
 import com.example.cristian.myapplication.ui.farms.FarmViewModel
 import com.example.cristian.myapplication.ui.groups.GroupViewModel
+import com.example.cristian.myapplication.ui.feed.FeedViewModel
 import com.example.cristian.myapplication.ui.menu.MenuViewModel
 import com.example.cristian.myapplication.ui.menu.meadow.MeadowViewModel
 import com.example.cristian.myapplication.ui.menu.milk.MilkViewModel
@@ -86,6 +87,9 @@ abstract class ViewModelModule{
 
     @Binds
     @IntoMap
+    @ViewModelKey(FeedViewModel::class)
+    abstract fun bindFeedViewModel(viewModel: FeedViewModel):ViewModel
+
     @ViewModelKey(StrawViewModel::class)
     abstract fun bindStrawViewModel(viewModel: StrawViewModel): ViewModel
 

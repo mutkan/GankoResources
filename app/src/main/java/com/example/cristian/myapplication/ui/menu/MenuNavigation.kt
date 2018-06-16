@@ -8,6 +8,9 @@ import com.example.cristian.myapplication.ui.farms.FarmActivity
 import com.example.cristian.myapplication.ui.groups.SelectGroupFragment
 import com.example.cristian.myapplication.ui.menu.straw.StrawFragment
 import com.example.cristian.myapplication.ui.menu.bovine.ListBovineFragment
+
+import com.example.cristian.myapplication.ui.menu.bovine.ListFeedFragment
+import com.example.cristian.myapplication.ui.menu.feed.FeedFragment
 import com.example.cristian.myapplication.ui.menu.health.HealthFragment
 import com.example.cristian.myapplication.ui.menu.management.ManageFragment
 import com.example.cristian.myapplication.ui.menu.meadow.MeadowFragment
@@ -43,7 +46,7 @@ class MenuNavigation @Inject constructor(val activity: MenuActivity, val sesion:
     }
 
     fun navigateToFeeding() {
-
+        activity.putFragment(R.id.content_frame,FeedFragment.instance())
     }
 
     fun navigateToHealth() {

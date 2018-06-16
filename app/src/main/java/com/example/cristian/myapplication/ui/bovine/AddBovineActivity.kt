@@ -14,8 +14,6 @@ import com.example.cristian.myapplication.databinding.ActivityAddBovineBinding
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.util.*
 import com.jakewharton.rxbinding2.view.clicks
-import com.jakewharton.rxbinding2.widget.RxRadioGroup
-import com.jakewharton.rxbinding2.widget.checked
 import com.jakewharton.rxbinding2.widget.checkedChanges
 import com.jakewharton.rxbinding2.widget.itemSelections
 import com.squareup.picasso.Picasso
@@ -153,7 +151,7 @@ class AddBovineActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
                         }
                 )
 
-        dis add btnNext.clicks()
+        dis add btnAddFeed.clicks()
                 .flatMap {
                     if (binding.page == 1)
                         validateForm(R.string.empty_fields, bovineIdentificationNumber.text.toString(),
@@ -199,7 +197,7 @@ class AddBovineActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
                         }
                 )
 
-        dis add btnCancel.clicks()
+        dis add btnCancelFeed.clicks()
                 .subscribeBy(
                         onNext = {
                             finish()
