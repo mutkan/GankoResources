@@ -1,7 +1,6 @@
 package com.example.cristian.myapplication.data.db
 
 import com.couchbase.lite.*
-import com.couchbase.lite.Dictionary
 import com.example.cristian.myapplication.data.preferences.UserSession
 import com.example.cristian.myapplication.util.andEx
 import com.example.cristian.myapplication.util.equalEx
@@ -15,7 +14,6 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.InputStream
 import java.net.URL
-import java.util.*
 import javax.inject.Inject
 import javax.inject.Named
 import javax.inject.Singleton
@@ -142,6 +140,7 @@ class CouchRx @Inject constructor(private val db: Database
             }
 
     fun getFile(id: String, name: String): Maybe<File> {
+
         val file = File(folder, name)
         return if (file.exists()) {
             Maybe.just(file)

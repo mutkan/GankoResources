@@ -23,8 +23,8 @@ class SelectActivity : AppCompatActivity(), HasSupportFragmentInjector {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_select)
-        fixColor(color)
         setSupportActionBar(toolbar)
+        fixColor(color)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         pager.adapter = SelectPagerAdapter(supportFragmentManager).apply {
