@@ -39,13 +39,13 @@ class AddVaccineActivity : AppCompatActivity(), Injectable {
 
     override fun onResume() {
         super.onResume()
-        dis add btnAccept.clicks()
+        dis add btnAcceptVaccine.clicks()
                 .subscribeBy(
                         onNext = {
                             finish()
                         }
                 )
-        dis add btnCancel.clicks()
+        dis add btnCancelVaccine.clicks()
                 .subscribeBy(
                         onNext = {
                             finish()

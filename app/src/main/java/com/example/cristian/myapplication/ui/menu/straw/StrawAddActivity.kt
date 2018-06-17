@@ -68,7 +68,7 @@ class StrawAddActivity : AppCompatActivity(), Injectable{
                         }
                 )
 
-        dis add  btnCancel.clicks()
+        dis add  btnCancelFeed.clicks()
                 .subscribe{
                     finish()
                 }

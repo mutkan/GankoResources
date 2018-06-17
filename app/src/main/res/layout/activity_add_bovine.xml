@@ -34,12 +34,12 @@
             android:text="@string/btn_back"
             android:visibility='@{page == 1 ? View.GONE : View.VISIBLE}'
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btnNext"
+            app:layout_constraintEnd_toStartOf="@+id/btnAddFeed"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/btnCancel" />
+            app:layout_constraintStart_toEndOf="@+id/btnCancelFeed" />
 
         <Button
-            android:id="@+id/btnCancel"
+            android:id="@+id/btnCancelFeed"
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -53,7 +53,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
-            android:id="@+id/btnNext"
+            android:id="@+id/btnAddFeed"
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -77,7 +77,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/btnNext" />
+            app:layout_constraintStart_toEndOf="@+id/btnAddFeed" />
 
         <android.support.v4.widget.NestedScrollView
             android:id="@+id/nested"
@@ -276,7 +276,7 @@
                 <android.support.constraint.ConstraintLayout
                     android:id="@+id/page2"
                     android:layout_width="0dp"
-                    android:layout_height="472dp"
+                    android:layout_height="wrap_content"
                     android:visibility='@{page == 2 ? View.VISIBLE : View.GONE}'
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"

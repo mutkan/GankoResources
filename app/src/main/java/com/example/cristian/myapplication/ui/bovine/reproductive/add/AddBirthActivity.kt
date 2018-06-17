@@ -5,7 +5,6 @@ import android.arch.lifecycle.ViewModelProvider
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.widget.DatePicker
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.Bovino
@@ -81,21 +80,21 @@ class AddBirthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDat
                         }
                 )
 
-        dis add date.clicks()
+        dis add birthDate.clicks()
                 .subscribeBy(
                         onNext = {
                             datePicker.show()
                         }
                 )
 
-        dis add btnCancel.clicks()
+        dis add btnCancelBirth.clicks()
                 .subscribeBy(
                         onNext = {
                             finish()
                         }
                 )
 
-        dis add btnAccept.clicks()
+        dis add btnAcceptBirth.clicks()
                 .flatMap { validateFields() }
                 .flatMapSingle { setParto(it) }
                 .flatMapMaybe { viewModel.addParto(idBovino, it) }
@@ -107,7 +106,7 @@ class AddBirthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDat
     }
 
     private fun validateFields(): Observable<List<String>> {
-        val fecha = date.text()
+        val fecha = birthDate.text()
         return validateForm(R.string.empty_fields, fecha)
     }
 
@@ -130,7 +129,7 @@ class AddBirthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDat
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        date.setText("$dayOfMonth/${month + 1}/$year")
+        birthDate.setText("$dayOfMonth/${month + 1}/$year")
         val cal = Calendar.getInstance().apply { set(year, month, dayOfMonth) }
         if (ultimoParto != null) {
             val dif = cal.timeInMillis - ultimoParto!!.time

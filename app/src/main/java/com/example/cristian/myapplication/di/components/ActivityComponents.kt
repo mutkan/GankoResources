@@ -25,6 +25,7 @@ import com.example.cristian.myapplication.ui.bovine.reproductive.add.AddZealActi
 import com.example.cristian.myapplication.ui.bovine.vaccination.VaccinationBvnActivity
 import com.example.cristian.myapplication.ui.farms.AddFarmActivity
 import com.example.cristian.myapplication.ui.farms.FarmActivity
+import com.example.cristian.myapplication.ui.feed.AddFeedActivity
 import com.example.cristian.myapplication.ui.groups.AddGroupActivity
 import com.example.cristian.myapplication.ui.groups.BovineSelectedActivity
 import com.example.cristian.myapplication.ui.groups.SaveGroupActivity
@@ -33,6 +34,7 @@ import com.example.cristian.myapplication.ui.menu.MenuActivity
 import com.example.cristian.myapplication.ui.menu.meadow.ManageMeadowActivity
 import com.example.cristian.myapplication.ui.menu.meadow.aforo.AddAforoActivity
 import com.example.cristian.myapplication.ui.menu.meadow.mantenimiento.AddMantenimientoActivity
+import com.example.cristian.myapplication.ui.menu.milk.AddMilkActivity
 import com.example.cristian.myapplication.ui.menu.straw.StrawAddActivity
 import com.example.cristian.myapplication.ui.menu.vaccines.AddVaccineActivity
 import dagger.Module
@@ -130,6 +132,9 @@ abstract class ActivityComponents {
     abstract fun bindAddStrawActivity(): StrawAddActivity
 
     @ActivityScope
+    @ContributesAndroidInjector()
+    abstract  fun bindAddFeedActivity(): AddFeedActivity
+    @ActivityScope
     @ContributesAndroidInjector(modules = [MeadowModule::class])
     abstract fun bindManageMeadowActivity(): ManageMeadowActivity
 
@@ -161,4 +166,9 @@ abstract class ActivityComponents {
     @ActivityScope
     @ContributesAndroidInjector
     abstract fun bindAddVaccineActivity(): AddVaccineActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector
+    abstract fun bindAddMilkActivity(): AddMilkActivity
+
 }

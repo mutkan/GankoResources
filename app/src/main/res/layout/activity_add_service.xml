@@ -11,7 +11,7 @@
 
 
                 <TextView
-                    android:id="@+id/dateTxt"
+                    android:id="@+id/serviceDateTxt"
                     style="@style/textview_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
                     android:layout_marginTop="8dp"
                     android:text="Condición Corporal"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/date" />
+                    app:layout_constraintTop_toBottomOf="@+id/serviceDate" />
 
                 <TextView
                     android:id="@+id/breedingTxt"
@@ -55,7 +55,7 @@
                     tools:text="Código Toro/Pajilla" />
 
                 <EditText
-                    android:id="@+id/date"
+                    android:id="@+id/serviceDate"
                     style="@style/edit_text"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -66,8 +66,8 @@
                     android:hint="dd/mm/aaaa"
                     android:inputType="date"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/dateTxt"
-                    app:layout_constraintTop_toBottomOf="@+id/dateTxt" />
+                    app:layout_constraintStart_toStartOf="@+id/serviceDateTxt"
+                    app:layout_constraintTop_toBottomOf="@+id/serviceDateTxt" />
 
                 <EditText
                     android:id="@+id/bodyCondition"
@@ -122,28 +122,28 @@
 
 
         <Button
-            android:id="@+id/btnCancel"
+            android:id="@+id/btnCancelService"
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:text="@string/btn_cancel"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btnAccept"
+            app:layout_constraintEnd_toStartOf="@+id/btnAcceptService"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
-            android:id="@+id/btnAccept"
+            android:id="@+id/btnAcceptService"
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/btn_Acept"
-            app:layout_constraintBottom_toBottomOf="@+id/btnCancel"
+            app:layout_constraintBottom_toBottomOf="@+id/btnCancelService"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/btnCancel"
-            app:layout_constraintTop_toTopOf="@+id/btnCancel" />
+            app:layout_constraintStart_toEndOf="@+id/btnCancelService"
+            app:layout_constraintTop_toTopOf="@+id/btnCancelService" />
 
 
     </android.support.constraint.ConstraintLayout>

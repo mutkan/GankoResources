@@ -13,9 +13,9 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/gankobovinos"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".ui.feed.AddFeedActivity"/>
         <activity android:name=".ui.bovine.milk.MilkBvnActivity" />
-        <activity android:name=".ui.bovine.ceba.CebaBvnActivity" />
         <activity android:name=".ui.bovine.health.HealthBvnActivity" />
         <activity android:name=".PrincipalActivity" />
         <activity android:name=".ui.bovine.feed.FeedBvnActivity" />
@@ -53,9 +53,19 @@
             android:name=".ui.menu.MenuActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ui.bovine.milk.AddMilkBvnActivity" />
-        <activity android:name=".ui.farms.FarmActivity" />
+        <activity android:name=".ui.farms.FarmActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".ui.bovine.movement.MovementBvnActivity" />
         <activity android:name=".ui.bovine.vaccination.VaccinationBvnActivity" />
+
+        <!-- <activity android:name=".ui.bovine.ceba.CebaBvnActivity" /> -->
+
+        <activity android:name=".ui.bovine.ceba.CebaBvnActivity" />
         <activity android:name=".ui.bovine.ceba.AddCebaBvnActivity" />
         <activity
             android:name=".ui.bovine.reproductive.ReproductiveBvnActivity"
@@ -80,12 +90,12 @@
         <activity android:name=".ui.menu.meadow.aforo.AddAforoActivity" />
         <activity android:name=".ui.menu.meadow.mantenimiento.AddMantenimientoActivity" />
         <activity android:name=".ui.groups.SaveGroupActivity" />
-        <activity
-            android:name=".ui.groups.SelectActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ui.groups.SelectActivity" android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".ui.groups.AddGroupActivity" />
         <activity android:name=".ui.groups.BovineSelectedActivity" />
-        <activity android:name=".ui.menu.vaccines.AddVaccineActivity"></activity>
-    </application>
+        <activity android:name=".ui.menu.milk.AddMilkActivity"></activity>
+        <activity android:name=".ui.menu.vaccines.AddVaccineActivity"/>
+ </application>
+
 
 </manifest>

@@ -83,21 +83,21 @@ class AddDiagnosisActivity : AppCompatActivity(), Injectable, DatePickerDialog.O
                         }
                 )
 
-        dis add date.clicks()
+        dis add diagnosisDate.clicks()
                 .subscribeBy(
                         onNext = {
                             datePicker.show()
                         }
                 )
 
-        dis add btnCancel.clicks()
+        dis add btnCancelDiagnosis.clicks()
                 .subscribeBy(
                         onNext = {
                             finish()
                         }
                 )
 
-        dis add btnAccept.clicks()
+        dis add btnAcceptDiagnosis.clicks()
                 .flatMap { validateFields() }
                 .flatMapSingle { if (type == TYPE_DIAGNOSIS) setDiagnosis(it) else setNovedad(it) }
                 .flatMapMaybe {
@@ -111,7 +111,7 @@ class AddDiagnosisActivity : AppCompatActivity(), Injectable, DatePickerDialog.O
     }
 
     private fun validateFields(): Observable<List<String>> {
-        val fecha = date.text()
+        val fecha = diagnosisDate.text()
         return validateForm(R.string.empty_fields, fecha)
     }
 
@@ -139,6 +139,6 @@ class AddDiagnosisActivity : AppCompatActivity(), Injectable, DatePickerDialog.O
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        date.setText("$dayOfMonth/${month + 1}/$year")
+        diagnosisDate.setText("$dayOfMonth/${month + 1}/$year")
     }
 }

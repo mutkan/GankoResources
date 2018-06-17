@@ -100,14 +100,14 @@ class AddServiceActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
                         }
                 )
 
-        dis add date.clicks()
+        dis add serviceDateTxt.clicks()
                 .subscribeBy(
                         onNext = {
                             datePicker.show()
                         }
                 )
 
-        dis add btnAccept.clicks()
+        dis add btnAcceptService.clicks()
                 .flatMap {
                     validateFields()
                 }
@@ -123,7 +123,7 @@ class AddServiceActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
                         }
                 )
 
-        dis add btnCancel.clicks()
+        dis add btnCancelService.clicks()
                 .subscribeBy(
                         onNext = {
                             finish()
@@ -146,12 +146,12 @@ class AddServiceActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
     }
 
     private fun validateFields(): Observable<List<String>> {
-        val fecha = date.text()
+        val fecha = serviceDate.text()
         val condicion = bodyCondition.text()
         return validateForm(R.string.empty_fields, fecha, condicion)
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        date.setText("$dayOfMonth/${month + 1}/$year")
+        serviceDate.setText("$dayOfMonth/${month + 1}/$year")
     }
 }

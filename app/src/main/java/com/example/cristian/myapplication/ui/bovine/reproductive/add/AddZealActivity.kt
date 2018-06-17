@@ -48,7 +48,7 @@ class AddZealActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
 
     override fun onResume() {
         super.onResume()
-        dis add btnAdd.clicks()
+        dis add btnAddZeal.clicks()
                 .flatMap { validateForm(R.string.empty_fields, zealDate.text()) }
                 .flatMapMaybe {
                     Log.d("IDBOVINO", idBovino)
@@ -60,7 +60,7 @@ class AddZealActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
                         }
                 )
 
-        dis add btnCancel.clicks()
+        dis add btnCancelZeal.clicks()
                 .subscribeBy(
                         onNext = {
                             finish()

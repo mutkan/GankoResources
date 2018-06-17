@@ -49,7 +49,7 @@
             app:layout_constraintTop_toBottomOf="@+id/vaccineSpinner" />
 
         <RadioGroup
-            android:id="@+id/dose"
+            android:id="@+id/VaccineDose"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -88,14 +88,14 @@
             android:ems="10"
             android:hint="Otra"
             android:inputType="numberDecimal"
-            app:layout_constraintBottom_toBottomOf="@+id/dose"
+            app:layout_constraintBottom_toBottomOf="@+id/VaccineDose"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/dose"
-            app:layout_constraintTop_toTopOf="@+id/dose" />
+            app:layout_constraintStart_toEndOf="@+id/VaccineDose"
+            app:layout_constraintTop_toTopOf="@+id/VaccineDose" />
 
         <TextView
-            android:id="@+id/dateTxt"
+            android:id="@+id/VaccinationDateTxt"
             style="@style/textview_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -103,10 +103,10 @@
             android:layout_marginTop="16dp"
             android:text="Fecha:"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dose" />
+            app:layout_constraintTop_toBottomOf="@+id/VaccineDose" />
 
         <TextView
-            android:id="@+id/valueTxt"
+            android:id="@+id/VaccineValueTxt"
             style="@style/textview_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -114,10 +114,10 @@
             android:layout_marginTop="16dp"
             android:text="Valor:"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/date" />
+            app:layout_constraintTop_toBottomOf="@+id/VaccinationDate" />
 
         <EditText
-            android:id="@+id/date"
+            android:id="@+id/VaccinationDate"
             style="@style/edit_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -128,10 +128,10 @@
             android:inputType="textPersonName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dateTxt" />
+            app:layout_constraintTop_toBottomOf="@+id/VaccinationDateTxt" />
 
         <EditText
-            android:id="@+id/value"
+            android:id="@+id/VaccineValue"
             style="@style/edit_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -142,7 +142,7 @@
             android:inputType="textPersonName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/valueTxt" />
+            app:layout_constraintTop_toBottomOf="@+id/VaccineValueTxt" />
 
         <TextView
             android:id="@+id/doseTxt"
@@ -156,26 +156,26 @@
             app:layout_constraintTop_toBottomOf="@+id/otherVaccine" />
 
         <Button
-            android:id="@+id/btnAccept"
+            android:id="@+id/btnAcceptVaccine"
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Button"
-            app:layout_constraintBottom_toBottomOf="@+id/btnCancel"
+            app:layout_constraintBottom_toBottomOf="@+id/btnCancelVaccine"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/btnCancel"
-            app:layout_constraintTop_toTopOf="@+id/btnCancel" />
+            app:layout_constraintStart_toEndOf="@+id/btnCancelVaccine"
+            app:layout_constraintTop_toTopOf="@+id/btnCancelVaccine" />
 
         <Button
-            android:id="@+id/btnCancel"
+            android:id="@+id/btnCancelVaccine"
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="9dp"
             android:text="Button"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btnAccept"
+            app:layout_constraintEnd_toStartOf="@+id/btnAcceptVaccine"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent" />
     </android.support.constraint.ConstraintLayout>
