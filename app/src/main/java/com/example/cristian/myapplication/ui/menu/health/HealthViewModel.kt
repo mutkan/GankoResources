@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 class HealthViewModel @Inject constructor(private val db: CouchRx) : ViewModel() {
 
-    fun addHealthProduction(health: Sanidad): Single<String> =
+    fun addHealth(health: Sanidad): Single<String> =
             db.insert(health)
                     .applySchedulers()
 

@@ -234,11 +234,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:text="@string/Observations"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/product_value"
+            app:layout_constraintTop_toBottomOf="@+id/applicacion_number"
             tools:text="@string/Observations" />
 
         <TextView
@@ -317,6 +317,30 @@
             app:layout_constraintEnd_toStartOf="@+id/imageView10"
             app:layout_constraintTop_toBottomOf="@+id/textView126"
             tools:text="120" />
+
+        <TextView
+            android:id="@+id/textView120"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/applications_number"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/product_value"
+            tools:text="@string/applications_number" />
+
+        <TextView
+            android:id="@+id/applicacion_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:text='@{"" + health.numeroAplicaciones}'
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView120"
+            tools:text="9" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>
