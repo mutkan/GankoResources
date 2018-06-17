@@ -19,10 +19,11 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.feed.AddFeedActivity"/>
+        <activity android:name=".ui.feed.AddFeedActivity" />
         <activity android:name=".ui.bovine.milk.MilkBvnActivity" />
         <activity android:name=".ui.bovine.health.HealthBvnActivity" />
         <activity android:name=".PrincipalActivity" />
@@ -79,10 +80,13 @@
         <activity android:name=".ui.menu.meadow.aforo.AddAforoActivity" />
         <activity android:name=".ui.menu.meadow.mantenimiento.AddMantenimientoActivity" />
         <activity android:name=".ui.groups.SaveGroupActivity" />
-        <activity android:name=".ui.groups.SelectActivity" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".ui.groups.SelectActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ui.groups.AddGroupActivity" />
         <activity android:name=".ui.groups.BovineSelectedActivity" />
-        <activity android:name=".ui.menu.milk.AddMilkActivity"/>
- </application>
+        <activity android:name=".ui.menu.milk.AddMilkActivity" />
+        <activity android:name=".ui.menu.health.AddHealthActivity"></activity>
+    </application>
 
 </manifest>

@@ -72,6 +72,4 @@ abstract class FragmentComponent{
     abstract fun bindFeedFragment(): FeedFragment
 
 
-
-
 }

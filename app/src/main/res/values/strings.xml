@@ -313,5 +313,11 @@
         <item>Consumo propio</item>
     </string-array>
 
+    <string-array name="health_event">
+        <item>Enfermedad</item>
+        <item>Endoparásitos</item>
+        <item>Ectoparásitos</item>
+    </string-array>
+
 
 </resources>
