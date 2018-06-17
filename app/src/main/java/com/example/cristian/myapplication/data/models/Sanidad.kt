@@ -11,7 +11,7 @@ class Sanidad(
         var type:String ? = null,
         var fecha: Date? = null,
         var fechaProx: Date? = null, //Calculo automatico
-        var frecuencia: String? = null,
+        var frecuencia: Int? = null,
         var evento: String? = null,
         var otra: String? = null,
         var diagnostico: String? = null,
@@ -19,12 +19,12 @@ class Sanidad(
         var producto: String? = null,
         var dosis: String? = null,
         var via: String? = null,
-        var numeroAplicaciones: Int? = null,
+        var numeroAplicaciones: Float? = null,
         var aplicacion: Int? = null,
         var observaciones: String? = null,
-        var valor: String? = null,
-        var valorAtencion: String? = null,
-        var  grupo: Grupo? = null,
+        var valorProducto: Int? = null,
+        var valorAtencion: Int? = null,
+        var grupo: Grupo? = null,
         var bovinos: List<Bovinos> = listOf()
 
 ): Parcelable{

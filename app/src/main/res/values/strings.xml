@@ -305,6 +305,9 @@
     <string name="dose_frequency">Frecuencia de las dosis</string>
     <string name="product_value">Valor del producto</string>
     <string name="attention_value">Valor de la atención</string>
+    <string name="other">Otra</string>
+    <string name="event">Evento</string>
+    <string name="times_a_day">veces al dia</string>
 
     <string-array name="milk_production">
         <item>Litros vendidos</item>
@@ -317,7 +320,9 @@
         <item>Enfermedad</item>
         <item>Endoparásitos</item>
         <item>Ectoparásitos</item>
+        <item>Otra</item>
     </string-array>
+
 
 
 </resources>
