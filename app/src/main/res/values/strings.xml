@@ -306,6 +306,10 @@
     <string name="dose_frequency">Frecuencia de las dosis</string>
     <string name="product_value">Valor del producto</string>
     <string name="attention_value">Valor de la atención</string>
+    <string name="other">Otra</string>
+    <string name="event">Evento</string>
+    <string name="times_a_day">veces al dia</string>
+    <string name="applications_number">Número de aplicaciones</string>
 
     <string-array name="milk_production">
         <item>Litros vendidos</item>
@@ -313,6 +317,14 @@
         <item>Litros regalados</item>
         <item>Consumo propio</item>
     </string-array>
+
+    <string-array name="health_event">
+        <item>Enfermedad</item>
+        <item>Endoparásitos</item>
+        <item>Ectoparásitos</item>
+        <item>Otra</item>
+    </string-array>
+
 
 
 </resources>
