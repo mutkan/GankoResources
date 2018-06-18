@@ -290,6 +290,7 @@
     <string name="write_your_observations">Escríba sus observaciones</string>
     <string name="add_group_title">Selecciona los Bovinos</string>
     <string name="group_selected">Bovinos Seleccionados</string>
+    <string name="group_one_selected">Grupo Seleccionado</string>
     <string name="group_name">Nombre del grupo</string>
     <string name="group_color">Color</string>
     <string name="group_form_error">Agrega un nombre y selecciona un color</string>

@@ -7,7 +7,14 @@
     tools:context=".ui.groups.SaveGroupActivity">
 
 
-    <android.support.constraint.ConstraintLayout
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <!--<android.support.constraint.ConstraintLayout
         android:id="@+id/selection"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -42,7 +49,7 @@
             app:srcCompat="@drawable/ic_enter_gray" />
 
         <ImageView
-            android:id="@+id/icon"
+            android:id="@+id/iconBovine"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
@@ -59,11 +66,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/icon"
-            app:layout_constraintStart_toEndOf="@+id/icon"
-            app:layout_constraintTop_toTopOf="@+id/icon"
+            app:layout_constraintBottom_toBottomOf="@+id/iconBovine"
+            app:layout_constraintStart_toEndOf="@+id/iconBovine"
+            app:layout_constraintTop_toTopOf="@+id/iconBovine"
             tools:text="130" />
-    </android.support.constraint.ConstraintLayout>
+    </android.support.constraint.ConstraintLayout>-->
 
     <EditText
         android:id="@+id/name"
@@ -112,7 +119,7 @@
         android:layout_marginTop="16dp"
         android:text="@string/group_name"
         app:layout_constraintStart_toStartOf="@+id/name"
-        app:layout_constraintTop_toBottomOf="@+id/selection" />
+        app:layout_constraintTop_toBottomOf="@+id/container" />
 
     <TextView
         android:id="@+id/colorLabel"

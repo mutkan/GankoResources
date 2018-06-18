@@ -20,9 +20,10 @@ class SelectedAdapter @Inject constructor() : RecyclerView.Adapter<SelectedAdapt
             field = value
             notifyDataSetChanged()
         }
+    var editable:Boolean = true
 
     override fun onBindViewHolder(holder: SelectedHolder, position: Int) {
-        holder.bind(data[position], onRemove, position)
+        holder.bind(data[position], onRemove, position, editable)
     }
 
     override fun getItemCount(): Int = data.size
@@ -33,10 +34,11 @@ class SelectedAdapter @Inject constructor() : RecyclerView.Adapter<SelectedAdapt
     class SelectedHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val binding: TemplateSelectedBinding = TemplateSelectedBinding.bind(itemView)
 
-        fun bind(bovine: Bovino, remove: PublishSubject<Int>, pos:Int) = binding.run {
+        fun bind(bovine: Bovino, remove: PublishSubject<Int>, pos:Int, edit:Boolean) = binding.run {
             bovino = bovine
             onRemove = remove
             position = pos
+            editable = edit
         }
     }
 }

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="grouped"
+            type="boolean" />
+
+        <variable
+            name="bovines"
+            type="int" />
+
+        <variable
+            name="group"
+            type="com.example.cristian.myapplication.data.models.Group" />
+
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/selection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/section"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        >
+
+        <TextView
+            android:id="@+id/label"
+            style="@style/TextAppearance.AppCompat.Caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@{grouped ? @string/group_one_selected : @string/group_selected}"
+            android:textColor="@color/colorAccent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/group_selected" />
+
+        <ImageView
+            android:id="@+id/next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_enter_gray" />
+
+        <ImageView
+            android:id="@+id/iconBovine"
+            android:layout_width="@dimen/select_resume"
+            android:layout_height="@dimen/select_resume"
+            android:layout_marginBottom="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label"
+            app:srcCompat="@drawable/ic_bovine_grey" />
+
+        <ImageView
+            android:id="@+id/iconGroup"
+            android:layout_width="@dimen/select_resume"
+            android:layout_height="@dimen/select_resume"
+            android:layout_marginBottom="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label"
+            app:srcCompat="@drawable/ic_group_grey" />
+
+        <TextView
+            android:id="@+id/numberBovine"
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text='@{""+bovines}'
+            app:layout_constraintBottom_toBottomOf="@+id/iconBovine"
+            app:layout_constraintStart_toEndOf="@+id/iconBovine"
+            app:layout_constraintTop_toTopOf="@+id/iconBovine"
+            tools:text="130" />
+
+        <TextView
+            android:id="@+id/numberGroup"
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text='@{group != null ? "" + group.bovines.size() : "" + 0}'
+            app:layout_constraintBottom_toBottomOf="@+id/iconGroup"
+            app:layout_constraintStart_toEndOf="@+id/iconGroup"
+            app:layout_constraintTop_toTopOf="@+id/iconGroup"
+            tools:text="130" />
+
+        <android.support.constraint.Group
+            android:id="@+id/listGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{grouped ? View.GONE : View.VISIBLE}"
+            app:constraint_referenced_ids="iconBovine,numberBovine" />
+
+        <android.support.constraint.Group
+            android:id="@+id/groupGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{grouped ? View.VISIBLE : View.GONE}"
+            app:constraint_referenced_ids="iconGroup,numberGroup" />
+    </android.support.constraint.ConstraintLayout>
+</layout>
