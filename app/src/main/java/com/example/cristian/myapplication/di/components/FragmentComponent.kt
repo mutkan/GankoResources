@@ -35,10 +35,10 @@ abstract class FragmentComponent{
 
     @FragmentScope
     @ContributesAndroidInjector()
-
     abstract fun  bindListFeedFragment(): ListFeedFragment
 
-
+    @FragmentScope
+    @ContributesAndroidInjector()
     abstract fun bindListStrawFragment(): StrawFragment
 
     @FragmentScope
@@ -74,7 +74,7 @@ abstract class FragmentComponent{
     abstract fun bindFeedFragment(): FeedFragment
 
     @FragmentScope
-    @ContributesAndroidInjector(modules = [VaccinesModule::class])
+    @ContributesAndroidInjector(modules = [(VaccinesModule::class)])
     abstract fun bindVaccinesFragment(): VaccinesFragment
 
 

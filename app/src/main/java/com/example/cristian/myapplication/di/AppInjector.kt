@@ -46,7 +46,7 @@ class AppInjector {
             (activity as AppCompatActivity).supportFragmentManager
                     .registerFragmentLifecycleCallbacks(object: FragmentManager.FragmentLifecycleCallbacks(){
                         override fun onFragmentCreated(fm: FragmentManager?, f: Fragment?, savedInstanceState: Bundle?) {
-                            if(f is Injectable){
+                            if(f is Injectable || f is HasSupportFragmentInjector){
                                 AndroidSupportInjection.inject(f)
                             }
                         }

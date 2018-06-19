@@ -24,8 +24,9 @@ class SelectActivity : AppCompatActivity(), HasSupportFragmentInjector {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_select)
         setSupportActionBar(toolbar)
-        fixColor(color)
+        val clr = fixColor(color)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        tabs.setBackgroundColor(clr)
 
         pager.adapter = SelectPagerAdapter(supportFragmentManager).apply {
             titles = resources.getStringArray(R.array.select_titles)
@@ -48,6 +49,8 @@ class SelectActivity : AppCompatActivity(), HasSupportFragmentInjector {
         const val DATA_GROUP = "groups"
         const val DATA_BOVINES = "bovines"
         const val EXTRA_COLOR = "color"
+
+        const val REQUEST_SELECT = 1002
     }
 
 }

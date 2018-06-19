@@ -21,7 +21,7 @@
             android:layout_marginEnd="32dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="24dp"
-            android:text="@{sanidad.nombre}"
+            android:text="@{sanidad.evento}"
             app:layout_constraintEnd_toStartOf="@+id/disease_date"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -38,7 +38,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="15/02/2018"
-            android:text="@{sanidad.fecha.toString()}"/>
+            app:dateFormat="@{sanidad.fecha}"
+            />
 
         <TextView
             android:id="@+id/disease_diagnosis"
@@ -141,7 +142,7 @@
             android:textColor="@color/menu_button_light"
             app:layout_constraintBottom_toBottomOf="@+id/health_dose"
             app:layout_constraintStart_toStartOf="@+id/textView2"
-            android:text="@{sanidad.frecuencia}"
+            android:text='@{""+sanidad.frecuencia}'
             tools:text="@string/health_frequency" />
 
 

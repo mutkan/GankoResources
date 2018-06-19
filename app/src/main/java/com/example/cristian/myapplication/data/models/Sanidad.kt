@@ -8,10 +8,11 @@ import java.util.*
 class Sanidad(
         var _id: String? = null,
         var _sequence: Long? = null,
-        var type: String? = null,
+        var type:String ? = null,
+        var idFarm: String? = null,
         var fecha: Date? = null,
         var fechaProx: Date? = null, //Calculo automatico
-        var frecuencia: String? = null,
+        var frecuencia: Float? = null,
         var evento: String? = null,
         var otra: String? = null,
         var diagnostico: String? = null,
@@ -22,12 +23,12 @@ class Sanidad(
         var numeroAplicaciones: Int? = null,
         var aplicacion: Int? = null,
         var observaciones: String? = null,
-        var valor: String? = null,
-        var valorAtencion: String? = null,
+        var valorProducto: Int? = null,
+        var valorAtencion: Int? = null,
         var grupo: Grupo? = null,
         var bovinos: List<Bovinos> = listOf()
 
-) : Parcelable {
+): Parcelable{
 
 }
 
@@ -36,11 +37,11 @@ class Grupo(
         var id: String? = null,
         var nombre: String? = null,
         var color: Int? = null
-) : Parcelable
+): Parcelable
 
 
 @Parcelize
 class Bovinos(
         var id: String? = null,
         var aplicacion: Boolean = true
-) : Parcelable
+):Parcelable

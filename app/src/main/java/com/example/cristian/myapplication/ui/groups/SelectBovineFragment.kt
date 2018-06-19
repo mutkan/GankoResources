@@ -57,6 +57,7 @@ class SelectBovineFragment : Fragment(), Injectable {
                         val data = Intent()
                         data.putExtra(SelectActivity.DATA_BOVINES, keys)
                         activity!!.setResult(Activity.RESULT_OK, data)
+                        activity!!.finish()
                     }
                 }
 
