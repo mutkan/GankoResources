@@ -53,7 +53,7 @@ class StrawAddActivity : AppCompatActivity(), Injectable{
                 }
                 .flatMapSingle {
                     viewModel.addStraw(
-                            Straw(farmId, it[0], spinner.selectedItem.toString(), it[1], it[6], it[5], it[2], it[3], it[4], null))
+                            Straw(null, null, null, farmId, it[0], spinner.selectedItem.toString(), it[1], it[6], it[5], it[2], it[3], it[4], null))
                 }.subscribeBy(
                         onComplete = {
                             toast("Completo")

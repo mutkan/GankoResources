@@ -13,6 +13,10 @@ annotation class ActivityScope
 @Scope
 annotation class FragmentScope
 
+@Retention(AnnotationRetention.RUNTIME)
+@Scope
+annotation class SubFragmentScope
+
 @Target(AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)
 @MapKey

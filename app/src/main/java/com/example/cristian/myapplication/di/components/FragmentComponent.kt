@@ -1,6 +1,7 @@
 package com.example.cristian.myapplication.di.components
 
 import com.example.cristian.myapplication.di.FragmentScope
+import com.example.cristian.myapplication.di.modules.VaccinesModule
 
 import com.example.cristian.myapplication.ui.groups.SelectGroupFragment
 import com.example.cristian.myapplication.ui.menu.straw.StrawFragment
@@ -72,10 +73,10 @@ abstract class FragmentComponent{
     @ContributesAndroidInjector()
     abstract fun bindFeedFragment(): FeedFragment
 
-
     @FragmentScope
-    @ContributesAndroidInjector()
+    @ContributesAndroidInjector(modules = [VaccinesModule::class])
     abstract fun bindVaccinesFragment(): VaccinesFragment
+
 
 
 

@@ -17,6 +17,7 @@ import com.example.cristian.myapplication.ui.menu.meadow.MeadowFragment
 import com.example.cristian.myapplication.ui.menu.milk.ListMilkFragment
 import com.example.cristian.myapplication.ui.menu.milk.MilkFragment
 import com.example.cristian.myapplication.ui.menu.movement.MovementFragment
+import com.example.cristian.myapplication.ui.menu.vaccines.VaccinesFragment
 import com.example.cristian.myapplication.util.putFragment
 import org.jetbrains.anko.startActivity
 import javax.inject.Inject
@@ -70,6 +71,7 @@ class MenuNavigation @Inject constructor(val activity: MenuActivity, val sesion:
     }
 
     fun navigateToVaccination() {
+        activity.putFragment(R.id.content_frame,VaccinesFragment.instance())
     }
 
     fun navigateToNotification() {
