@@ -9,7 +9,7 @@ class Servicio(
         var fecha: Date? = null,
         var fechaUltimoCelo: Date? = null,
         var condicionCorporal: Int? = null,
-        var  empadre: String? = null,
+        var empadre: String? = null,
         var codigoToro: String? = null,
         var pajilla: String? = null,
         var diagnosticos: List<Diagnostico>? = listOf(),

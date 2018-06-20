@@ -14,7 +14,7 @@
         android:roundIcon="@drawable/gankobovinos"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".ui.feed.AddFeedActivity">
+        <activity android:name=".ui.account.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -45,7 +45,7 @@
         </activity>
         <activity android:name=".ui.farms.AddFarmActivity" />
         <activity
-            android:name=".ui.account.LoginActivity"
+            android:name=".ui.feed.AddFeedActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

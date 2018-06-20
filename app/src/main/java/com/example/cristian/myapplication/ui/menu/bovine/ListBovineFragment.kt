@@ -113,6 +113,10 @@ class ListBovineFragment : Fragment(), Injectable {
         filterBovines()     }
         check_retired.setOnCheckedChangeListener { _, b -> filter.retired=b
         filterBovines()     }
+        check_weaning.setOnCheckedChangeListener{_,b -> filter.destete=b
+        filterBovines()     }
+        check_service.setOnCheckedChangeListener { _, b ->  filter.servicio=b
+        filterBovines()     }
 
     }
 
@@ -126,6 +130,9 @@ class ListBovineFragment : Fragment(), Injectable {
                                 filter.meat_purpose -> {it.filter { it.proposito == "carne" } }
                                 filter.both_purpose -> {it.filter { it.proposito == "ambos" } }
                                 filter.retired      -> {it.filter { it.retirado == true     } }
+                                filter.destete ->      {it.filter { it.destete == true     } }
+                                filter.servicio ->     {it.filter { it.servicios!![0].confirmacion ==true  } }
+
                            }
                             adapter.bovines = it
                         },
