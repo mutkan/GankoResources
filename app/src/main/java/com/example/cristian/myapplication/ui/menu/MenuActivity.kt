@@ -30,18 +30,18 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.activity_menu.*
-import kotlinx.android.synthetic.main.fragment_filter.*
 import javax.inject.Inject
 
 
 class MenuActivity : AppCompatActivity(),Injectable,HasSupportFragmentInjector {
-    @Inject
-    lateinit var factory: ViewModelProvider.Factory
-    val viewModel: MenuViewModel by lazy { buildViewModel<MenuViewModel>(factory) }
 
     @Inject
     lateinit var injector:DispatchingAndroidInjector<Fragment>
     override fun supportFragmentInjector(): AndroidInjector<Fragment> = injector
+
+    @Inject
+    lateinit var factory: ViewModelProvider.Factory
+    val viewModel: MenuViewModel by lazy { buildViewModel<MenuViewModel>(factory) }
 
     lateinit var toggle: ActionBarDrawerToggle
     var adapter: MenuAdapter = MenuAdapter()
@@ -66,7 +66,6 @@ class MenuActivity : AppCompatActivity(),Injectable,HasSupportFragmentInjector {
 
         recycler.adapter = adapter
         adapter.items = viewModel.data
-
 
         val gridManager: GridLayoutManager = GridLayoutManager(this, 2)
         gridManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup(){

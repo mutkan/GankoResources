@@ -44,11 +44,13 @@ import javax.inject.Inject
 class ListBovineFragment : Fragment(), Injectable {
 
     @Inject
-    lateinit var factory: ViewModelProvider.Factory
-    val viewModel: MenuViewModel by lazy { buildViewModel<MenuViewModel>(factory) }
-    @Inject
     lateinit var adapter: ListBovineAdapter
     val dis: LifeDisposable = LifeDisposable(this)
+
+    @Inject
+    lateinit var factory: ViewModelProvider.Factory
+    val viewModel: MenuViewModel by lazy { buildViewModel<MenuViewModel>(factory) }
+
     lateinit var binding: FragmentListBovineBinding
     private var filter:Filter = Filter()
     private val idFinca: String by lazy { viewModel.getFarmId() }
@@ -69,10 +71,6 @@ class ListBovineFragment : Fragment(), Injectable {
         binding.isEmpty = isEmpty
     }
 
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        filterBovines()
-    }
 
     override fun onResume() {
         super.onResume()
