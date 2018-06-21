@@ -18,6 +18,10 @@ import com.example.cristian.myapplication.ui.bovine.milk.AddMilkBvnActivity
 import com.example.cristian.myapplication.ui.bovine.milk.MilkBvnActivity
 import com.example.cristian.myapplication.ui.bovine.movement.MovementBvnActivity
 import com.example.cristian.myapplication.ui.bovine.reproductive.ReproductiveBvnActivity
+import com.example.cristian.myapplication.ui.bovine.reproductive.add.AddBirthActivity
+import com.example.cristian.myapplication.ui.bovine.reproductive.add.AddDiagnosisActivity
+import com.example.cristian.myapplication.ui.bovine.reproductive.add.AddServiceActivity
+import com.example.cristian.myapplication.ui.bovine.reproductive.add.AddZealActivity
 import com.example.cristian.myapplication.ui.bovine.vaccination.VaccinationBvnActivity
 import com.example.cristian.myapplication.ui.farms.AddFarmActivity
 import com.example.cristian.myapplication.ui.farms.FarmActivity
@@ -27,11 +31,13 @@ import com.example.cristian.myapplication.ui.groups.BovineSelectedActivity
 import com.example.cristian.myapplication.ui.groups.SaveGroupActivity
 import com.example.cristian.myapplication.ui.groups.SelectActivity
 import com.example.cristian.myapplication.ui.menu.MenuActivity
+import com.example.cristian.myapplication.ui.menu.health.AddHealthActivity
 import com.example.cristian.myapplication.ui.menu.meadow.ManageMeadowActivity
 import com.example.cristian.myapplication.ui.menu.meadow.aforo.AddAforoActivity
 import com.example.cristian.myapplication.ui.menu.meadow.mantenimiento.AddMantenimientoActivity
 import com.example.cristian.myapplication.ui.menu.milk.AddMilkActivity
 import com.example.cristian.myapplication.ui.menu.straw.StrawAddActivity
+import com.example.cristian.myapplication.ui.menu.vaccines.AddVaccineActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -107,6 +113,22 @@ abstract class ActivityComponents {
     abstract fun bindMovementBvnActivity(): MovementBvnActivity
 
     @ActivityScope
+    @ContributesAndroidInjector
+    abstract fun bindAddZealActivity(): AddZealActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector
+    abstract fun bindAddServiceActivity(): AddServiceActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector
+    abstract fun bindAddDiagnosisActivity(): AddDiagnosisActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector
+    abstract fun bindAddBirthActivity(): AddBirthActivity
+
+    @ActivityScope
     @ContributesAndroidInjector()
     abstract fun bindAddStrawActivity(): StrawAddActivity
 
@@ -144,5 +166,14 @@ abstract class ActivityComponents {
 
     @ActivityScope
     @ContributesAndroidInjector
+    abstract fun bindAddVaccineActivity(): AddVaccineActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector
     abstract fun bindAddMilkActivity(): AddMilkActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector
+    abstract fun bindAddHealthActivity(): AddHealthActivity
+
 }

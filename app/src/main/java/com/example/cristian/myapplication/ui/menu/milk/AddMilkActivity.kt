@@ -58,7 +58,7 @@ class AddMilkActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDate
                 }
                 .flatMapSingle {
                     viewModel.addMilkProduction(
-                            SalidaLeche(farmId, null, it[0].toDate(), it[1], it[2].toInt(), it[3].toInt(), it[2].toInt()*it[3].toInt())
+                            SalidaLeche(null, null, null, farmId, null, it[0].toDate(), it[1], it[2].toInt(), it[3].toInt(), it[2].toInt()*it[3].toInt())
                     )
                 }.subscribeBy(
                         onComplete = {

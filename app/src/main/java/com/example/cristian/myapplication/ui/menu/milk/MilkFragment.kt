@@ -44,6 +44,7 @@ class MilkFragment : Fragment(), Injectable {
     override fun onResume() {
         super.onResume()
 
+        adapter.notifyDataSetChanged()
         recyclerMilk.adapter = adapter
         recyclerMilk.layoutManager = LinearLayoutManager(activity)
 

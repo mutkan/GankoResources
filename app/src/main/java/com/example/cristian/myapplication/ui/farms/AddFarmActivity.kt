@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.Finca
 import com.example.cristian.myapplication.di.Injectable
+import com.example.cristian.myapplication.ui.groups.SelectActivity
+import com.example.cristian.myapplication.ui.groups.SelectActivity.Companion.EXTRA_COLOR
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
 import com.example.cristian.myapplication.util.text
@@ -14,6 +16,7 @@ import com.jakewharton.rxbinding2.view.clicks
 import io.reactivex.Single
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_add_farm.*
+import org.jetbrains.anko.startActivityForResult
 import javax.inject.Inject
 
 class AddFarmActivity : AppCompatActivity(), Injectable {

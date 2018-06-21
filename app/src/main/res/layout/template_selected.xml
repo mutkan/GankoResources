@@ -15,6 +15,10 @@
             type="com.example.cristian.myapplication.data.models.Bovino"/>
 
         <variable
+            name="editable"
+            type="boolean"/>
+
+        <variable
             name="onRemove"
             type="io.reactivex.subjects.PublishSubject"/>
 
@@ -149,6 +153,7 @@
             app:layout_constraintGuide_percent="0.5" />
 
         <ImageView
+            android:visibility="@{editable ? View.VISIBLE : View.GONE}"
             android:id="@+id/btnRemove"
             android:clickable="true"
             android:focusable="true"

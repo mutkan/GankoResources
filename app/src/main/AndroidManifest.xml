@@ -13,14 +13,17 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/gankobovinos"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".ui.account.LoginActivity">
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".ui.account.LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.feed.AddFeedActivity"/>
         <activity android:name=".ui.bovine.milk.MilkBvnActivity" />
         <activity android:name=".ui.bovine.health.HealthBvnActivity" />
         <activity android:name=".PrincipalActivity" />
@@ -44,15 +47,7 @@
                 android:resource="@xml/search" />
         </activity>
         <activity android:name=".ui.farms.AddFarmActivity" />
-        <activity
-            android:name=".ui.feed.AddFeedActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".ui.menu.health.AddHealthActivity"/>
         <activity android:name=".ui.bovine.RemoveBovineActivity" />
         <activity android:name=".ui.bovine.AddBovineActivity" />
         <activity

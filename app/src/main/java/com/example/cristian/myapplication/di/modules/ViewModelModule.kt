@@ -11,11 +11,13 @@ import com.example.cristian.myapplication.ui.bovine.health.HealthBvnViewModel
 import com.example.cristian.myapplication.ui.bovine.manage.ManageBvnViewModel
 import com.example.cristian.myapplication.ui.bovine.milk.MilkBvnViewModel
 import com.example.cristian.myapplication.ui.bovine.movement.MovementBvnViewModel
+import com.example.cristian.myapplication.ui.bovine.reproductive.ReproductiveBvnViewModel
 import com.example.cristian.myapplication.ui.bovine.vaccination.VaccinationBvnViewModel
 import com.example.cristian.myapplication.ui.farms.FarmViewModel
 import com.example.cristian.myapplication.ui.groups.GroupViewModel
 import com.example.cristian.myapplication.ui.feed.FeedViewModel
 import com.example.cristian.myapplication.ui.menu.MenuViewModel
+import com.example.cristian.myapplication.ui.menu.health.HealthViewModel
 import com.example.cristian.myapplication.ui.menu.meadow.MeadowViewModel
 import com.example.cristian.myapplication.ui.menu.milk.MilkViewModel
 import com.example.cristian.myapplication.ui.menu.straw.StrawViewModel
@@ -25,7 +27,7 @@ import dagger.Module
 import dagger.multibindings.IntoMap
 
 @Module
-abstract class ViewModelModule{
+abstract class ViewModelModule {
 
     @Binds
     abstract fun bindViewModelFactory(factory: AppViewModelFactory): ViewModelProvider.Factory
@@ -87,9 +89,16 @@ abstract class ViewModelModule{
 
     @Binds
     @IntoMap
+    @ViewModelKey(ReproductiveBvnViewModel::class)
+    abstract fun bindReproductiveBvnViewModel(viewModel: ReproductiveBvnViewModel): ViewModel
+
+    @Binds
+    @IntoMap
     @ViewModelKey(FeedViewModel::class)
     abstract fun bindFeedViewModel(viewModel: FeedViewModel):ViewModel
 
+    @Binds
+    @IntoMap
     @ViewModelKey(StrawViewModel::class)
     abstract fun bindStrawViewModel(viewModel: StrawViewModel): ViewModel
 
@@ -107,5 +116,11 @@ abstract class ViewModelModule{
     @IntoMap
     @ViewModelKey(MilkViewModel::class)
     abstract fun bindMilkViewModel(viewModel: MilkViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(HealthViewModel::class)
+    abstract fun bindHealthViewModel(viewModel: HealthViewModel): ViewModel
+
 
 }

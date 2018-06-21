@@ -35,6 +35,8 @@ class BovineSelectedActivity : AppCompatActivity(), Injectable {
 
     val selecteds: MutableList<String> by lazy { intent.extras.getStringArray(EXTRA_SELECTED).toMutableList() }
     val color: Int by lazy { intent.extras.getInt(EXTRA_COLOR, 12) }
+    val editable:Boolean by lazy { intent.extras.getBoolean(EXTRA_EDITABLE, true) }
+
     var data: List<Bovino> = emptyList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,6 +49,7 @@ class BovineSelectedActivity : AppCompatActivity(), Injectable {
 
     override fun onResume() {
         super.onResume()
+        adapter.editable = editable
         list.adapter = adapter
 
         dis add viewModel.listSelected(selecteds)
@@ -88,6 +91,7 @@ class BovineSelectedActivity : AppCompatActivity(), Injectable {
     companion object {
         const val EXTRA_SELECTED = "selected"
         const val EXTRA_COLOR = "color"
+        const val EXTRA_EDITABLE = "editable"
         const val DATA_ITEMS = "items"
 
     }

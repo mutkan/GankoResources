@@ -30,18 +30,18 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.activity_menu.*
+import kotlinx.android.synthetic.main.fragment_filter.*
 import javax.inject.Inject
 
 
 class MenuActivity : AppCompatActivity(),Injectable,HasSupportFragmentInjector {
+    @Inject
+    lateinit var factory: ViewModelProvider.Factory
+    val viewModel: MenuViewModel by lazy { buildViewModel<MenuViewModel>(factory) }
 
     @Inject
     lateinit var injector:DispatchingAndroidInjector<Fragment>
     override fun supportFragmentInjector(): AndroidInjector<Fragment> = injector
-
-    @Inject
-    lateinit var factory: ViewModelProvider.Factory
-    val viewModel: MenuViewModel by lazy { buildViewModel<MenuViewModel>(factory) }
 
     lateinit var toggle: ActionBarDrawerToggle
     var adapter: MenuAdapter = MenuAdapter()
@@ -67,6 +67,7 @@ class MenuActivity : AppCompatActivity(),Injectable,HasSupportFragmentInjector {
         recycler.adapter = adapter
         adapter.items = viewModel.data
 
+
         val gridManager: GridLayoutManager = GridLayoutManager(this, 2)
         gridManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup(){
             override fun getSpanSize(position: Int): Int = when(viewModel.data[position].type){
@@ -82,7 +83,7 @@ class MenuActivity : AppCompatActivity(),Injectable,HasSupportFragmentInjector {
 
     override fun onResume() {
         super.onResume()
-
+        check_milk.setOnCheckedChangeListener { compoundButton, b -> ListBovineFragment.instance()}
         dis add adapter.clickMenu
                 .subscribe {
                     if(phone) {
@@ -185,7 +186,9 @@ class MenuActivity : AppCompatActivity(),Injectable,HasSupportFragmentInjector {
             2-> showMenu1()
             in 3..6-> showMenu2()
             7-> noMenu()
-            in 8..13-> showMenu2()
+            in 8..10-> showMenu2()
+            11-> noMenu()
+            12,13-> showMenu2()
         }
 
         when(content){

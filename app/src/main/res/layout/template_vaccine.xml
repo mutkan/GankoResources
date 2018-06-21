@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+    <data>
+        <variable
+            name="vacuna"
+            type="com.example.cristian.myapplication.data.models.Vacuna"/>
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/vaccineName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text='@{vacuna.nombre}'
+            tools:text="Fiebre Aftosa" />
+
+        <TextView
+            android:id="@+id/vaccinationDate"
+            style="@style/Base.TextAppearance.AppCompat.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:textColor="@color/colorAccent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/vaccineName"
+            tools:text="27/06/2018" />
+
+        <TextView
+            android:id="@+id/vaccineDoseTxt"
+            style="@style/textview_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:text="Dosis"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/vaccinationDate" />
+
+        <TextView
+            android:id="@+id/vaccineDose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:textColor="@color/menu_button_light"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/vaccineDoseTxt"
+            tools:text="5 ml" />
+
+        <TextView
+            android:id="@+id/vaccineValueTxt"
+            style="@style/textview_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:layout_marginStart="8dp"
+            android:text="Valor"
+            app:layout_constraintBottom_toBottomOf="@+id/vaccineDoseTxt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/vaccineDoseTxt" />
+
+        <TextView
+            android:id="@+id/vaccineValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/menu_button_light"
+            app:layout_constraintBottom_toBottomOf="@+id/vaccineDose"
+            app:layout_constraintStart_toStartOf="@+id/vaccineValueTxt"
+            tools:text="$15.000" />
+
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="@dimen/icon"
+            android:layout_height="@dimen/icon"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="24dp"
+            android:tint="@color/img"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_bovine" />
+
+        <TextView
+            android:id="@+id/numberBovineVaccinated"
+            style="@style/Base.TextAppearance.AppCompat.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView6"
+            app:layout_constraintEnd_toStartOf="@+id/imageView6"
+            tools:text="@string/feedNumberBovine" />
+
+        <FrameLayout
+            android:id="@+id/frameLayout3"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/login_background_gray"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView6"
+            app:layout_constraintVertical_bias="1.0">
+
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/groupOrBovinesTxt"
+            style="@style/textview_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:text="Grupo/Bovinos"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/vaccineDose" />
+
+        <TextView
+            android:id="@+id/groupOrBovines"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="24dp"
+            android:textColor="@color/menu_button_light"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/numberBovineVaccinated"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/groupOrBovinesTxt"
+            tools:text="abc123,def456" />
+
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

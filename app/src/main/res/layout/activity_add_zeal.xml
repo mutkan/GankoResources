@@ -7,41 +7,25 @@
 
     <TextView
         android:id="@+id/possibleZealDateTxt"
+        style="@style/textview_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
-        android:text="Fecha Posible Celo"
-        style="@style/textview_label"
-        app:layout_constraintStart_toStartOf="@+id/possibleZealDate"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/possibleZealDate"
-        style="@style/edit_text"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:ems="10"
-        android:hint="@string/date_value"
-        android:inputType="date"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Posible Fecha de Proximo Celo"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/possibleZealDateTxt" />
+        app:layout_constraintTop_toBottomOf="@+id/zealDate" />
 
     <TextView
         android:id="@+id/zealDateTxt"
         style="@style/textview_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:text="Fecha Celo"
         app:layout_constraintStart_toStartOf="@+id/zealDate"
-        app:layout_constraintTop_toBottomOf="@+id/possibleZealDate" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/zealDate"
@@ -50,28 +34,29 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:clickable="true"
         android:ems="10"
+        android:focusable="false"
         android:hint="@string/date_value"
-        android:inputType="textPersonName"
+        android:inputType="date"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/zealDateTxt" />
 
     <Button
-        android:id="@+id/btnAdd"
+        android:id="@+id/btnAddZeal"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:text="@string/btn_add"
-        app:layout_constraintBottom_toBottomOf="@+id/btnCancelFeed"
+        app:layout_constraintBottom_toBottomOf="@+id/btnCancelZeal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btnCancelFeed" />
+        app:layout_constraintStart_toEndOf="@+id/btnCancelZeal" />
 
     <Button
-        android:id="@+id/btnCancelFeed"
+        android:id="@+id/btnCancelZeal"
         style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -79,7 +64,18 @@
         android:layout_marginStart="8dp"
         android:text="@string/btn_cancel"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btnAdd"
+        app:layout_constraintEnd_toStartOf="@+id/btnAddZeal"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/possibleZealDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/possibleZealDateTxt"
+        tools:text="6/08/2018" />
 </android.support.constraint.ConstraintLayout>

@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="service"
+            type="com.example.cristian.myapplication.data.models.Servicio" />
+
+        <variable
+            name="position"
+            type="Integer" />
+
+        <variable
+            name="clickAddDiagnostico"
+            type="io.reactivex.subjects.PublishSubject" />
+
+        <variable
+            name="clickAddNovedad"
+            type="io.reactivex.subjects.PublishSubject" />
+
+        <variable
+            name="clickAddParto"
+            type="io.reactivex.subjects.PublishSubject" />
+
+        <import type="android.view.View" />
+
+        <import type="android.support.v4.util.Pair" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/serviceType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text='@{service.empadre}'
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Inseminación Artificial" />
+
+        <TextView
+            android:id="@+id/serviceDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/check_filter"
+            app:dateFormat='@{service.fecha}'
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/serviceType"
+            tools:text="20/05/2018" />
+
+        <TextView
+            android:id="@+id/bullOrStraw"
+            style="@style/textview_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:text='@{service.pajilla == null ? "Id Toro" : "Pajilla"}'
+            app:layout_constraintStart_toEndOf="@+id/bodyConditionTxt"
+            app:layout_constraintTop_toTopOf="@+id/bodyConditionTxt"
+            tools:text="Id Toro / Pajilla" />
+
+        <TextView
+            android:id="@+id/bullOrStrawCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text='@{service.codigoToro ?? service.pajilla}'
+            app:layout_constraintStart_toStartOf="@+id/bullOrStraw"
+            app:layout_constraintTop_toBottomOf="@+id/bullOrStraw"
+            tools:text="12548asda" />
+
+        <TextView
+            android:id="@+id/bodyConditionTxt"
+            style="@style/textview_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Condición Corporal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/serviceDate" />
+
+        <TextView
+            android:id="@+id/bodyCondition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text='@{""+service.condicionCorporal}'
+            app:layout_constraintStart_toStartOf="@+id/bodyConditionTxt"
+            app:layout_constraintTop_toBottomOf="@+id/bodyConditionTxt"
+            tools:text="1.5" />
+
+        <Button
+            android:id="@+id/btnAddDiagnosis"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:onClick='@{()->clickAddDiagnostico.onNext(Pair.create(service,position))}'
+            android:text="Diagnóstico"
+            android:visibility='@{service.diagnostico == null ? View.VISIBLE : View.GONE}'
+            app:layout_constraintBottom_toTopOf="@+id/div"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/posParto" />
+
+        <ImageView
+            android:id="@+id/div"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@color/line_template_straw" />
+
+        <TextView
+            android:id="@+id/pregnancyConfirmedTxt"
+            style="@style/textview_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Preñez Confirmada"
+            android:visibility='@{service.diagnostico != null ?  View.VISIBLE : View.GONE}'
+            app:layout_constraintStart_toStartOf="@+id/bullOrStrawCode"
+            app:layout_constraintTop_toTopOf="@+id/lastDiagnosisTxt" />
+
+        <TextView
+            android:id="@+id/pregnancyConfirmed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text='@{service.diagnostico.confirmacion ? "Si" : "No"}'
+            android:visibility='@{service.diagnostico != null  ?  View.VISIBLE : View.GONE}'
+            app:layout_constraintStart_toStartOf="@+id/pregnancyConfirmedTxt"
+            app:layout_constraintTop_toBottomOf="@+id/pregnancyConfirmedTxt"
+            tools:text="Si" />
+
+        <TextView
+            android:id="@+id/lastDiagnosisTxt"
+            style="@style/textview_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Fecha de Diagnóstico"
+            android:visibility='@{service.diagnostico != null ? View.VISIBLE : View.GONE}'
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bodyCondition" />
+
+        <TextView
+            android:id="@+id/lastDiagnosis"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:visibility='@{service.diagnostico != null ? View.VISIBLE : View.GONE}'
+            app:dateFormat='@{service.diagnostico != null ? service.diagnostico.fecha : null}'
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/lastDiagnosisTxt"
+            app:layout_constraintTop_toBottomOf="@+id/lastDiagnosisTxt"
+            app:layout_constraintVertical_bias="0.0"
+            tools:text="20/06/2018" />
+
+        <TextView
+            android:id="@+id/novelty"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:gravity="end"
+            android:text='@{service.novedad.novedad ?? ""}'
+            android:textColor="@color/remove"
+            android:visibility='@{service.novedad != null ? View.VISIBLE : View.GONE}'
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/serviceType"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Aborto" />
+
+        <Button
+            android:id="@+id/btnAddBirth"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:onClick='@{()->clickAddParto.onNext(Pair.create(service,position))}'
+            android:text="Parto"
+            android:visibility='@{service.diagnostico.confirmacion ? (service.parto == null ? (service.novedad == null ? View.VISIBLE : View.GONE) : View.GONE) : View.GONE}'
+            app:layout_constraintBottom_toTopOf="@+id/div"
+            app:layout_constraintEnd_toStartOf="@+id/btnAddNovelty"
+            app:layout_constraintTop_toBottomOf="@+id/posParto" />
+
+        <Button
+            android:id="@+id/btnAddNovelty"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:onClick='@{()->clickAddNovedad.onNext(Pair.create(service,position))}'
+            android:text="Novedad"
+            android:visibility='@{service.diagnostico.confirmacion  ? (service.novedad == null ? View.VISIBLE : View.GONE) : View.GONE}'
+            app:layout_constraintBottom_toTopOf="@+id/div"
+            app:layout_constraintEnd_toStartOf="@+id/btnAddDiagnosis"
+            app:layout_constraintTop_toBottomOf="@+id/posParto" />
+
+        <TextView
+            android:id="@+id/posPartoTxt"
+            style="@style/textview_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Posible Fecha de Parto"
+            android:visibility='@{service.diagnostico.confirmacion  ?  View.VISIBLE : View.GONE}'
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pregnancyConfirmed" />
+
+        <TextView
+            android:id="@+id/posParto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="16dp"
+            android:visibility='@{service.diagnostico.confirmacion  ?  View.VISIBLE : View.GONE}'
+            app:dateFormat='@{service.posFechaParto}'
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/posPartoTxt"
+            app:layout_constraintVertical_bias="0.0"
+            tools:text="20/12/2018" />
+
+        <TextView
+            android:id="@+id/noveltyDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="1dp"
+            android:gravity="end"
+            app:dateFormat='@{service.novedad.fecha}'
+            android:textColor="@color/remove"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/novelty"
+            app:layout_constraintTop_toBottomOf="@+id/novelty"
+            tools:text="20/06/2018" />
+    </android.support.constraint.ConstraintLayout>
+</layout>

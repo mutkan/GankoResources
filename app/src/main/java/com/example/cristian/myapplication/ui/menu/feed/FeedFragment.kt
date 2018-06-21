@@ -60,7 +60,7 @@ class FeedFragment : Fragment(), Injectable {
                     onError = {
                         toast(it.message!!)}
                 )
-        dis add fabAddStrawFragment.clicks()
+        dis add fabfeedlistFragment.clicks()
                 .subscribe {
                     startActivity<AddFeedActivity>()
                 }
