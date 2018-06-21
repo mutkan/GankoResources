@@ -35,7 +35,7 @@ class MenuNavigation @Inject constructor(val activity: MenuActivity, val sesion:
     }
 
     fun navigateToBovines() {
-        activity.putFragment(R.id.content_frame,ListBovineFragment.instance(false))
+        activity.putFragment(R.id.content_frame,ListBovineFragment.instance())
     }
 
     fun navigateToGroups() {

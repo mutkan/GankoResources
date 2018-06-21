@@ -40,7 +40,6 @@
 
                 <CheckBox
                     android:id="@+id/check_milk"
-                    android:onClick="@{()->handler.filterBovines()}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/filter_margin"
@@ -159,7 +158,6 @@
         </android.support.v4.widget.NestedScrollView>
 
         <Button
-            android:onClick="@{()->handler.filterBovines()}"
             android:layout_width="@dimen/filter_width"
             android:layout_height="wrap_content"
             android:text="Limpiar filtros"

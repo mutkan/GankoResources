@@ -13,7 +13,6 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import com.couchbase.lite.internal.support.Log
 import com.example.cristian.myapplication.R
-import com.example.cristian.myapplication.R.string.filter
 import com.example.cristian.myapplication.data.models.Bovino
 import com.example.cristian.myapplication.data.models.Filter
 import com.example.cristian.myapplication.databinding.FragmentFilterBinding
@@ -29,14 +28,18 @@ import com.example.cristian.myapplication.ui.groups.SelectGroupFragment
 import com.example.cristian.myapplication.ui.menu.MenuViewModel
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
+import com.example.cristian.myapplication.util.subscribeByAction
 import com.jakewharton.rxbinding2.view.clicks
+import com.jakewharton.rxbinding2.view.selected
 import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.subjects.PublishSubject
+import kotlinx.android.synthetic.main.fragment_filter.*
 import kotlinx.android.synthetic.main.fragment_list_bovine.*
+import org.jetbrains.anko.support.v4.alert
+import org.jetbrains.anko.support.v4.find
 import org.jetbrains.anko.support.v4.startActivity
 import org.jetbrains.anko.support.v4.toast
 import javax.inject.Inject
-
-
 
 class ListBovineFragment : Fragment(), Injectable {
 
@@ -50,6 +53,8 @@ class ListBovineFragment : Fragment(), Injectable {
     private var filter:Filter = Filter()
     private val idFinca: String by lazy { viewModel.getFarmId() }
     val isEmpty: ObservableBoolean = ObservableBoolean(false)
+
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -64,6 +69,10 @@ class ListBovineFragment : Fragment(), Injectable {
         binding.isEmpty = isEmpty
     }
 
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        filterBovines()
+    }
 
     override fun onResume() {
         super.onResume()
@@ -133,14 +142,11 @@ class ListBovineFragment : Fragment(), Injectable {
     }
 
     companion object {
-        val ARG_FILTER = "filter"
         val BOVINE : String = "bovino"
         val EXTRA_ID:String = "idBovino"
-        fun instance()=ListBovineFragment()
-        }
-
+        fun instance():ListBovineFragment=ListBovineFragment()
     }
 
 
 
-
+}

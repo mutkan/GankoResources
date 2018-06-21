@@ -83,7 +83,7 @@ class MenuActivity : AppCompatActivity(),Injectable,HasSupportFragmentInjector {
 
     override fun onResume() {
         super.onResume()
-        check_milk.setOnCheckedChangeListener { compoundButton, b -> ListBovineFragment.instance()}
+
         dis add adapter.clickMenu
                 .subscribe {
                     if(phone) {
