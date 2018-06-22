@@ -336,6 +336,14 @@
         <item>Otra</item>
     </string-array>
 
-
+    <string-array name="vaccines">
+        <item>Rabia</item>
+        <item>Carbon Sintomatico</item>
+        <item>Edema Maligno</item>
+        <item>Septicemia Hemorragica</item>
+        <item>Carbon Bacteriano</item>
+        <item>Brucelosis</item>
+        <item>Otra</item>
+    </string-array>
 
 </resources>

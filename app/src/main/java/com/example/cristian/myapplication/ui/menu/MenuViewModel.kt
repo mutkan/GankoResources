@@ -10,6 +10,7 @@ import com.example.cristian.myapplication.util.andEx
 import com.example.cristian.myapplication.util.applySchedulers
 import com.example.cristian.myapplication.util.equalEx
 import io.reactivex.Maybe
+import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.rxkotlin.toObservable
 import io.reactivex.rxkotlin.zipWith
@@ -21,9 +22,15 @@ import javax.inject.Inject
  */
 class MenuViewModel @Inject constructor(private val db: CouchRx, private val userSession: UserSession) : ViewModel() {
 
+    private val farmID = userSession.farmID
+
+    fun getFarmId(): String = farmID
+
+
     //region Menu
     var content: Int = 2
     val querySubject = PublishSubject.create<String>()
+
 
     val data: List<MenuItem> = listOf(
             MenuItem(MenuItem.TYPE_TITLE, titleText = userSession.farm),
@@ -82,15 +89,13 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     }
     //endregion
 
-    fun getFarmId(): String = userSession.farmID
-
     fun getBovine(idFinca: String): Single<List<Bovino>> =
             db.listByExp("finca" equalEx idFinca andEx ("retirado" equalEx false), Bovino::class)
                     .applySchedulers()
 
     fun deleteBovine(idBovino: String): Single<Unit> = db.remove(idBovino).applySchedulers()
 
-    fun getManagement(idFinca: String):Single<List<Manage>> =
+    fun getManagement(idFinca: String): Single<List<Manage>> =
             getBovine(idFinca)
                     .flatMapObservable {
                         it.toObservable()
@@ -102,7 +107,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     .toList()
                     .applySchedulers()
 
-    fun getStraw(idFinca: String):Single<List<Straw>> =
+    fun getStraw(idFinca: String): Single<List<Straw>> =
             db.listByExp("idFarm" equalEx idFinca, Straw::class)
                     .applySchedulers()
 
@@ -127,8 +132,8 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     }
                     .applySchedulers()
 
-    fun getMeadow(id:String): Maybe<Pradera> =
-            db.oneById(id,Pradera::class).applySchedulers()
+    fun getMeadow(id: String): Maybe<Pradera> =
+            db.oneById(id, Pradera::class).applySchedulers()
 
     fun saveMeadow(pradera: Pradera): Single<String> =
             db.insert(pradera).applySchedulers()
@@ -155,13 +160,16 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
 
     // Filtros
 
-    fun getMilkPurpose(Idfinca: String):Single<List<Bovino>> =
-            db.listByExp("Idfinca" equalEx Idfinca andEx ("proposito" equalEx "leche"),Bovino::class)
+    fun getMilkPurpose(Idfinca: String): Single<List<Bovino>> =
+            db.listByExp("Idfinca" equalEx Idfinca andEx ("proposito" equalEx "leche"), Bovino::class)
 
-    fun getCebaPurpose(Idfinca: String):Single<List<Bovino>> =
-            db.listByExp("Idfinca" equalEx Idfinca andEx ("proposito" equalEx "Ceba"),Bovino::class)
+    fun getCebaPurpose(Idfinca: String): Single<List<Bovino>> =
+            db.listByExp("Idfinca" equalEx Idfinca andEx ("proposito" equalEx "Ceba"), Bovino::class)
 
-    fun getCebaAndMilkPurpose(Idfinca: String):Single<List<Bovino>> =
-            db.listByExp("Idfinca" equalEx Idfinca andEx ("proposito" equalEx "leche y ceba"),Bovino::class)
+    fun getCebaAndMilkPurpose(Idfinca: String): Single<List<Bovino>> =
+            db.listByExp("Idfinca" equalEx Idfinca andEx ("proposito" equalEx "leche y ceba"), Bovino::class)
+
+
+    fun getVaccinations(): Observable<List<RegistroVacuna>> = db.listObsByExp("idFinca" equalEx farmID, RegistroVacuna::class).applySchedulers()
 
 }

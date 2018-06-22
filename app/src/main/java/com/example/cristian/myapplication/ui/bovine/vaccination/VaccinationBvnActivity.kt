@@ -7,6 +7,7 @@ import com.couchbase.lite.internal.support.Log
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.ListVaccineBovineAdapter
+import com.example.cristian.myapplication.ui.adapters.VaccineAdapter
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
 import io.reactivex.rxkotlin.subscribeBy
@@ -39,9 +40,6 @@ class VaccinationBvnActivity : AppCompatActivity() , Injectable {
                 .subscribeBy (
                         onSuccess = {
                             adapter.data = it
-                        },
-                        onComplete = {
-                            Log.i("VACINE","On complete vaccine bovine")
                         },
                         onError = {
                             toast(it.message!!)
