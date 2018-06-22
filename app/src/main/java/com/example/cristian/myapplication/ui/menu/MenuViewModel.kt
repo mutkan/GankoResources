@@ -159,6 +159,9 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     .applySchedulers()
 
     // Filtros
+    fun getBovinesFilter(idFinca: String):Single<List<Bovino>> =
+            db.listByExp("finca" equalEx idFinca , Bovino::class)
+                    .applySchedulers()
 
     fun getMilkPurpose(Idfinca: String): Single<List<Bovino>> =
             db.listByExp("Idfinca" equalEx Idfinca andEx ("proposito" equalEx "leche"), Bovino::class)
@@ -170,6 +173,9 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
             db.listByExp("Idfinca" equalEx Idfinca andEx ("proposito" equalEx "leche y ceba"), Bovino::class)
 
 
+
+    //region Vacunas
     fun getVaccinations(): Observable<List<RegistroVacuna>> = db.listObsByExp("idFinca" equalEx farmID, RegistroVacuna::class).applySchedulers()
+    //endregion
 
 }

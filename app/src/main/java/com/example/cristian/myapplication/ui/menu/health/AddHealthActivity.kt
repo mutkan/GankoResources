@@ -1,15 +1,20 @@
 package com.example.cristian.myapplication.ui.menu.health
 
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.arch.lifecycle.ViewModelProvider
+import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.DatePicker
 import com.example.cristian.myapplication.R
+import com.example.cristian.myapplication.data.models.Group
 import com.example.cristian.myapplication.data.models.Sanidad
 import com.example.cristian.myapplication.databinding.ActivityAddHealthBinding
 import com.example.cristian.myapplication.di.Injectable
+import com.example.cristian.myapplication.ui.groups.GroupFragment
+import com.example.cristian.myapplication.ui.groups.SelectActivity
 import com.example.cristian.myapplication.ui.menu.MenuViewModel
 import com.example.cristian.myapplication.util.*
 import com.jakewharton.rxbinding2.view.clicks
@@ -17,6 +22,7 @@ import com.jakewharton.rxbinding2.widget.itemSelections
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_add_health.*
 import kotlinx.android.synthetic.main.activity_add_manage.*
+import org.jetbrains.anko.startActivityForResult
 import org.jetbrains.anko.toast
 import java.util.*
 import javax.inject.Inject
@@ -31,6 +37,10 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
     private val farmId by lazy { menuViewModel.getFarmId() }
     lateinit var datePicker: DatePickerDialog
     lateinit var binding: ActivityAddHealthBinding
+
+    var groupFragment: GroupFragment? = null
+    var group: Group? = null
+    var bovines: List<String>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,8 +58,21 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
         onDateSet(null, Calendar.getInstance().get(Calendar.YEAR),
                 Calendar.getInstance().get(Calendar.MONTH) + 1,
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
-    }
 
+        startActivityForResult<SelectActivity>(SelectActivity.REQUEST_SELECT,
+                SelectActivity.EXTRA_COLOR to 12)
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == SelectActivity.REQUEST_SELECT) {
+            if(resultCode == Activity.RESULT_OK){
+                group = data?.extras?.getParcelable(SelectActivity.DATA_GROUP)
+                bovines = data?.extras?.getStringArray(SelectActivity.DATA_BOVINES)?.toList()
+            }else{
+                finish()
+            }
+        }
+    }
     override fun onDateSet(p0: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         dateAddHealth.setText("$dayOfMonth/${month + 1}/$year")
     }

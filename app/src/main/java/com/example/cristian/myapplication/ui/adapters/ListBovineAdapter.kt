@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.example.cristian.myapplication.R
+import com.example.cristian.myapplication.R.id.check_milk
 import com.example.cristian.myapplication.data.models.Bovino
 import com.example.cristian.myapplication.databinding.TemplateBovineBinding
 import com.example.cristian.myapplication.util.inflate
@@ -29,6 +30,7 @@ class ListBovineAdapter @Inject constructor():RecyclerView.Adapter<ListBovineAda
         holder.binding.bovino = bovines[position]
         holder.binding.onClickBovine = onClickBovine
         holder.binding.onClickDelete = onClickDelete
+
     }
 
     override fun getItemCount(): Int = bovines.size
