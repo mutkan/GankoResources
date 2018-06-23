@@ -80,7 +80,7 @@ class ManageFragment : Fragment(),Injectable{
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK) {
-            toast("Funca !!")
+            toast("Funca !!${data!!.extras["bovines"]}")
         }
     }
     companion object {
