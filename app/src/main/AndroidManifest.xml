@@ -84,7 +84,8 @@
         <activity android:name=".ui.groups.SelectActivity" android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".ui.groups.AddGroupActivity" />
         <activity android:name=".ui.groups.BovineSelectedActivity" />
-        <activity android:name=".ui.menu.milk.AddMilkActivity"></activity>
+        <activity android:name=".ui.menu.milk.AddMilkActivity"/>
+        <activity android:name=".ui.menu.vaccines.AddVaccineActivity"/>
  </application>
 
 </manifest>

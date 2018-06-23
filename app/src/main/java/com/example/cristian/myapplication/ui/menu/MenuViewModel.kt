@@ -175,6 +175,8 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
 
 
     //region Vacunas
+    fun inserVaccine(registroVacuna: RegistroVacuna):Single<String> = db.insert(registroVacuna).applySchedulers()
+
     fun getVaccinations(): Observable<List<RegistroVacuna>> = db.listObsByExp("idFinca" equalEx farmID, RegistroVacuna::class).applySchedulers()
     //endregion
 

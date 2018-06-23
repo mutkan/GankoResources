@@ -36,7 +36,7 @@ infix fun String.likeEx(value: String): Expression = Expression.property(this)
 // LOGICAL
 infix fun Expression.andEx(expression: Expression): Expression = this.and(expression)
 
-infix fun Expression.orEx(expression: Expression): Expression = this.and(expression)
+infix fun Expression.orEx(expression: Expression): Expression = this.or(expression)
 
 infix fun Expression.betweenEx(expressions: List<Expression>) =
         this.between(expressions[0], expressions[1])

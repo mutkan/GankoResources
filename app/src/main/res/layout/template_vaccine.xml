@@ -34,6 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:textColor="@color/colorAccent"
+            app:dateFormat='@{vacuna.fecha}'
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/vaccineName"
             tools:text="27/06/2018" />
@@ -57,7 +58,9 @@
             android:textColor="@color/menu_button_light"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/vaccineDoseTxt"
-            tools:text="5 ml" />
+            tools:text="5 ml"
+            android:text='@{""+vacuna.dosisMl+" ml"}'
+            />
 
         <TextView
             android:id="@+id/vaccineValueTxt"
@@ -78,7 +81,8 @@
             android:textColor="@color/menu_button_light"
             app:layout_constraintBottom_toBottomOf="@+id/vaccineDose"
             app:layout_constraintStart_toStartOf="@+id/vaccineValueTxt"
-            tools:text="$15.000" />
+            tools:text="$15.000"
+            android:text='@{""+vacuna.valor}'/>
 
         <ImageView
             android:id="@+id/cowIcon"

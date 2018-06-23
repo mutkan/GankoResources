@@ -42,7 +42,7 @@
             android:id="@+id/textView91"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text='@{vacuna.dosis+""}'
+            android:text='@{vacuna.dosisMl+""}'
             app:layout_constraintStart_toStartOf="@+id/textView90"
             app:layout_constraintTop_toBottomOf="@+id/textView90"
             tools:text="20" />
@@ -53,7 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
-            android:text="@string/liters"
+            android:text="ml"
             app:layout_constraintStart_toEndOf="@+id/textView91"
             app:layout_constraintTop_toTopOf="@+id/textView91" />
 
@@ -61,7 +61,7 @@
             android:id="@+id/textView94"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{vacuna.valor}"
+            android:text='@{""+vacuna.valor}'
             app:layout_constraintStart_toStartOf="@+id/textView95"
             app:layout_constraintTop_toBottomOf="@+id/textView95"
             tools:text="20" />
@@ -90,7 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="24dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-
+            app:dateFormat='@{vacuna.fecha}'
             app:layout_constraintBottom_toBottomOf="@+id/textView89"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/textView89"

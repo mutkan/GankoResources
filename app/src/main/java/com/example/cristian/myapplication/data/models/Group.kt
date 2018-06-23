@@ -19,3 +19,5 @@ class Group(
     }
 
 }
+
+fun Group.toGrupo():Grupo = Grupo(this._id,this.nombre, this.color)

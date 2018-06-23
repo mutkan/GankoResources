@@ -9,6 +9,7 @@ import com.example.cristian.myapplication.data.models.RegistroVacuna
 import com.example.cristian.myapplication.databinding.TemplateNextVaccinesBinding
 import com.example.cristian.myapplication.databinding.TemplateVaccineBinding
 import com.example.cristian.myapplication.util.inflate
+import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
 class VaccineAdapter @Inject constructor() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -23,6 +24,7 @@ class VaccineAdapter @Inject constructor() : RecyclerView.Adapter<RecyclerView.V
             field = value
             notifyDataSetChanged()
         }
+    val clickRevaccination: PublishSubject<RegistroVacuna> = PublishSubject.create()
 
     override fun getItemViewType(position: Int): Int = tipo
 
@@ -40,6 +42,7 @@ class VaccineAdapter @Inject constructor() : RecyclerView.Adapter<RecyclerView.V
             }
             is NextVaccinesViewHolder -> {
                 holder.binding.vacuna = data[position]
+                holder.binding.clickRevaccination = clickRevaccination
             }
         }
     }

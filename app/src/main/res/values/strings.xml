@@ -337,6 +337,7 @@
     </string-array>
 
     <string-array name="vaccines">
+        <item>Fiebre Aftosa</item>
         <item>Rabia</item>
         <item>Carbon Sintomatico</item>
         <item>Edema Maligno</item>
