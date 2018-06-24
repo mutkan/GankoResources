@@ -2,19 +2,19 @@ package com.example.cristian.myapplication.ui.menu
 
 import android.arch.lifecycle.ViewModel
 import android.graphics.Color
+import com.couchbase.lite.Expression
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.db.CouchRx
 import com.example.cristian.myapplication.data.models.*
 import com.example.cristian.myapplication.data.preferences.UserSession
-import com.example.cristian.myapplication.util.andEx
-import com.example.cristian.myapplication.util.applySchedulers
-import com.example.cristian.myapplication.util.equalEx
+import com.example.cristian.myapplication.util.*
 import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.rxkotlin.toObservable
 import io.reactivex.rxkotlin.zipWith
 import io.reactivex.subjects.PublishSubject
+import java.util.*
 import javax.inject.Inject
 
 /**
@@ -159,8 +159,8 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     .applySchedulers()
 
     // Filtros
-    fun getBovinesFilter(idFinca: String):Single<List<Bovino>> =
-            db.listByExp("finca" equalEx idFinca , Bovino::class)
+    fun getBovinesFilter(idFinca: String): Single<List<Bovino>> =
+            db.listByExp("finca" equalEx idFinca, Bovino::class)
                     .applySchedulers()
 
     fun getMilkPurpose(Idfinca: String): Single<List<Bovino>> =
@@ -173,11 +173,15 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
             db.listByExp("Idfinca" equalEx Idfinca andEx ("proposito" equalEx "leche y ceba"), Bovino::class)
 
 
-
     //region Vacunas
-    fun inserVaccine(registroVacuna: RegistroVacuna):Single<String> = db.insert(registroVacuna).applySchedulers()
+    fun inserVaccine(registroVacuna: RegistroVacuna): Single<String> = db.insert(registroVacuna).applySchedulers()
+
+    fun updateVaccine(registroVacuna: RegistroVacuna): Single<Unit> = db.update(registroVacuna._id!!, registroVacuna).applySchedulers()
 
     fun getVaccinations(): Observable<List<RegistroVacuna>> = db.listObsByExp("idFinca" equalEx farmID, RegistroVacuna::class).applySchedulers()
+
+    fun getRevaccinations(from: Date, to: Date): Observable<List<RegistroVacuna>> =
+            db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProx".between(from, to)) andEx ("proxAplicado" equalEx false), RegistroVacuna::class).applySchedulers()
     //endregion
 
 }

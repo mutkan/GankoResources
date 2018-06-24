@@ -63,6 +63,7 @@ class VaccinationsFragment : Fragment(), Injectable {
         dis add viewModel.getVaccinations()
                 .subscribeBy(
                         onNext = {
+                            Log.d("VACUNAS", it.toString())
                             isEmpty.set(it.isEmpty())
                             adapter.data = it
                         }

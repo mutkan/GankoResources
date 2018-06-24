@@ -63,12 +63,12 @@
             app:layout_constraintEnd_toStartOf="@+id/imageView6"
             tools:text="@string/feedNumberBovine" />
 
-        <FrameLayout
+        <android.support.v7.widget.AppCompatImageView
             android:id="@+id/frameLayout3"
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginTop="8dp"
-            android:background="@drawable/login_background_gray"
+            app:srcCompat="@drawable/login_background_gray"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -76,7 +76,7 @@
             app:layout_constraintTop_toBottomOf="@+id/imageView6"
             app:layout_constraintVertical_bias="1.0">
 
-        </FrameLayout>
+        </android.support.v7.widget.AppCompatImageView>
 
         <Button
             android:id="@+id/button"
