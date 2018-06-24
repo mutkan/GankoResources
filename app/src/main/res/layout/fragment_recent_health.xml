@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.menu.health.HealthFragment">
+    tools:context=".ui.menu.health.RecentHealthFragment">
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabAddHealthFragment"
@@ -22,7 +22,7 @@
         android:id="@+id/recyclerHealth"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/template_health"
+        tools:listitem="@layout/template_recent_health"
         />
 
 </android.support.constraint.ConstraintLayout>

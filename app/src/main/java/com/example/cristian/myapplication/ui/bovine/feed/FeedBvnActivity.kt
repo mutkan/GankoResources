@@ -39,7 +39,7 @@ class FeedBvnActivity : AppCompatActivity(), Injectable {
      /*   dis add viewModel.getFeedBovine(idBovino)
                 .subscribeBy(
                         onSuccess = {
-                            adapter.feed = it
+                            adapterRecent.feed = it
                         },
                         onError = {
                             toast(it.message!!)

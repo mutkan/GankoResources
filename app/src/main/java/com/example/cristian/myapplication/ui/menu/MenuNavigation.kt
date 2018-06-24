@@ -9,12 +9,10 @@ import com.example.cristian.myapplication.ui.groups.SelectGroupFragment
 import com.example.cristian.myapplication.ui.menu.straw.StrawFragment
 import com.example.cristian.myapplication.ui.menu.bovine.ListBovineFragment
 
-import com.example.cristian.myapplication.ui.menu.bovine.ListFeedFragment
 import com.example.cristian.myapplication.ui.menu.feed.FeedFragment
-import com.example.cristian.myapplication.ui.menu.health.HealthFragment
+import com.example.cristian.myapplication.ui.menu.health.RecentHealthFragment
 import com.example.cristian.myapplication.ui.menu.management.ManageFragment
 import com.example.cristian.myapplication.ui.menu.meadow.MeadowFragment
-import com.example.cristian.myapplication.ui.menu.milk.ListMilkFragment
 import com.example.cristian.myapplication.ui.menu.milk.MilkFragment
 import com.example.cristian.myapplication.ui.menu.movement.MovementFragment
 import com.example.cristian.myapplication.ui.menu.vaccines.VaccinesFragment
@@ -51,7 +49,7 @@ class MenuNavigation @Inject constructor(val activity: MenuActivity, val sesion:
     }
 
     fun navigateToHealth() {
-        activity.putFragment(R.id.content_frame, HealthFragment.instance())
+        activity.putFragment(R.id.content_frame, RecentHealthFragment.instance())
     }
 
     fun navigateToStraw() {

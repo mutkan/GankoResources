@@ -10,7 +10,7 @@ import com.example.cristian.myapplication.databinding.TemplateHealthBinding
 import com.example.cristian.myapplication.util.inflate
 import javax.inject.Inject
 
-class HealthAdapter @Inject constructor(): RecyclerView.Adapter<HealthAdapter.HealthHolder>() {
+class RecentHealthAdapter @Inject constructor(): RecyclerView.Adapter<RecentHealthAdapter.HealthHolder>() {
 
     var health: List<Sanidad> = emptyList()
         set(value) {
@@ -18,7 +18,7 @@ class HealthAdapter @Inject constructor(): RecyclerView.Adapter<HealthAdapter.He
             notifyDataSetChanged()
         }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HealthHolder = HealthHolder(parent.inflate(R.layout.template_health))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HealthHolder = HealthHolder(parent.inflate(R.layout.template_recent_health))
 
     override fun getItemCount(): Int = health.size
 

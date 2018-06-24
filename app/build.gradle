@@ -80,7 +80,7 @@ dependencies {
     //rerofit
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
-    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
+    implementation 'com.squareup.retrofit2:adapterRecent-rxjava2:2.4.0'
 
     //couchbase
     implementation 'com.couchbase.lite:couchbase-lite-android:2.0.0'

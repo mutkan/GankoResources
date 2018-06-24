@@ -321,6 +321,7 @@
     <string name="event">Evento</string>
     <string name="times_a_day">veces al dia</string>
     <string name="applications_number">Número de aplicaciones</string>
+    <string name="frequency_in_days">Frecuencia en días</string>
 
     <string-array name="milk_production">
         <item>Litros vendidos</item>
@@ -335,7 +336,6 @@
         <item>Ectoparásitos</item>
         <item>Otra</item>
     </string-array>
-
 
 
 </resources>
