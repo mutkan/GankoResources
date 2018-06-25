@@ -279,6 +279,10 @@
     </string-array>
 
     <string-array name="event_type">
+        <item>Corte de ombligo</item>
+        <item>Identificación</item>
+        <item>Descorne</item>
+        <item>Arreglo de cascos</item>
         <item>Castración</item>
         <item>Secado</item>
         <item>Otro</item>
@@ -321,6 +325,8 @@
     <string name="event">Evento</string>
     <string name="times_a_day">veces al dia</string>
     <string name="applications_number">Número de aplicaciones</string>
+    <string name="number_of_aplications">Numero de aplicaciones</string>
+    <string name="assistance_price">Valor asistencia</string>
 
     <string-array name="milk_production">
         <item>Litros vendidos</item>
@@ -335,7 +341,6 @@
         <item>Ectoparásitos</item>
         <item>Otra</item>
     </string-array>
-
 
 
 </resources>

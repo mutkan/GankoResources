@@ -16,6 +16,7 @@ import com.example.cristian.myapplication.databinding.FragmentManageBinding
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.ManageBovineAdapter
 import com.example.cristian.myapplication.ui.groups.SelectActivity
+import com.example.cristian.myapplication.ui.manage.AddManageActivity
 import com.example.cristian.myapplication.ui.menu.MenuViewModel
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
@@ -24,6 +25,7 @@ import com.jakewharton.rxbinding2.view.clicks
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.fragment_manage.*
 import org.jetbrains.anko.support.v4.intentFor
+import org.jetbrains.anko.support.v4.startActivity
 import org.jetbrains.anko.support.v4.startActivityForResult
 
 import org.jetbrains.anko.support.v4.toast
@@ -68,7 +70,7 @@ class ManageFragment : Fragment(),Injectable{
         dis add btnAddManageFragment.clicks()
                 .subscribeByAction(
                         onNext = {
-                            startActivityForResult<SelectActivity>(221,"EXTRA_COLOR" to 5)
+                            startActivity<AddManageActivity>()
                         },
                         onHttpError = {},
                         onError = {}

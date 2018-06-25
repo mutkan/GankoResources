@@ -9,7 +9,7 @@ class Manage(var _id: String? = null,
              var sequence: Long? = null,
              var type: String? = null,
              var fecha: Date? = null,
-             var idDosisUno: String? = null,
+             var idDosisUno: String? = null, // = _id
              var fechaProx: Date? = null,
              var frecuencia: Int? = null,
              var numeroAplicaciones: Int? = null,
