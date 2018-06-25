@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.Sanidad
-import com.example.cristian.myapplication.databinding.TemplateHealthBinding
+import com.example.cristian.myapplication.databinding.TemplateRecentHealthBinding
 import com.example.cristian.myapplication.util.inflate
 import javax.inject.Inject
 
@@ -28,6 +28,6 @@ class RecentHealthAdapter @Inject constructor(): RecyclerView.Adapter<RecentHeal
 
 
     class HealthHolder(itemView: View): RecyclerView.ViewHolder(itemView){
-        val binding: TemplateHealthBinding? = DataBindingUtil.bind(itemView)
+        val binding: TemplateRecentHealthBinding? = DataBindingUtil.bind(itemView)
     }
 }

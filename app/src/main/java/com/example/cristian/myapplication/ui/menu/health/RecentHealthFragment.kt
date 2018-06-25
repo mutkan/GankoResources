@@ -42,14 +42,14 @@ class RecentHealthFragment : Fragment(), Injectable {
     override fun onResume() {
         super.onResume()
 
-        recyclerHealth.adapter = adapterRecent
-        recyclerHealth.layoutManager = LinearLayoutManager(activity)
+        recyclerRecentHealth.adapter = adapterRecent
+        recyclerRecentHealth.layoutManager = LinearLayoutManager(activity)
 
         dis add viewModel.getHealth(idFinca)
                 .subscribeBy(
                         onSuccess = {
+                            if(it.isEmpty()) emptyHealthText.visibility = View.VISIBLE else emptyHealthText.visibility = View.GONE
                             adapterRecent.health = it
-                            if (it.isEmpty()) toast(R.string.empty_list)
                         },
                         onError = {
                             toast(it.message!!)
@@ -64,6 +64,7 @@ class RecentHealthFragment : Fragment(), Injectable {
     }
 
     companion object {
+
         fun instance(): RecentHealthFragment = RecentHealthFragment()
     }
 }

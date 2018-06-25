@@ -118,7 +118,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
         val nextDate = Date(today.time + (86_400_000 * 8))
         return db.listByExp("idFarm" equalEx idFinca andEx ("fecha" gte today), Sanidad::class,
                 pageSize, skip,
-                arrayOf(Ordering.property("fechaPrxima").ascending()))
+                arrayOf(Ordering.property("fechaProxima").ascending()))
                 .applySchedulers()
     }
 
