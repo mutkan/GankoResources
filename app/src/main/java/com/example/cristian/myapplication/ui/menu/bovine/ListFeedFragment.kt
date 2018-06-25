@@ -57,7 +57,7 @@ class ListFeedFragment : Fragment(), Injectable {
                 .subscribeBy(
                         onNext = {
                             isEmpty.set(it.isEmpty())
-                            adapter.feed = it
+                            adapterRecent.feed = it
                         }
                 )
     */}

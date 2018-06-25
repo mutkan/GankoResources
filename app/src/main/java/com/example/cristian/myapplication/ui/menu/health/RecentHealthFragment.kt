@@ -1,4 +1,4 @@
-package com.example.cristian.myapplication.ui.menu.milk
+package com.example.cristian.myapplication.ui.menu.health
 
 
 import android.arch.lifecycle.ViewModelProvider
@@ -10,21 +10,18 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.di.Injectable
-import com.example.cristian.myapplication.ui.adapters.MilkAdapter
-import com.example.cristian.myapplication.ui.bovine.milk.AddMilkBvnActivity
+import com.example.cristian.myapplication.ui.adapters.RecentHealthAdapter
 import com.example.cristian.myapplication.ui.menu.MenuViewModel
+import org.jetbrains.anko.support.v4.startActivity
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
 import com.jakewharton.rxbinding2.view.clicks
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.fragment_recent_health.*
-import kotlinx.android.synthetic.main.fragment_milk.*
-import org.jetbrains.anko.support.v4.startActivity
 import org.jetbrains.anko.support.v4.toast
 import javax.inject.Inject
 
-
-class MilkFragment : Fragment(), Injectable {
+class RecentHealthFragment : Fragment(), Injectable {
 
     @Inject
     lateinit var factory: ViewModelProvider.Factory
@@ -33,41 +30,41 @@ class MilkFragment : Fragment(), Injectable {
     private val idFinca: String by lazy { viewModel.getFarmId() }
 
     @Inject
-    lateinit var adapter: MilkAdapter
+    lateinit var adapterRecent: RecentHealthAdapter
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_milk, container, false)
+        return inflater.inflate(R.layout.fragment_recent_health, container, false)
     }
 
     override fun onResume() {
         super.onResume()
 
-        adapter.notifyDataSetChanged()
-        recyclerMilk.adapter = adapter
-        recyclerMilk.layoutManager = LinearLayoutManager(activity)
+        recyclerRecentHealth.adapter = adapterRecent
+        recyclerRecentHealth.layoutManager = LinearLayoutManager(activity)
 
-        dis add viewModel.getMilk(idFinca)
+        dis add viewModel.getHealth(idFinca)
                 .subscribeBy(
                         onSuccess = {
-                            adapter.milk = it
-                            if (it.isEmpty()) toast(R.string.empty_list)
+                            if(it.isEmpty()) emptyHealthText.visibility = View.VISIBLE else emptyHealthText.visibility = View.GONE
+                            adapterRecent.health = it
                         },
                         onError = {
                             toast(it.message!!)
                         }
                 )
 
-        dis add fabAddMilkFragment.clicks()
+        dis add fabAddHealthFragment.clicks()
                 .subscribe {
-                    startActivity<AddMilkActivity>()
+
+                    startActivity<AddHealthActivity>()
                 }
     }
 
     companion object {
-        fun instance(): MilkFragment = MilkFragment()
+
+        fun instance(): RecentHealthFragment = RecentHealthFragment()
     }
-
-
 }

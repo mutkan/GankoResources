@@ -321,6 +321,11 @@
     <string name="event">Evento</string>
     <string name="times_a_day">veces al dia</string>
     <string name="applications_number">Número de aplicaciones</string>
+    <string name="frequency_in_days">Frecuencia en días</string>
+    <string name="bovine_number">Núemro de bovinos</string>
+    <string name="recents">Recientes</string>
+    <string name="next">Próximos</string>
+    <string name="no_health_register">No hay registros de sanidad</string>
 
     <string-array name="milk_production">
         <item>Litros vendidos</item>

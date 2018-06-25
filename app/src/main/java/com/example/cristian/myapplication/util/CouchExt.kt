@@ -68,4 +68,4 @@ private fun makeExpressionArray(values: List<Any>): List<Expression> {
     return exps
 }
 
-fun String.between(from:Date, to:Date):Expression = Expression.property(this).between(Expression.date(from), Expression.date(to))
+fun String.betweenDates(from:Date, to:Date):Expression = Expression.property(this).between(Expression.date(from), Expression.date(to))
