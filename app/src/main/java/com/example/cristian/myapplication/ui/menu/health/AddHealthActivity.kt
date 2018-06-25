@@ -59,7 +59,7 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
 
         startActivityForResult<SelectActivity>(SelectActivity.REQUEST_SELECT,
-                SelectActivity.EXTRA_COLOR to 12)
+                SelectActivity.EXTRA_COLOR to 8)
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
