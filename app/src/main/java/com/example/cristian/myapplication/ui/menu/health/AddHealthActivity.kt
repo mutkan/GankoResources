@@ -21,7 +21,6 @@ import com.jakewharton.rxbinding2.view.clicks
 import com.jakewharton.rxbinding2.widget.itemSelections
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_add_health.*
-import kotlinx.android.synthetic.main.activity_add_manage.*
 import org.jetbrains.anko.startActivityForResult
 import org.jetbrains.anko.toast
 import java.util.*
@@ -60,7 +59,7 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
 
         startActivityForResult<SelectActivity>(SelectActivity.REQUEST_SELECT,
-                SelectActivity.EXTRA_COLOR to 12)
+                SelectActivity.EXTRA_COLOR to 8)
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -115,7 +114,7 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
 
         dis add btnFinalizeHealth.clicks()
                 .flatMap {
-                    validateForm(R.string.empty_fields, dosis.text.toString(), frecuency.text.toString(),
+                    validateForm(R.string.empty_fields, dosis.text.toString(), frequency.text(),
                             product_value.text.toString(), attention_value.text.toString(), applicacion_number.text.toString(),
                             observations_health.text.toString())
                 }
@@ -124,7 +123,7 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                             Sanidad(null, null, null, farmId, dateAddHealth.text.toString().toDate(),
                                     null, frequency.text().toFloat(), spinnerEvent.selectedItem.toString(),
                                     if(binding.otherSelect) other.text() else null, diagnosis.text(), treatment_health.text(),
-                                    product.text(), dosis.text(), null, applicacion_number.text().toInt(), 1,
+                                    product_health.text(), dosis.text(), null, applicacion_number.text().toInt(), 1,
                                     observations_health.text(), product_value.text().toInt(), attention_value.text().toInt(),
                                     null, emptyList())
                     )

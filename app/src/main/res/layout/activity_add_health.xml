@@ -25,50 +25,47 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
+            android:layout_marginStart="8dp"
             android:text="@string/btn_back"
             android:visibility='@{page == 1 ? View.GONE : View.VISIBLE}'
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btnAddHealth"
+            app:layout_constraintEnd_toStartOf="@+id/btnCancelHealth"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/btnCancelHealth" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <Button
             android:id="@+id/btnCancelHealth"
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginStart="8dp"
             android:text="@string/btn_cancel"
             android:visibility='@{page == 1 ? View.VISIBLE : View.GONE}'
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btnBackHealth"
+            app:layout_constraintBottom_toBottomOf="@+id/btnBackHealth"
+            app:layout_constraintEnd_toStartOf="@+id/btnAddHealth"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toEndOf="@+id/btnBackHealth" />
 
         <Button
             android:id="@+id/btnAddHealth"
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
             android:text="@string/btn_next"
             android:visibility='@{page == 2 ? View.GONE : View.VISIBLE}'
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btnFinalize"
+            app:layout_constraintBottom_toBottomOf="@+id/btnCancelHealth"
+            app:layout_constraintEnd_toStartOf="@+id/btnFinalizeHealth"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/btnBackHealth" />
+            app:layout_constraintStart_toEndOf="@+id/btnCancelHealth" />
 
         <Button
             android:id="@+id/btnFinalizeHealth"
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:text="@string/btn_add"
             android:visibility='@{page == 2 ? View.VISIBLE : View.GONE}'
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/btnAddHealth"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/btnAddHealth" />
@@ -105,32 +102,31 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="24dp"
                         android:text="@string/event"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <Spinner
                         android:id="@+id/spinnerEvent"
-                        android:layout_width="368dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="16dp"
-                        android:layout_marginStart="8dp"
+                        android:layout_marginStart="24dp"
                         android:layout_marginTop="8dp"
                         android:entries="@array/health_event"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="@+id/textView108"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView108" />
 
                     <TextView
                         android:id="@+id/textView112"
+                        style="@style/textview_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
                         android:layout_marginTop="16dp"
                         android:text="@string/other"
-                        style="@style/textview_label"
                         android:visibility='@{otherSelect == true ? View.VISIBLE : View.GONE}'
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/spinnerEvent" />
@@ -144,8 +140,8 @@
                         android:layout_marginTop="8dp"
                         android:ems="10"
                         android:hint="Otra"
-                        android:visibility='@{otherSelect == true ? View.VISIBLE : View.GONE}'
                         android:inputType="text"
+                        android:visibility='@{otherSelect == true ? View.VISIBLE : View.GONE}'
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/textView112"
                         app:layout_constraintTop_toBottomOf="@+id/textView112" />
@@ -158,7 +154,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
                         android:layout_marginTop="16dp"
-                        android:text="TextView"
+                        android:text="@string/diagnosis"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/other"
                         tools:text="@string/diagnosis" />
@@ -180,12 +176,12 @@
 
                     <TextView
                         android:id="@+id/textView82"
+                        style="@style/textview_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
                         android:layout_marginTop="16dp"
-                        android:text="TextView"
-                        style="@style/textview_label"
+                        android:text="@string/date"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/diagnosis"
                         tools:text="@string/date" />
@@ -198,22 +194,22 @@
                         android:layout_marginEnd="16dp"
                         android:layout_marginTop="8dp"
                         android:ems="10"
+                        android:focusable="false"
                         android:hint="@string/date_value"
                         android:inputType="date"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/textView82"
                         app:layout_constraintTop_toBottomOf="@+id/textView82"
-                        tools:clickable="true"
-                        android:focusable="false"/>
+                        tools:clickable="true" />
 
                     <TextView
                         android:id="@+id/textView83"
+                        style="@style/textview_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
                         android:layout_marginTop="16dp"
                         android:text="@string/treatment"
-                        style="@style/textview_label"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/dateAddHealth"
                         tools:text="@string/treatment" />
@@ -234,12 +230,12 @@
 
                     <TextView
                         android:id="@+id/textView114"
+                        style="@style/textview_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
+                        android:layout_marginStart="32dp"
                         android:layout_marginTop="8dp"
                         android:text="@string/product"
-                        style="@style/textview_label"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/treatment_health"
                         tools:text="@string/product" />
@@ -278,12 +274,12 @@
 
                     <TextView
                         android:id="@+id/textView115"
+                        style="@style/textview_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
                         android:layout_marginTop="16dp"
                         android:text="@string/dosis"
-                        style="@style/textview_label"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:text="@string/dosis" />
@@ -292,7 +288,7 @@
                         android:id="@+id/dosis"
                         style="@style/edit_text"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="40dp"
                         android:layout_marginEnd="16dp"
                         android:layout_marginStart="24dp"
                         android:layout_marginTop="8dp"
@@ -306,12 +302,12 @@
 
                     <TextView
                         android:id="@+id/textView116"
+                        style="@style/textview_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
                         android:layout_marginTop="16dp"
-                        android:text="@string/frecuency"
-                        style="@style/textview_label"
+                        android:text="@string/frequency_in_days"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/dosis"
                         tools:text="@string/frecuency" />
@@ -334,12 +330,12 @@
 
                     <TextView
                         android:id="@+id/textView117"
+                        style="@style/textview_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
                         android:layout_marginTop="16dp"
-                        android:text="@string/frecuency"
-                        style="@style/textview_label"
+                        android:text="@string/product_value"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/frequency"
                         tools:text="@string/product_value" />
@@ -362,12 +358,12 @@
 
                     <TextView
                         android:id="@+id/textView118"
+                        style="@style/textview_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
                         android:layout_marginTop="16dp"
                         android:text="@string/attention_value"
-                        style="@style/textview_label"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/product_value"
                         tools:text="@string/attention_value" />
@@ -390,12 +386,12 @@
 
                     <TextView
                         android:id="@+id/textView120"
+                        style="@style/textview_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
                         android:layout_marginTop="16dp"
                         android:text="@string/applications_number"
-                        style="@style/textview_label"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/attention_value"
                         tools:text="@string/applications_number" />
@@ -419,12 +415,12 @@
 
                     <TextView
                         android:id="@+id/textView119"
+                        style="@style/textview_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
                         android:layout_marginTop="16dp"
                         android:text="@string/Observations"
-                        style="@style/textview_label"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/applicacion_number"
                         tools:text="@string/Observations" />

@@ -14,10 +14,12 @@ import android.view.ViewGroup
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.databinding.FragmentManageBinding
 import com.example.cristian.myapplication.di.Injectable
+import com.example.cristian.myapplication.ui.adapters.ManageAdapter
 import com.example.cristian.myapplication.ui.adapters.ManageBovineAdapter
 import com.example.cristian.myapplication.ui.groups.SelectActivity
 import com.example.cristian.myapplication.ui.manage.AddManageActivity
 import com.example.cristian.myapplication.ui.menu.MenuViewModel
+import com.example.cristian.myapplication.util.AppViewModelFactory_Factory
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
 import com.example.cristian.myapplication.util.subscribeByAction
@@ -31,61 +33,27 @@ import org.jetbrains.anko.support.v4.startActivityForResult
 import org.jetbrains.anko.support.v4.toast
 import javax.inject.Inject
 
-class ManageFragment : Fragment(),Injectable{
+class ManageFragment : Fragment(), Injectable{
 
     @Inject
-    lateinit var factory: ViewModelProvider.Factory
-    val viewModel: MenuViewModel by lazy { buildViewModel<MenuViewModel>(factory) }
+    lateinit var adapter: ManageAdapter
     val dis: LifeDisposable = LifeDisposable(this)
-    private val idFinca: String by lazy { viewModel.getFarmId() }
-
-    @Inject
-    lateinit var adapter: ManageBovineAdapter
-    lateinit var binding: FragmentManageBinding
-    val isEmpty: ObservableBoolean = ObservableBoolean(false)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_manage, container, false)
-        binding.isEmpty = isEmpty
-        return binding.root
+        return inflater.inflate(R.layout.fragment_manage, container, false)
     }
 
-    override fun onResume() {
-        super.onResume()
-        recyclerListManageFragment.adapter = adapter
-
-        dis add viewModel.getManagement(idFinca)
-                .subscribeBy (
-                        onSuccess = {
-                            isEmpty.set(it.isEmpty())
-                            adapter.manage = it
-                        },
-                        onError = {
-                            toast(it.message!!)
-                        }
-                )
-
-        dis add btnAddManageFragment.clicks()
-                .subscribeByAction(
-                        onNext = {
-                            startActivity<AddManageActivity>()
-                        },
-                        onHttpError = {},
-                        onError = {}
-                )
-
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        pagerManage.adapter = adapter
+        tabsManage.setupWithViewPager(pagerManage)
     }
 
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == RESULT_OK) {
-            toast("Funca !!${data!!.extras["bovines"]}")
-        }
-    }
     companion object {
         fun instance():ManageFragment = ManageFragment()
     }
+
+
 }

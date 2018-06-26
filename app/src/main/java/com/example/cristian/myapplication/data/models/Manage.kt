@@ -22,4 +22,8 @@ class Manage(var _id: String? = null,
              var valorProducto: Int? = null,
              var valorAsistencia: Int? = null,
              var grupo: Grupo? = null,
-             var bovino: List<Bovinos> = listOf()) : Parcelable
+             var bovino: List<Bovinos> = listOf()) : Parcelable {
+    init {
+        type = javaClass.simpleName
+    }
+}

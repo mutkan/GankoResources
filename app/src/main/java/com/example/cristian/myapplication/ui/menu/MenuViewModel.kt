@@ -2,18 +2,19 @@ package com.example.cristian.myapplication.ui.menu
 
 import android.arch.lifecycle.ViewModel
 import android.graphics.Color
+import com.couchbase.lite.Ordering
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.db.CouchRx
 import com.example.cristian.myapplication.data.models.*
 import com.example.cristian.myapplication.data.preferences.UserSession
-import com.example.cristian.myapplication.util.andEx
-import com.example.cristian.myapplication.util.applySchedulers
-import com.example.cristian.myapplication.util.equalEx
+import com.example.cristian.myapplication.util.*
 import io.reactivex.Maybe
 import io.reactivex.Single
 import io.reactivex.rxkotlin.toObservable
 import io.reactivex.rxkotlin.zipWith
 import io.reactivex.subjects.PublishSubject
+import java.util.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 /**
@@ -24,6 +25,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     //region Menu
     var content: Int = 2
     val querySubject = PublishSubject.create<String>()
+    val pageSize: Int = 30
 
     val data: List<MenuItem> = listOf(
             MenuItem(MenuItem.TYPE_TITLE, titleText = userSession.farm),
@@ -109,6 +111,17 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     fun getHealth(idFinca: String): Single<List<Sanidad>> =
             db.listByExp("idFarm" equalEx idFinca, Sanidad::class)
                     .applySchedulers()
+
+    fun getNextHealth(idFinca: String, page:Int): Single<List<Sanidad>>{
+        val skip = page * pageSize
+        val today = Date()
+        val nextDate = Date(today.time + (86_400_000 * 8))
+        return db.listByExp("idFarm" equalEx idFinca andEx ("fecha" gte today), Sanidad::class,
+                pageSize, skip,
+                arrayOf(Ordering.property("fechaProxima").ascending()))
+                .applySchedulers()
+    }
+
 
     fun getMilk(idFinca: String): Single<List<SalidaLeche>> =
             db.listByExp("idFarm" equalEx idFinca, SalidaLeche::class)
