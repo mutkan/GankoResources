@@ -12,6 +12,8 @@ import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import dagger.Module
 import dagger.Provides
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -36,10 +38,12 @@ class CouchModule{
 
     @Provides
     fun provideMapper() : ObjectMapper {
-      val mapper = ObjectMapper().registerKotlinModule()
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
-        return mapper
+        return ObjectMapper().apply {
+            registerKotlinModule()
+            dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.UK)
+            configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+            configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
+        }
     }
 
 

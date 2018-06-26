@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.databinding.FragmentVaccinesBinding
+import com.example.cristian.myapplication.ui.adapters.VaccinesPagerAdapter
 import com.example.cristian.myapplication.ui.menu.MenuViewModel
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
@@ -31,8 +32,9 @@ class VaccinesFragment : Fragment(), HasSupportFragmentInjector {
     @Inject
     lateinit var factory: ViewModelProvider.Factory
     lateinit var binding: FragmentVaccinesBinding
+    @Inject
+    lateinit var adapter: VaccinesPagerAdapter
     private val viewModel: MenuViewModel by lazy { buildViewModel<MenuViewModel>(factory) }
-    private val dis: LifeDisposable = LifeDisposable(this)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -41,18 +43,10 @@ class VaccinesFragment : Fragment(), HasSupportFragmentInjector {
         return binding.root
     }
 
-    override fun onResume() {
-        super.onResume()
-
-        dis add RxBottomNavigationView.itemSelections(vaccinesBottomNavigation)
-                .subscribeBy(
-                        onNext = {
-                            when(it.itemId){
-                                R.id.vaccinations -> {putFragment(R.id.vaccinesContainer,VaccinationsFragment.instance())}
-                                R.id.nextVaccinations -> {putFragment(R.id.vaccinesContainer,RevaccinationFragment.instance())}
-                            }
-                        }
-                )
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        vaccinesPager.adapter = adapter
+        tabsVaccines.setupWithViewPager(vaccinesPager)
 
     }
 

@@ -33,7 +33,7 @@ class AddFarmActivity : AppCompatActivity(), Injectable {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_farm)
         edit = intent.getBooleanExtra("edit", false)
-        if(edit){
+        if (edit) {
             farm = intent.getParcelableExtra("farm")
             farmName.setText(farm.nombre)
             farmLocation.setText(farm.ubicacion)
@@ -55,8 +55,10 @@ class AddFarmActivity : AppCompatActivity(), Injectable {
 
         dis add btnAdd.clicks()
                 .flatMap { validateForm(R.string.empty_fields, farmName.text(), farmLocation.text(), farmHectares.text()) }
-                .flatMapSingle { createFarm(it) }
-                .flatMapSingle { if (edit) viewModel.updateFarm(farm._id!!, it) else viewModel.addFarm(it) }
+                .flatMapSingle {
+                    val finca = createFarm(it)
+                    if (edit) viewModel.updateFarm(farm._id!!, finca) else viewModel.addFarm(finca)
+                }
                 .subscribeBy(
                         onNext = {
                             finish()
@@ -70,20 +72,20 @@ class AddFarmActivity : AppCompatActivity(), Injectable {
                 )
     }
 
-    private fun createFarm(params: List<String>): Single<Finca> {
+    private fun createFarm(params: List<String>): Finca {
         val nombre = params[0]
         val ubicacion = params[1]
         val hectareas = params[2].toInt()
-        val finca = if(edit) {
+        return if (edit) {
             farm.apply {
                 this.nombre = nombre
                 this.ubicacion = ubicacion
                 this.hectareas = hectareas
             }
-        }else{
+        } else {
             Finca(userId, nombre, ubicacion, hectareas)
         }
-        return Single.just(finca)
+
     }
 
 

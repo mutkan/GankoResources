@@ -62,7 +62,7 @@
 
         <activity android:name=".ui.bovine.ceba.CebaBvnActivity" />
         <activity android:name=".ui.bovine.ceba.AddCebaBvnActivity" />
-        <activity android:name=".ui.bovine.reproductive.ReproductiveBvnActivity" />
+        <activity android:name=".ui.bovine.reproductive.ReproductiveBvnActivity" android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ui.bovine.reproductive.add.AddZealActivity" />
         <activity android:name=".ui.bovine.reproductive.add.AddServiceActivity" />
         <activity android:name=".ui.menu.straw.StrawAddActivity" />
@@ -86,8 +86,9 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ui.groups.AddGroupActivity" />
         <activity android:name=".ui.groups.BovineSelectedActivity" />
-        <activity android:name=".ui.menu.milk.AddMilkActivity" />
-        <activity android:name=".ui.manage.AddManageActivity"></activity>
+        <activity android:name=".ui.menu.milk.AddMilkActivity"/>
+        <activity android:name=".ui.menu.vaccines.AddVaccineActivity"/>
+        <activity android:name=".ui.manage.AddManageActivity"/>
     </application>
 
 </manifest>

@@ -8,7 +8,7 @@
     <data>
         <variable
             name="vacuna"
-            type="com.example.cristian.myapplication.data.models.Vacuna"/>
+            type="com.example.cristian.myapplication.data.models.RegistroVacuna"/>
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -34,6 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:textColor="@color/colorAccent"
+            app:dateFormat='@{vacuna.fecha}'
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/vaccineName"
             tools:text="27/06/2018" />
@@ -57,7 +58,9 @@
             android:textColor="@color/menu_button_light"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/vaccineDoseTxt"
-            tools:text="5 ml" />
+            tools:text="5 ml"
+            android:text='@{""+vacuna.dosisMl+" ml"}'
+            />
 
         <TextView
             android:id="@+id/vaccineValueTxt"
@@ -78,18 +81,21 @@
             android:textColor="@color/menu_button_light"
             app:layout_constraintBottom_toBottomOf="@+id/vaccineDose"
             app:layout_constraintStart_toStartOf="@+id/vaccineValueTxt"
-            tools:text="$15.000" />
+            tools:text="$15.000"
+            android:text='@{""+vacuna.valor}'/>
 
         <ImageView
-            android:id="@+id/imageView6"
+            android:id="@+id/cowIcon"
             android:layout_width="@dimen/icon"
             android:layout_height="@dimen/icon"
             android:layout_marginBottom="16dp"
             android:layout_marginEnd="24dp"
+            android:layout_marginTop="8dp"
             android:tint="@color/img"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_bovine" />
+            app:layout_constraintTop_toBottomOf="@+id/vaccineValue"
+            app:srcCompat='@drawable/ic_bovine' />
 
         <TextView
             android:id="@+id/numberBovineVaccinated"
@@ -97,12 +103,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="4dp"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView6"
-            app:layout_constraintEnd_toStartOf="@+id/imageView6"
+            app:layout_constraintBottom_toBottomOf="@+id/cowIcon"
+            app:layout_constraintEnd_toStartOf="@+id/cowIcon"
+            android:text='@{vacuna.grupo == null ? ""+vacuna.bovinos.size() : vacuna.grupo.nombre}'
             tools:text="@string/feedNumberBovine" />
 
-        <FrameLayout
-            android:id="@+id/frameLayout3"
+        <ImageView
+            android:id="@+id/div"
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginTop="8dp"
@@ -111,35 +118,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView6"
-            app:layout_constraintVertical_bias="1.0">
-
-        </FrameLayout>
-
-        <TextView
-            android:id="@+id/groupOrBovinesTxt"
-            style="@style/textview_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
-            android:text="Grupo/Bovinos"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/vaccineDose" />
-
-        <TextView
-            android:id="@+id/groupOrBovines"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="24dp"
-            android:textColor="@color/menu_button_light"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/numberBovineVaccinated"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/groupOrBovinesTxt"
-            tools:text="abc123,def456" />
+            app:layout_constraintTop_toBottomOf="@+id/cowIcon"
+            app:layout_constraintVertical_bias="1.0"/>
 
 
     </android.support.constraint.ConstraintLayout>
