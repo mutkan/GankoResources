@@ -51,6 +51,7 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
 
     override fun onResume() {
         super.onResume()
+        setupGroupFragment()
 
         dis add btnSaveManage.clicks()
                 .subscribe()
@@ -81,11 +82,27 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
             if (resultCode == Activity.RESULT_OK) {
                 group = data?.extras?.getParcelable(SelectActivity.DATA_GROUP)
                 bovines = data?.extras?.getStringArray(SelectActivity.DATA_BOVINES)?.toList()
-                numberBovine.text = ""+ bovines!!.size
 
             }else {
                 finish()
             }
         }
     }
+
+    fun setupGroupFragment(){
+        if ((group != null || bovines != null) && groupFragment == null) {
+            groupFragment = if (group != null) GroupFragment.instance(12, group!!)
+            else GroupFragment.instance(12, bovines!!)
+
+            supportFragmentManager.beginTransaction()
+                    .replace(R.id.manageContainer, groupFragment)
+                    .commit()
+
+            dis add groupFragment!!.ids
+                    .filter { group == null }
+                    .subscribe { bovines = it }
+        }
+    }
+
+
 }
