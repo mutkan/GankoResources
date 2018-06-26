@@ -97,7 +97,7 @@ class AddServiceActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
                         }
                 )
 
-        dis add serviceDateTxt.clicks()
+        dis add serviceDate.clicks()
                 .subscribeBy(
                         onNext = {
                             datePicker.show()
