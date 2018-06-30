@@ -4,18 +4,21 @@ import android.app.Activity
 import android.app.DatePickerDialog
 import android.arch.lifecycle.ViewModelProvider
 import android.content.Intent
+import android.databinding.DataBindingUtil
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.DatePicker
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.Group
+import com.example.cristian.myapplication.data.models.RegistroManejo
+import com.example.cristian.myapplication.databinding.ActivityAddManageBinding
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.groups.GroupFragment
 import com.example.cristian.myapplication.ui.groups.SelectActivity
-import com.example.cristian.myapplication.util.LifeDisposable
-import com.example.cristian.myapplication.util.buildViewModel
-import com.example.cristian.myapplication.util.subscribeByAction
+import com.example.cristian.myapplication.ui.menu.MenuViewModel
+import com.example.cristian.myapplication.util.*
 import com.jakewharton.rxbinding2.view.clicks
+import com.jakewharton.rxbinding2.widget.itemSelections
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_add_manage.*
 import org.jetbrains.anko.startActivityForResult
@@ -27,10 +30,17 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
 
     @Inject
     lateinit var factory: ViewModelProvider.Factory
-    val viewModel: ManageViewModel by lazy { buildViewModel<ManageViewModel>(factory) }
+    val viewModel: MenuViewModel by lazy { buildViewModel<MenuViewModel>(factory) }
     val dis: LifeDisposable = LifeDisposable(this)
 
     lateinit var datePicker: DatePickerDialog
+    lateinit var binding: ActivityAddManageBinding
+
+    private val farmId by lazy { viewModel.getFarmId() }
+
+    var dia: Int = 0
+    var mes : Int = 0
+    var año : Int = 0
 
     var groupFragment: GroupFragment? = null
     var group: Group? = null
@@ -38,9 +48,11 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_manage)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_add_manage)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setTitle("Agregar Manejo")
+        binding.page = 1
+        binding.other = false
         datePicker = DatePickerDialog(this, AddManageActivity@ this,
                 Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH),
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
@@ -53,8 +65,62 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
         super.onResume()
         setupGroupFragment()
 
+        dis add spinnerEventType.itemSelections()
+                .subscribeBy (
+                        onNext = {
+                            binding.other = it == 6
+                        }
+                )
+
         dis add btnSaveManage.clicks()
-                .subscribe()
+                .flatMap {
+                    validateForm(R.string.empty_fields, product.text.toString(), frecuency.text.toString(), productPrice.text.toString(),
+                            observations.text.toString(), assistancePrice.text.toString())
+                }
+                .flatMapSingle {
+                    val manage = createManage(it)
+                    viewModel.insertManage(manage)
+                }
+                .subscribeBy(
+                        onNext = {
+                            toast("Evento registrado")
+                            finish()
+                        },
+                        onError = {
+                            toast(it.message!!)
+                        }
+
+                )
+
+        dis add btnNextManage.clicks()
+                .flatMap {
+                    validateForm(R.string.empty_fields,
+                            when {
+                                spinnerEventType.selectedItem == "Corte de ombligo" -> "Corte de ombligo"
+                                spinnerEventType.selectedItem == "Identificación" -> "Identificación"
+                                spinnerEventType.selectedItem == "Descorne" -> "Descorne"
+                                spinnerEventType.selectedItem == "Arreglo de cascos" -> "Arreglo de cascos"
+                                spinnerEventType.selectedItem == "Castración" -> "Castración"
+                                spinnerEventType.selectedItem == "Secado" -> "Secado"
+                                else -> "Otro"
+                            },
+                            if (spinnerEventType.selectedItem == "Otro") otherWhich.text.toString()
+                            else "No Other",
+                            eventDate.text.toString(), treatment.text.toString(), numberAplications.text.toString()
+                            )
+                }
+                .subscribeBy(
+                        onNext = {
+                            plusPage()
+                        }
+                )
+
+        dis add btnBackManage.clicks()
+                .subscribeBy(
+                        onNext = {
+                            minusPage()
+                        }
+                )
 
         dis add btnCancelManage.clicks()
                 .subscribeByAction (
@@ -67,26 +133,30 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                 .subscribe {datePicker.show()}
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        finish()
-        return true
-    }
-
-    override fun onDateSet(p0: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        eventDate.text = "$dayOfMonth/${month+1}/$year"
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == SelectActivity.REQUEST_SELECT) {
-            if (resultCode == Activity.RESULT_OK) {
-                group = data?.extras?.getParcelable(SelectActivity.DATA_GROUP)
-                bovines = data?.extras?.getStringArray(SelectActivity.DATA_BOVINES)?.toList()
-
-            }else {
-                finish()
-            }
+    private fun createManage(fields: List<String>): RegistroManejo {
+        val producto = fields[0]
+        val frecuencia = fields[1].toInt()
+        val precioProducto = fields[2].toInt()
+        val observaciones = fields[3]
+        val precioAsistencia = fields[4].toInt()
+        val fechaEvento = eventDate.text.toString()
+        val evento = spinnerEventType.selectedItem.toString()
+        var otro: String? = null
+        if (evento == "Otro") {
+            otro = otherWhich.text.toString()
         }
+        val tratamiento = treatment.text.toString()
+        val aplicaciones = numberAplications.text.toString().toInt()
+        var fechaProximo: String? = null
+        if (aplicaciones != 0) {
+            fechaProximo = "${dia + frecuencia}/$mes/$año"
+        }
+
+
+        return RegistroManejo(idFinca = farmId, fecha = fechaEvento.toDate(), fechaProx = fechaProximo?.toDate(), frecuencia = frecuencia, numeroAplicaciones = aplicaciones,
+                aplicacion = 1, tipo = evento, otro = otro, tratamiento = tratamiento, producto = producto, observaciones = observaciones,
+                valorProducto = precioProducto, valorAsistencia = precioAsistencia, grupo = group, bovino = bovines)
+
     }
 
     fun setupGroupFragment(){
@@ -103,6 +173,43 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                     .subscribe { bovines = it }
         }
     }
+
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
+    }
+
+    override fun onDateSet(p0: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+        eventDate.text = "$dayOfMonth/${month+1}/$year"
+        dia = dayOfMonth
+        mes = month
+        año = year
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == SelectActivity.REQUEST_SELECT) {
+            if (resultCode == Activity.RESULT_OK) {
+                group = data?.extras?.getParcelable(SelectActivity.DATA_GROUP)
+                bovines = data?.extras?.getStringArray(SelectActivity.DATA_BOVINES)?.toList()
+
+            }else {
+                finish()
+            }
+        }
+    }
+
+
+
+    private fun plusPage() {
+        binding.page = binding.page!!.plus(1)
+    }
+
+    private fun minusPage() {
+        binding.page = binding.page!!.minus(1)
+    }
+
 
 
 }

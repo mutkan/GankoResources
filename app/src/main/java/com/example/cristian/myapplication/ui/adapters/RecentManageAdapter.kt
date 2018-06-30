@@ -6,13 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.Manage
+import com.example.cristian.myapplication.data.models.RegistroManejo
 import com.example.cristian.myapplication.databinding.TemplateRecentManageBinding
 import com.example.cristian.myapplication.util.inflate
 import javax.inject.Inject
 
 class RecentManageAdapter @Inject constructor(): RecyclerView.Adapter<RecentManageAdapter.RecentManageHolder>(){
 
-    var recentManages: List<Manage> = emptyList()
+    var recentManages: List<RegistroManejo> = emptyList()
         set(value) {
             field = value
             notifyDataSetChanged()

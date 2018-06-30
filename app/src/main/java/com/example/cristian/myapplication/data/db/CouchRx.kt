@@ -246,6 +246,14 @@ class CouchRx @Inject constructor(private val db: Database
         return mapper.convertValue(map, kClass.java)
     }
 
+    fun <T : Any> insertManage(doc: T): Single<String> = Single.create {
+        val document = objectToDocument(doc)
+        document.setArray("channels", MutableArray().addString(session.userId))
+        document.setString("idDosisUno", document.id)
+        db.save(document)
+        it.onSuccess(document.id)
+    }
+
 
 
 }

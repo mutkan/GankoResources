@@ -3,8 +3,10 @@ package com.example.cristian.myapplication.ui.menu.management
 
 import android.arch.lifecycle.ViewModelProvider
 import android.databinding.DataBindingUtil
+import android.databinding.ObservableBoolean
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,12 +35,12 @@ class RecentManageFragment : Fragment(), Injectable {
     val viewModel: MenuViewModel by lazy { buildViewModel<MenuViewModel>(factory) }
     val dis: LifeDisposable = LifeDisposable(this)
     private val idFinca: String by lazy { viewModel.getFarmId() }
+    val isEmpty: ObservableBoolean = ObservableBoolean(false)
 
     @Inject
     lateinit var adapter: RecentManageAdapter
     lateinit var binding: FragmentRecentManageBinding
 
-    //val isEmpty: ObservableBoolean = ObservableBoolean(false)
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -48,18 +50,22 @@ class RecentManageFragment : Fragment(), Injectable {
         return binding.root
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        binding.isEmpty = isEmpty
+        binding.recyclerListManageFragment.adapter = adapter
+    }
+
     override fun onResume() {
         super.onResume()
-        recyclerListManageFragment.adapter = adapter
 
-        dis add viewModel.getManagement(idFinca)
-                .subscribeBy (
-                        onSuccess = {
-                            //isEmpty.set(it.isEmpty())
+
+        dis add viewModel.getManages()
+                .subscribeBy(
+                        onNext = {
+                            Log.d("MANEJOS", it.toString())
+                            isEmpty.set(it.isEmpty())
                             adapter.recentManages = it
-                        },
-                        onError = {
-                            toast(it.message!!)
                         }
                 )
 

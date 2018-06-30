@@ -196,4 +196,11 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
             db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProx".betweenDates(from, to)) andEx ("proxAplicado" equalEx false), RegistroVacuna::class).applySchedulers()
     //endregion
 
+
+    //region Manejo
+    fun insertManage(registroManejo: RegistroManejo): Single<String> = db.insertManage(registroManejo).applySchedulers()
+
+    fun getManages(): Observable<List<RegistroManejo>> = db.listObsByExp("idFinca" equalEx farmID, RegistroManejo::class).applySchedulers()
+    //endregion
+
 }
