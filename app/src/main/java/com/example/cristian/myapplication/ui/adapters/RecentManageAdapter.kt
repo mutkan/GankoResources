@@ -27,6 +27,7 @@ class RecentManageAdapter @Inject constructor(): RecyclerView.Adapter<RecentMana
 
     override fun onBindViewHolder(holder: RecentManageHolder, position: Int) {
         holder.binding?.manage = recentManages[position]
+        holder.binding?.isGroup = recentManages[position].grupo != null
     }
 
     class RecentManageHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
