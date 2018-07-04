@@ -96,8 +96,10 @@ class AddBirthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDat
 
         dis add btnAcceptBirth.clicks()
                 .flatMap { validateFields() }
-                .flatMapSingle { setParto(it) }
-                .flatMapMaybe { viewModel.addParto(idBovino, it) }
+                .flatMapMaybe {
+                    val servicio = setParto(it)
+                    viewModel.addParto(idBovino, servicio)
+                }
                 .subscribeBy(
                         onNext = {
                             finish()
@@ -110,7 +112,7 @@ class AddBirthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDat
         return validateForm(R.string.empty_fields, fecha)
     }
 
-    private fun setParto(params: List<String>): Single<Servicio> {
+    private fun setParto(params: List<String>): Servicio {
         val fecha = params[0].toDate()
         val sexoCria = if (calfSex.checkedRadioButtonId == R.id.male) "Macho" else "Hembra"
         val estadoCria = when (calf.checkedRadioButtonId) {
@@ -121,10 +123,10 @@ class AddBirthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDat
         val dias = binding.diasVacios!!.toInt()
         val numero = binding.numeroParto!!
         val parto = Parto(fecha, intervalo, dias, sexoCria, numero, estadoCria)
-        return Single.just(servicio.apply {
+        return servicio.apply {
             this.finalizado = true
             this.parto = parto
-        })
+        }
 
     }
 

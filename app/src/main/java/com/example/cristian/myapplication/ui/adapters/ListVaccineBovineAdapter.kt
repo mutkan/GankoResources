@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.example.cristian.myapplication.R
+import com.example.cristian.myapplication.data.models.RegistroVacuna
 import com.example.cristian.myapplication.data.models.Vacuna
 import com.example.cristian.myapplication.databinding.TemplateListVaccineBovineBinding
 import com.example.cristian.myapplication.util.inflate
@@ -12,7 +13,7 @@ import javax.inject.Inject
 
 class ListVaccineBovineAdapter @Inject constructor():RecyclerView.Adapter<ListVaccineBovineAdapter.ListVaccineBovineHolder>() {
 
-    var data:List<Vacuna> = listOf()
+    var data:List<RegistroVacuna> = listOf()
     set(value) {
         field = value
         notifyDataSetChanged()
@@ -28,7 +29,7 @@ class ListVaccineBovineAdapter @Inject constructor():RecyclerView.Adapter<ListVa
 
     class ListVaccineBovineHolder(itemList:View):RecyclerView.ViewHolder(itemList){
         val binding : TemplateListVaccineBovineBinding = DataBindingUtil.bind(itemList)!!
-        fun bind(vacuna: Vacuna){
+        fun bind(vacuna: RegistroVacuna){
             binding.vacuna = vacuna
         }
     }

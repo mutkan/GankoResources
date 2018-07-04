@@ -1,56 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <data>
-        <variable
-            name="isEmpty"
-            type="android.databinding.ObservableBoolean"/>
-        <import type="android.view.View"/>
-    </data>
 
-    <android.support.constraint.ConstraintLayout
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.menu.management.ManageFragment">
+        android:layout_height="wrap_content"
+        android:background="@color/management_primary"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerListManageFragment"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:visibility='@{isEmpty ? View.GONE : View.VISIBLE}'
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/template_manage_bovine" />
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/btnAddManageFragment"
-            android:layout_width="wrap_content"
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabsManage"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginEnd="16dp"
-            android:clickable="true"
-            android:src="@drawable/ic_add"
-            app:fabSize="normal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            />
+    </android.support.design.widget.AppBarLayout>
 
-        <TextView
-            android:id="@+id/emptyMsg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility='@{isEmpty ? View.VISIBLE : View.GONE}'
-            android:text="Sin registros de manejo"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </android.support.constraint.ConstraintLayout>
-</layout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pagerManage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

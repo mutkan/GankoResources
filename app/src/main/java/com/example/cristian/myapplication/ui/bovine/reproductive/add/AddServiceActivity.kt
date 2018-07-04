@@ -13,15 +13,12 @@ import com.example.cristian.myapplication.data.models.Servicio
 import com.example.cristian.myapplication.data.models.Straw
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.bovine.reproductive.ListServiceFragment.Companion.ARG_ID
-import com.example.cristian.myapplication.ui.bovine.reproductive.ListZealFragment
 import com.example.cristian.myapplication.ui.bovine.reproductive.ListZealFragment.Companion.ARG_ZEAL
 import com.example.cristian.myapplication.ui.bovine.reproductive.ReproductiveBvnViewModel
 import com.example.cristian.myapplication.util.*
 import com.jakewharton.rxbinding2.view.clicks
-import com.jakewharton.rxbinding2.widget.checked
 import com.jakewharton.rxbinding2.widget.checkedChanges
 import io.reactivex.Observable
-import io.reactivex.Single
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_add_service.*
 import java.util.*
@@ -100,7 +97,7 @@ class AddServiceActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
                         }
                 )
 
-        dis add serviceDateTxt.clicks()
+        dis add serviceDate.clicks()
                 .subscribeBy(
                         onNext = {
                             datePicker.show()
@@ -112,8 +109,8 @@ class AddServiceActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
                     validateFields()
                 }
                 .flatMapSingle {
-                    createService(it)
-                }.flatMapSingle { viewModel.insertService(idBovino, it) }
+                    val servicio = createService(it)
+                    viewModel.insertService(idBovino, servicio) }
                 .subscribeBy(
                         onNext = {
                             finish()
@@ -133,7 +130,7 @@ class AddServiceActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
 
     }
 
-    private fun createService(params: List<String>): Single<Servicio> {
+    private fun createService(params: List<String>): Servicio{
         val fecha = params[0].toDate()
         val condicion = params[1].toDouble()
         val montaN = getString(R.string.monta_natural)
@@ -141,8 +138,7 @@ class AddServiceActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
         val empadre = if (serviceType.checkedRadioButtonId == R.id.naturalMating) montaN else inseminacion
         val codigoToro = if (empadre == montaN) bullCodeOrStrawSpinner.selectedItem.toString() else null
         val pajilla = if (empadre == inseminacion) bullCodeOrStrawSpinner.selectedItem.toString() else null
-        val servicio = Servicio(fecha, celo, condicion, empadre, codigoToro, pajilla, null, null, null, null, false)
-        return Single.just(servicio)
+        return Servicio(fecha, celo, condicion, empadre, codigoToro, pajilla, null, null, null, null, false)
     }
 
     private fun validateFields(): Observable<List<String>> {

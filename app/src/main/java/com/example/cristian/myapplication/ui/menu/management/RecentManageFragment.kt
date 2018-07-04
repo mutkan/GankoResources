@@ -1,4 +1,4 @@
-package com.example.cristian.myapplication.ui.menu.vaccines
+package com.example.cristian.myapplication.ui.menu.management
 
 
 import android.arch.lifecycle.ViewModelProvider
@@ -8,78 +8,80 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 
 import com.example.cristian.myapplication.R
-import com.example.cristian.myapplication.databinding.FragmentVaccinationsBinding
+import com.example.cristian.myapplication.databinding.FragmentRecentManageBinding
 import com.example.cristian.myapplication.di.Injectable
-import com.example.cristian.myapplication.ui.adapters.VaccineAdapter
-import com.example.cristian.myapplication.ui.adapters.VaccineAdapter.Companion.TYPE_VACCINATIONS
+import com.example.cristian.myapplication.ui.adapters.RecentManageAdapter
+import com.example.cristian.myapplication.ui.manage.AddManageActivity
 import com.example.cristian.myapplication.ui.menu.MenuViewModel
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
+import com.example.cristian.myapplication.util.subscribeByAction
 import com.jakewharton.rxbinding2.view.clicks
 import io.reactivex.rxkotlin.subscribeBy
-import kotlinx.android.synthetic.main.fragment_vaccinations.*
+import kotlinx.android.synthetic.main.fragment_recent_manage.*
 import org.jetbrains.anko.support.v4.startActivity
+import org.jetbrains.anko.support.v4.toast
 import javax.inject.Inject
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
-/**
- * A simple [Fragment] subclass.
- *
- */
-class VaccinationsFragment : Fragment(), Injectable {
+class RecentManageFragment : Fragment(), Injectable {
 
     @Inject
     lateinit var factory: ViewModelProvider.Factory
-    lateinit var binding: FragmentVaccinationsBinding
-    @Inject
-    lateinit var adapter: VaccineAdapter
     val viewModel: MenuViewModel by lazy { buildViewModel<MenuViewModel>(factory) }
     val dis: LifeDisposable = LifeDisposable(this)
+    private val idFinca: String by lazy { viewModel.getFarmId() }
     val isEmpty: ObservableBoolean = ObservableBoolean(false)
+
+    @Inject
+    lateinit var adapter: RecentManageAdapter
+    lateinit var binding: FragmentRecentManageBinding
+
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_vaccinations, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_recent_manage, container, false)
         return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         binding.isEmpty = isEmpty
-        binding.vaccinationsList.adapter = adapter.apply { tipo = TYPE_VACCINATIONS }
+        binding.recyclerListManageFragment.adapter = adapter
     }
 
     override fun onResume() {
         super.onResume()
-        dis add viewModel.getVaccinations()
+
+
+        dis add viewModel.getManages()
                 .subscribeBy(
                         onNext = {
-                            Log.d("VACUNAS", it.toString())
+                            Log.d("MANEJOS", it.toString())
                             isEmpty.set(it.isEmpty())
-                            adapter.data = it
+                            adapter.recentManages = it
                         }
                 )
-        dis add fabAddVaccination.clicks()
-                .subscribeBy(
+
+        dis add btnAddManageFragment.clicks()
+                .subscribeByAction(
                         onNext = {
-                            startActivity<AddVaccineActivity>()
-                        }
+                            startActivity<AddManageActivity>()
+                        },
+                        onHttpError = {},
+                        onError = {}
                 )
     }
 
 
     companion object {
-        fun instance() = VaccinationsFragment()
+        fun instance(): RecentManageFragment = RecentManageFragment()
     }
-
 
 }

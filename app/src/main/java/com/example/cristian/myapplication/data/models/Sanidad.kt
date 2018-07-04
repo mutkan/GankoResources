@@ -11,7 +11,7 @@ class Sanidad(
         var type:String ? = null,
         var idFarm: String? = null,
         var fecha: Date? = null,
-        var fechaProx: Date? = null, //Calculo automatico
+        var fechaProxima: Date? = null, //Calculo automatico
         var frecuencia: Float? = null,
         var evento: String? = null,
         var otra: String? = null,

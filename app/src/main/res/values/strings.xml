@@ -279,6 +279,10 @@
     </string-array>
 
     <string-array name="event_type">
+        <item>Corte de ombligo</item>
+        <item>Identificación</item>
+        <item>Descorne</item>
+        <item>Arreglo de cascos</item>
         <item>Castración</item>
         <item>Secado</item>
         <item>Otro</item>
@@ -323,6 +327,14 @@
     <string name="applications_number">Número de aplicaciones</string>
     <string name="channel_name">Ganko Alertas</string>
     <string name="channel_description">Alertas de proximos eventos</string>
+    <string name="frequency_in_days">Frecuencia en días</string>
+    <string name="bovine_number">Núemro de bovinos</string>
+    <string name="recents">Recientes</string>
+    <string name="next">Próximos</string>
+    <string name="no_health_register">No hay registros de sanidad</string>
+    <string name="number_of_aplications">Numero de aplicaciones</string>
+    <string name="assistance_price">Valor asistencia</string>
+    <string name="aplication">Aplicación</string>
 
     <string-array name="milk_production">
         <item>Litros vendidos</item>
@@ -338,6 +350,22 @@
         <item>Otra</item>
     </string-array>
 
+    <string-array name="vaccines">
+        <item>Fiebre Aftosa</item>
+        <item>Rabia</item>
+        <item>Carbon Sintomatico</item>
+        <item>Edema Maligno</item>
+        <item>Septicemia Hemorragica</item>
+        <item>Carbon Bacteriano</item>
+        <item>Brucelosis</item>
+        <item>Otra</item>
+    </string-array>
 
+    <string-array name="time_units">
+        <item>Horas</item>
+        <item>Días</item>
+        <item>Meses</item>
+        <item>Años</item>
+    </string-array>
 
 </resources>

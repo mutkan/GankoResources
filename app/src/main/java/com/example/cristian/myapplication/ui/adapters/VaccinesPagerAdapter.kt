@@ -3,15 +3,16 @@ package com.example.cristian.myapplication.ui.adapters
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentStatePagerAdapter
 import com.example.cristian.myapplication.R
-import com.example.cristian.myapplication.ui.menu.health.HealthFragment
-import com.example.cristian.myapplication.ui.menu.health.NextHealthFragment
-import com.example.cristian.myapplication.ui.menu.health.RecentHealthFragment
+import com.example.cristian.myapplication.ui.menu.vaccines.RevaccinationFragment
+import com.example.cristian.myapplication.ui.menu.vaccines.VaccinationsFragment
+import com.example.cristian.myapplication.ui.menu.vaccines.VaccinesFragment
 import javax.inject.Inject
 
-class HealthAdapter @Inject constructor(val fragment: HealthFragment) : FragmentStatePagerAdapter(fragment.childFragmentManager) {
+class VaccinesPagerAdapter @Inject constructor(val fragment:VaccinesFragment): FragmentStatePagerAdapter(fragment.childFragmentManager) {
+
     override fun getItem(position: Int): Fragment = when(position){
-        0 -> RecentHealthFragment.instance()
-        else -> NextHealthFragment.instance()
+        0 -> VaccinationsFragment.instance()
+        else -> RevaccinationFragment.instance()
     }
 
     override fun getCount(): Int = 2

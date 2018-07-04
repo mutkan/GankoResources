@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+    <data>
+        <variable
+            name="manage"
+            type="com.example.cristian.myapplication.data.models.RegistroManejo"/>
+        <variable
+            name="isGroup"
+            type="Boolean"/>
+        <import type="android.view.View"/>
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/numberGroup"
+            app:srcCompat="@color/menu_button_light" />
+
+        <TextView
+            android:id="@+id/event_name"
+            style="@style/TextAppearance.AppCompat.Body2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:text="@{manage.tipo}"
+            app:layout_constraintEnd_toStartOf="@+id/manage_date"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Nombre del evento" />
+
+        <TextView
+            android:id="@+id/manage_date"
+            style="@style/TextAppearance.AppCompat.Caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:layout_marginTop="24dp"
+            app:dateFormat="@{manage.fecha}"
+            app:layout_constraintBottom_toBottomOf="@+id/event_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="15/02/2018" />
+
+
+        <TextView
+            android:id="@+id/text26"
+            style="@style/textview_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/manage_treatment"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/event_name"
+            tools:text="Tratamiento" />
+
+        <TextView
+            android:id="@+id/manage_treatment"
+            style="@style/TextAppearance.AppCompat.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:text="@{manage.tratamiento}"
+            android:textColor="@color/menu_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text26"
+            tools:text="Masaje" />
+
+        <TextView
+            android:id="@+id/textView27"
+            style="@style/textview_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/manage_product"
+            app:layout_constraintBottom_toBottomOf="@+id/text26"
+            app:layout_constraintStart_toStartOf="@+id/guideline13"
+            tools:text="Producto" />
+
+        <TextView
+            android:id="@+id/manage_product"
+            style="@style/TextAppearance.AppCompat.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{manage.producto}"
+            android:textColor="@color/menu_button"
+            app:layout_constraintBottom_toBottomOf="@+id/manage_treatment"
+            app:layout_constraintStart_toStartOf="@+id/textView27"
+            tools:text="Spray Antibacterial" />
+
+        <TextView
+            android:id="@+id/textView18"
+            style="@style/textview_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:text="Frecuencia"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/manage_treatment"
+            tools:text="Frecuencia" />
+
+        <TextView
+            android:id="@+id/manage_frequency"
+            style="@style/TextAppearance.AppCompat.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:text='@{manage.frecuencia+" veces al día"}'
+            android:textColor="@color/menu_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView18"
+            tools:text="0.5 veces al día" />
+
+        <TextView
+            android:id="@+id/textView26"
+            style="@style/textview_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:text="Observaciones"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView136"
+            tools:text="Observaciones" />
+
+        <TextView
+            android:id="@+id/manage_observations"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:text="@{manage.observaciones}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView26"
+            tools:text="Observaciones" />
+
+        <TextView
+            android:id="@+id/textView129"
+            style="@style/textview_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/number_of_aplications"
+            app:layout_constraintBottom_toBottomOf="@+id/textView18"
+            app:layout_constraintStart_toStartOf="@+id/guideline13" />
+
+        <TextView
+            android:id="@+id/numberAplications"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="@+id/textView129"
+            app:layout_constraintTop_toBottomOf="@+id/textView129"
+            android:text='@{""+manage.numeroAplicaciones}'
+            tools:text="4" />
+
+        <TextView
+            android:id="@+id/textView131"
+            style="@style/textview_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/aplication"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/manage_frequency" />
+
+        <TextView
+            android:id="@+id/aplication"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView131"
+            android:text='@{""+manage.aplicacion}'
+            tools:text="1" />
+
+        <TextView
+            android:id="@+id/textView133"
+            style="@style/textview_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/product_value"
+            app:layout_constraintBottom_toBottomOf="@+id/textView131"
+            app:layout_constraintStart_toStartOf="@+id/guideline13" />
+
+        <TextView
+            android:id="@+id/productValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/aplication"
+            app:layout_constraintStart_toStartOf="@+id/textView133"
+            android:text='@{"$ "+ manage.valorProducto}'
+            tools:text="$ 40000" />
+
+        <TextView
+            android:id="@+id/textView135"
+            style="@style/textview_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/assistance_price"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/aplication" />
+
+        <TextView
+            android:id="@+id/textView136"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="@+id/textView135"
+            app:layout_constraintTop_toBottomOf="@+id/textView135"
+            android:text='@{"$ "+ manage.valorAsistencia}'
+            tools:text="$ 55300" />
+
+        <ImageView
+            android:id="@+id/iconBovine"
+            android:layout_width="@dimen/select_resume"
+            android:layout_height="@dimen/select_resume"
+            android:layout_marginEnd="8dp"
+            android:visibility='@{isGroup == true ? View.GONE : View.VISIBLE}'
+            app:layout_constraintBottom_toBottomOf="@+id/numberBovine"
+            app:layout_constraintEnd_toStartOf="@+id/numberBovine"
+            app:layout_constraintTop_toTopOf="@+id/numberBovine"
+            app:layout_constraintVertical_bias="1.0"
+            app:srcCompat="@drawable/ic_bovine_grey" />
+
+        <ImageView
+            android:id="@+id/iconGroup"
+            android:layout_width="@dimen/select_resume"
+            android:layout_height="@dimen/select_resume"
+            android:layout_marginEnd="8dp"
+            android:visibility='@{isGroup == true ? View.VISIBLE : View.GONE}'
+            app:layout_constraintBottom_toBottomOf="@+id/numberGroup"
+            app:layout_constraintEnd_toStartOf="@+id/numberGroup"
+            app:layout_constraintTop_toTopOf="@+id/numberGroup"
+            app:srcCompat="@drawable/ic_group_grey" />
+
+        <TextView
+            android:id="@+id/numberBovine"
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginTop="16dp"
+            android:text='@{""+manage.bovino.size()}'
+            android:visibility='@{isGroup == true ? View.GONE : View.VISIBLE}'
+            app:layout_constraintBottom_toTopOf="@+id/imageView4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/manage_observations"
+            tools:text="130" />
+
+        <TextView
+            android:id="@+id/numberGroup"
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginTop="16dp"
+            android:text='@{""+manage.grupo.bovines.size()}'
+            android:visibility='@{isGroup == true ? View.VISIBLE : View.GONE}'
+            app:layout_constraintBottom_toTopOf="@+id/imageView4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/manage_observations"
+            tools:text="130" />
+
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

@@ -36,7 +36,7 @@ infix fun String.likeEx(value: String): Expression = Expression.property(this)
 // LOGICAL
 infix fun Expression.andEx(expression: Expression): Expression = this.and(expression)
 
-infix fun Expression.orEx(expression: Expression): Expression = this.and(expression)
+infix fun Expression.orEx(expression: Expression): Expression = this.or(expression)
 
 infix fun Expression.betweenEx(expressions: List<Expression>) =
         this.between(expressions[0], expressions[1])
@@ -67,3 +67,5 @@ private fun makeExpressionArray(values: List<Any>): List<Expression> {
     values.forEach { exps.add(makeExpressionValue(it)) }
     return exps
 }
+
+fun String.betweenDates(from:Date, to:Date):Expression = Expression.property(this).between(Expression.date(from), Expression.date(to))

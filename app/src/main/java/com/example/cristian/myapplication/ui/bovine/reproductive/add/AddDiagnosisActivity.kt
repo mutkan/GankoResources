@@ -99,9 +99,9 @@ class AddDiagnosisActivity : AppCompatActivity(), Injectable, DatePickerDialog.O
 
         dis add btnAcceptDiagnosis.clicks()
                 .flatMap { validateFields() }
-                .flatMapSingle { if (type == TYPE_DIAGNOSIS) setDiagnosis(it) else setNovedad(it) }
                 .flatMapMaybe {
-                    viewModel.updateServicio(idBovino, it)
+                    val servicio = if (type == TYPE_DIAGNOSIS) setDiagnosis(it) else setNovedad(it)
+                    viewModel.updateServicio(idBovino, servicio)
                 }
                 .subscribeBy(
                         onNext = {
@@ -115,27 +115,27 @@ class AddDiagnosisActivity : AppCompatActivity(), Injectable, DatePickerDialog.O
         return validateForm(R.string.empty_fields, fecha)
     }
 
-    private fun setDiagnosis(params: List<String>): Single<Servicio> {
+    private fun setDiagnosis(params: List<String>): Servicio {
         val fecha = params[0].toDate()
         val confirmacion = pregnant.isChecked
         val diagnostico = Diagnostico(fecha, confirmacion)
         val fechaPosParto = if (confirmacion) posibleParto else null
-        return Single.just(servicio.apply {
+        return servicio.apply {
             this.diagnostico = diagnostico
             this.posFechaParto = fechaPosParto
             this.finalizado = confirmacion.not()
-        })
+        }
     }
 
-    private fun setNovedad(params: List<String>): Single<Servicio> {
+    private fun setNovedad(params: List<String>): Servicio {
         val fecha = params[0].toDate()
         val novedad = noveltySpinner.selectedItem.toString()
         val mNovedad = Novedad(fecha, novedad)
 
-        return Single.just(servicio.apply {
+        return servicio.apply {
             this.novedad = mNovedad
             this.finalizado = true
-        })
+        }
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {

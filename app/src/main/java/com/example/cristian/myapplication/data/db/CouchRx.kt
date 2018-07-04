@@ -85,11 +85,13 @@ class CouchRx @Inject constructor(private val db: Database
     fun listByQuery(query: Query): Single<ResultSet> =
             Single.create<ResultSet> { it.onSuccess(query.execute()) }
 
-    fun <T : Any> listByExp(expression: Expression, kClass: KClass<T>, limit: Int? = null, skip: Int? = null): Single<List<T>> = Single.create<ResultSet> {
+    fun <T : Any> listByExp(expression: Expression, kClass: KClass<T>, limit: Int? = null, skip: Int? = null, orderBy:Array<Ordering> = emptyArray()): Single<List<T>> = Single.create<ResultSet> {
         val query = QueryBuilder
                 .select(SelectResult.all(), SelectResult.expression(Meta.id), SelectResult.expression(Meta.sequence))
                 .from(DataSource.database(db))
                 .where(expression andEx ("type" equalEx kClass.simpleName.toString()))
+                .orderBy(*orderBy)
+
 
         val result: ResultSet = if (limit != null && skip != null)
             query.limit(Expression.intValue(limit), Expression.intValue(skip)).execute()
@@ -242,6 +244,14 @@ class CouchRx @Inject constructor(private val db: Database
         map["_id"] = id
         map["_sequence"] = sequence
         return mapper.convertValue(map, kClass.java)
+    }
+
+    fun <T : Any> insertManage(doc: T): Single<String> = Single.create {
+        val document = objectToDocument(doc)
+        document.setArray("channels", MutableArray().addString(session.userId))
+        document.setString("idDosisUno", document.id)
+        db.save(document)
+        it.onSuccess(document.id)
     }
 
 

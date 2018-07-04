@@ -30,6 +30,7 @@ import com.example.cristian.myapplication.ui.groups.AddGroupActivity
 import com.example.cristian.myapplication.ui.groups.BovineSelectedActivity
 import com.example.cristian.myapplication.ui.groups.SaveGroupActivity
 import com.example.cristian.myapplication.ui.groups.SelectActivity
+import com.example.cristian.myapplication.ui.manage.AddManageActivity
 import com.example.cristian.myapplication.ui.menu.MenuActivity
 import com.example.cristian.myapplication.ui.menu.health.AddHealthActivity
 import com.example.cristian.myapplication.ui.menu.meadow.ManageMeadowActivity
@@ -135,6 +136,11 @@ abstract class ActivityComponents {
     @ActivityScope
     @ContributesAndroidInjector()
     abstract  fun bindAddFeedActivity(): AddFeedActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector()
+    abstract fun bindAddManageActivity(): AddManageActivity
+
     @ActivityScope
     @ContributesAndroidInjector(modules = [MeadowModule::class])
     abstract fun bindManageMeadowActivity(): ManageMeadowActivity

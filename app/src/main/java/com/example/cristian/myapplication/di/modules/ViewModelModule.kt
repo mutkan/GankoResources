@@ -2,6 +2,7 @@ package com.example.cristian.myapplication.di.modules
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
+import com.example.cristian.myapplication.data.models.Manage
 import com.example.cristian.myapplication.di.ViewModelKey
 import com.example.cristian.myapplication.ui.account.AccountViewModel
 import com.example.cristian.myapplication.ui.bovine.BovineViewModel
@@ -16,6 +17,7 @@ import com.example.cristian.myapplication.ui.bovine.vaccination.VaccinationBvnVi
 import com.example.cristian.myapplication.ui.farms.FarmViewModel
 import com.example.cristian.myapplication.ui.groups.GroupViewModel
 import com.example.cristian.myapplication.ui.feed.FeedViewModel
+import com.example.cristian.myapplication.ui.manage.ManageViewModel
 import com.example.cristian.myapplication.ui.menu.MenuViewModel
 import com.example.cristian.myapplication.ui.menu.health.HealthViewModel
 import com.example.cristian.myapplication.ui.menu.meadow.MeadowViewModel
@@ -96,6 +98,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(FeedViewModel::class)
     abstract fun bindFeedViewModel(viewModel: FeedViewModel):ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ManageViewModel::class)
+    abstract fun bindManageViewModel(viewModel: ManageViewModel): ViewModel
 
     @Binds
     @IntoMap
