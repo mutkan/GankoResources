@@ -190,25 +190,12 @@ fun <T> Fragment.dialog(msg: Int, data: T) = Observable.create<T> { emitter ->
     }.show()
 }
 
-fun Date.addMonths(months: Int?): Date?
-    = if (months != 0 && months != null) {
-        val calendar = Calendar.getInstance().apply {
-            timeInMillis = this@addMonths.time
-        }
-        calendar.add(Calendar.MONTH, months)
-        Date(calendar.timeInMillis)
-    } else {
-        null
+fun Date.add(field: Int?, amount: Int?): Date? = if (amount != 0 && amount != null && field != null) {
+    val calendar = Calendar.getInstance().apply {
+        timeInMillis = this@add.time
     }
-
-
-fun Date.addDays(days: Int?): Date?
-    = if (days != 0 && days != null) {
-        val calendar = Calendar.getInstance().apply {
-            timeInMillis = this@addDays.time
-        }
-        calendar.add(Calendar.DATE, days)
-        Date(calendar.timeInMillis)
-    } else {
-        null
-    }
+    calendar.add(field, amount)
+    Date(calendar.timeInMillis)
+} else {
+    null
+}

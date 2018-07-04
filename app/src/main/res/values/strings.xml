@@ -359,4 +359,11 @@
         <item>Otra</item>
     </string-array>
 
+    <string-array name="time_units">
+        <item>Horas</item>
+        <item>Días</item>
+        <item>Meses</item>
+        <item>Años</item>
+    </string-array>
+
 </resources>

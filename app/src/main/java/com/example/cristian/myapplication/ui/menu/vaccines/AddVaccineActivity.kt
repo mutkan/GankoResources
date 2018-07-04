@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.DatePickerDialog
 import android.arch.lifecycle.ViewModelProvider
 import android.content.Intent
+import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
@@ -13,6 +14,7 @@ import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.Group
 import com.example.cristian.myapplication.data.models.RegistroVacuna
 import com.example.cristian.myapplication.data.models.toGrupo
+import com.example.cristian.myapplication.databinding.ActivityAddVaccineBinding
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.groups.GroupFragment
 import com.example.cristian.myapplication.ui.groups.SelectActivity
@@ -38,12 +40,14 @@ class AddVaccineActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
     var group: Group? = null
     var bovines: List<String>? = null
     val calendar: Calendar by lazy { Calendar.getInstance() }
+    lateinit var binding: ActivityAddVaccineBinding
     val datePicker: DatePickerDialog by lazy {
         DatePickerDialog(this, this,
                 calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH))
     }
     val vacunas: Array<String> by lazy { resources.getStringArray(R.array.vaccines) }
+    val unidades: Array<String> by lazy { resources.getStringArray(R.array.time_units) }
     var nombreVacuna: String = ""
         set(value) {
             field = value
@@ -65,7 +69,10 @@ class AddVaccineActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_vaccine)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_add_vaccine)
+//        binding.edit = true
+//        binding.vaccineSpinner.isEnabled = false
+//        binding.vaccineDose.isEnabled = false
         fixColor(7)
         title = "Registrar Vacuna"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -152,9 +159,11 @@ class AddVaccineActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
                             if (it && nombreVacuna == "Otra") {
                                 nextApplicationTxt.visibility = View.VISIBLE
                                 nextApplicationVaccine.visibility = View.VISIBLE
+                                timeUnitsSpinner.visibility = View.VISIBLE
                             } else {
                                 nextApplicationTxt.visibility = View.GONE
                                 nextApplicationVaccine.visibility = View.GONE
+                                timeUnitsSpinner.visibility = View.GONE
                             }
                         }
                 )
@@ -199,16 +208,23 @@ class AddVaccineActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
             fields.getOrNull(3)?.toInt() ?: 0
         }
         val proximaAplicacion = if (revaccinationRequired.isChecked) fields.last().toInt() else null
+        val unidadTiempo = unidades[timeUnitsSpinner.selectedItemPosition]
+        val fechaProx = when (unidadTiempo) {
+            "Horas" -> fecha.add(Calendar.HOUR, proximaAplicacion)
+            "Días" -> fecha.add(Calendar.DATE, proximaAplicacion)
+            "Meses" -> fecha.add(Calendar.MONTH, proximaAplicacion)
+            else -> fecha.add(Calendar.YEAR, proximaAplicacion)
+        }
         Log.d("BOVINOS", bovines.toString())
         return when (nombreVacuna) {
-            "Fiebre Aftosa" -> RegistroVacuna(nombre = nombreVacuna, dosisMl = 5, frecuenciaMeses = 6, fecha = fecha, fechaProx = fecha.addMonths(6), valor = valor, idFinca = idFinca, grupo = group?.toGrupo(), bovinos = bovines, proxAplicado = false)
-            "Rabia" -> RegistroVacuna(nombre = nombreVacuna, dosisMl = 5, frecuenciaMeses = 12, fecha = fecha, fechaProx = fecha.addMonths(12), valor = valor, idFinca = idFinca, grupo = group?.toGrupo(), bovinos = bovines, proxAplicado = false)
-            "Carbón Sintomático" -> RegistroVacuna(nombre = nombreVacuna, dosisMl = 5, frecuenciaMeses = 12, fecha = fecha, fechaProx = fecha.addMonths(12), valor = valor, idFinca = idFinca, grupo = group?.toGrupo(), bovinos = bovines, proxAplicado = false)
-            "Edema Maligno" -> RegistroVacuna(nombre = nombreVacuna, dosisMl = 5, frecuenciaMeses = 12, fecha = fecha, fechaProx = fecha.addMonths(12), valor = valor, idFinca = idFinca, grupo = group?.toGrupo(), bovinos = bovines, proxAplicado = false)
-            "Septicemia Hemorrágica" -> RegistroVacuna(nombre = nombreVacuna, dosisMl = 5, frecuenciaMeses = 12, fecha = fecha, fechaProx = fecha.addMonths(12), valor = valor, idFinca = idFinca, grupo = group?.toGrupo(), bovinos = bovines, proxAplicado = false)
-            "Carbón Bacteridiano" -> RegistroVacuna(nombre = nombreVacuna, dosisMl = 2, frecuenciaMeses = 12, fecha = fecha, fechaProx = fecha.addMonths(12), valor = valor, idFinca = idFinca, grupo = group?.toGrupo(), bovinos = bovines, proxAplicado = false)
+            "Fiebre Aftosa" -> RegistroVacuna(nombre = nombreVacuna, dosisMl = 5, frecuenciaMeses = 6, fecha = fecha, fechaProx = fecha.add(Calendar.MONTH, 6), valor = valor, idFinca = idFinca, grupo = group?.toGrupo(), bovinos = bovines, proxAplicado = false)
+            "Rabia" -> RegistroVacuna(nombre = nombreVacuna, dosisMl = 5, frecuenciaMeses = 12, fecha = fecha, fechaProx = fecha.add(Calendar.MONTH, 12), valor = valor, idFinca = idFinca, grupo = group?.toGrupo(), bovinos = bovines, proxAplicado = false)
+            "Carbón Sintomático" -> RegistroVacuna(nombre = nombreVacuna, dosisMl = 5, frecuenciaMeses = 12, fecha = fecha, fechaProx = fecha.add(Calendar.MONTH, 12), valor = valor, idFinca = idFinca, grupo = group?.toGrupo(), bovinos = bovines, proxAplicado = false)
+            "Edema Maligno" -> RegistroVacuna(nombre = nombreVacuna, dosisMl = 5, frecuenciaMeses = 12, fecha = fecha, fechaProx = fecha.add(Calendar.MONTH, 12), valor = valor, idFinca = idFinca, grupo = group?.toGrupo(), bovinos = bovines, proxAplicado = false)
+            "Septicemia Hemorrágica" -> RegistroVacuna(nombre = nombreVacuna, dosisMl = 5, frecuenciaMeses = 12, fecha = fecha, fechaProx = fecha.add(Calendar.MONTH, 12), valor = valor, idFinca = idFinca, grupo = group?.toGrupo(), bovinos = bovines, proxAplicado = false)
+            "Carbón Bacteridiano" -> RegistroVacuna(nombre = nombreVacuna, dosisMl = 2, frecuenciaMeses = 12, fecha = fecha, fechaProx = fecha.add(Calendar.MONTH, 12), valor = valor, idFinca = idFinca, grupo = group?.toGrupo(), bovinos = bovines, proxAplicado = false)
             "Brucelosis" -> RegistroVacuna(nombre = nombreVacuna, dosisMl = 5, frecuenciaMeses = null, fecha = fecha, fechaProx = null, valor = valor, idFinca = idFinca, grupo = group?.toGrupo(), bovinos = bovines, proxAplicado = false)
-            else -> RegistroVacuna(nombre = nombreOtra, dosisMl = dosis, frecuenciaMeses = proximaAplicacion, fecha = fecha, fechaProx = fecha.addMonths(proximaAplicacion), valor = valor, idFinca = idFinca, grupo = group?.toGrupo(), bovinos = bovines, proxAplicado = false)
+            else -> RegistroVacuna(nombre = nombreOtra, dosisMl = dosis, frecuenciaMeses = proximaAplicacion, fecha = fecha, fechaProx = fechaProx, valor = valor, idFinca = idFinca, grupo = group?.toGrupo(), bovinos = bovines, proxAplicado = false)
 
         }
     }
