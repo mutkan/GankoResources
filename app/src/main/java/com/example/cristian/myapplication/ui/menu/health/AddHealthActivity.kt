@@ -21,6 +21,7 @@ import com.jakewharton.rxbinding2.view.clicks
 import com.jakewharton.rxbinding2.widget.itemSelections
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_add_health.*
+import kotlinx.android.synthetic.main.notification_template_part_time.*
 import org.jetbrains.anko.startActivityForResult
 import org.jetbrains.anko.toast
 import java.util.*
@@ -36,7 +37,7 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
     private val farmId by lazy { menuViewModel.getFarmId() }
     lateinit var datePicker: DatePickerDialog
     lateinit var binding: ActivityAddHealthBinding
-
+    val currentDate : Date = Date()
     var groupFragment: GroupFragment? = null
     var group: Group? = null
     var bovines: List<String>? = null
@@ -143,7 +144,23 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
     }
 
     private fun plusPage() {
+        val date : Int = Date().date
+        val frecuencydates :List<Int> = emptyList()
+        val times = binding.frequency.text.toString().toInt()
+        var contador = 0
         binding.page = binding.page!!.plus(1)
+        when(frecuencyOptionsHealth.selectedItem){
+            0 -> {  val dates = (currentDate.addDays(8)!!.date - currentDate.date)/times
+                    while ( contador<times){
+                            val dateItem = currentDate.date + dates
+                            frecuencydates.plus(dateItem)
+                            contador++}
+            }
+            1 -> {}
+            2 -> {}
+            3 -> {}
+            4 -> {}
+        }
     }
 
     private fun minusPage() {
