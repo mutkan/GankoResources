@@ -321,6 +321,8 @@
     <string name="event">Evento</string>
     <string name="times_a_day">veces al dia</string>
     <string name="applications_number">Número de aplicaciones</string>
+    <string name="channel_name">Ganko Alertas</string>
+    <string name="channel_description">Alertas de proximos eventos</string>
 
     <string-array name="milk_production">
         <item>Litros vendidos</item>
