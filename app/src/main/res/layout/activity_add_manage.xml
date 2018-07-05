@@ -60,6 +60,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
+                    <Spinner
+                        android:id="@+id/spinnerFrecuency"
+                        style="@style/Widget.AppCompat.Spinner.Underlined"
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:entries="@array/time_units"
+                        app:layout_constraintBottom_toBottomOf="@+id/frecuency"
+                        app:layout_constraintEnd_toEndOf="@+id/frecuencyLabel"
+                        app:layout_constraintTop_toTopOf="@+id/frecuency" />
+
                     <TextView
                         android:id="@+id/productLabel"
                         style="@style/textview_label"
@@ -104,9 +114,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:ems="10"
-                        android:hint="@string/frecuency_in_days"
+                        android:hint="@string/frecuency"
                         android:inputType="number"
-                        app:layout_constraintEnd_toEndOf="@+id/frecuencyLabel"
+                        app:layout_constraintEnd_toStartOf="@+id/spinnerFrecuency"
                         app:layout_constraintStart_toStartOf="@+id/frecuencyLabel"
                         app:layout_constraintTop_toBottomOf="@+id/frecuencyLabel" />
 
@@ -115,9 +125,10 @@
                         style="@style/textview_label"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
                         android:layout_marginTop="16dp"
                         android:text="@string/price"
-                        app:layout_constraintEnd_toEndOf="@+id/frecuency"
+                        app:layout_constraintEnd_toEndOf="@+id/spinnerFrecuency"
                         app:layout_constraintStart_toStartOf="@+id/frecuency"
                         app:layout_constraintTop_toBottomOf="@+id/frecuency" />
 
@@ -227,7 +238,7 @@
                         android:id="@+id/whichLabel"
                         style="@style/textview_label"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="21dp"
                         android:layout_marginTop="16dp"
                         android:text="@string/other_which"
                         android:visibility='@{other == true ? View.VISIBLE : View.GONE}'
@@ -243,8 +254,8 @@
                         android:layout_marginTop="8dp"
                         android:ems="10"
                         android:hint="@string/write_the_other_event_type"
-                        android:visibility='@{other == true ? View.VISIBLE : View.GONE}'
                         android:inputType="textAutoCorrect"
+                        android:visibility='@{other == true ? View.VISIBLE : View.GONE}'
                         app:layout_constraintEnd_toEndOf="@+id/whichLabel"
                         app:layout_constraintStart_toStartOf="@+id/whichLabel"
                         app:layout_constraintTop_toBottomOf="@+id/whichLabel" />

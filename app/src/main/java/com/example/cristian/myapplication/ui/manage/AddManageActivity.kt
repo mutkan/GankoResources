@@ -39,8 +39,8 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
     private val farmId by lazy { viewModel.getFarmId() }
 
     var dia: Int = 0
-    var mes : Int = 0
-    var año : Int = 0
+    var mes: Int = 0
+    var año: Int = 0
 
     var groupFragment: GroupFragment? = null
     var group: Group? = null
@@ -66,7 +66,7 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
         setupGroupFragment()
 
         dis add spinnerEventType.itemSelections()
-                .subscribeBy (
+                .subscribeBy(
                         onNext = {
                             binding.other = it == 6
                         }
@@ -107,7 +107,7 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                             if (spinnerEventType.selectedItem == "Otro") otherWhich.text.toString()
                             else "No Other",
                             eventDate.text.toString(), treatment.text.toString(), numberAplications.text.toString()
-                            )
+                    )
                 }
                 .subscribeBy(
                         onNext = {
@@ -123,23 +123,24 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                 )
 
         dis add btnCancelManage.clicks()
-                .subscribeByAction (
-                        onNext = {finish()},
-                        onHttpError = {toast(it)},
-                        onError = {toast(it.message!!)}
+                .subscribeByAction(
+                        onNext = { finish() },
+                        onHttpError = { toast(it) },
+                        onError = { toast(it.message!!) }
                 )
 
         dis add eventDate.clicks()
-                .subscribe {datePicker.show()}
+                .subscribe { datePicker.show() }
     }
 
     private fun createManage(fields: List<String>): RegistroManejo {
         val producto = fields[0]
         val frecuencia = fields[1].toInt()
+        val unidadTiempo = spinnerFrecuency.selectedItem.toString()
         val precioProducto = fields[2].toInt()
         val observaciones = fields[3]
         val precioAsistencia = fields[4].toInt()
-        val fechaEvento = eventDate.text.toString()
+        val fechaEvento = eventDate.text.toString().toDate()
         val evento = spinnerEventType.selectedItem.toString()
         var otro: String? = null
         if (evento == "Otro") {
@@ -147,19 +148,26 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
         }
         val tratamiento = treatment.text.toString()
         val aplicaciones = numberAplications.text.toString().toInt()
-        var fechaProximo: String? = null
-        if (aplicaciones != 0) {
-            fechaProximo = "${dia + frecuencia}/$mes/$año"
+        var fechaProximo = if (aplicaciones != 0) {
+            when (unidadTiempo) {
+                "Horas" -> fechaEvento.add(Calendar.HOUR, frecuencia)
+                "Días" -> fechaEvento.add(Calendar.DATE, frecuencia)
+                "Meses" -> fechaEvento.add(Calendar.MONTH, frecuencia)
+                else -> fechaEvento.add(Calendar.YEAR, frecuencia)
+            }
+        }else {
+            null
         }
 
 
-        return RegistroManejo(idFinca = farmId, fecha = fechaEvento.toDate(), fechaProx = fechaProximo?.toDate(), frecuencia = frecuencia, numeroAplicaciones = aplicaciones,
+
+        return RegistroManejo(idFinca = farmId, fecha = fechaEvento, fechaProx = fechaProximo, frecuencia = frecuencia, numeroAplicaciones = aplicaciones,
                 aplicacion = 1, tipo = evento, otro = otro, tratamiento = tratamiento, producto = producto, observaciones = observaciones,
                 valorProducto = precioProducto, valorAsistencia = precioAsistencia, grupo = group, bovino = bovines)
 
     }
 
-    fun setupGroupFragment(){
+    fun setupGroupFragment() {
         if ((group != null || bovines != null) && groupFragment == null) {
             groupFragment = if (group != null) GroupFragment.instance(12, group!!)
             else GroupFragment.instance(12, bovines!!)
@@ -181,7 +189,7 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
     }
 
     override fun onDateSet(p0: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        eventDate.text = "$dayOfMonth/${month+1}/$year"
+        eventDate.text = "$dayOfMonth/${month + 1}/$year"
         dia = dayOfMonth
         mes = month
         año = year
@@ -194,12 +202,11 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                 group = data?.extras?.getParcelable(SelectActivity.DATA_GROUP)
                 bovines = data?.extras?.getStringArray(SelectActivity.DATA_BOVINES)?.toList()
 
-            }else {
+            } else {
                 finish()
             }
         }
     }
-
 
 
     private fun plusPage() {
@@ -209,7 +216,6 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
     private fun minusPage() {
         binding.page = binding.page!!.minus(1)
     }
-
 
 
 }
