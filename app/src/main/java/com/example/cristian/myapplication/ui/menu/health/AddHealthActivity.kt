@@ -43,6 +43,7 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
     var bovines: List<String>? = null
     var groupFragment: GroupFragment? = null
     val unidades:Array<String> by lazy { resources.getStringArray(R.array.time_units) }
+    var unidadTiempo:String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,7 +89,6 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
 
     override fun onResume() {
         super.onResume()
-        val unidadTiempo = unidades[frecuencyOptionsHealth.selectedItemPosition]
 
         dis add btnBackHealth.clicks()
                 .subscribeBy(
@@ -112,6 +112,7 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
 
         dis add btnAddHealth.clicks()
                 .flatMap {
+
                     validateForm(R.string.empty_fields, spinnerEvent.selectedItem.toString(),
                             if (binding.otherSelect) other.text.toString() else "other", diagnosis.text.toString(),
                             dateAddHealth.text.toString(), treatment_health.text.toString(), product_health.text.toString()
@@ -125,33 +126,38 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
 
         dis add btnFinalizeHealth.clicks()
                 .flatMap {
+                    unidadTiempo = unidades[frecuencyOptionsHealth.selectedItemPosition]
                     validateForm(R.string.empty_fields, dosis.text.toString(), frequency.text(),
                             product_value.text.toString(), attention_value.text.toString(), applicacion_number.text.toString(),
                             observations_health.text.toString())
                 }
+
                 .flatMapSingle {
                   //  NotificationWork.notify(0,"Sanidad",binding.diagnosis.text()
+                    val frequencyTime = frequency.text().toLong()
+                    val proxTime = when(unidadTiempo){
+                        "Horas"-> frequencyTime
+                        "Días" -> frequencyTime * 24
+                        "Meses"-> frequencyTime * 24 * 30
+                        else -> frequencyTime * 24 * 30 * 12
+                    }
+                    /*val notifyTime:Long = when(proxTime){
+                        in 3..24 -
+                    }*/
+
                     viewModel.addHealth(
                             Sanidad(null, null, null, farmId, dateAddHealth.text.toString().toDate(),
-                                    null, frequency.text().toInt(), spinnerEvent.selectedItem.toString(),
+                                    fechaProx(dateAddHealth.text().toDate(), proxTime ), frequency.text().toInt(), spinnerEvent.selectedItem.toString(),
                                     if(binding.otherSelect) other.text() else null, diagnosis.text(), treatment_health.text(),
                                     product_health.text(), dosis.text(), null, applicacion_number.text().toInt(), 1,
                                     observations_health.text(), product_value.text().toInt(), attention_value.text().toInt(),
                                     null, bovines!! ,unidadTiempo,proximaAplicacion = 0)
-                    )
+                    ).map { it to notifyTime }
                 }
                 .subscribeBy(
                         onNext = {
-                               when(unidadTiempo){
-                            "Horas"-> NotificationWork.notify(0,"Sanidad", diagnosis.text(),it,
-                            frequency.text().toLong(),TimeUnit.HOURS)
-                            "Días" -> NotificationWork.notify(0,"Sanidad", diagnosis.text(),it,
-                            frequency.text().toLong()*24 -1,TimeUnit.HOURS)
-                            "Meses"-> NotificationWork.notify(0,"Sanidad",diagnosis.text(),it,
-                            frequency.text().toLong()*24*30 -1,TimeUnit.HOURS)
-                            "Años" ->NotificationWork.notify(0,"Sanidad",diagnosis.text(),it,
-                            frequency.text().toLong()*24*30*12 -1,TimeUnit.HOURS)}
-
+                            NotificationWork.notify(NotificationWork.TYPE_HEALTH,"Sanidad", diagnosis.text(),it.first,
+                                    it.second,TimeUnit.HOURS)
                             toast("Sanidad agregada exitosamente")
                             finish() },
 
@@ -172,6 +178,10 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
 
     private fun minusPage() {
         binding.page = binding.page!!.minus(1)
+    }
+
+    private fun fechaProx(fecha:Date, horas: Long):Date{
+        return Date(fecha.time + horas*3600*1000)
     }
 
 
