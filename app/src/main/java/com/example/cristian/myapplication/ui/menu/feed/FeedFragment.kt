@@ -16,6 +16,7 @@ import com.example.cristian.myapplication.ui.menu.MenuViewModel
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
 import com.jakewharton.rxbinding2.view.clicks
+import dagger.android.DispatchingAndroidInjector
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.fragment_list_feed.*
 import org.jetbrains.anko.support.v4.startActivity
@@ -23,13 +24,13 @@ import org.jetbrains.anko.support.v4.toast
 import javax.inject.Inject
 
 class FeedFragment : Fragment(), Injectable {
-
+    @Inject
+    lateinit var injector: DispatchingAndroidInjector<Fragment>
     @Inject
     lateinit var factory: ViewModelProvider.Factory
     val viewModel: MenuViewModel by lazy { buildViewModel<MenuViewModel>(factory) }
     val dis: LifeDisposable = LifeDisposable(this)
     private val idFinca: String by lazy { viewModel.getFarmId() }
-
     @Inject
     lateinit var adapter: ListFeedBovineAdapter
 
@@ -43,9 +44,9 @@ class FeedFragment : Fragment(), Injectable {
         super.onResume()
         recyclerlistFeedBovines.adapter = adapter
         recyclerlistFeedBovines.layoutManager = LinearLayoutManager(activity)
-        dis add viewModel.getFeed(idFinca)
+        dis add viewModel.getFeed()
                 .subscribeBy (
-                    onSuccess = {
+                    onNext= {
                         adapter.feed = it
                         if (it.isEmpty()) toast(R.string.empty_list)
                     },

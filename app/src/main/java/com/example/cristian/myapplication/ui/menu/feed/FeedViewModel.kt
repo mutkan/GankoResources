@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModel
 import com.example.cristian.myapplication.data.db.CouchRx
 import com.example.cristian.myapplication.data.models.Feed
 import com.example.cristian.myapplication.data.models.Group
+import com.example.cristian.myapplication.data.models.RegistroAlimentacion
 import com.example.cristian.myapplication.data.models.Straw
 import com.example.cristian.myapplication.data.preferences.UserSession
 import com.example.cristian.myapplication.util.applySchedulers
@@ -20,7 +21,7 @@ class FeedViewModel @Inject constructor(private val db: CouchRx, private val use
             db.listObsByExp("Idfinca" equalEx Idfinca, Group::class)
                     .applySchedulers()
     //Insertar alimentacion
-    fun addFeed(feed: Feed): Single<String> =
+    fun addFeed(feed: RegistroAlimentacion): Single<String> =
         db.insert(feed)
                 .applySchedulers()
 

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.Feed
+import com.example.cristian.myapplication.data.models.RegistroAlimentacion
 import com.example.cristian.myapplication.databinding.TemplateFeedBovineBinding
 import com.example.cristian.myapplication.util.inflate
 import javax.inject.Inject
@@ -14,7 +15,7 @@ import javax.inject.Inject
  */
 class ListFeedBovineAdapter @Inject constructor(): RecyclerView.Adapter<ListFeedBovineAdapter.ListFeedBovineHolder>(){
 
-    var feed: List<Feed> = emptyList()
+    var feed: List<RegistroAlimentacion> = emptyList()
         set(value) {
             field = value
             notifyDataSetChanged()

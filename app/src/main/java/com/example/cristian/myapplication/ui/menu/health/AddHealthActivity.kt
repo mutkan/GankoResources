@@ -41,6 +41,7 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
     val currentDate : Date = Date()
     var group: Group? = null
     var bovines: List<String>? = null
+    var groupFragment: GroupFragment? = null
     val unidades:Array<String> by lazy { resources.getStringArray(R.array.time_units) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,6 +77,26 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
     }
     override fun onDateSet(p0: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         dateAddHealth.setText("$dayOfMonth/${month + 1}/$year")
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
+    }
+
+    fun setupGroupFragment() {
+        if ((group != null || bovines != null) && groupFragment == null) {
+            groupFragment = if (group != null) GroupFragment.instance(12, group!!)
+            else GroupFragment.instance(12, bovines!!)
+
+            supportFragmentManager.beginTransaction()
+                    .replace(R.id.vaccinesContainer, groupFragment)
+                    .commit()
+
+            dis add groupFragment!!.ids
+                    .filter { group == null }
+                    .subscribe { bovines = it }
+        }
     }
 
     override fun onResume() {
@@ -170,6 +191,7 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
         val times = binding.frequency.text.toString().toInt()
         var contador = 0
         binding.page = binding.page!!.plus(1)
+
     }
 
     private fun minusPage() {

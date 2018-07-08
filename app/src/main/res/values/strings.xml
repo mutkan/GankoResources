@@ -291,6 +291,12 @@
         <item>Otro</item>
     </string-array>
 
+    <string-array name="feed_types">
+        <item>Forraje</item>
+        <item>Maiz</item>
+        <item>Concentrado</item>
+    </string-array>
+
     <string name="remove_group">¿ Desea eliminar el grupo ?</string>
     <string name="group_removed">Grupo eliminado</string>
     <string name="select_clear">¿ Desea limpiar la selección ?</string>
