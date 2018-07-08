@@ -2,7 +2,6 @@ package com.example.cristian.myapplication.di.modules
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
-import com.example.cristian.myapplication.data.models.Manage
 import com.example.cristian.myapplication.di.ViewModelKey
 import com.example.cristian.myapplication.ui.account.AccountViewModel
 import com.example.cristian.myapplication.ui.bovine.BovineViewModel
@@ -16,7 +15,7 @@ import com.example.cristian.myapplication.ui.bovine.reproductive.ReproductiveBvn
 import com.example.cristian.myapplication.ui.bovine.vaccination.VaccinationBvnViewModel
 import com.example.cristian.myapplication.ui.farms.FarmViewModel
 import com.example.cristian.myapplication.ui.groups.GroupViewModel
-import com.example.cristian.myapplication.ui.feed.FeedViewModel
+import com.example.cristian.myapplication.ui.menu.feed.FeedViewModel
 import com.example.cristian.myapplication.ui.manage.ManageViewModel
 import com.example.cristian.myapplication.ui.menu.MenuViewModel
 import com.example.cristian.myapplication.ui.menu.health.HealthViewModel

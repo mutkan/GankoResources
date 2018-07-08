@@ -34,7 +34,7 @@ class RevaccinationFragment : Fragment(), Injectable {
     val dis: LifeDisposable = LifeDisposable(this)
     val isEmpty: ObservableBoolean = ObservableBoolean(false)
     val from: Date = Date()
-    val to: Date by lazy { from.addDays(7)!! }
+    val to: Date by lazy { from.add(Calendar.DATE, 7)!! }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -70,7 +70,7 @@ class RevaccinationFragment : Fragment(), Injectable {
 
     private fun setRevaccination(registroVacuna: RegistroVacuna): RegistroVacuna {
         val frecM = registroVacuna.frecuenciaMeses
-        return registroVacuna.copy(fecha = Date(), fechaProx = Date().addMonths(frecM))
+        return registroVacuna.copy(fecha = Date(), fechaProx = Date().add(Calendar.MONTH, frecM))
     }
 
 

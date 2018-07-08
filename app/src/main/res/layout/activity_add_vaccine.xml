@@ -3,8 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.menu.vaccines.AddVaccineActivity">
+
     <data>
 
+        <variable
+            name="edit"
+            type="Boolean" />
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -49,6 +53,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
                     android:layout_marginStart="16dp"
+                    android:clickable='@{!edit}'
                     android:entries="@array/vaccines"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -63,6 +68,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:ems="10"
+                    android:enabled='@{!edit}'
                     android:hint="Otra"
                     android:inputType="textCapSentences"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -74,6 +80,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
+                    android:clickable='@{!edit}'
                     android:orientation="horizontal"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/doseTxt">
@@ -108,6 +115,7 @@
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
                     android:ems="10"
+                    android:enabled="@{!edit}"
                     android:hint="Otra"
                     android:inputType="numberDecimal"
                     android:visibility="gone"
@@ -196,7 +204,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:text="Próxima Aplicación:"
+                    android:text="Próxima Aplicación en:"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/revaccinationRequired" />
 
@@ -205,12 +213,12 @@
                     style="@style/edit_text"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginEnd="8dp"
                     android:layout_marginStart="16dp"
                     android:ems="10"
-                    android:hint="Meses para la próxima aplicación"
+                    android:enabled="@{!edit}"
                     android:inputType="number"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/timeUnitsSpinner"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/nextApplicationTxt" />
 
@@ -220,9 +228,21 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
+                    android:clickable='@{!edit}'
                     android:text="¿Se requiere otra aplicación?"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/vaccinationDate" />
+
+                <Spinner
+                    android:id="@+id/timeUnitsSpinner"
+                    style="@style/Widget.AppCompat.Spinner.Underlined"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:entries="@array/time_units"
+                    app:layout_constraintBottom_toBottomOf="@+id/nextApplicationVaccine"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/nextApplicationVaccine" />
 
             </android.support.constraint.ConstraintLayout>
         </android.support.v4.widget.NestedScrollView>

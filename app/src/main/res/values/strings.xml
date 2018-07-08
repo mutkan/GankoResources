@@ -1,3 +1,6 @@
+
+
+
 <resources>
 
     <string name="base_url">http://www.google.com</string>
@@ -325,7 +328,9 @@
     <string name="event">Evento</string>
     <string name="times_a_day">veces al dia</string>
     <string name="applications_number">Número de aplicaciones</string>
-    <string name="frequency">Frecuencia </string>
+    <string name="channel_name">Ganko Alertas</string>
+    <string name="channel_description">Alertas de proximos eventos</string>
+    <string name="frequency_in_days">Frecuencia en días</string>
     <string name="bovine_number">Núemro de bovinos</string>
     <string name="recents">Recientes</string>
     <string name="next">Próximos</string>
@@ -348,15 +353,6 @@
         <item>Otra</item>
     </string-array>
 
-    <string-array name="frecuency_options">
-        <item>Hora</item>
-        <item>Dia</item>
-        <item>Semana</item>
-        <item>Mes</item>
-        <item>Año</item>
-
-    </string-array>
-
     <string-array name="vaccines">
         <item>Fiebre Aftosa</item>
         <item>Rabia</item>
@@ -368,4 +364,15 @@
         <item>Otra</item>
     </string-array>
 
+    <string-array name="time_units">
+        <item>Horas</item>
+        <item>Días</item>
+        <item>Meses</item>
+        <item>Años</item>
+    </string-array>
+
 </resources>
+
+
+
+

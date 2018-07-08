@@ -1,20 +1,17 @@
-package com.example.cristian.myapplication.ui.feed
+package com.example.cristian.myapplication.ui.menu.feed
 
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.arch.lifecycle.ViewModelProvider
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.os.PersistableBundle
+import android.support.v7.app.AppCompatActivity
 import android.widget.DatePicker
 import com.example.cristian.myapplication.R
-import com.example.cristian.myapplication.data.models.Ceba
 import com.example.cristian.myapplication.data.models.Feed
 import com.example.cristian.myapplication.data.models.Group
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.bovine.ceba.AddCebaBvnActivity
-import com.example.cristian.myapplication.ui.bovine.ceba.CebaViewModel
 import com.example.cristian.myapplication.ui.groups.GroupFragment
 import com.example.cristian.myapplication.ui.groups.SelectActivity
 import com.example.cristian.myapplication.util.*
@@ -27,7 +24,7 @@ import org.jetbrains.anko.toast
 import java.util.*
 import javax.inject.Inject
 
-class AddFeedActivity : AppCompatActivity(),Injectable, DatePickerDialog.OnDateSetListener {
+class AddFeedActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDateSetListener {
 
 
     @Inject
@@ -63,7 +60,7 @@ class AddFeedActivity : AppCompatActivity(),Injectable, DatePickerDialog.OnDateS
         dis add btnAddFeed.clicks()
                 .flatMap { validateForm(R.string.empty_fields, dateAddCebaBvn.text.toString(), weightAddCebaBvn.text.toString()) }
                 .flatMapSingle {
-                    viewModel.addFeed (Feed(null, null, null, "",null, idBovino, it[0].toDate(),null,null ,null))
+                    viewModel.addFeed (Feed(null, null, null, "", null, idBovino, it[0].toDate(), null, null, null))
                 }
                 .subscribeBy(
                         onNext = {
