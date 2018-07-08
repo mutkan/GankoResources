@@ -15,8 +15,7 @@ class Feed(var _id: String? = null,
            var racion: Int? = null,
            var proposito: String?=null,
            var valorKilo: Int? = null,
-           var otro: String? = null,
-           var bovinos:List<String>? = null
+           var otro: String? = null
 ) : Parcelable {
     init {
         type = javaClass.simpleName

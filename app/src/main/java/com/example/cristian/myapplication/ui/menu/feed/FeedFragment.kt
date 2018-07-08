@@ -42,6 +42,7 @@ class FeedFragment : Fragment(), Injectable {
 
     override fun onResume() {
         super.onResume()
+        adapter.notifyDataSetChanged()
         recyclerlistFeedBovines.adapter = adapter
         recyclerlistFeedBovines.layoutManager = LinearLayoutManager(activity)
         dis add viewModel.getFeed()

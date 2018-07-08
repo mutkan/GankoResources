@@ -1,6 +1,3 @@
-
-
-
 <resources>
 
     <string name="base_url">http://www.google.com</string>
@@ -345,6 +342,8 @@
     <string name="assistance_price">Valor asistencia</string>
     <string name="aplication">Aplicación</string>
     <string name="apply">APLICAR</string>
+    <string name="pendings">Pendientes</string>
+    <string name="skip">OMITIR</string>
 
     <string-array name="milk_production">
         <item>Litros vendidos</item>

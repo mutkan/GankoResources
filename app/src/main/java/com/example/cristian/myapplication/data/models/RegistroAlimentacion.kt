@@ -7,7 +7,7 @@ import java.util.*
 class  RegistroAlimentacion(var _id: String? = null,
                             var sequence: Long? = null,
                             var type: String? = null,
-                            var grupo: Group? = null,
+                            var grupo: Grupo? = null,
                             var fecha:Date? =null,
                             var idFinca: String? = null,
                             var tipoAlimento: String? = null,
