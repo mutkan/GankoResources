@@ -131,8 +131,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
             db.listByExp("idFarm" equalEx idFinca, SalidaLeche::class)
                     .applySchedulers()
 
-    fun getFeed(idFinca: String): Single<List<Feed>> =
-            db.listByExp("idFarm" equalEx idFinca, Feed::class)
+    fun getFeed(): Observable<List<RegistroAlimentacion>> = db.listObsByExp("finca" equalEx farmID, RegistroAlimentacion::class)
                     .applySchedulers()
 
     fun getMeadows(idFinca: String): Single<Pair<List<Pradera>, Long>> =
@@ -204,6 +203,9 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     fun insertManage(registroManejo: RegistroManejo): Single<String> = db.insertManage(registroManejo).applySchedulers()
 
     fun getManages(): Observable<List<RegistroManejo>> = db.listObsByExp("idFinca" equalEx farmID, RegistroManejo::class).applySchedulers()
+
+    fun getNextManages(from: Date, to: Date): Observable<List<RegistroManejo>> =
+            db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProx".betweenDates(from, to)), RegistroManejo::class).applySchedulers()
     //endregion
 
 }

@@ -139,7 +139,7 @@
                         android:layout_marginEnd="16dp"
                         android:layout_marginTop="8dp"
                         android:ems="10"
-                        android:hint="Otra"
+                        android:hint="@string/other"
                         android:inputType="text"
                         android:visibility='@{otherSelect == true ? View.VISIBLE : View.GONE}'
                         app:layout_constraintEnd_toEndOf="parent"
@@ -194,7 +194,7 @@
                         android:layout_marginEnd="16dp"
                         android:layout_marginTop="8dp"
                         android:ems="10"
-                        android:focusable="false"
+                        android:focusable="true"
                         android:hint="@string/date_value"
                         android:inputType="date"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -307,7 +307,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
                         android:layout_marginTop="16dp"
-                        android:text="@string/frequency_in_days"
+                        android:text="@string/frecuency"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/dosis"
                         tools:text="@string/frecuency" />
@@ -315,16 +315,13 @@
                     <EditText
                         android:id="@+id/frequency"
                         style="@style/edit_text"
-                        android:layout_width="0dp"
+                        android:layout_width="170dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="16dp"
                         android:layout_marginStart="24dp"
                         android:layout_marginTop="8dp"
                         android:ems="10"
                         android:hint="@string/frecuency"
                         android:inputType="numberDecimal"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView116" />
 
@@ -442,6 +439,17 @@
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView119" />
+
+                    <Spinner
+                        android:id="@+id/frecuencyOptionsHealth"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="8dp"
+                        android:entries="@array/time_units"
+                        app:layout_constraintBottom_toBottomOf="@+id/frequency"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/frequency" />
 
                 </android.support.constraint.ConstraintLayout>
 

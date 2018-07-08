@@ -155,19 +155,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/manage_observations" />
 
-        <TextView
-            android:id="@+id/manage_application_date"
-            style="@style/TextAppearance.AppCompat.Body1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="24dp"
-            android:layout_marginStart="16dp"
-            android:text="TextView"
-            android:textColor="@color/check_filter"
-            app:layout_constraintBottom_toBottomOf="@+id/textView29"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textView29"
-            tools:text="15/02/2018" />
+
 
         <ImageView
             android:id="@+id/imageView4"

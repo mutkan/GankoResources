@@ -1,3 +1,6 @@
+
+
+
 <resources>
 
     <string name="base_url">http://www.google.com</string>
@@ -288,6 +291,12 @@
         <item>Otro</item>
     </string-array>
 
+    <string-array name="feed_types">
+        <item>Forraje</item>
+        <item>Maiz</item>
+        <item>Concentrado</item>
+    </string-array>
+
     <string name="remove_group">¿ Desea eliminar el grupo ?</string>
     <string name="group_removed">Grupo eliminado</string>
     <string name="select_clear">¿ Desea limpiar la selección ?</string>
@@ -336,6 +345,7 @@
     <string name="assistance_price">Valor asistencia</string>
     <string name="aplication">Aplicación</string>
     <string name="pending">Pendientes</string>
+    <string name="apply">APLICAR</string>
 
     <string-array name="milk_production">
         <item>Litros vendidos</item>
@@ -351,17 +361,6 @@
         <item>Otra</item>
     </string-array>
 
-    <string-array name="vaccines">
-        <item>Fiebre Aftosa</item>
-        <item>Rabia</item>
-        <item>Carbon Sintomatico</item>
-        <item>Edema Maligno</item>
-        <item>Septicemia Hemorragica</item>
-        <item>Carbon Bacteriano</item>
-        <item>Brucelosis</item>
-        <item>Otra</item>
-    </string-array>
-
     <string-array name="time_units">
         <item>Horas</item>
         <item>Días</item>
@@ -370,3 +369,7 @@
     </string-array>
 
 </resources>
+
+
+
+

@@ -1,7 +1,6 @@
 package com.example.cristian.myapplication.ui.menu.feed
 
 
-import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -11,33 +10,27 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.example.cristian.myapplication.R
-import com.example.cristian.myapplication.data.models.Feed
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.ListFeedBovineAdapter
-import com.example.cristian.myapplication.ui.adapters.StrawAdapter
-import com.example.cristian.myapplication.ui.feed.AddFeedActivity
 import com.example.cristian.myapplication.ui.menu.MenuViewModel
-import com.example.cristian.myapplication.ui.menu.straw.StrawAddActivity
-import com.example.cristian.myapplication.ui.menu.straw.StrawFragment
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
 import com.jakewharton.rxbinding2.view.clicks
+import dagger.android.DispatchingAndroidInjector
 import io.reactivex.rxkotlin.subscribeBy
-import kotlinx.android.synthetic.main.fragment_feed.*
 import kotlinx.android.synthetic.main.fragment_list_feed.*
-import kotlinx.android.synthetic.main.fragment_straw.*
 import org.jetbrains.anko.support.v4.startActivity
 import org.jetbrains.anko.support.v4.toast
 import javax.inject.Inject
 
 class FeedFragment : Fragment(), Injectable {
-
+    @Inject
+    lateinit var injector: DispatchingAndroidInjector<Fragment>
     @Inject
     lateinit var factory: ViewModelProvider.Factory
     val viewModel: MenuViewModel by lazy { buildViewModel<MenuViewModel>(factory) }
     val dis: LifeDisposable = LifeDisposable(this)
     private val idFinca: String by lazy { viewModel.getFarmId() }
-
     @Inject
     lateinit var adapter: ListFeedBovineAdapter
 
@@ -51,9 +44,9 @@ class FeedFragment : Fragment(), Injectable {
         super.onResume()
         recyclerlistFeedBovines.adapter = adapter
         recyclerlistFeedBovines.layoutManager = LinearLayoutManager(activity)
-        dis add viewModel.getFeed(idFinca)
+        dis add viewModel.getFeed()
                 .subscribeBy (
-                    onSuccess = {
+                    onNext= {
                         adapter.feed = it
                         if (it.isEmpty()) toast(R.string.empty_list)
                     },

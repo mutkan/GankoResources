@@ -23,7 +23,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.feed.AddFeedActivity" />
+        <activity android:name=".ui.menu.feed.AddFeedActivity" />
         <activity android:name=".ui.bovine.milk.MilkBvnActivity" />
         <activity android:name=".ui.bovine.health.HealthBvnActivity" />
         <activity android:name=".PrincipalActivity" />

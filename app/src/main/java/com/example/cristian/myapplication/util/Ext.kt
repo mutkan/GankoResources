@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.SharedPreferences
 import android.databinding.BindingAdapter
 import android.graphics.drawable.ColorDrawable
+import android.icu.util.TimeUnit
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
@@ -28,6 +29,7 @@ val format = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 fun ViewGroup.inflate(layout: Int) = LayoutInflater.from(context).inflate(layout, this, false)
 
 fun EditText.text(): String = text.toString()
+
 
 inline fun <reified T : ViewModel> AppCompatActivity.buildViewModel(factory: ViewModelProvider.Factory): T = ViewModelProviders.of(this, factory).get(T::class.java)
 
@@ -199,3 +201,7 @@ fun Date.add(field: Int?, amount: Int?): Date? = if (amount != 0 && amount != nu
 } else {
     null
 }
+
+class week : com.kizitonwose.time.TimeUnit{
+    override val timeIntervalRatio= 604800.0
+        }

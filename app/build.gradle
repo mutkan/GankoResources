@@ -92,6 +92,8 @@ dependencies {
 
     //ColorPicker
     implementation 'com.github.QuadFlask:colorpicker:0.0.13'
+    implementation 'com.github.kizitonwose.time:time-android:1.0.1'
+
 
     //Work Manager
     implementation "android.arch.work:work-runtime-ktx:$work_version"

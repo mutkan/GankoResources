@@ -3,6 +3,7 @@ package com.example.cristian.myapplication.data.models
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 @Parcelize
 class Sanidad(
@@ -26,7 +27,8 @@ class Sanidad(
         var valorProducto: Int? = null,
         var valorAtencion: Int? = null,
         var grupo: Grupo? = null,
-        var bovinos: List<Bovinos> = listOf()
+        var bovinos: List<Bovinos> = listOf(),
+        var UnidadesFrecuencia: String? = null
 
 ): Parcelable{
 
