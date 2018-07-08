@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.RegistroVacuna
-import com.example.cristian.myapplication.data.models.Vacuna
 import com.example.cristian.myapplication.databinding.TemplateListVaccineBovineBinding
 import com.example.cristian.myapplication.util.inflate
 import javax.inject.Inject
