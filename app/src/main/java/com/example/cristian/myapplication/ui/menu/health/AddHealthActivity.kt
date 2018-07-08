@@ -130,11 +130,10 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                             observations_health.text.toString())
                 }
                 .flatMapSingle {
-                  //  NotificationWork.notify(0,"Sanidad",binding.diagnosis.text())
-
+                  //  NotificationWork.notify(0,"Sanidad",binding.diagnosis.text()
                     viewModel.addHealth(
                             Sanidad(null, null, null, farmId, dateAddHealth.text.toString().toDate(),
-                                    null, frequency.text().toFloat(), spinnerEvent.selectedItem.toString(),
+                                    null, frequency.text().toInt(), spinnerEvent.selectedItem.toString(),
                                     if(binding.otherSelect) other.text() else null, diagnosis.text(), treatment_health.text(),
                                     product_health.text(), dosis.text(), null, applicacion_number.text().toInt(), 1,
                                     observations_health.text(), product_value.text().toInt(), attention_value.text().toInt(),
@@ -174,5 +173,6 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
     private fun minusPage() {
         binding.page = binding.page!!.minus(1)
     }
+
 
 }

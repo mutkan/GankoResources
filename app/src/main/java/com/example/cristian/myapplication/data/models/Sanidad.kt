@@ -13,7 +13,7 @@ class Sanidad(
         var idFinca: String? = null,
         var fecha: Date? = null,
         var fechaProxima: Date? = null, //Calculo automatico
-        var frecuencia: Float? = null,
+        var frecuencia: Int? = null,
         var evento: String? = null,
         var otra: String? = null,
         var diagnostico: String? = null,
