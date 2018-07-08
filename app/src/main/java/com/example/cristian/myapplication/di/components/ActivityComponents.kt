@@ -25,7 +25,7 @@ import com.example.cristian.myapplication.ui.bovine.reproductive.add.AddZealActi
 import com.example.cristian.myapplication.ui.bovine.vaccination.VaccinationBvnActivity
 import com.example.cristian.myapplication.ui.farms.AddFarmActivity
 import com.example.cristian.myapplication.ui.farms.FarmActivity
-import com.example.cristian.myapplication.ui.feed.AddFeedActivity
+import com.example.cristian.myapplication.ui.menu.feed.AddFeedActivity
 import com.example.cristian.myapplication.ui.groups.AddGroupActivity
 import com.example.cristian.myapplication.ui.groups.BovineSelectedActivity
 import com.example.cristian.myapplication.ui.groups.SaveGroupActivity

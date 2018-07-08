@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.RegistroVacuna
 import com.example.cristian.myapplication.databinding.TemplateNextVaccinesBinding
-import com.example.cristian.myapplication.databinding.TemplateVaccineBinding
+import com.example.cristian.myapplication.databinding.TemplateRecentVaccineBinding
 import com.example.cristian.myapplication.util.inflate
 import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
@@ -29,7 +29,7 @@ class VaccineAdapter @Inject constructor() : RecyclerView.Adapter<RecyclerView.V
     override fun getItemViewType(position: Int): Int = tipo
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder = when (viewType) {
-        TYPE_VACCINATIONS -> VaccineViewHolder(parent.inflate(R.layout.template_vaccine))
+        TYPE_VACCINATIONS -> VaccineViewHolder(parent.inflate(R.layout.template_recent_vaccine))
         else -> NextVaccinesViewHolder(parent.inflate(R.layout.template_next_vaccines))
     }
 
@@ -54,7 +54,7 @@ class VaccineAdapter @Inject constructor() : RecyclerView.Adapter<RecyclerView.V
 }
 
 class VaccineViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    val binding: TemplateVaccineBinding = DataBindingUtil.bind(itemView)!!
+    val binding: TemplateRecentVaccineBinding = DataBindingUtil.bind(itemView)!!
 }
 
 class NextVaccinesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

@@ -35,6 +35,7 @@ class AddVaccineActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
     @Inject
     lateinit var factory: ViewModelProvider.Factory
     private val viewModel: MenuViewModel by lazy { buildViewModel<MenuViewModel>(factory) }
+    private val edit: Boolean by lazy { intent.getBooleanExtra("edit", false) }
     val dis: LifeDisposable = LifeDisposable(this)
     var groupFragment: GroupFragment? = null
     var group: Group? = null
@@ -46,20 +47,6 @@ class AddVaccineActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
                 calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH))
     }
-    val vacunas: Array<String> by lazy { resources.getStringArray(R.array.vaccines) }
-    val unidades: Array<String> by lazy { resources.getStringArray(R.array.time_units) }
-    var nombreVacuna: String = ""
-        set(value) {
-            field = value
-            otherVaccineGroup.visibility = if (value == "Otra") View.VISIBLE else View.GONE
-            if (value != "Otra") {
-                if (otherDose.visibility != View.GONE) otherDose.visibility = View.GONE
-                if (nextApplicationTxt.visibility != View.GONE) nextApplicationTxt.visibility = View.GONE
-                if (nextApplicationVaccine.visibility != View.GONE) nextApplicationVaccine.visibility = View.GONE
-                revaccinationRequired.isChecked = false
-            }
-
-        }
     var dosisVacuna: Int = 0
         set(value) {
             field = value
@@ -70,15 +57,19 @@ class AddVaccineActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_add_vaccine)
-//        binding.edit = true
-//        binding.vaccineSpinner.isEnabled = false
-//        binding.vaccineDose.isEnabled = false
+        binding.edit = edit
+        binding.vaccineDose.isEnabled = !edit
         fixColor(7)
         title = "Registrar Vacuna"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back_white)
-        startActivityForResult<SelectActivity>(SelectActivity.REQUEST_SELECT,
-                SelectActivity.EXTRA_COLOR to 7)
+        if (edit) {
+            group = intent.getParcelableExtra("group")
+            bovines = intent.getStringArrayListExtra("bovinos")
+        } else {
+            startActivityForResult<SelectActivity>(SelectActivity.REQUEST_SELECT,
+                    SelectActivity.EXTRA_COLOR to 7)
+        }
 
     }
 
@@ -115,19 +106,15 @@ class AddVaccineActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
                 .subscribeBy(
                         onNext = {
                             finish()
+                        },
+                        onError = {
+                            Log.e("ERROR", it.message, it)
                         }
                 )
         dis add btnCancelVaccine.clicks()
                 .subscribeBy(
                         onNext = {
                             finish()
-                        }
-                )
-
-        dis add vaccineSpinner.itemSelections()
-                .subscribeBy(
-                        onNext = {
-                            nombreVacuna = vacunas[it]
                         }
                 )
 
@@ -156,7 +143,7 @@ class AddVaccineActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
         dis add revaccinationRequired.checkedChanges()
                 .subscribeBy(
                         onNext = {
-                            if (it && nombreVacuna == "Otra") {
+                            if (it) {
                                 nextApplicationTxt.visibility = View.VISIBLE
                                 nextApplicationVaccine.visibility = View.VISIBLE
                                 timeUnitsSpinner.visibility = View.VISIBLE
@@ -185,48 +172,31 @@ class AddVaccineActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
         val fecha = vaccinationDate.text()
         val valor = vaccineValue.text()
         val otraVacuna = otherVaccine.text()
-        val otraDosis = otherDose.text()
         val proximaAplicacion = nextApplicationVaccine.text()
-        val otra = if (nombreVacuna == "Otra") "1" else "0"
-        val otraD = if (dosisVacuna == -1) "1" else "0"
-        val otraA = if (revaccinationRequired.isChecked) "1" else "0"
-        return when ("$otra$otraD$otraA") {
-            "000" -> validateForm(R.string.empty_fields, fecha, valor)
-            "100" -> validateForm(R.string.empty_fields, fecha, valor, otraVacuna)
-            "110" -> validateForm(R.string.empty_fields, fecha, valor, otraVacuna, otraDosis)
-            "101" -> validateForm(R.string.empty_fields, fecha, valor, otraVacuna, proximaAplicacion)
-            else -> validateForm(R.string.empty_fields, fecha, valor, otraVacuna, otraDosis, proximaAplicacion)
-        }
+        return if (revaccinationRequired.isChecked) validateForm(R.string.empty_fields, fecha, valor, otraVacuna, proximaAplicacion) else validateForm(R.string.empty_fields, fecha, valor, otraVacuna)
     }
 
     private fun createVaccine(fields: List<String>): RegistroVacuna {
         val fecha = fields[0].toDate()
         val valor = fields[1].toInt()
         val idFinca = viewModel.getFarmId()
-        val nombreOtra = fields.getOrNull(2)
-        val dosis = if (dosisVacuna != -1) dosisVacuna else {
-            fields.getOrNull(3)?.toInt() ?: 0
+        val nombreOtra = fields[2]
+        val dosis = when {
+            dosisVacuna != -1 -> dosisVacuna
+            otherDose.text() != "" -> otherDose.text().toInt()
+            else -> 0
         }
-        val proximaAplicacion = if (revaccinationRequired.isChecked) fields.last().toInt() else null
-        val unidadTiempo = unidades[timeUnitsSpinner.selectedItemPosition]
+        val proximaAplicacion = if (revaccinationRequired.isChecked) fields[3].toInt() else null
+        val unidadTiempo = timeUnitsSpinner.selectedItem.toString()
         val fechaProx = when (unidadTiempo) {
             "Horas" -> fecha.add(Calendar.HOUR, proximaAplicacion)
             "Días" -> fecha.add(Calendar.DATE, proximaAplicacion)
             "Meses" -> fecha.add(Calendar.MONTH, proximaAplicacion)
             else -> fecha.add(Calendar.YEAR, proximaAplicacion)
         }
-        Log.d("BOVINOS", bovines.toString())
-        return when (nombreVacuna) {
-            "Fiebre Aftosa" -> RegistroVacuna(nombre = nombreVacuna, dosisMl = 5, frecuenciaMeses = 6, fecha = fecha, fechaProx = fecha.add(Calendar.MONTH, 6), valor = valor, idFinca = idFinca, grupo = group?.toGrupo(), bovinos = bovines, proxAplicado = false)
-            "Rabia" -> RegistroVacuna(nombre = nombreVacuna, dosisMl = 5, frecuenciaMeses = 12, fecha = fecha, fechaProx = fecha.add(Calendar.MONTH, 12), valor = valor, idFinca = idFinca, grupo = group?.toGrupo(), bovinos = bovines, proxAplicado = false)
-            "Carbón Sintomático" -> RegistroVacuna(nombre = nombreVacuna, dosisMl = 5, frecuenciaMeses = 12, fecha = fecha, fechaProx = fecha.add(Calendar.MONTH, 12), valor = valor, idFinca = idFinca, grupo = group?.toGrupo(), bovinos = bovines, proxAplicado = false)
-            "Edema Maligno" -> RegistroVacuna(nombre = nombreVacuna, dosisMl = 5, frecuenciaMeses = 12, fecha = fecha, fechaProx = fecha.add(Calendar.MONTH, 12), valor = valor, idFinca = idFinca, grupo = group?.toGrupo(), bovinos = bovines, proxAplicado = false)
-            "Septicemia Hemorrágica" -> RegistroVacuna(nombre = nombreVacuna, dosisMl = 5, frecuenciaMeses = 12, fecha = fecha, fechaProx = fecha.add(Calendar.MONTH, 12), valor = valor, idFinca = idFinca, grupo = group?.toGrupo(), bovinos = bovines, proxAplicado = false)
-            "Carbón Bacteridiano" -> RegistroVacuna(nombre = nombreVacuna, dosisMl = 2, frecuenciaMeses = 12, fecha = fecha, fechaProx = fecha.add(Calendar.MONTH, 12), valor = valor, idFinca = idFinca, grupo = group?.toGrupo(), bovinos = bovines, proxAplicado = false)
-            "Brucelosis" -> RegistroVacuna(nombre = nombreVacuna, dosisMl = 5, frecuenciaMeses = null, fecha = fecha, fechaProx = null, valor = valor, idFinca = idFinca, grupo = group?.toGrupo(), bovinos = bovines, proxAplicado = false)
-            else -> RegistroVacuna(nombre = nombreOtra, dosisMl = dosis, frecuenciaMeses = proximaAplicacion, fecha = fecha, fechaProx = fechaProx, valor = valor, idFinca = idFinca, grupo = group?.toGrupo(), bovinos = bovines, proxAplicado = false)
+        return RegistroVacuna(nombre = nombreOtra, dosisMl = dosis, frecuenciaMeses = proximaAplicacion, fecha = fecha, fechaProx = fechaProx, valor = valor, idFinca = idFinca, grupo = group?.toGrupo(), bovinos = bovines, proxAplicado = false)
 
-        }
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -235,6 +205,9 @@ class AddVaccineActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
             if (resultCode == Activity.RESULT_OK) {
                 group = data?.extras?.getParcelable(SelectActivity.DATA_GROUP)
                 bovines = data?.extras?.getStringArray(SelectActivity.DATA_BOVINES)?.toList()
+                group?.let {
+                    bovines = it.bovines
+                }
             } else {
                 finish()
             }

@@ -64,7 +64,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view" />
 
-    <TextView
+    <EditText
         android:id="@+id/date_feed"
         style="@style/edit_text"
         android:ems="10"
@@ -76,29 +76,35 @@
         android:layout_marginTop="8dp"
         android:hint="@string/date_value"
         android:clickable="true"
+        android:inputType="date"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
     <EditText
+        style="@style/edit_text"
         android:id="@+id/price_feed"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:hint="@string/feed_kg_value"
+        android:inputType="number"
         app:layout_constraintEnd_toEndOf="@+id/textView16"
         app:layout_constraintStart_toStartOf="@+id/textView16"
         app:layout_constraintTop_toBottomOf="@+id/textView16" />
 
     <EditText
+        style="@style/edit_text"
+        app:layout_constraintStart_toStartOf="@+id/textView15"
         android:id="@+id/ration_feed"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:hint="@string/weight_in_kg"
+        android:inputType="number"
         app:layout_constraintEnd_toEndOf="@+id/textView15"
-        app:layout_constraintStart_toStartOf="@+id/textView15"
         app:layout_constraintTop_toBottomOf="@+id/textView15" />
+
 
     <TextView
         android:id="@+id/textView12"
@@ -113,6 +119,7 @@
     <Spinner
         android:id="@+id/food_type"
         android:layout_width="0dp"
+        android:entries="@array/feed_types"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="@+id/textView12"

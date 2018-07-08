@@ -46,19 +46,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/vaccinesContainer" />
 
-                <Spinner
-                    android:id="@+id/vaccineSpinner"
-                    style="@style/Widget.AppCompat.Spinner.Underlined"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginStart="16dp"
-                    android:clickable='@{!edit}'
-                    android:entries="@array/vaccines"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/vaccineTxt" />
-
                 <EditText
                     android:id="@+id/otherVaccine"
                     style="@style/edit_text"
@@ -66,14 +53,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
                     android:ems="10"
                     android:enabled='@{!edit}'
                     android:hint="Otra"
                     android:inputType="textCapSentences"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/vaccineSpinner" />
+                    app:layout_constraintTop_toBottomOf="@+id/vaccineTxt" />
 
                 <RadioGroup
                     android:id="@+id/vaccineDose"
@@ -189,13 +175,6 @@
                     android:text="Dosis:"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/otherVaccine" />
-
-                <android.support.constraint.Group
-                    android:id="@+id/otherVaccineGroup"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="visible"
-                    app:constraint_referenced_ids="otherVaccine,vaccineDose,doseTxt,revaccinationRequired" />
 
                 <TextView
                     android:id="@+id/nextApplicationTxt"

@@ -26,7 +26,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/template_vaccine" />
+            tools:listitem="@layout/template_recent_vaccine" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fabAddVaccination"

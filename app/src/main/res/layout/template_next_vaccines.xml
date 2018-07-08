@@ -38,11 +38,12 @@
             android:layout_marginStart="24dp"
             android:textColor="@color/colorAccent"
             app:layout_constraintStart_toStartOf="parent"
+            app:dateFormat='@{vacuna.fechaProx}'
             app:layout_constraintTop_toBottomOf="@+id/vaccineName"
             tools:text="27/06/2018" />
 
         <ImageView
-            android:id="@+id/imageView6"
+            android:id="@+id/icBovine"
             android:layout_width="@dimen/icon"
             android:layout_height="@dimen/icon"
             android:layout_marginEnd="24dp"
@@ -59,12 +60,12 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="4dp"
             android:text='@{vacuna.grupo == null ? ""+vacuna.bovinos.size() : vacuna.grupo.nombre}'
-            app:layout_constraintBottom_toBottomOf="@+id/imageView6"
-            app:layout_constraintEnd_toStartOf="@+id/imageView6"
-            tools:text="@string/feedNumberBovine" />
+            app:layout_constraintBottom_toBottomOf="@+id/icBovine"
+            app:layout_constraintEnd_toStartOf="@+id/icBovine"
+            tools:text="1" />
 
-        <android.support.v7.widget.AppCompatImageView
-            android:id="@+id/frameLayout3"
+        <ImageView
+            android:id="@+id/div"
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginTop="8dp"
@@ -73,10 +74,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView6"
-            app:layout_constraintVertical_bias="1.0">
-
-        </android.support.v7.widget.AppCompatImageView>
+            app:layout_constraintTop_toBottomOf="@+id/icBovine"
+            app:layout_constraintVertical_bias="1.0"/>
 
         <Button
             android:id="@+id/button"
@@ -87,9 +86,9 @@
             android:layout_marginTop="8dp"
             android:text="Aplicar Refuerzo"
             android:onClick='@{()->clickRevaccination.onNext(vacuna)}'
-            app:layout_constraintBottom_toTopOf="@+id/frameLayout3"
+            app:layout_constraintBottom_toTopOf="@+id/div"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView6" />
+            app:layout_constraintTop_toBottomOf="@+id/icBovine" />
 
 
     </android.support.constraint.ConstraintLayout>

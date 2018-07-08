@@ -18,14 +18,14 @@ import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
-class CouchModule{
+class CouchModule {
 
     @Provides
     @Named("dbName")
-    fun provideDataBaseName():String = "ganko-database"
+    fun provideDataBaseName(): String = "ganko-database"
 
     @Provides
-    fun provideDataBase(context:Context, @Named("dbName") name:String):Database{
+    fun provideDataBase(context: Context, @Named("dbName") name: String): Database {
         val config = DatabaseConfiguration(context)
         val db = Database(name, config)
         db.createIndex("TypeIndex", IndexBuilder.valueIndex(ValueIndexItem.property("type")))
@@ -37,10 +37,10 @@ class CouchModule{
     fun provideFolderName(context: Context): File = context.filesDir
 
     @Provides
-    fun provideMapper() : ObjectMapper {
+    fun provideMapper(): ObjectMapper {
         return ObjectMapper().apply {
             registerKotlinModule()
-            dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.UK)
+            dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.getDefault())
             configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
             configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
         }

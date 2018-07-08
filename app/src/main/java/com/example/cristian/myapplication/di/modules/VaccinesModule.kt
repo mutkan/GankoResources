@@ -1,8 +1,8 @@
 package com.example.cristian.myapplication.di.modules
 
 import com.example.cristian.myapplication.di.SubFragmentScope
-import com.example.cristian.myapplication.ui.menu.vaccines.RevaccinationFragment
-import com.example.cristian.myapplication.ui.menu.vaccines.VaccinationsFragment
+import com.example.cristian.myapplication.ui.menu.vaccines.NextVaccinesFragment
+import com.example.cristian.myapplication.ui.menu.vaccines.RecentVaccinesFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -11,9 +11,9 @@ abstract class VaccinesModule {
 
     @SubFragmentScope
     @ContributesAndroidInjector
-    abstract fun bindVaccinationsFragment(): VaccinationsFragment
+    abstract fun bindVaccinationsFragment(): RecentVaccinesFragment
 
     @SubFragmentScope
     @ContributesAndroidInjector
-    abstract fun bindRevaccinationFragment(): RevaccinationFragment
+    abstract fun bindRevaccinationFragment(): NextVaccinesFragment
 }

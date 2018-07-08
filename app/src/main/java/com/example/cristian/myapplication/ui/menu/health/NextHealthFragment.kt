@@ -48,13 +48,24 @@ class NextHealthFragment : Fragment(), Injectable {
         dis add viewModel.getNextHealth(idFinca, 0)
                 .subscribeBy(
                 onSuccess = {
-                    if(it.isEmpty()) emptyNextHealthText.visibility = View.VISIBLE else emptyHealthText.visibility = View.GONE
+                    if(it.isEmpty()) emptyNextHealthText.visibility = View.VISIBLE else emptyNextHealthText.visibility = View.GONE
                     adapterNext.health = it
                 },
                 onError = {
                     toast(it.message!!)
                 }
         )
+
+        dis add adapterNext.clickApply
+                .flatMapSingle {  sanidad ->
+                    viewModel.updateHealth(sanidad.apply { proximaAplicacion = 1})
+                }.subscribe()
+
+
+        dis add adapterNext.clickSkip
+                .flatMapSingle {  sanidad ->
+                    viewModel.updateHealth(sanidad.apply { proximaAplicacion = 2})
+                }.subscribe()
     }
 
     companion object {
