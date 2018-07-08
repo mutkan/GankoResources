@@ -10,7 +10,7 @@ class Sanidad(
         var _id: String? = null,
         var _sequence: Long? = null,
         var type:String ? = null,
-        var idFarm: String? = null,
+        var idFinca: String? = null,
         var fecha: Date? = null,
         var fechaProxima: Date? = null, //Calculo automatico
         var frecuencia: Float? = null,
