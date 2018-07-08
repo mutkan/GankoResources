@@ -156,25 +156,20 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                 }
                 .subscribeBy(
                         onNext = {
-                            dis add  viewModel.getHealth()
-                                    .subscribeBy(
-                                            onSuccess = {
-                                        val lasthealth = it.last()
-                                        when(lasthealth.UnidadesFrecuencia){
-                                            "Horas"-> NotificationWork.notify(0,"Sanidad",lasthealth.diagnostico!!,lasthealth._id!!,
-                                                         lasthealth.frecuencia!!.toLong(),TimeUnit.HOURS)
-                                            "Días" -> NotificationWork.notify(0,"Sanidad",lasthealth.diagnostico!!,lasthealth._id!!,
-                                                    lasthealth.frecuencia!!.toLong()*24,TimeUnit.HOURS)
-                                            "Meses"-> NotificationWork.notify(0,"Sanidad",lasthealth.diagnostico!!,lasthealth._id!!,
-                                                    lasthealth.frecuencia!!.toLong()*24*30,TimeUnit.HOURS)
-                                            "Años" ->NotificationWork.notify(0,"Sanidad",lasthealth.diagnostico!!,lasthealth._id!!,
-                                                         lasthealth.frecuencia!!.toLong()*24*30*12,TimeUnit.HOURS)}
-                                            },
-                                            onError = {toast(it.message!!)}
-                                    )
+                               when(unidadTiempo){
+                                            "Horas"-> NotificationWork.notify(0,"Sanidad", diagnosis.text(),it,
+                                                        frequency.text().toLong(),TimeUnit.HOURS)
+                                            "Días" -> NotificationWork.notify(0,"Sanidad", diagnosis.text(),it,
+                                                    frequency.text().toLong()*24 -1,TimeUnit.HOURS)
+                                            "Meses"-> NotificationWork.notify(0,"Sanidad",diagnosis.text(),it,
+                                                    frequency.text().toLong()*24*30 -1,TimeUnit.HOURS)
+                                            "Años" ->NotificationWork.notify(0,"Sanidad",diagnosis.text(),it,
+                                                    frequency.text().toLong()*24*30*12 -1,TimeUnit.HOURS)}
+
                             toast("Sanidad agregada exitosamente")
                             finish()
-                        },
+                                            },
+
                         onComplete = {
                             toast("onComplete")
                         },
