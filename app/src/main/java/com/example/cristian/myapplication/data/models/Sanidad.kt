@@ -30,6 +30,10 @@ class Sanidad(
 
 ): Parcelable{
 
+    init {
+        type = javaClass.simpleName
+    }
+
 }
 
 @Parcelize

@@ -8,12 +8,10 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
-
 import com.example.cristian.myapplication.R
-import com.example.cristian.myapplication.databinding.FragmentVaccinationsBinding
+import com.example.cristian.myapplication.databinding.FragmentRecentVaccinesBinding
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.VaccineAdapter
 import com.example.cristian.myapplication.ui.adapters.VaccineAdapter.Companion.TYPE_VACCINATIONS
@@ -22,7 +20,7 @@ import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
 import com.jakewharton.rxbinding2.view.clicks
 import io.reactivex.rxkotlin.subscribeBy
-import kotlinx.android.synthetic.main.fragment_vaccinations.*
+import kotlinx.android.synthetic.main.fragment_recent_vaccines.*
 import org.jetbrains.anko.support.v4.startActivity
 import javax.inject.Inject
 
@@ -33,11 +31,11 @@ import javax.inject.Inject
  * A simple [Fragment] subclass.
  *
  */
-class VaccinationsFragment : Fragment(), Injectable {
+class RecentVaccinesFragment : Fragment(), Injectable {
 
     @Inject
     lateinit var factory: ViewModelProvider.Factory
-    lateinit var binding: FragmentVaccinationsBinding
+    lateinit var binding: FragmentRecentVaccinesBinding
     @Inject
     lateinit var adapter: VaccineAdapter
     val viewModel: MenuViewModel by lazy { buildViewModel<MenuViewModel>(factory) }
@@ -48,7 +46,7 @@ class VaccinationsFragment : Fragment(), Injectable {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_vaccinations, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_recent_vaccines, container, false)
         return binding.root
     }
 
@@ -78,7 +76,7 @@ class VaccinationsFragment : Fragment(), Injectable {
 
 
     companion object {
-        fun instance() = VaccinationsFragment()
+        fun instance() = RecentVaccinesFragment()
     }
 
 

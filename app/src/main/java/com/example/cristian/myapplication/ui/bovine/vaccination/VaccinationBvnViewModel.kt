@@ -21,15 +21,7 @@ class VaccinationBvnViewModel @Inject constructor(private val db: CouchRx, priva
 
 
     fun listVaccineBovine(idBovino: String): Single<List<RegistroVacuna>> {
-        val groupQuery = QueryBuilder.select(SelectResult.property("nombre"))
-                .from(DataSource.database(bd))
-                .where("bovines" containsEx idBovino andEx ("type" equalEx "Group"))
-        return db.listByQuery(groupQuery)
-                .flatMap { it.toObservable().map { it.getString(0) }.toList() }
-                .flatMap { grupos ->
-                    Log.d("GRUPOS", grupos.toString())
-                    db.listByExp("bovinos" containsEx idBovino orEx  ("grupo" inEx grupos), RegistroVacuna::class)
-                }.applySchedulers()
+        return db.listByExp("bovinos" containsEx idBovino, RegistroVacuna::class).applySchedulers()
     }
 
 

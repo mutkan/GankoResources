@@ -192,8 +192,11 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
 
     fun getVaccinations(): Observable<List<RegistroVacuna>> = db.listObsByExp("idFinca" equalEx farmID, RegistroVacuna::class).applySchedulers()
 
-    fun getRevaccinations(from: Date, to: Date): Observable<List<RegistroVacuna>> =
+    fun getNextVaccines(from: Date, to: Date): Observable<List<RegistroVacuna>> =
             db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProx".betweenDates(from, to)) andEx ("proxAplicado" equalEx false), RegistroVacuna::class).applySchedulers()
+
+    fun getPendingVaccines(from: Date): Observable<List<RegistroVacuna>> =
+            db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProx".lte(from)) andEx ("proxAplicado" equalEx false), RegistroVacuna::class).applySchedulers()
     //endregion
 
 

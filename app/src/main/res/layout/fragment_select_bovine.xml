@@ -19,7 +19,7 @@
     <android.support.constraint.ConstraintLayout
         android:id="@+id/bottomBar"
         android:layout_width="match_parent"
-        android:visibility="gone"
+        android:visibility="visible"
         android:translationY="@dimen/select_bar"
         android:layout_height="@dimen/select_bar"
         android:background="@color/colorAccent"

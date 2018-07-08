@@ -335,6 +335,7 @@
     <string name="number_of_aplications">Numero de aplicaciones</string>
     <string name="assistance_price">Valor asistencia</string>
     <string name="aplication">Aplicación</string>
+    <string name="pending">Pendientes</string>
 
     <string-array name="milk_production">
         <item>Litros vendidos</item>

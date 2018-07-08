@@ -65,6 +65,8 @@
         <activity android:name=".ui.bovine.reproductive.ReproductiveBvnActivity" android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ui.bovine.reproductive.add.AddZealActivity" />
         <activity android:name=".ui.bovine.reproductive.add.AddServiceActivity" />
+        <activity android:name=".ui.bovine.reproductive.add.AddDiagnosisActivity"/>
+        <activity android:name=".ui.bovine.reproductive.add.AddBirthActivity"/>
         <activity android:name=".ui.menu.straw.StrawAddActivity" />
 
         <provider

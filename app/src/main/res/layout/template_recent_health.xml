@@ -147,7 +147,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
             android:inputType="text"
-            android:text="@{health.dosis}"
+            android:text='@{""+ health.dosis +"ml"}'
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@color/menu_button_light"
             app:layout_constraintStart_toStartOf="parent"
@@ -313,7 +313,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
-            android:text="@{health.bovinos.size()}"
+            android:text='@{""+ health.bovinos.size()}'
             app:layout_constraintEnd_toStartOf="@+id/imageView10"
             app:layout_constraintTop_toBottomOf="@+id/textView126"
             tools:text="120" />
