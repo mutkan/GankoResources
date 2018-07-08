@@ -10,6 +10,7 @@ import com.example.cristian.myapplication.ui.menu.bovine.ListFeedFragment
 import com.example.cristian.myapplication.ui.menu.feed.FeedFragment
 import com.example.cristian.myapplication.ui.menu.health.RecentHealthFragment
 import com.example.cristian.myapplication.ui.menu.health.NextHealthFragment
+import com.example.cristian.myapplication.ui.menu.health.PendingHealthFragment
 import com.example.cristian.myapplication.ui.menu.management.ManageFragment
 import com.example.cristian.myapplication.ui.menu.management.NextManageFragment
 import com.example.cristian.myapplication.ui.menu.management.RecentManageFragment
@@ -68,6 +69,10 @@ abstract class FragmentComponent{
     @FragmentScope
     @ContributesAndroidInjector()
     abstract fun bindNextHealthFragment(): NextHealthFragment
+
+    @FragmentScope
+    @ContributesAndroidInjector()
+    abstract fun bindPendingHealthFragment(): PendingHealthFragment
 
     @FragmentScope
     @ContributesAndroidInjector()

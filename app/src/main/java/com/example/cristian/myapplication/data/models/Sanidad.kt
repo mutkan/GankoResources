@@ -27,8 +27,9 @@ class Sanidad(
         var valorProducto: Int? = null,
         var valorAtencion: Int? = null,
         var grupo: Grupo? = null,
-        var bovinos: List<Bovinos> = listOf(),
-        var UnidadesFrecuencia: String? = null
+        var bovinos: List<String> = listOf(),
+        var UnidadesFrecuencia: String? = null,
+        var proximaAplicacion: Int? = null
 
 ): Parcelable{
 

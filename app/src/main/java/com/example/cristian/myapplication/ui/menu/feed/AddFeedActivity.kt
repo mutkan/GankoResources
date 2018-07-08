@@ -10,6 +10,7 @@ import android.widget.DatePicker
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.Group
 import com.example.cristian.myapplication.data.models.RegistroAlimentacion
+import com.example.cristian.myapplication.data.models.toGrupo
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.bovine.ceba.AddCebaBvnActivity
 import com.example.cristian.myapplication.ui.groups.SelectActivity
@@ -146,9 +147,9 @@ class AddFeedActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDate
         val precio_total = precio_kg*racion
         val idFinca = viewModel.getFarmId()
         return when(alimento){
-            "Forraje"-> RegistroAlimentacion (idFinca =idFinca ,tipoAlimento = "Forraje",bovinos = bovines,fecha = fecha,peso = racion,valorkg = precio_kg,valorTotal = precio_total )
-            "Concentrado"-> RegistroAlimentacion(idFinca= idFinca,tipoAlimento = "Concentrado",bovinos = bovines,fecha = fecha,peso = racion,valorkg = precio_kg,valorTotal = precio_total)
-            else ->  RegistroAlimentacion(idFinca=idFinca,tipoAlimento = "Maiz",bovinos = bovines,fecha = fecha,peso = racion,valorkg = precio_kg,valorTotal = precio_total)
+            "Forraje"-> RegistroAlimentacion ( idFinca =idFinca ,tipoAlimento = "Forraje",bovinos = bovines,fecha = fecha,peso = racion,valorkg = precio_kg,valorTotal = precio_total , grupo = group?.toGrupo())
+            "Concentrado"-> RegistroAlimentacion(idFinca= idFinca,tipoAlimento = "Concentrado",bovinos = bovines,fecha = fecha,peso = racion,valorkg = precio_kg,valorTotal = precio_total, grupo = group?.toGrupo())
+            else ->  RegistroAlimentacion(idFinca=idFinca,tipoAlimento = "Maiz",bovinos = bovines,fecha = fecha,peso = racion,valorkg = precio_kg,valorTotal = precio_total, grupo = group?.toGrupo())
 
         }
     }

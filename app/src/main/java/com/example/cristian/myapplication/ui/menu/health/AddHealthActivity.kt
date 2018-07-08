@@ -84,20 +84,7 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
         return true
     }
 
-    fun setupGroupFragment() {
-        if ((group != null || bovines != null) && groupFragment == null) {
-            groupFragment = if (group != null) GroupFragment.instance(12, group!!)
-            else GroupFragment.instance(12, bovines!!)
 
-            supportFragmentManager.beginTransaction()
-                    .replace(R.id.vaccinesContainer, groupFragment)
-                    .commit()
-
-            dis add groupFragment!!.ids
-                    .filter { group == null }
-                    .subscribe { bovines = it }
-        }
-    }
 
     override fun onResume() {
         super.onResume()
@@ -151,30 +138,24 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                                     if(binding.otherSelect) other.text() else null, diagnosis.text(), treatment_health.text(),
                                     product_health.text(), dosis.text(), null, applicacion_number.text().toInt(), 1,
                                     observations_health.text(), product_value.text().toInt(), attention_value.text().toInt(),
-                                    null, emptyList(),unidadTiempo)
+                                    null, bovines!! ,unidadTiempo,proximaAplicacion = 0)
                     )
                 }
                 .subscribeBy(
                         onNext = {
-                            dis add  viewModel.getHealth()
-                                    .subscribeBy(
-                                            onSuccess = {
-                                        val lasthealth = it.last()
-                                        when(lasthealth.UnidadesFrecuencia){
-                                            "Horas"-> NotificationWork.notify(0,"Sanidad",lasthealth.diagnostico!!,lasthealth._id!!,
-                                                         lasthealth.frecuencia!!.toLong(),TimeUnit.HOURS)
-                                            "Días" -> NotificationWork.notify(0,"Sanidad",lasthealth.diagnostico!!,lasthealth._id!!,
-                                                    lasthealth.frecuencia!!.toLong()*24,TimeUnit.HOURS)
-                                            "Meses"-> NotificationWork.notify(0,"Sanidad",lasthealth.diagnostico!!,lasthealth._id!!,
-                                                    lasthealth.frecuencia!!.toLong()*24*30,TimeUnit.HOURS)
-                                            "Años" ->NotificationWork.notify(0,"Sanidad",lasthealth.diagnostico!!,lasthealth._id!!,
-                                                         lasthealth.frecuencia!!.toLong()*24*30*12,TimeUnit.HOURS)}
-                                            },
-                                            onError = {toast(it.message!!)}
-                                    )
+                               when(unidadTiempo){
+                            "Horas"-> NotificationWork.notify(0,"Sanidad", diagnosis.text(),it,
+                            frequency.text().toLong(),TimeUnit.HOURS)
+                            "Días" -> NotificationWork.notify(0,"Sanidad", diagnosis.text(),it,
+                            frequency.text().toLong()*24 -1,TimeUnit.HOURS)
+                            "Meses"-> NotificationWork.notify(0,"Sanidad",diagnosis.text(),it,
+                            frequency.text().toLong()*24*30 -1,TimeUnit.HOURS)
+                            "Años" ->NotificationWork.notify(0,"Sanidad",diagnosis.text(),it,
+                            frequency.text().toLong()*24*30*12 -1,TimeUnit.HOURS)}
+
                             toast("Sanidad agregada exitosamente")
-                            finish()
-                        },
+                            finish() },
+
                         onComplete = {
                             toast("onComplete")
                         },
@@ -185,11 +166,7 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
     }
 
     private fun plusPage() {
-        val date : Int = Date().date
 
-        val frecuencydates :List<Int> = emptyList()
-        val times = binding.frequency.text.toString().toInt()
-        var contador = 0
         binding.page = binding.page!!.plus(1)
 
     }

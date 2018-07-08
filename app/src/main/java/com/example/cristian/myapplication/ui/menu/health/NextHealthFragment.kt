@@ -55,6 +55,17 @@ class NextHealthFragment : Fragment(), Injectable {
                     toast(it.message!!)
                 }
         )
+
+        dis add adapterNext.clickApply
+                .flatMapSingle {  sanidad ->
+                    viewModel.updateHealth(sanidad.apply { proximaAplicacion = 1})
+                }.subscribe()
+
+
+        dis add adapterNext.clickSkip
+                .flatMapSingle {  sanidad ->
+                    viewModel.updateHealth(sanidad.apply { proximaAplicacion = 2})
+                }.subscribe()
     }
 
     companion object {

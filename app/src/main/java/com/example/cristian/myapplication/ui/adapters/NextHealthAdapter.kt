@@ -8,6 +8,7 @@ import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.Sanidad
 import com.example.cristian.myapplication.databinding.TemplateNextHealthBinding
 import com.example.cristian.myapplication.util.inflate
+import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
 class NextHealthAdapter @Inject constructor(): RecyclerView.Adapter<NextHealthAdapter.NextHealthHolder>(){
@@ -18,6 +19,11 @@ class NextHealthAdapter @Inject constructor(): RecyclerView.Adapter<NextHealthAd
             notifyDataSetChanged()
         }
 
+
+    val clickApply: PublishSubject<Sanidad> = PublishSubject.create()
+
+    val clickSkip: PublishSubject<Sanidad> = PublishSubject.create()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NextHealthHolder
      = NextHealthHolder(parent.inflate(R.layout.template_next_health))
 
@@ -25,6 +31,8 @@ class NextHealthAdapter @Inject constructor(): RecyclerView.Adapter<NextHealthAd
 
     override fun onBindViewHolder(holder: NextHealthHolder, position: Int) {
         holder.binding?.sanidad = health[position]
+        holder.binding?.clickApply = clickApply
+        holder.binding?.clickSkip = clickSkip
     }
 
 

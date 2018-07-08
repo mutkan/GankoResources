@@ -201,7 +201,3 @@ fun Date.add(field: Int?, amount: Int?): Date? = if (amount != 0 && amount != nu
 } else {
     null
 }
-
-class week : com.kizitonwose.time.TimeUnit{
-    override val timeIntervalRatio= 604800.0
-        }
