@@ -185,11 +185,7 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
     }
 
     private fun plusPage() {
-        val date : Int = Date().date
 
-        val frecuencydates :List<Int> = emptyList()
-        val times = binding.frequency.text.toString().toInt()
-        var contador = 0
         binding.page = binding.page!!.plus(1)
 
     }
