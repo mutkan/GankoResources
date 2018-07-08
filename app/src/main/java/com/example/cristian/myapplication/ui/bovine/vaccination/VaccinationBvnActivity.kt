@@ -18,14 +18,14 @@ import javax.inject.Inject
 
 class VaccinationBvnActivity : AppCompatActivity(), Injectable {
 
-    @Inject
-    lateinit var factory: ViewModelProvider.Factory
-    val viewModel: VaccinationBvnViewModel by lazy { buildViewModel<VaccinationBvnViewModel>(factory) }
-    val dis: LifeDisposable = LifeDisposable(this)
-    lateinit var binding: ActivityListVaccineBovineBinding
-    val isEmpty: ObservableBoolean = ObservableBoolean(false)
-    @Inject
-    lateinit var adapter: ListVaccineBovineAdapter
+        @Inject
+        lateinit var factory: ViewModelProvider.Factory
+        val viewModel: VaccinationBvnViewModel by lazy { buildViewModel<VaccinationBvnViewModel>(factory) }
+        val dis: LifeDisposable = LifeDisposable(this)
+        lateinit var binding: ActivityListVaccineBovineBinding
+        val isEmpty: ObservableBoolean = ObservableBoolean(false)
+        @Inject
+        lateinit var adapter: ListVaccineBovineAdapter
 
     val idBovino: String by lazy { intent.extras.getString(EXTRA_ID) }
 
