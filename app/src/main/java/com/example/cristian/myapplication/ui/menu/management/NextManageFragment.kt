@@ -20,6 +20,7 @@ import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.add
 import com.example.cristian.myapplication.util.buildViewModel
 import io.reactivex.rxkotlin.subscribeBy
+import org.jetbrains.anko.support.v4.toast
 import java.util.*
 import javax.inject.Inject
 
@@ -48,6 +49,16 @@ class NextManageFragment : Fragment(), Injectable {
 
     override fun onResume() {
         super.onResume()
+
+        dis add adapter.clickApplyManage
+                .subscribeBy (
+                        onNext = {toast("APLICADO")}
+                )
+
+        dis add adapter.clickSkipManage
+                .subscribeBy (
+                        onNext = { toast("OMITIDO") }
+                )
 
         dis add viewModel.getNextManages(from, to)
                 .subscribeBy(

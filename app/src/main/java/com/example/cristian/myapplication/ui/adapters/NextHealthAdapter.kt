@@ -13,6 +13,10 @@ import javax.inject.Inject
 
 class NextHealthAdapter @Inject constructor(): RecyclerView.Adapter<NextHealthAdapter.NextHealthHolder>(){
 
+    val clickApply = PublishSubject.create<Sanidad>()
+
+    val clickSkip = PublishSubject.create<Sanidad>()
+
     var health: List<Sanidad> = emptyList()
         set(value) {
             field = value
@@ -20,9 +24,6 @@ class NextHealthAdapter @Inject constructor(): RecyclerView.Adapter<NextHealthAd
         }
 
 
-    val clickApply: PublishSubject<Sanidad> = PublishSubject.create()
-
-    val clickSkip: PublishSubject<Sanidad> = PublishSubject.create()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NextHealthHolder
      = NextHealthHolder(parent.inflate(R.layout.template_next_health))
@@ -30,13 +31,13 @@ class NextHealthAdapter @Inject constructor(): RecyclerView.Adapter<NextHealthAd
     override fun getItemCount(): Int = health.size
 
     override fun onBindViewHolder(holder: NextHealthHolder, position: Int) {
-        holder.binding?.sanidad = health[position]
-        holder.binding?.clickApply = clickApply
-        holder.binding?.clickSkip = clickSkip
+        holder.binding.sanidad = health[position]
+        holder.binding.clickApply = clickApply
+        holder.binding.clickSkip = clickSkip
     }
 
 
     class NextHealthHolder(itemView: View): RecyclerView.ViewHolder(itemView){
-        var binding: TemplateNextHealthBinding? = DataBindingUtil.bind(itemView)
+        val binding: TemplateNextHealthBinding = DataBindingUtil.bind(itemView)!!
     }
 }

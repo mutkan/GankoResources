@@ -8,9 +8,14 @@ import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.RegistroManejo
 import com.example.cristian.myapplication.databinding.TemplateNextManageBinding
 import com.example.cristian.myapplication.util.inflate
+import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
 class NextManageAdapter @Inject constructor(): RecyclerView.Adapter<NextManageAdapter.NextManageHolder>() {
+
+    val clickSkipManage: PublishSubject<RegistroManejo> = PublishSubject.create()
+
+    val clickApplyManage: PublishSubject<RegistroManejo> = PublishSubject.create()
 
     var nextManages: List<RegistroManejo> = emptyList()
         set(value) {
@@ -26,6 +31,8 @@ class NextManageAdapter @Inject constructor(): RecyclerView.Adapter<NextManageAd
     override fun onBindViewHolder(holder: NextManageHolder, position: Int) {
         holder.binding?.manage = nextManages[position]
         holder.binding?.isGroup = nextManages[position].grupo != null
+        holder.binding?.clickSkipManage = clickSkipManage
+        holder.binding?.clickApplyManage = clickApplyManage
     }
 
 
