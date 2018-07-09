@@ -55,7 +55,7 @@
                     android:layout_marginStart="16dp"
                     android:ems="10"
                     android:enabled='@{!edit}'
-                    android:hint="Otra"
+                    android:hint="Nombre de la Vacuna"
                     android:inputType="textCapSentences"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -197,6 +197,7 @@
                     android:ems="10"
                     android:enabled="@{!edit}"
                     android:inputType="number"
+                    android:hint="Próxima Aplicación"
                     app:layout_constraintEnd_toStartOf="@+id/timeUnitsSpinner"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/nextApplicationTxt" />

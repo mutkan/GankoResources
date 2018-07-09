@@ -10,7 +10,6 @@ class Straw(
         var type:String ? = null,
         var idFarm: String? = null,
         var idStraw: String? =null,
-        var typeStraw: String? = null,
         var layette: String? = null,
         var breed: String? = null,
         var purpose: String? = null,
@@ -26,7 +25,7 @@ class Straw(
     }
 
     override fun toString(): String {
-        return this.bull!!
+        return "Canastilla: ${this.layette}, Id: ${this.idStraw}"
     }
 
 }
