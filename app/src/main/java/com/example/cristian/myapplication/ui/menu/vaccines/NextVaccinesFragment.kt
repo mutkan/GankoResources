@@ -12,6 +12,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.RegistroVacuna
+import com.example.cristian.myapplication.data.models.RegistroVacuna.Companion.APPLIED
+import com.example.cristian.myapplication.data.models.RegistroVacuna.Companion.SKIPED
 import com.example.cristian.myapplication.databinding.FragmentNextVaccinesBinding
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.VaccineAdapter
@@ -21,7 +23,11 @@ import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.add
 import com.example.cristian.myapplication.util.buildViewModel
 import io.reactivex.rxkotlin.subscribeBy
-import org.jetbrains.anko.support.v4.startActivity
+import io.reactivex.subjects.PublishSubject
+import org.jetbrains.anko.noButton
+import org.jetbrains.anko.support.v4.alert
+import org.jetbrains.anko.support.v4.toast
+import org.jetbrains.anko.yesButton
 import java.util.*
 import javax.inject.Inject
 
@@ -42,6 +48,7 @@ class NextVaccinesFragment : Fragment(), Injectable {
             set(Calendar.MINUTE, 0)
         }
     }
+    val skiped: PublishSubject<RegistroVacuna> = PublishSubject.create()
     val from: Date by lazy { Date(cal.timeInMillis) }
     val to: Date by lazy { from.add(Calendar.DATE, 7)!! }
 
@@ -70,21 +77,58 @@ class NextVaccinesFragment : Fragment(), Injectable {
 
 
         dis add adapter.clickRevaccination
-//                .flatMapSingle { vacuna ->
-//                    val revacunacion = setRevaccination(vacuna)
-//                    viewModel.inserVaccine(revacunacion).flatMap {
-//                        viewModel.updateVaccine(vacuna.apply { proxAplicado = true })
-//                    } }
+                .flatMapSingle { vacuna ->
+                    val revacunacion = setRevaccination(vacuna)
+                    viewModel.inserVaccine(revacunacion).flatMap {
+                        viewModel.updateVaccine(vacuna.apply { estadoProximaAplicacion = APPLIED })
+                    }
+                }
+                .subscribeBy(onNext = {
+                    toast("Vacuna aplicada")
+                })
+
+        dis add adapter.clickSkipVaccine
                 .subscribeBy(
-                        onNext = { reg ->
-                            startActivity<AddVaccineActivity>("edit" to true, "bovinos" to reg.bovinos!!)
+                        onNext = {
+                            showAlert(it)
+                        }
+                )
+
+        dis add skiped
+                .flatMapSingle {
+                    val vacuna = it.apply { estadoProximaAplicacion = SKIPED }
+                    viewModel.updateVaccine(vacuna)
+                }.subscribeBy(
+                        onNext = {
+                            toast("Vacuna Omitida")
                         }
                 )
     }
 
     private fun setRevaccination(registroVacuna: RegistroVacuna): RegistroVacuna {
-        val frecM = registroVacuna.frecuencia
-        return registroVacuna.copy(fecha = Date(), fechaProx = Date().add(Calendar.MONTH, frecM))
+        val frec = registroVacuna.frecuencia
+        val unidadFrec = registroVacuna.unidadFrecuencia
+        val fechaProx = when (unidadFrec) {
+            "Horas" -> Date().add(Calendar.HOUR, frec)
+            "Días" -> Date().add(Calendar.DATE, frec)
+            "Meses" -> Date().add(Calendar.MONTH, frec)
+            else -> Date().add(Calendar.YEAR, frec)
+        }
+        return registroVacuna.copy(fecha = Date(), fechaProximaAplicacion = fechaProx)
+    }
+
+    private fun showAlert(registroVacuna: RegistroVacuna) {
+        alert {
+            title = "Confirmar Omitir Vacuna"
+            message = "¿Está seguro de omitir esta aplicación? Esta acción no podrá ser deshecha."
+            yesButton {
+                message = "Aceptar"
+                skiped.onNext(registroVacuna)
+            }
+            noButton {
+                message = "Cancelar"
+            }
+        }.show()
     }
 
     private fun getVaccines() = when (type) {

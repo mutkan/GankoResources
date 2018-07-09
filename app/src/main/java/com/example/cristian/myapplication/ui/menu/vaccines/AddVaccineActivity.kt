@@ -13,6 +13,7 @@ import android.widget.DatePicker
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.Group
 import com.example.cristian.myapplication.data.models.RegistroVacuna
+import com.example.cristian.myapplication.data.models.RegistroVacuna.Companion.NOT_APPLIED
 import com.example.cristian.myapplication.data.models.toGrupo
 import com.example.cristian.myapplication.databinding.ActivityAddVaccineBinding
 import com.example.cristian.myapplication.di.Injectable
@@ -193,7 +194,7 @@ class AddVaccineActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
             "Meses" -> fecha.add(Calendar.MONTH, proximaAplicacion)
             else -> fecha.add(Calendar.YEAR, proximaAplicacion)
         }
-        return RegistroVacuna(nombre = nombreVacuna, dosisMl = dosis, frecuencia = proximaAplicacion, fecha = fecha, fechaProx = fechaProx, valor = valor, idFinca = idFinca, grupo = group?.toGrupo(), bovinos = bovines,unidadFrecuencia = unidadTiempo, proxAplicado = false)
+        return RegistroVacuna(nombre = nombreVacuna, dosisMl = dosis, frecuencia = proximaAplicacion, fecha = fecha, fechaProximaAplicacion = fechaProx, valor = valor, idFinca = idFinca, grupo = group?.toGrupo(), bovinos = bovines,unidadFrecuencia = unidadTiempo, estadoProximaAplicacion = NOT_APPLIED)
 
 
     }

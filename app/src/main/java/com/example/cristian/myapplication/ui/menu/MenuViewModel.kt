@@ -182,10 +182,10 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     fun getVaccinations(): Observable<List<RegistroVacuna>> = db.listObsByExp("idFinca" equalEx farmID, RegistroVacuna::class).applySchedulers()
 
     fun getNextVaccines(from: Date, to: Date): Observable<List<RegistroVacuna>> =
-            db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProx".betweenDates(from, to)) andEx ("proxAplicado" equalEx false), RegistroVacuna::class).applySchedulers()
+            db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProximaAplicacion".betweenDates(from, to)) andEx ("estadoProximaAplicacion" equalEx false), RegistroVacuna::class).applySchedulers()
 
     fun getPendingVaccines(from: Date): Observable<List<RegistroVacuna>> =
-            db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProx".lte(from)) andEx ("proxAplicado" equalEx false), RegistroVacuna::class).applySchedulers()
+            db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProximaAplicacion".lte(from)) andEx ("estadoProximaAplicacion" equalEx false), RegistroVacuna::class).applySchedulers()
     //endregion
 
 
@@ -195,7 +195,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     fun getManages(): Observable<List<RegistroManejo>> = db.listObsByExp("idFinca" equalEx farmID, RegistroManejo::class).applySchedulers()
 
     fun getNextManages(from: Date, to: Date): Observable<List<RegistroManejo>> =
-            db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProx".betweenDates(from, to)), RegistroManejo::class).applySchedulers()
+            db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProximaAplicacion".betweenDates(from, to)), RegistroManejo::class).applySchedulers()
 
     fun getNextHealth1(from: Date, to: Date): Observable<List<Sanidad>> =
             db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProxima".betweenDates(from, to)), Sanidad::class).applySchedulers()

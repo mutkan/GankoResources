@@ -25,6 +25,7 @@ class VaccineAdapter @Inject constructor() : RecyclerView.Adapter<RecyclerView.V
             notifyDataSetChanged()
         }
     val clickRevaccination: PublishSubject<RegistroVacuna> = PublishSubject.create()
+    val clickSkipVaccine: PublishSubject<RegistroVacuna> = PublishSubject.create()
 
     override fun getItemViewType(position: Int): Int = tipo
 
@@ -43,6 +44,7 @@ class VaccineAdapter @Inject constructor() : RecyclerView.Adapter<RecyclerView.V
             is NextVaccinesViewHolder -> {
                 holder.binding.vacuna = data[position]
                 holder.binding.clickRevaccination = clickRevaccination
+                holder.binding.clickSkipVaccine = clickSkipVaccine
             }
         }
     }
