@@ -36,10 +36,6 @@ abstract class FragmentComponent{
 
     @FragmentScope
     @ContributesAndroidInjector()
-    abstract fun  bindListFeedFragment(): ListFeedFragment
-
-    @FragmentScope
-    @ContributesAndroidInjector()
     abstract fun bindListStrawFragment(): StrawFragment
 
     @FragmentScope
