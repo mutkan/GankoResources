@@ -22,7 +22,6 @@ import com.example.cristian.myapplication.ui.menu.MenuViewModel
 import com.example.cristian.myapplication.util.*
 import com.jakewharton.rxbinding2.view.clicks
 import com.jakewharton.rxbinding2.widget.checkedChanges
-import com.jakewharton.rxbinding2.widget.itemSelections
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_add_vaccine.*
@@ -171,16 +170,16 @@ class AddVaccineActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
     private fun validateFields(): Observable<List<String>> {
         val fecha = vaccinationDate.text()
         val valor = vaccineValue.text()
-        val otraVacuna = otherVaccine.text()
+        val nombreVacuna = otherVaccine.text()
         val proximaAplicacion = nextApplicationVaccine.text()
-        return if (revaccinationRequired.isChecked) validateForm(R.string.empty_fields, fecha, valor, otraVacuna, proximaAplicacion) else validateForm(R.string.empty_fields, fecha, valor, otraVacuna)
+        return if (revaccinationRequired.isChecked) validateForm(R.string.empty_fields, fecha, valor, nombreVacuna, proximaAplicacion) else validateForm(R.string.empty_fields, fecha, valor, nombreVacuna)
     }
 
     private fun createVaccine(fields: List<String>): RegistroVacuna {
         val fecha = fields[0].toDate()
         val valor = fields[1].toInt()
         val idFinca = viewModel.getFarmId()
-        val nombreOtra = fields[2]
+        val nombreVacuna = fields[2]
         val dosis = when {
             dosisVacuna != -1 -> dosisVacuna
             otherDose.text() != "" -> otherDose.text().toInt()
@@ -194,7 +193,7 @@ class AddVaccineActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
             "Meses" -> fecha.add(Calendar.MONTH, proximaAplicacion)
             else -> fecha.add(Calendar.YEAR, proximaAplicacion)
         }
-        return RegistroVacuna(nombre = nombreOtra, dosisMl = dosis, frecuenciaMeses = proximaAplicacion, fecha = fecha, fechaProx = fechaProx, valor = valor, idFinca = idFinca, grupo = group?.toGrupo(), bovinos = bovines, proxAplicado = false)
+        return RegistroVacuna(nombre = nombreVacuna, dosisMl = dosis, frecuencia = proximaAplicacion, fecha = fecha, fechaProx = fechaProx, valor = valor, idFinca = idFinca, grupo = group?.toGrupo(), bovinos = bovines,unidadFrecuencia = unidadTiempo, proxAplicado = false)
 
 
     }

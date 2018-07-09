@@ -34,7 +34,7 @@ class StrawAddActivity : AppCompatActivity(), Injectable{
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_straw)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setTitle(getString(R.string.add_straw))
+        supportActionBar?.title = getString(R.string.add_straw)
         fixColor(9)
     }
 
@@ -49,17 +49,17 @@ class StrawAddActivity : AppCompatActivity(), Injectable{
         dis add btnAdd.clicks()
                 .flatMap {
                     validateForm(R.string.empty_fields, strawId.text.toString(), layette.text.toString(),
-                           bull.text.toString(), origin.text.toString(), value.text.toString(), purpose.text.toString(), breed.text.toString())
+                           bull.text.toString(), origin.text.toString(), value.text.toString(), breed.text.toString())
                 }
                 .flatMapSingle {
                     viewModel.addStraw(
-                            Straw(null, null, null, farmId, it[0], spinner.selectedItem.toString(), it[1], it[6], it[5], it[2], it[3], it[4], null))
+                            Straw(null, null, null, farmId, it[0], it[1], it[5], spinner.selectedItem.toString(), it[2], it[3], it[4], null))
                 }.subscribeBy(
                         onComplete = {
                             toast("Completo")
                         },
                         onNext = {
-                            toast("Entrada agregada exitosamente"+it)
+                            toast("Entrada agregada exitosamente $it")
                             finish()
 
                         },

@@ -83,7 +83,7 @@ class NextVaccinesFragment : Fragment(), Injectable {
     }
 
     private fun setRevaccination(registroVacuna: RegistroVacuna): RegistroVacuna {
-        val frecM = registroVacuna.frecuenciaMeses
+        val frecM = registroVacuna.frecuencia
         return registroVacuna.copy(fecha = Date(), fechaProx = Date().add(Calendar.MONTH, frecM))
     }
 
