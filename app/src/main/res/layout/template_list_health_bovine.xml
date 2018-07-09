@@ -189,7 +189,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="24dp"
             android:layout_marginRight="24dp"
-            android:text="TextView"
+            app:dateFormat="@{sanidad.fechaProxima}"
             android:textColor="@color/colorAccent"
             app:layout_constraintBottom_toBottomOf="@+id/textView77"
             app:layout_constraintEnd_toEndOf="parent"

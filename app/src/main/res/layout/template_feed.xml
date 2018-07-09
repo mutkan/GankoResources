@@ -41,7 +41,8 @@
             app:layout_constraintBottom_toBottomOf="@+id/feed_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="15/02/2018" />
+            tools:text="15/02/2018"
+            android:textColor="@color/colorAccent"/>
 
         <TextView
             android:id="@+id/feed_rations"
@@ -53,7 +54,8 @@
             android:textColor="@color/colorAccent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/feed_name"
-            tools:text='@{feeding.peso+" Raciones"}' />
+            android:text='@{feeding.peso+" Raciones"}'
+            tools:text="6 raciones"/>
 
         <TextView
             android:id="@+id/text26"
@@ -122,7 +124,8 @@
             android:layout_marginEnd="4dp"
             app:layout_constraintBottom_toBottomOf="@+id/imageView6"
             app:layout_constraintEnd_toStartOf="@+id/imageView6"
-            tools:text='@{feeding.grupo == null ? ""+feeding.bovinos.size() : feeding.grupo.nombre}' />
+            tools:text="28"
+            android:text='@{feeding.grupo == null ? ""+feeding.bovinos.size() : feeding.grupo.nombre}' />
 
         <FrameLayout
             android:id="@+id/frameLayout3"

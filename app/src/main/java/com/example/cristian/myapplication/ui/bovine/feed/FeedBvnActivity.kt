@@ -36,16 +36,16 @@ class FeedBvnActivity : AppCompatActivity(), Injectable {
     override fun onResume() {
         super.onResume()
 
-     /*   dis add viewModel.getFeedBovine(idBovino)
+        dis add viewModel.getFeedBovine(idBovino)
                 .subscribeBy(
                         onSuccess = {
-                            adapterRecent.feed = it
+                            adapter.feed = it
                         },
                         onError = {
                             toast(it.message!!)
                         }
                 )
-                */
+
     }
     override fun onSupportNavigateUp(): Boolean {
         finish()
