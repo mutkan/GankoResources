@@ -126,7 +126,7 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
 
         dis add btnFinalizeHealth.clicks()
                 .flatMap {
-                    unidadTiempo = unidades[frecuencyOptionsHealth.selectedItemPosition]
+
                     validateForm(R.string.empty_fields, dosis.text.toString(), frequency.text(),
                             product_value.text.toString(), attention_value.text.toString(), applicacion_number.text.toString(),
                             observations_health.text.toString())
@@ -148,12 +148,12 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
 
                     viewModel.addHealth(
                             Sanidad(null, null, null, farmId, dateAddHealth.text.toString().toDate(),
-                                    fechaProxima1(unidadTiempo, dateAddHealth.text().toDate(), applicacion_number.text().toInt(), frequency.text().toInt()),
+                                    fechaProxima1( dateAddHealth.text().toDate(), applicacion_number.text().toInt(), frequency.text().toInt()),
                                     frequency.text().toInt(), spinnerEvent.selectedItem.toString(),
                                     if(binding.otherSelect) other.text() else null, diagnosis.text(), treatment_health.text(),
                                     product_health.text(), dosis.text(), null, applicacion_number.text().toInt(), 1,
                                     observations_health.text(), product_value.text().toInt(), attention_value.text().toInt(),
-                                    null, bovines!! ,unidadTiempo,proximaAplicacion = 0)
+                                    null, bovines!! ,unidadTiempo,0)
                     ).map { it to notifyTime }
                 }
                 .subscribeBy(
@@ -182,11 +182,10 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
         binding.page = binding.page!!.minus(1)
     }
 
-    private fun fechaProx(fecha:Date, horas: Long):Date{
-        return Date(fecha.time + horas*3600*1000)
-    }
 
-    private fun fechaProxima1(unidadTiempo:String, fecha:Date, aplicaciones: Int, frecuencia: Int): Date{
+
+    private fun fechaProxima1( fecha:Date, aplicaciones: Int, frecuencia: Int): Date{
+        unidadTiempo = unidades[frecuencyOptionsHealth.selectedItemPosition]
         if (aplicaciones != 0) {
             when (unidadTiempo) {
                 "Horas" -> fecha.add(Calendar.HOUR, frecuencia)

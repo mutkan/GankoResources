@@ -84,26 +84,25 @@
         <Button
             android:id="@+id/button2"
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
-            android:layout_width="@dimen/button_width"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
             android:layout_marginTop="16dp"
+            android:onClick="@{()-> clickSkip.onNext(sanidad)}"
             android:text="Omitir"
             app:layout_constraintEnd_toStartOf="@+id/button3"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/healthObservations" />
 
         <Button
             android:id="@+id/button3"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="@dimen/button_width"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:onClick="@{()-> clickApply.onNext(sanidad)}"
             android:text="@string/apply"
             app:layout_constraintBottom_toBottomOf="@+id/button2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/button2" />
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
             android:id="@+id/textView92"

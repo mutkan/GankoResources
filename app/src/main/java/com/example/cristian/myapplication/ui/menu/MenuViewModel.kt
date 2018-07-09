@@ -116,26 +116,15 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
             db.listByExp("idFinca" equalEx idFinca, Sanidad::class)
                     .applySchedulers()
 
-    fun getNextHealth(idFinca: String, page:Int): Single<List<Sanidad>>{
-        val skip = page * pageSize
-        val today = Date()
-        val nextDate = Date(today.time + (86_400_000 * 8))
-        return db.listByExp("idFinca" equalEx idFinca andEx ("fecha" gte today) andEx ("proximaAplicacion" equalEx 0), Sanidad::class,
-                pageSize, skip,
-                arrayOf(Ordering.property("fechaProxima").ascending()))
+
+    fun getPendingHealrh(): Single<List<Sanidad>> =
+            db.listByExp("idFinca" equalEx farmID andEx ("proximaAplicacion" equalEx 2), Sanidad::class)
                 .applySchedulers()
-    }
-
-    fun getPendingHealrh(idFinca: String,page: Int): Single<List<Sanidad>>{
-        val skip = page * pageSize
-        val today = Date()
-        return db.listByExp("idFinca" equalEx idFinca andEx ("fecha" lte today) andEx ("proximaAplicacion" equalEx 0), Sanidad::class,
-                pageSize,skip)
-                .applySchedulers()
-    }
 
 
-    fun updateHealth(sanidad: Sanidad): Single<Unit> = db.update(sanidad._id!!, sanidad).applySchedulers()
+
+    fun updateHealth(id: String,sanidad: Sanidad): Single<Unit>
+            = db.update(id, sanidad).applySchedulers()
 
     fun getMilk(idFinca: String): Single<List<SalidaLeche>> =
             db.listByExp("idFarm" equalEx idFinca, SalidaLeche::class)
@@ -183,15 +172,6 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     fun getBovinesFilter(idFinca: String): Single<List<Bovino>> =
             db.listByExp("finca" equalEx idFinca, Bovino::class)
                     .applySchedulers()
-
-    fun getMilkPurpose(Idfinca: String): Single<List<Bovino>> =
-            db.listByExp("Idfinca" equalEx Idfinca andEx ("proposito" equalEx "leche"), Bovino::class)
-
-    fun getCebaPurpose(Idfinca: String): Single<List<Bovino>> =
-            db.listByExp("Idfinca" equalEx Idfinca andEx ("proposito" equalEx "Ceba"), Bovino::class)
-
-    fun getCebaAndMilkPurpose(Idfinca: String): Single<List<Bovino>> =
-            db.listByExp("Idfinca" equalEx Idfinca andEx ("proposito" equalEx "leche y ceba"), Bovino::class)
 
 
     //region Vacunas
