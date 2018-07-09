@@ -8,16 +8,19 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.cristian.myapplication.BR.isEmpty
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.NextHealthAdapter
 import com.example.cristian.myapplication.ui.menu.MenuViewModel
 import com.example.cristian.myapplication.util.LifeDisposable
+import com.example.cristian.myapplication.util.add
 import com.example.cristian.myapplication.util.buildViewModel
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.fragment_next_health.*
 import kotlinx.android.synthetic.main.fragment_recent_health.*
 import org.jetbrains.anko.support.v4.toast
+import java.util.*
 import javax.inject.Inject
 
 
@@ -28,6 +31,8 @@ class NextHealthFragment : Fragment(), Injectable {
     val viewModel: MenuViewModel by lazy { buildViewModel<MenuViewModel>(factory) }
     val dis: LifeDisposable = LifeDisposable(this)
     private val idFinca: String by lazy { viewModel.getFarmId() }
+    val from: Date = Date()
+    val to: Date by lazy { from.add(Calendar.DATE, 7)!! }
 
     @Inject
     lateinit var adapterNext: NextHealthAdapter
@@ -45,7 +50,7 @@ class NextHealthFragment : Fragment(), Injectable {
         recyclerNextHealth.layoutManager = LinearLayoutManager(activity)
 
 
-        dis add viewModel.getNextHealth(idFinca, 0)
+        /*dis add viewModel.getNextHealth(idFinca, 0)
                 .subscribeBy(
                 onSuccess = {
                     if(it.isEmpty()) emptyNextHealthText.visibility = View.VISIBLE else emptyNextHealthText.visibility = View.GONE
@@ -54,7 +59,15 @@ class NextHealthFragment : Fragment(), Injectable {
                 onError = {
                     toast(it.message!!)
                 }
-        )
+        )*/
+
+        dis add viewModel.getNextHealth1(from, to)
+                .subscribeBy(
+                        onNext = {
+                            if(it.isEmpty()) emptyNextHealthText.visibility = View.VISIBLE else emptyNextHealthText.visibility = View.GONE
+                            adapterNext.health = it
+                        }
+                )
 
         dis add adapterNext.clickApply
                 .flatMapSingle {  sanidad ->

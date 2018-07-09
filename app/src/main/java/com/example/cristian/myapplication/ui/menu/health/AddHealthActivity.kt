@@ -141,13 +141,15 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                         "Meses"-> frequencyTime * 24 * 30
                         else -> frequencyTime * 24 * 30 * 12
                     }
-                    /*val notifyTime:Long = when(proxTime){
-                        in 3..24 -
-                    }*/
+                    val notifyTime:Long = when(proxTime){
+                        in 3..24 -> proxTime - 1
+                        else -> proxTime - 24
+                    }
 
                     viewModel.addHealth(
                             Sanidad(null, null, null, farmId, dateAddHealth.text.toString().toDate(),
-                                    fechaProx(dateAddHealth.text().toDate(), proxTime ), frequency.text().toInt(), spinnerEvent.selectedItem.toString(),
+                                    fechaProxima1(unidadTiempo, dateAddHealth.text().toDate(), applicacion_number.text().toInt(), frequency.text().toInt()),
+                                    frequency.text().toInt(), spinnerEvent.selectedItem.toString(),
                                     if(binding.otherSelect) other.text() else null, diagnosis.text(), treatment_health.text(),
                                     product_health.text(), dosis.text(), null, applicacion_number.text().toInt(), 1,
                                     observations_health.text(), product_value.text().toInt(), attention_value.text().toInt(),
@@ -182,6 +184,20 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
 
     private fun fechaProx(fecha:Date, horas: Long):Date{
         return Date(fecha.time + horas*3600*1000)
+    }
+
+    private fun fechaProxima1(unidadTiempo:String, fecha:Date, aplicaciones: Int, frecuencia: Int): Date{
+        if (aplicaciones != 0) {
+            when (unidadTiempo) {
+                "Horas" -> fecha.add(Calendar.HOUR, frecuencia)
+                "Días" -> fecha.add(Calendar.DATE, frecuencia)
+                "Meses" -> fecha.add(Calendar.MONTH, frecuencia)
+                else -> fecha.add(Calendar.YEAR, frecuencia)
+            }
+        }else{
+            null
+        }
+        return fecha
     }
 
 

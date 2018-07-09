@@ -216,6 +216,10 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
 
     fun getNextManages(from: Date, to: Date): Observable<List<RegistroManejo>> =
             db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProx".betweenDates(from, to)), RegistroManejo::class).applySchedulers()
+
+    fun getNextHealth1(from: Date, to: Date): Observable<List<Sanidad>> =
+            db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProxima".betweenDates(from, to)), Sanidad::class).applySchedulers()
+
     //endregion
 
 }

@@ -160,7 +160,6 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
         }
 
 
-
         return RegistroManejo(idFinca = farmId, fecha = fechaEvento, fechaProx = fechaProximo, frecuencia = frecuencia, numeroAplicaciones = aplicaciones,
                 aplicacion = 1, tipo = evento, otro = otro, tratamiento = tratamiento, producto = producto, observaciones = observaciones,
                 valorProducto = precioProducto, valorAsistencia = precioAsistencia, grupo = group, bovino = bovines)
