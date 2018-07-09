@@ -15,19 +15,6 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/textView82"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
-            android:inputType="text"
-            android:text="@{health.bovino}"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Bovino" />
-
-        <TextView
             android:id="@+id/event_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -46,22 +33,22 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="16dp"
-            android:text="@string/disease"
+            android:text="@string/event"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView82"
-            tools:text="@string/disease" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/event" />
 
         <TextView
-            android:id="@+id/disease"
+            android:id="@+id/event"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
             android:inputType="text"
-            android:text="@{health.enfermedad}"
-            android:textColor="@color/menu_button_light"
+            android:text="@{health.evento}"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/menu_button_light"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView109"
             tools:text="16/06/2018" />
@@ -74,7 +61,7 @@
             android:layout_marginStart="108dp"
             android:text="@string/diagnosis"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            app:layout_constraintBottom_toTopOf="@+id/disease"
+            app:layout_constraintBottom_toTopOf="@+id/event"
             app:layout_constraintStart_toEndOf="@+id/textView109"
             tools:text="@string/diagnosis" />
 
@@ -85,8 +72,8 @@
             android:layout_marginTop="8dp"
             android:inputType="text"
             android:text="@{health.diagnostico}"
-            android:textColor="@color/menu_button_light"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/menu_button_light"
             app:layout_constraintStart_toStartOf="@+id/textView111"
             app:layout_constraintTop_toBottomOf="@+id/textView111"
             tools:text="Fiebre" />
@@ -100,7 +87,7 @@
             android:text="@string/treatment"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/disease"
+            app:layout_constraintTop_toBottomOf="@+id/event"
             tools:text="@string/treatment" />
 
         <TextView
@@ -160,7 +147,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
             android:inputType="text"
-            android:text="@{health.dosis}"
+            android:text='@{""+ health.dosis +"ml"}'
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@color/menu_button_light"
             app:layout_constraintStart_toStartOf="parent"
@@ -183,13 +170,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:inputType="text"
-            android:text="@{health.frecuencia}"
+            android:inputType="numberDecimal"
+            android:text='@{"" + health.frecuencia}'
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@color/menu_button_light"
             app:layout_constraintStart_toStartOf="@+id/textView119"
             app:layout_constraintTop_toBottomOf="@+id/textView119"
-            tools:text="2 veces al dia" />
+            tools:text="0.3" />
 
         <TextView
             android:id="@+id/textView121"
@@ -210,7 +197,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:inputType="number"
-            android:text="@{health.valor}"
+            android:text='@{"" + health.valorProducto}'
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@color/menu_button_light"
             app:layout_constraintStart_toEndOf="@+id/textView127"
@@ -235,7 +222,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:inputType="number"
-            android:text="@{health.valorAtencion}"
+            android:text='@{"" + health.valorAtencion}'
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@color/menu_button_light"
             app:layout_constraintStart_toEndOf="@+id/textView128"
@@ -247,23 +234,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:text="@string/Observations"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/product_value"
+            app:layout_constraintTop_toBottomOf="@+id/applicacion_number"
             tools:text="@string/Observations" />
 
         <TextView
             android:id="@+id/textView126"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
-            android:text="@{health.observaciones}"
             android:inputType="text"
-            android:textColor="@color/menu_button_light"
+            android:text="@{health.observaciones}"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/menu_button_light"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView125"
             tools:text="Observaciones del bovino" />
@@ -277,7 +266,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView126"
+            app:layout_constraintTop_toBottomOf="@+id/bovines_number"
             app:srcCompat="@color/line_template_straw" />
 
         <TextView
@@ -298,5 +287,60 @@
             android:text="$"
             app:layout_constraintStart_toStartOf="@+id/attention_value"
             app:layout_constraintTop_toBottomOf="@+id/attention_value" />
+
+        <TextView
+            android:id="@+id/textView108"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/times_a_day"
+            app:layout_constraintStart_toEndOf="@+id/frequency"
+            app:layout_constraintTop_toBottomOf="@+id/textView119" />
+
+        <ImageView
+            android:id="@+id/imageView10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/bovines_number"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_bovine_grey" />
+
+        <TextView
+            android:id="@+id/bovines_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:text='@{""+ health.bovinos.size()}'
+            app:layout_constraintEnd_toStartOf="@+id/imageView10"
+            app:layout_constraintTop_toBottomOf="@+id/textView126"
+            tools:text="120" />
+
+        <TextView
+            android:id="@+id/textView120"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/applications_number"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/product_value"
+            tools:text="@string/applications_number" />
+
+        <TextView
+            android:id="@+id/applicacion_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:text='@{"" + health.numeroAplicaciones}'
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView120"
+            tools:text="9" />
+
     </android.support.constraint.ConstraintLayout>
 </layout>

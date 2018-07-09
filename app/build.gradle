@@ -33,32 +33,35 @@ android {
 def support_version = "27.1.1"
 def arch_version = "1.1.1"
 def anko_version = "0.10.4"
+def work_version = "1.0.0-alpha03"
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     //noinspection GradleCompatible
     implementation "com.android.support:appcompat-v7:$support_version"
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0-beta6'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     implementation "com.android.support:support-v4:$support_version"
     implementation 'com.android.support:support-v4:27.1.1'
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation "com.android.support:design:$support_version"
     implementation "com.android.support:cardview-v7:$support_version"
 
     //Rx
-    implementation 'io.reactivex.rxjava2:rxjava:2.1.12'
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.14'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
     implementation 'io.reactivex.rxjava2:rxkotlin:2.2.0'
-    implementation 'com.jakewharton.rxbinding2:rxbinding-kotlin:2.0.0'
+    implementation 'com.jakewharton.rxbinding2:rxbinding-kotlin:2.1.1'
     implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar'
+    implementation 'com.jakewharton.rxbinding2:rxbinding-design:2.1.1'
+    implementation 'com.jakewharton.rxbinding2:rxbinding-support-v4:2.1.1'
 
     //Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
-    implementation 'org.jetbrains.anko:anko-commons:0.10.4'
+    implementation 'org.jetbrains.anko:anko-commons:0.10.5'
     implementation "org.jetbrains.anko:anko-appcompat-v7-commons:$anko_version"
 
     //Android Arch
@@ -66,11 +69,11 @@ dependencies {
     kapt "android.arch.lifecycle:compiler:$arch_version"
 
     //Dagger
-    implementation 'com.google.dagger:dagger:2.15'
-    kapt 'com.google.dagger:dagger-compiler:2.15'
-    implementation 'com.google.dagger:dagger-android-support:2.15'
+    implementation 'com.google.dagger:dagger:2.16'
+    kapt 'com.google.dagger:dagger-compiler:2.16'
+    implementation 'com.google.dagger:dagger-android-support:2.16'
     // if you use the support libraries
-    kapt 'com.google.dagger:dagger-android-processor:2.15'
+    kapt 'com.google.dagger:dagger-android-processor:2.16'
 
     //PICASSO
     implementation 'com.squareup.picasso:picasso:2.71828'
@@ -89,5 +92,9 @@ dependencies {
 
     //ColorPicker
     implementation 'com.github.QuadFlask:colorpicker:0.0.13'
+
+    //Work Manager
+    implementation "android.arch.work:work-runtime-ktx:$work_version"
+    implementation "android.arch.work:work-firebase:$work_version"
 
 }

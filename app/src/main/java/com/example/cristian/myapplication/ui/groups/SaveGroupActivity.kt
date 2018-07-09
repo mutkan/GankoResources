@@ -2,13 +2,11 @@ package com.example.cristian.myapplication.ui.groups
 
 import android.app.Activity
 import android.arch.lifecycle.ViewModelProvider
-import android.content.Intent
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
-import android.widget.Toast
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.Group
 import com.example.cristian.myapplication.di.Injectable
@@ -18,7 +16,6 @@ import com.flask.colorpicker.builder.ColorPickerDialogBuilder
 import com.jakewharton.rxbinding2.view.clicks
 import io.reactivex.Single
 import kotlinx.android.synthetic.main.activity_save_group.*
-import org.jetbrains.anko.startActivityForResult
 import org.jetbrains.anko.toast
 import javax.inject.Inject
 
@@ -28,6 +25,8 @@ class SaveGroupActivity : AppCompatActivity(), Injectable {
     @Inject
     lateinit var factory: ViewModelProvider.Factory
     val viewModel: GroupViewModel by lazy { buildViewModel<GroupViewModel>(factory) }
+
+    lateinit var groupFragment: GroupFragment
 
     var isAdd = false
     var group: Group? = null
@@ -60,6 +59,10 @@ class SaveGroupActivity : AppCompatActivity(), Injectable {
 
         title = getString(if(isAdd) R.string.group_add else R.string.group_update)
 
+        groupFragment = GroupFragment.instance(12, bovines)
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.container, groupFragment)
+                .commit()
 
     }
 
@@ -71,14 +74,15 @@ class SaveGroupActivity : AppCompatActivity(), Injectable {
     override fun onResume() {
         super.onResume()
 
-        number.text = "${bovines.size}"
+        dis add groupFragment.ids
+                .subscribe {
+                    bovines = it
+                }
+
         color = if (isAdd) ContextCompat.getColor(this, R.color.colorPicker) else  group?.color!!
         colorPicker.setCardBackgroundColor(color)
 
         name.setText(group?.nombre ?: "")
-
-        dis add selection.clicks()
-                .subscribe { startActivityForResult<BovineSelectedActivity>(101, BovineSelectedActivity.EXTRA_SELECTED to bovines.toTypedArray()) }
 
         dis add btnCancel.clicks()
                 .subscribe { finish() }
@@ -110,13 +114,6 @@ class SaveGroupActivity : AppCompatActivity(), Injectable {
         return Single.just(group!!)
                 .flatMap { viewModel.update(it._id!!, it) }
                 .doOnSuccess { toast(R.string.group_updated) }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if(resultCode == Activity.RESULT_OK){
-            bovines = data!!.extras.getStringArray(BovineSelectedActivity.DATA_ITEMS).toList()
-            number.text = "${bovines.size}"
-        }
     }
 
     companion object {

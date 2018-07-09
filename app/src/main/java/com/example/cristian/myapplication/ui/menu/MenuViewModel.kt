@@ -2,18 +2,19 @@ package com.example.cristian.myapplication.ui.menu
 
 import android.arch.lifecycle.ViewModel
 import android.graphics.Color
+import com.couchbase.lite.Ordering
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.db.CouchRx
 import com.example.cristian.myapplication.data.models.*
 import com.example.cristian.myapplication.data.preferences.UserSession
-import com.example.cristian.myapplication.util.andEx
-import com.example.cristian.myapplication.util.applySchedulers
-import com.example.cristian.myapplication.util.equalEx
+import com.example.cristian.myapplication.util.*
 import io.reactivex.Maybe
+import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.rxkotlin.toObservable
 import io.reactivex.rxkotlin.zipWith
 import io.reactivex.subjects.PublishSubject
+import java.util.*
 import javax.inject.Inject
 
 /**
@@ -21,15 +22,22 @@ import javax.inject.Inject
  */
 class MenuViewModel @Inject constructor(private val db: CouchRx, private val userSession: UserSession) : ViewModel() {
 
+    private val farmID = userSession.farmID
+
+    fun getFarmId(): String = farmID
+
+
     //region Menu
     var content: Int = 2
     val querySubject = PublishSubject.create<String>()
+    val pageSize: Int = 30
+
 
     val data: List<MenuItem> = listOf(
             MenuItem(MenuItem.TYPE_TITLE, titleText = userSession.farm),
             MenuItem(MenuItem.TYPE_BUTTON, icon = R.drawable.ic_back_white, title = R.string.change_farm),
             MenuItem(MenuItem.TYPE_MENU, R.color.img, R.drawable.ic_bovine, R.string.bovines),
-            MenuItem(MenuItem.TYPE_MENU, R.color.img, R.drawable.ic_bovine, R.string.menu_groups),
+            MenuItem(MenuItem.TYPE_MENU, R.color.img, R.drawable.ic_group, R.string.menu_groups),
             MenuItem(MenuItem.TYPE_MENU, R.color.img, R.drawable.ic_milk, R.string.milk),
             MenuItem(MenuItem.TYPE_MENU, R.color.img, R.drawable.ic_feed, R.string.feeding),
             MenuItem(MenuItem.TYPE_MENU, R.color.img, R.drawable.ic_management, R.string.management),
@@ -82,15 +90,13 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     }
     //endregion
 
-    fun getFarmId(): String = userSession.farmID
-
     fun getBovine(idFinca: String): Single<List<Bovino>> =
             db.listByExp("finca" equalEx idFinca andEx ("retirado" equalEx false), Bovino::class)
                     .applySchedulers()
 
     fun deleteBovine(idBovino: String): Single<Unit> = db.remove(idBovino).applySchedulers()
 
-    fun getManagement(idFinca: String):Single<List<Manage>> =
+    fun getManagement(idFinca: String): Single<List<Manage>> =
             getBovine(idFinca)
                     .flatMapObservable {
                         it.toObservable()
@@ -102,20 +108,40 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     .toList()
                     .applySchedulers()
 
-    fun getStraw(idFinca: String):Single<List<Straw>> =
+    fun getStraw(idFinca: String): Single<List<Straw>> =
             db.listByExp("idFarm" equalEx idFinca, Straw::class)
                     .applySchedulers()
 
     fun getHealth(idFinca: String): Single<List<Sanidad>> =
-            db.listByExp("idFarm" equalEx idFinca, Sanidad::class)
+            db.listByExp("idFinca" equalEx idFinca, Sanidad::class)
                     .applySchedulers()
+
+    fun getNextHealth(idFinca: String, page:Int): Single<List<Sanidad>>{
+        val skip = page * pageSize
+        val today = Date()
+        val nextDate = Date(today.time + (86_400_000 * 8))
+        return db.listByExp("idFinca" equalEx idFinca andEx ("fecha" gte today) andEx ("proximaAplicacion" equalEx 0), Sanidad::class,
+                pageSize, skip,
+                arrayOf(Ordering.property("fechaProxima").ascending()))
+                .applySchedulers()
+    }
+
+    fun getPendingHealrh(idFinca: String,page: Int): Single<List<Sanidad>>{
+        val skip = page * pageSize
+        val today = Date()
+        return db.listByExp("idFinca" equalEx idFinca andEx ("fecha" lte today) andEx ("proximaAplicacion" equalEx 0), Sanidad::class,
+                pageSize,skip)
+                .applySchedulers()
+    }
+
+
+    fun updateHealth(sanidad: Sanidad): Single<Unit> = db.update(sanidad._id!!, sanidad).applySchedulers()
 
     fun getMilk(idFinca: String): Single<List<SalidaLeche>> =
             db.listByExp("idFarm" equalEx idFinca, SalidaLeche::class)
                     .applySchedulers()
 
-    fun getFeed(idFinca: String): Single<List<Feed>> =
-            db.listByExp("idFarm" equalEx idFinca, Feed::class)
+    fun getFeed(): Observable<List<RegistroAlimentacion>> = db.listObsByExp("idFinca" equalEx farmID, RegistroAlimentacion::class)
                     .applySchedulers()
 
     fun getMeadows(idFinca: String): Single<Pair<List<Pradera>, Long>> =
@@ -127,8 +153,8 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     }
                     .applySchedulers()
 
-    fun getMeadow(id:String): Maybe<Pradera> =
-            db.oneById(id,Pradera::class).applySchedulers()
+    fun getMeadow(id: String): Maybe<Pradera> =
+            db.oneById(id, Pradera::class).applySchedulers()
 
     fun saveMeadow(pradera: Pradera): Single<String> =
             db.insert(pradera).applySchedulers()
@@ -154,14 +180,42 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     .applySchedulers()
 
     // Filtros
+    fun getBovinesFilter(idFinca: String): Single<List<Bovino>> =
+            db.listByExp("finca" equalEx idFinca, Bovino::class)
+                    .applySchedulers()
 
-    fun getMilkPurpose(Idfinca: String):Single<List<Bovino>> =
-            db.listByExp("Idfinca" equalEx Idfinca andEx ("proposito" equalEx "leche"),Bovino::class)
+    fun getMilkPurpose(Idfinca: String): Single<List<Bovino>> =
+            db.listByExp("Idfinca" equalEx Idfinca andEx ("proposito" equalEx "leche"), Bovino::class)
 
-    fun getCebaPurpose(Idfinca: String):Single<List<Bovino>> =
-            db.listByExp("Idfinca" equalEx Idfinca andEx ("proposito" equalEx "Ceba"),Bovino::class)
+    fun getCebaPurpose(Idfinca: String): Single<List<Bovino>> =
+            db.listByExp("Idfinca" equalEx Idfinca andEx ("proposito" equalEx "Ceba"), Bovino::class)
 
-    fun getCebaAndMilkPurpose(Idfinca: String):Single<List<Bovino>> =
-            db.listByExp("Idfinca" equalEx Idfinca andEx ("proposito" equalEx "leche y ceba"),Bovino::class)
+    fun getCebaAndMilkPurpose(Idfinca: String): Single<List<Bovino>> =
+            db.listByExp("Idfinca" equalEx Idfinca andEx ("proposito" equalEx "leche y ceba"), Bovino::class)
+
+
+    //region Vacunas
+    fun inserVaccine(registroVacuna: RegistroVacuna): Single<String> = db.insert(registroVacuna).applySchedulers()
+
+    fun updateVaccine(registroVacuna: RegistroVacuna): Single<Unit> = db.update(registroVacuna._id!!, registroVacuna).applySchedulers()
+
+    fun getVaccinations(): Observable<List<RegistroVacuna>> = db.listObsByExp("idFinca" equalEx farmID, RegistroVacuna::class).applySchedulers()
+
+    fun getNextVaccines(from: Date, to: Date): Observable<List<RegistroVacuna>> =
+            db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProx".betweenDates(from, to)) andEx ("proxAplicado" equalEx false), RegistroVacuna::class).applySchedulers()
+
+    fun getPendingVaccines(from: Date): Observable<List<RegistroVacuna>> =
+            db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProx".lte(from)) andEx ("proxAplicado" equalEx false), RegistroVacuna::class).applySchedulers()
+    //endregion
+
+
+    //region Manejo
+    fun insertManage(registroManejo: RegistroManejo): Single<String> = db.insertManage(registroManejo).applySchedulers()
+
+    fun getManages(): Observable<List<RegistroManejo>> = db.listObsByExp("idFinca" equalEx farmID, RegistroManejo::class).applySchedulers()
+
+    fun getNextManages(from: Date, to: Date): Observable<List<RegistroManejo>> =
+            db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProx".betweenDates(from, to)), RegistroManejo::class).applySchedulers()
+    //endregion
 
 }

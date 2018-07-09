@@ -185,7 +185,9 @@ class MenuActivity : AppCompatActivity(),Injectable,HasSupportFragmentInjector {
             2-> showMenu1()
             in 3..6-> showMenu2()
             7-> noMenu()
-            in 8..13-> showMenu2()
+            in 8..10-> showMenu2()
+            11-> noMenu()
+            12,13-> showMenu2()
         }
 
         when(content){

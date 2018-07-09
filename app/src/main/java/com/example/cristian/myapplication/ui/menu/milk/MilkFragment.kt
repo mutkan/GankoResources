@@ -17,7 +17,7 @@ import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
 import com.jakewharton.rxbinding2.view.clicks
 import io.reactivex.rxkotlin.subscribeBy
-import kotlinx.android.synthetic.main.fragment_health.*
+import kotlinx.android.synthetic.main.fragment_recent_health.*
 import kotlinx.android.synthetic.main.fragment_milk.*
 import org.jetbrains.anko.support.v4.startActivity
 import org.jetbrains.anko.support.v4.toast

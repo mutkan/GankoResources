@@ -221,6 +221,10 @@
     <string name="straw_type">Tipo</string>
     <string name="straw_value">Valor</string>
     <string name="straw_breed">Raza</string>
+    <string name="monta_natural">Monta Natural</string>
+    <string name="inseminaci_n_artificial">Inseminación Artificial</string>
+    <string name="onService">En Servicio</string>
+    <string name="services">Servicios</string>
     <string name="meadow_size_text">Tamaño de la pradera</string>
     <string name="graminea_type">Tipo de Graminea</string>
     <string name="manteinance">Mantenimiento</string>
@@ -248,6 +252,13 @@
         <item>Muerte</item>
     </string-array>
 
+
+    <string-array name="novelties">
+        <item>Aborto</item>
+        <item>Muerte del Animal</item>
+    </string-array>
+
+
     <string-array name="gramineas_type">
         <item>Selecciona una</item>
         <item>Pasto Castillo</item>
@@ -268,9 +279,19 @@
     </string-array>
 
     <string-array name="event_type">
+        <item>Corte de ombligo</item>
+        <item>Identificación</item>
+        <item>Descorne</item>
+        <item>Arreglo de cascos</item>
         <item>Castración</item>
         <item>Secado</item>
         <item>Otro</item>
+    </string-array>
+
+    <string-array name="feed_types">
+        <item>Forraje</item>
+        <item>Maiz</item>
+        <item>Concentrado</item>
     </string-array>
 
     <string name="remove_group">¿ Desea eliminar el grupo ?</string>
@@ -290,6 +311,7 @@
     <string name="write_your_observations">Escríba sus observaciones</string>
     <string name="add_group_title">Selecciona los Bovinos</string>
     <string name="group_selected">Bovinos Seleccionados</string>
+    <string name="group_one_selected">Grupo Seleccionado</string>
     <string name="group_name">Nombre del grupo</string>
     <string name="group_color">Color</string>
     <string name="group_form_error">Agrega un nombre y selecciona un color</string>
@@ -305,6 +327,24 @@
     <string name="dose_frequency">Frecuencia de las dosis</string>
     <string name="product_value">Valor del producto</string>
     <string name="attention_value">Valor de la atención</string>
+    <string name="other">Otra</string>
+    <string name="event">Evento</string>
+    <string name="times_a_day">veces al dia</string>
+    <string name="applications_number">Número de aplicaciones</string>
+    <string name="channel_name">Ganko Alertas</string>
+    <string name="channel_description">Alertas de proximos eventos</string>
+    <string name="frequency_in_days">Frecuencia en días</string>
+    <string name="bovine_number">Núemro de bovinos</string>
+    <string name="recents">Recientes</string>
+    <string name="next">Próximos</string>
+    <string name="no_health_register">No hay registros de sanidad</string>
+    <string name="number_of_aplications">Numero de aplicaciones</string>
+    <string name="assistance_price">Valor asistencia</string>
+    <string name="aplication">Aplicación</string>
+    <string name="pending">Pendientes</string>
+    <string name="apply">APLICAR</string>
+    <string name="pendings">Pendientes</string>
+    <string name="skip">OMITIR</string>
 
     <string-array name="milk_production">
         <item>Litros vendidos</item>
@@ -313,5 +353,22 @@
         <item>Consumo propio</item>
     </string-array>
 
+    <string-array name="health_event">
+        <item>Enfermedad</item>
+        <item>Endoparásitos</item>
+        <item>Ectoparásitos</item>
+        <item>Otra</item>
+    </string-array>
+
+    <string-array name="time_units">
+        <item>Horas</item>
+        <item>Días</item>
+        <item>Meses</item>
+        <item>Años</item>
+    </string-array>
 
 </resources>
+
+
+
+

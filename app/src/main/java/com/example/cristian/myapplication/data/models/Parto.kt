@@ -5,10 +5,11 @@ import kotlinx.android.parcel.Parcelize
 import java.util.*
 
 @Parcelize
-class Parto(
+data class Parto(
         var fecha: Date,
         var intervalo: Int,
         var diasVacios: Int,
         var sexoCria: String,
+        var numero:Int,
         var estadoCria: String
 ):Parcelable

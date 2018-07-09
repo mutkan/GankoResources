@@ -20,4 +20,5 @@
     <dimen name="select_icon_bottom">20dp</dimen>
     <dimen name="select_icon_action">28dp</dimen>
     <dimen name="label_feed_select">26sp</dimen>
+    <dimen name="select_resume">24dp</dimen>
 </resources>

@@ -137,7 +137,7 @@ class AddBovineActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
                             if (check_weaned.isChecked) {
                                 bovineWeanedDate.text.toString().toDate()
                             } else null,
-                            null, null, listOf(), listOf(), listOf()))
+                            null, null, null,listOf(), listOf(), listOf()))
                 }.subscribeBy(
                         onNext = {
                             toast("Bovino agregado exitosamente")

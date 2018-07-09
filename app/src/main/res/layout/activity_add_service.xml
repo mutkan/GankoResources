@@ -1,110 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.bovine.reproductive.add.AddServiceActivity">
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/serviceDateTxt"
+                    style="@style/textview_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="Fecha"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/bodyConditionTxt"
+                    style="@style/textview_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Condición Corporal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/serviceDate" />
+
+                <TextView
+                    android:id="@+id/breedingTxt"
+                    style="@style/textview_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Empadre"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/bodyCondition" />
+
+                <TextView
+                    android:id="@+id/bullCodeOrStrawTxt"
+                    style="@style/textview_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/serviceType"
+                    tools:text="Código Toro/Pajilla" />
+
+                <EditText
+                    android:id="@+id/serviceDate"
+                    style="@style/edit_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:ems="10"
+                    android:clickable="true"
+                    android:focusable="false"
+                    android:hint="dd/mm/aaaa"
+                    android:inputType="date"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/serviceDateTxt"
+                    app:layout_constraintTop_toBottomOf="@+id/serviceDateTxt" />
+
+                <EditText
+                    android:id="@+id/bodyCondition"
+                    style="@style/edit_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:ems="10"
+                    android:hint="Condición Corporal"
+                    android:inputType="numberDecimal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/bodyConditionTxt"
+                    app:layout_constraintTop_toBottomOf="@+id/bodyConditionTxt" />
+
+                <RadioGroup
+                    android:id="@+id/serviceType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/breedingTxt">
+
+                    <RadioButton
+                        android:id="@+id/naturalMating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:checked="true"
+                        android:text="@string/monta_natural" />
+
+                    <RadioButton
+                        android:id="@+id/artificialInsemination"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/inseminaci_n_artificial" />
+                </RadioGroup>
+
+                <Spinner
+                    android:id="@+id/bullCodeOrStrawSpinner"
+                    style="@style/Widget.AppCompat.Spinner.Underlined"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/bullCodeOrStrawTxt" />
 
 
-    <TextView
-        android:id="@+id/textView7"
-        style="@style/textview_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="fecha"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="16dp" />
 
-    <TextView
-        android:id="@+id/textView9"
-        style="@style/textview_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Condición Corporal"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="75dp" />
 
-    <TextView
-        android:id="@+id/textView10"
-        style="@style/textview_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Empadre"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="129dp" />
+        <Button
+            android:id="@+id/btnCancelService"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="@string/btn_cancel"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btnAcceptService"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/textView12"
-        style="@style/textview_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Código Toro"
-        tools:layout_editor_absoluteX="17dp"
-        tools:layout_editor_absoluteY="179dp" />
+        <Button
+            android:id="@+id/btnAcceptService"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_Acept"
+            app:layout_constraintBottom_toBottomOf="@+id/btnCancelService"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/btnCancelService"
+            app:layout_constraintTop_toTopOf="@+id/btnCancelService" />
 
-    <TextView
-        android:id="@+id/textView15"
-        style="@style/textview_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Pajilla"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="220dp" />
 
-    <EditText
-        android:id="@+id/editText"
-        style="@style/edit_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="dd/mm/aaaa"
-        android:inputType="textPersonName"
-        tools:layout_editor_absoluteX="99dp"
-        tools:layout_editor_absoluteY="16dp" />
+    </android.support.constraint.ConstraintLayout>
 
-    <EditText
-        android:id="@+id/editText2"
-        style="@style/edit_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Condición Corporal"
-        android:inputType="textPersonName"
-        tools:layout_editor_absoluteX="99dp"
-        tools:layout_editor_absoluteY="75dp" />
+</layout>
 
-    <EditText
-        android:id="@+id/editText3"
-        style="@style/edit_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name"
-        tools:layout_editor_absoluteX="99dp"
-        tools:layout_editor_absoluteY="133dp" />
-
-    <EditText
-        android:id="@+id/editText4"
-        style="@style/edit_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name"
-        tools:layout_editor_absoluteX="99dp"
-        tools:layout_editor_absoluteY="210dp" />
-
-    <EditText
-        android:id="@+id/editText5"
-        style="@style/edit_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name"
-        tools:layout_editor_absoluteX="99dp"
-        tools:layout_editor_absoluteY="275dp" />
-
-</android.support.constraint.ConstraintLayout>
