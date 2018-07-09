@@ -6,6 +6,7 @@ import com.couchbase.lite.Ordering
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.db.CouchRx
 import com.example.cristian.myapplication.data.models.*
+import com.example.cristian.myapplication.data.models.RegistroVacuna.Companion.NOT_APPLIED
 import com.example.cristian.myapplication.data.preferences.UserSession
 import com.example.cristian.myapplication.util.*
 import io.reactivex.Maybe
@@ -182,10 +183,10 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     fun getVaccinations(): Observable<List<RegistroVacuna>> = db.listObsByExp("idFinca" equalEx farmID, RegistroVacuna::class).applySchedulers()
 
     fun getNextVaccines(from: Date, to: Date): Observable<List<RegistroVacuna>> =
-            db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProximaAplicacion".betweenDates(from, to)) andEx ("estadoProximaAplicacion" equalEx false), RegistroVacuna::class).applySchedulers()
+            db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProximaAplicacion".betweenDates(from, to)) andEx ("estadoProximaAplicacion" equalEx NOT_APPLIED), RegistroVacuna::class).applySchedulers()
 
     fun getPendingVaccines(from: Date): Observable<List<RegistroVacuna>> =
-            db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProximaAplicacion".lte(from)) andEx ("estadoProximaAplicacion" equalEx false), RegistroVacuna::class).applySchedulers()
+            db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProximaAplicacion".lte(from)) andEx ("estadoProximaAplicacion" equalEx NOT_APPLIED), RegistroVacuna::class).applySchedulers()
     //endregion
 
 
