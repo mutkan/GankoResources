@@ -176,7 +176,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     .applySchedulers()
 
     fun getGroups(idFinca: String): Single<List<Group>> =
-            db.listByExp("idFinca" equalEx idFinca, Group::class)
+            db.listByExp("finca" equalEx idFinca, Group::class)
                     .applySchedulers()
 
     // Filtros

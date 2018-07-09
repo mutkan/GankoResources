@@ -42,16 +42,10 @@ class MeadowUsedFragment : Fragment(), Injectable {
 
     override fun onResume() {
         super.onResume()
+        getMeadows()
         usedMeadowsList.adapter = adapter
         usedMeadowsList.layoutManager = LinearLayoutManager(context)
-        dis add viewmodel.getUsedMeadows(viewmodel.getFarmId())
-                .subscribeBy {
-                    if (it.isEmpty()) noData.visibility = View.VISIBLE
-                    else {
-                        adapter.data = it
-                        noData.visibility = View.GONE
-                    }
-                }
+
         dis add adapter.onClickMeadow
                 .subscribe {
                     removeGroupFromMeadow(it)
@@ -67,6 +61,9 @@ class MeadowUsedFragment : Fragment(), Injectable {
                 dis add viewmodel.updateMeadow(pradera._id!!, pradera)
                         .subscribeBy(
                                 onSuccess = {
+                                    getMeadows()
+                                    adapter.notifyDataSetChanged()
+                                    MeadowUnusedFragment.instance().adapter.notifyDataSetChanged()
                                     toast("Datos guardados correctamente")
                                 },
                                 onError = {
@@ -75,7 +72,18 @@ class MeadowUsedFragment : Fragment(), Injectable {
                         )
             }
             noButton { }
-        }
+        }.show()
+    }
+
+    fun getMeadows() {
+        dis add viewmodel.getUsedMeadows(viewmodel.getFarmId())
+                .subscribeBy {
+                    if (it.isEmpty()) noData.visibility = View.VISIBLE
+                    else {
+                        adapter.data = it
+                        noData.visibility = View.GONE
+                    }
+                }
     }
 
     companion object {

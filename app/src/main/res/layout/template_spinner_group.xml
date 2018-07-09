@@ -14,7 +14,7 @@
         android:layout_height="wrap_content">
 
         <Spinner
-            android:id="@+id/spinner3"
+            android:id="@+id/selectedGroup"
             android:layout_width="191dp"
             android:layout_height="50dp"
             android:entries="@{groups}"
