@@ -322,7 +322,7 @@
                         android:layout_marginTop="8dp"
                         android:ems="10"
                         android:hint="@string/frecuency"
-                        android:inputType="numberDecimal"
+                        android:inputType="number"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView116" />
 

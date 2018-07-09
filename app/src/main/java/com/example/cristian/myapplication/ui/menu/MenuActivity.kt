@@ -96,7 +96,7 @@ class MenuActivity : AppCompatActivity(),Injectable,HasSupportFragmentInjector {
                         when (it) {
                             1 -> nav.navigateToFarm()
                             in 2..13 -> clickOnMenu(it)
-                            144 -> nav.navigateToLogout()
+                            14 -> nav.navigateToLogout()
                         }
                     }
                 }

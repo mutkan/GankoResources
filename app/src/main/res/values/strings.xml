@@ -333,7 +333,7 @@
     <string name="channel_name">Ganko Alertas</string>
     <string name="channel_description">Alertas de proximos eventos</string>
     <string name="frequency_in_days">Frecuencia en días</string>
-    <string name="bovine_number">Núemro de bovinos</string>
+    <string name="bovine_number">Número de bovinos</string>
     <string name="recents">Recientes</string>
     <string name="next">Próximos</string>
     <string name="no_health_register">No hay registros de sanidad</string>

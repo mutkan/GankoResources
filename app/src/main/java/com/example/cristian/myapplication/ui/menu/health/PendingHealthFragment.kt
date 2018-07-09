@@ -43,10 +43,10 @@ class PendingHealthFragment : Fragment() , Injectable {
         recyclerPendingHealth.adapter = adapter
         recyclerPendingHealth.layoutManager = LinearLayoutManager(activity)
 
-        dis add viewModel.getPendingHealrh(idFinca,1)
+        dis add viewModel.getPendingHealrh()
                 .subscribeBy (
                         onSuccess = {
-                            if(it.isEmpty()) emptyPendingHealthText.visibility = View.VISIBLE else emptyHealthText.visibility = View.GONE
+                            if(it.isEmpty()) emptyPendingHealthText.visibility = View.VISIBLE else emptyPendingHealthText.visibility = View.GONE
                             adapter.pending = it
                         },
                         onError = {
