@@ -4,6 +4,7 @@ package com.example.cristian.myapplication.ui.menu.movement
 import android.arch.lifecycle.ViewModelProvider
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.support.constraint.ConstraintLayout
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
@@ -45,8 +46,17 @@ class MeadowUnusedFragment : Fragment(), Injectable {
 
     override fun onResume() {
         super.onResume()
+        getUnusedMeadows()
         unusedMeadowsList.adapter = adapter
         unusedMeadowsList.layoutManager = LinearLayoutManager(context)
+
+        dis add adapter.onClickMeadow
+                .subscribe {
+                    findGroupsToUseMeadow(it)
+                }
+    }
+
+    fun getUnusedMeadows(){
         dis add viewmodel.getUnusedMeadows(viewmodel.getFarmId())
                 .subscribeBy {
                     if (it.isEmpty()) noData.visibility = View.VISIBLE
@@ -54,10 +64,6 @@ class MeadowUnusedFragment : Fragment(), Injectable {
                         adapter.data = it
                         noData.visibility = View.GONE
                     }
-                }
-        dis add adapter.onClickMeadow
-                .subscribe {
-                    findGroupsToUseMeadow(it)
                 }
     }
 
@@ -73,21 +79,23 @@ class MeadowUnusedFragment : Fragment(), Injectable {
                     arrayGroup.add(it.nombre)
                 }.subscribe {
                     alert {
-                        val spinner = layoutInflater.inflate(R.layout.template_spinner_group, null) as Spinner
-                        val bind = DataBindingUtil.bind<TemplateSpinnerGroupBinding>(spinner)!!
+                        val viewBind = TemplateSpinnerGroupBinding.inflate(layoutInflater,null,false)
+                        viewBind.groups = arrayGroup
                         title = "Añada un grupo a esta pradera"
                         customView {
 
-                            bind.groups = arrayGroup
-                            this.addView(spinner, null)
+                            this.addView(viewBind.root, null)
                         }
                         yesButton {
                             pradera.fechaOcupacion = Date()
                             pradera.available = false
-                            pradera.group = spinner.selectedItem.toString()
+                            pradera.group = viewBind.selectedGroup.selectedItem.toString()
                             dis add viewmodel.updateMeadow(pradera._id!!, pradera)
                                     .subscribeBy(
                                             onSuccess = {
+                                                getUnusedMeadows()
+                                                adapter.notifyDataSetChanged()
+                                                MeadowUsedFragment.instance().adapter.notifyDataSetChanged()
                                                 toast("Datos guardados correctamente")
                                             },
                                             onError = {

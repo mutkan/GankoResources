@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.Pradera
-import com.example.cristian.myapplication.databinding.TemplateMovementUnusedBinding
+import com.example.cristian.myapplication.databinding.TemplateMovementUsedBinding
 import com.example.cristian.myapplication.util.inflate
 import io.reactivex.subjects.PublishSubject
 
@@ -29,7 +29,7 @@ class MovementUsedAdapter:RecyclerView.Adapter<MovementUsedAdapter.MovementHolde
             holder.bind(data[position],onClickMeadow)
 
     class MovementHolder(view: View):RecyclerView.ViewHolder(view){
-        val binding:TemplateMovementUnusedBinding = DataBindingUtil.bind(view)!!
+        val binding: TemplateMovementUsedBinding = DataBindingUtil.bind(view)!!
         fun bind(meadow:Pradera,onClickMeadow:PublishSubject<Pradera>){
             binding.meadow = meadow
             binding.onClickMeadow = onClickMeadow

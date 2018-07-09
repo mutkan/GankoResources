@@ -7,7 +7,7 @@
     <data>
         <variable
             name="manage"
-            type="com.example.cristian.myapplication.data.models.Manage"/>
+            type="com.example.cristian.myapplication.data.models.RegistroManejo"/>
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -65,7 +65,7 @@
             android:textColor="@color/menu_button"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text26"
-            tools:text="20 Lts" />
+            tools:text="Aplicacion manual" />
 
         <TextView
             android:id="@+id/textView27"
@@ -89,7 +89,7 @@
             android:textColor="@color/menu_button"
             app:layout_constraintBottom_toBottomOf="@+id/manage_treatment"
             app:layout_constraintStart_toStartOf="@+id/textView27"
-            tools:text="20 Lts" />
+            tools:text="Desinfectante" />
 
         <TextView
             android:id="@+id/textView18"
@@ -98,10 +98,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="16dp"
-            android:text="Frecuencia"
+            android:text="@string/health_product_value"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/manage_treatment"
-            tools:text="Frecuencia" />
+            tools:text="@string/health_product_value" />
 
         <TextView
             android:id="@+id/manage_frequency"
@@ -110,11 +110,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
-            android:text="@{manage.frecuencia}"
+            android:text='@{"$ "+manage.valorProducto}'
             android:textColor="@color/menu_button"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView18"
-            tools:text="20Lts" />
+            tools:text="$ 14500" />
 
         <TextView
             android:id="@+id/textView26"
@@ -141,31 +141,37 @@
             app:layout_constraintTop_toBottomOf="@+id/textView26"
             tools:text="Observaciones" />
 
-        <TextView
-            android:id="@+id/textView29"
-            style="@style/TextAppearance.AppCompat.Body1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginStart="160dp"
-            android:layout_marginTop="20dp"
-            android:text="Siguiente aplicación"
-            android:textColor="@color/check_filter"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/manage_observations" />
-
-
 
         <ImageView
             android:id="@+id/imageView4"
             android:layout_width="0dp"
-            android:layout_height="0.5dp"
+            android:layout_height="1dp"
             android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/manage_application_date"
+            app:layout_constraintTop_toBottomOf="@+id/manage_observations"
             app:srcCompat="@color/menu_button_light" />
+
+        <TextView
+            android:id="@+id/aplicationLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.AppCompat.Body1"
+            app:layout_constraintStart_toStartOf="@+id/manage_product"
+            app:layout_constraintTop_toTopOf="@+id/textView18"
+            tools:text="@string/aplication" />
+
+        <TextView
+            android:id="@+id/aplication"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="@+id/aplicationLabel"
+            app:layout_constraintTop_toBottomOf="@+id/aplicationLabel"
+            android:text='@{""+manage.aplicacion}'
+            tools:text="1" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>
