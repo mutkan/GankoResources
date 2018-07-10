@@ -344,6 +344,7 @@
     <string name="apply">APLICAR</string>
     <string name="pendings">Pendientes</string>
     <string name="skip">OMITIR</string>
+    <string name="no_feed_register">No hay registros de alimentación</string>
 
     <string-array name="milk_production">
         <item>Litros vendidos</item>
