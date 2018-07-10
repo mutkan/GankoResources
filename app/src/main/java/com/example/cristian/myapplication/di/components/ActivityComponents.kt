@@ -1,10 +1,7 @@
 package com.example.cristian.myapplication.di.components
 
 import com.example.cristian.myapplication.di.ActivityScope
-import com.example.cristian.myapplication.di.modules.AddGroupModule
-import com.example.cristian.myapplication.di.modules.MeadowModule
-import com.example.cristian.myapplication.di.modules.ReproductiveModule
-import com.example.cristian.myapplication.di.modules.SelectModule
+import com.example.cristian.myapplication.di.modules.*
 import com.example.cristian.myapplication.ui.account.LoginActivity
 import com.example.cristian.myapplication.ui.bovine.AddBovineActivity
 import com.example.cristian.myapplication.ui.bovine.DetailBovineActivity
@@ -36,6 +33,7 @@ import com.example.cristian.myapplication.ui.menu.meadow.mantenimiento.AddManten
 import com.example.cristian.myapplication.ui.menu.milk.AddMilkActivity
 import com.example.cristian.myapplication.ui.menu.straw.StrawAddActivity
 import com.example.cristian.myapplication.ui.menu.vaccines.AddVaccineActivity
+import com.example.cristian.myapplication.ui.menu.vaccines.detail.VaccineDetailActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -132,7 +130,7 @@ abstract class ActivityComponents {
 
     @ActivityScope
     @ContributesAndroidInjector()
-    abstract  fun bindAddFeedActivity(): AddFeedActivity
+    abstract fun bindAddFeedActivity(): AddFeedActivity
 
     @ActivityScope
     @ContributesAndroidInjector()
@@ -181,6 +179,10 @@ abstract class ActivityComponents {
 
     @ActivityScope
     @ContributesAndroidInjector
-    abstract fun bindReApplyActivity():ReApplyActivity
+    abstract fun bindReApplyActivity(): ReApplyActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector(modules = [VaccinesDetailModule::class])
+    abstract fun bindVaccineDetailActivity(): VaccineDetailActivity
 
 }

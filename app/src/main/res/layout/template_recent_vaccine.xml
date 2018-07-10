@@ -9,11 +9,15 @@
         <variable
             name="vacuna"
             type="com.example.cristian.myapplication.data.models.RegistroVacuna"/>
+        <variable
+            name="clicVacuna"
+            type="io.reactivex.subjects.PublishSubject"/>
     </data>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:onClick='@{()->clicVacuna.onNext(vacuna)}'>
 
         <TextView
             android:id="@+id/vaccineName"
@@ -105,7 +109,8 @@
             android:layout_marginEnd="4dp"
             app:layout_constraintBottom_toBottomOf="@+id/cowIcon"
             app:layout_constraintEnd_toStartOf="@+id/cowIcon"
-            android:text='@{vacuna.grupo == null ? ""+vacuna.bovinos.size() : vacuna.grupo.nombre}'
+            app:bovinos='@{vacuna.bovinos}'
+            app:noBovinos='@{vacuna.noBovinos}'
             tools:text="@string/feedNumberBovine" />
 
         <ImageView

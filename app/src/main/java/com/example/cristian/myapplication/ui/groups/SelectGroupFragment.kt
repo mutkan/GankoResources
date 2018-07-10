@@ -54,6 +54,7 @@ class SelectGroupFragment : Fragment(), Injectable {
                         val intent = Intent()
                         intent.putExtra(SelectActivity.DATA_GROUP, group)
                         activity!!.setResult(Activity.RESULT_OK, intent)
+                        activity!!.finish()
                     }
                 }
 

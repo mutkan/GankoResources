@@ -2,7 +2,6 @@ package com.example.cristian.myapplication.ui.menu
 
 import android.arch.lifecycle.ViewModel
 import android.graphics.Color
-import com.couchbase.lite.Ordering
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.db.CouchRx
 import com.example.cristian.myapplication.data.models.*
@@ -178,20 +177,26 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     //region Vacunas
     fun inserVaccine(registroVacuna: RegistroVacuna): Single<String> = db.insert(registroVacuna).applySchedulers()
 
+    fun inserFirstVaccine(registroVacuna: RegistroVacuna): Single<String> = db.insertDosisUno(registroVacuna).applySchedulers()
+
     fun updateVaccine(registroVacuna: RegistroVacuna): Single<Unit> = db.update(registroVacuna._id!!, registroVacuna).applySchedulers()
 
     fun getVaccinations(): Observable<List<RegistroVacuna>> = db.listObsByExp("idFinca" equalEx farmID, RegistroVacuna::class).applySchedulers()
 
     fun getNextVaccines(from: Date, to: Date): Observable<List<RegistroVacuna>> =
-            db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProximaAplicacion".betweenDates(from, to)) andEx ("estadoProximaAplicacion" equalEx NOT_APPLIED), RegistroVacuna::class).applySchedulers()
+            db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProxima".betweenDates(from, to)) andEx ("estadoProximo" equalEx NOT_APPLIED), RegistroVacuna::class).applySchedulers()
 
     fun getPendingVaccines(from: Date): Observable<List<RegistroVacuna>> =
-            db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProximaAplicacion".lte(from)) andEx ("estadoProximaAplicacion" equalEx NOT_APPLIED), RegistroVacuna::class).applySchedulers()
+            db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProxima".lte(from)) andEx ("estadoProximo" equalEx NOT_APPLIED), RegistroVacuna::class).applySchedulers()
+
+    fun getVaccinesByDosisUno(idDosisUno:String) : Single<List<RegistroVacuna>> =
+            db.listByExp("idFinca" equalEx farmID andEx ("idDosisUno" equalEx idDosisUno) ,RegistroVacuna::class).applySchedulers()
+
     //endregion
 
 
     //region Manejo
-    fun insertManage(registroManejo: RegistroManejo): Single<String> = db.insertManage(registroManejo).applySchedulers()
+    fun insertManage(registroManejo: RegistroManejo): Single<String> = db.insertDosisUno(registroManejo).applySchedulers()
 
     fun getManages(): Observable<List<RegistroManejo>> = db.listObsByExp("idFinca" equalEx farmID, RegistroManejo::class).applySchedulers()
 

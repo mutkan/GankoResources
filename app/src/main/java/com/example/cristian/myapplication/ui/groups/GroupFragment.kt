@@ -28,7 +28,7 @@ class GroupFragment : Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.run {
             group = getParcelable(ARG_GROUP)
-            bovines = getStringArray(ARG_BOVINES).toList()
+            bovines = getStringArray(ARG_BOVINES)?.toList()
             color = getInt(ARG_COLORS)
         }
     }

@@ -93,7 +93,9 @@
         <activity android:name=".ui.menu.milk.AddMilkActivity" />
         <activity android:name=".ui.menu.vaccines.AddVaccineActivity" />
         <activity android:name=".ui.manage.AddManageActivity" />
-        <activity android:name=".ui.groups.ReApplyActivity"></activity>
+        <activity android:name=".ui.groups.ReApplyActivity" />
+        <activity android:name=".ui.menu.vaccines.detail.VaccineDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

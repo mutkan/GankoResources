@@ -98,7 +98,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text='@{group != null ? "" + group.bovines.size() : "" + 0}'
+            android:text='@{group != null ? group.nombre + " (" + group.bovines.size() + ")": "" + 0}'
             app:layout_constraintBottom_toBottomOf="@+id/iconGroup"
             app:layout_constraintStart_toEndOf="@+id/iconGroup"
             app:layout_constraintTop_toTopOf="@+id/iconGroup"
