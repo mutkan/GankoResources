@@ -153,7 +153,7 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                                     if(binding.otherSelect) other.text() else null, diagnosis.text(), treatment_health.text(),
                                     product_health.text(), dosis.text(), null, applicacion_number.text().toInt(), 1,
                                     observations_health.text(), product_value.text().toInt(), attention_value.text().toInt(),
-                                    null, bovines!! ,unidadTiempo,0)
+                                    null, bovines!! ,unidadTiempo,0, emptyList())
                     ).map { it to notifyTime }
                 }
                 .subscribeBy(

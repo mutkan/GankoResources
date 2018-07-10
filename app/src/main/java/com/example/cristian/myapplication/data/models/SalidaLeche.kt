@@ -10,7 +10,6 @@ class SalidaLeche(
         var _sequence: Long? = null,
         var type: String? = null,
         var idFarm: String? = null,
-        var tipo: String? = null,
         var fecha: Date? = null,
         var operacion: String? = null,
         var valorLitro: Int? = null,

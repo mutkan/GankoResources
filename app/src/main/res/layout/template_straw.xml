@@ -42,18 +42,6 @@
             tools:text="Canastilla" />
 
         <TextView
-            android:id="@+id/purposeText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="24dp"
-            android:layout_marginTop="8dp"
-            android:text="@{straw.purpose}"
-            android:textColor="@color/colorAccent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Propósito" />
-
-        <TextView
             android:id="@+id/text3477"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -121,7 +109,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="16dp"
-            android:text="@string/straw_type"
+            android:text="@string/purpose"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/bullText" />
@@ -132,7 +120,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
-            android:text="@{straw.typeStraw}"
+            android:text="@{straw.purpose}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView16"
             tools:text="Tipo" />

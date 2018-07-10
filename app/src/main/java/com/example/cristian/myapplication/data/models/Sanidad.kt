@@ -29,7 +29,8 @@ class Sanidad(
         var grupo: Grupo? = null,
         var bovinos: List<String> = listOf(),
         var UnidadesFrecuencia: String? = null,
-        var proximaAplicacion: Int? = null
+        var proximaAplicacion: Int? = null,
+        var noBovinos: List<String> = listOf()
 
 ): Parcelable{
 

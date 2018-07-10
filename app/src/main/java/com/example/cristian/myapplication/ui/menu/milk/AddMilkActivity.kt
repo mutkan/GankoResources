@@ -20,7 +20,7 @@ import org.jetbrains.anko.toast
 import java.util.*
 import javax.inject.Inject
 
-class AddMilkActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDateSetListener{
+class AddMilkActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDateSetListener {
 
     @Inject
     lateinit var factory: ViewModelProvider.Factory
@@ -38,11 +38,11 @@ class AddMilkActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDate
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setTitle("Agregar Produccion de leche")
         datePicker = DatePickerDialog(this, AddMilkBvnActivity@ this,
-                Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH)+1,
+                Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH) + 1,
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
 
         onDateSet(null, Calendar.getInstance().get(Calendar.YEAR),
-                Calendar.getInstance().get(Calendar.MONTH)+1,
+                Calendar.getInstance().get(Calendar.MONTH) + 1,
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
 
         fixColor(3)
@@ -58,7 +58,7 @@ class AddMilkActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDate
                 }
                 .flatMapSingle {
                     viewModel.addMilkProduction(
-                            SalidaLeche(null, null, null, farmId, null, it[0].toDate(), it[1], it[2].toInt(), it[3].toInt(), it[2].toInt()*it[3].toInt())
+                            SalidaLeche(null, null, null, farmId, it[0].toDate(), it[1], it[2].toInt(), it[3].toInt(), it[2].toInt() * it[3].toInt())
                     )
                 }.subscribeBy(
                         onComplete = {
@@ -87,7 +87,7 @@ class AddMilkActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDate
     }
 
     override fun onDateSet(p0: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        dateAddMilk.setText("$dayOfMonth/${month+1}/$year")
+        dateAddMilk.setText("$dayOfMonth/${month + 1}/$year")
     }
 
     override fun onSupportNavigateUp(): Boolean {
