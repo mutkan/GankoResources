@@ -17,9 +17,6 @@ import com.example.cristian.myapplication.databinding.FragmentNextVaccinesBindin
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.VaccineAdapter
 import com.example.cristian.myapplication.ui.adapters.VaccineAdapter.Companion.TYPE_NEXT_VACCINATIONS
-import com.example.cristian.myapplication.ui.groups.ReApplyActivity
-import com.example.cristian.myapplication.ui.groups.ReApplyActivity.Companion.EXTRA_ID
-import com.example.cristian.myapplication.ui.groups.ReApplyActivity.Companion.REQUEST_CODE
 import com.example.cristian.myapplication.ui.menu.MenuViewModel
 import com.example.cristian.myapplication.ui.menu.vaccines.AddVaccineActivity.Companion.PREVIOUS_VACCINE
 import com.example.cristian.myapplication.util.LifeDisposable
@@ -30,7 +27,6 @@ import io.reactivex.subjects.PublishSubject
 import org.jetbrains.anko.noButton
 import org.jetbrains.anko.support.v4.alert
 import org.jetbrains.anko.support.v4.startActivity
-import org.jetbrains.anko.support.v4.startActivityForResult
 import org.jetbrains.anko.support.v4.toast
 import org.jetbrains.anko.yesButton
 import java.util.*
@@ -95,7 +91,7 @@ class NextVaccinesFragment : Fragment(), Injectable {
 
         dis add skiped
                 .flatMapSingle {
-                    val vacuna = it.apply { estadoProximaAplicacion = SKIPED }
+                    val vacuna = it.apply { estadoProximo = SKIPED }
                     viewModel.updateVaccine(vacuna)
                 }.subscribeBy(
                         onNext = {
@@ -113,7 +109,7 @@ class NextVaccinesFragment : Fragment(), Injectable {
             "Meses" -> Date().add(Calendar.MONTH, frec)
             else -> Date().add(Calendar.YEAR, frec)
         }
-        return registroVacuna.copy(fecha = Date(), fechaProximaAplicacion = fechaProx)
+        return registroVacuna.copy(fecha = Date(), fechaProxima = fechaProx)
     }
 
     private fun showAlert(registroVacuna: RegistroVacuna) {
