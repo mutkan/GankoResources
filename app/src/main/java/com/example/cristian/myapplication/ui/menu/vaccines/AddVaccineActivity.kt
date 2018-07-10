@@ -115,7 +115,7 @@ class AddVaccineActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
                         viewModel.inserVaccine(vaccine)
                     }
                     .flatMapSingle {
-                        viewModel.updateVaccine(previousVaccine.apply { estadoProximaAplicacion = APPLIED })
+                        viewModel.updateVaccine(previousVaccine.apply { estadoProximo = APPLIED })
                     }
                     .subscribeBy(
                             onNext = {
@@ -227,16 +227,16 @@ class AddVaccineActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
             else -> fecha.add(Calendar.YEAR, proximaAplicacion)
         }
         return if (!edit) {
-            RegistroVacuna(nombre = nombreVacuna, dosisMl = dosis, frecuencia = proximaAplicacion, fecha = fecha, fechaProximaAplicacion = fechaProx, valor = valor, idFinca = idFinca, grupo = group?.toGrupo(), bovinos = bovines, unidadFrecuencia = unidadTiempo, estadoProximaAplicacion = NOT_APPLIED)
+            RegistroVacuna(nombre = nombreVacuna, titulo = nombreVacuna, descripcion = "Aplicación de $nombreVacuna, $dosis ml", dosisMl = dosis, frecuencia = proximaAplicacion, fecha = fecha, fechaProxima = fechaProx, valor = valor, idFinca = idFinca, grupo = group?.toGrupo(), bovinos = bovines, unidadFrecuencia = unidadTiempo, estadoProximo = NOT_APPLIED)
         } else {
-            RegistroVacuna(idDosisUno = previousVaccine.idDosisUno, nombre = nombreVacuna, dosisMl = dosis, frecuencia = proximaAplicacion, fecha = fecha, fechaProximaAplicacion = fechaProx, valor = valor, idFinca = idFinca, grupo = group?.toGrupo(), bovinos = bovines, unidadFrecuencia = unidadTiempo, estadoProximaAplicacion = NOT_APPLIED, noBovinos = noBovines)
+            RegistroVacuna(idDosisUno = previousVaccine.idDosisUno, titulo = nombreVacuna, descripcion = "Aplicación de $nombreVacuna, $dosis ml", nombre = nombreVacuna, dosisMl = dosis, frecuencia = proximaAplicacion, fecha = fecha, fechaProxima = fechaProx, valor = valor, idFinca = idFinca, grupo = group?.toGrupo(), bovinos = bovines, unidadFrecuencia = unidadTiempo, estadoProximo = NOT_APPLIED, noBovinos = noBovines)
         }
     }
 
     private fun setEdit() {
         otherVaccine.setText(previousVaccine.nombre)
         nextApplicationVaccine.setText(previousVaccine.frecuencia.toString())
-        revaccinationRequired.isChecked = previousVaccine.fechaProximaAplicacion != null
+        revaccinationRequired.isChecked = previousVaccine.fechaProxima != null
         if (previousVaccine.dosisMl != null && previousVaccine.dosisMl != 5 && previousVaccine.dosisMl != 2) otherDose.setText(previousVaccine.dosisMl.toString())
         val idRadioDose = when (previousVaccine.dosisMl) {
             5 -> R.id.fiveMl

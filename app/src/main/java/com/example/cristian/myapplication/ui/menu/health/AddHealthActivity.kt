@@ -42,7 +42,7 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
     var group: Group? = null
     var bovines: List<String>? = null
     var groupFragment: GroupFragment? = null
-    val unidades:Array<String> by lazy { resources.getStringArray(R.array.time_units) }
+//    val unidades:Array<String> by lazy { resources.getStringArray(R.array.time_units) }
     var unidadTiempo:String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,7 +59,7 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
 
         onDateSet(null, Calendar.getInstance().get(Calendar.YEAR),
-                Calendar.getInstance().get(Calendar.MONTH) + 1,
+                Calendar.getInstance().get(Calendar.MONTH),
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
 
         startActivityForResult<SelectActivity>(SelectActivity.REQUEST_SELECT,
@@ -200,9 +200,9 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
 
 
 
-    private fun fechaProxima1( fecha:Date, aplicaciones: Int, frecuencia: Int): Date{
-        unidadTiempo = unidades[frecuencyOptionsHealth.selectedItemPosition]
-        if (aplicaciones != 0) {
+    private fun fechaProxima1( fecha:Date, aplicaciones: Int, frecuencia: Int): Date?{
+        unidadTiempo = frecuencyOptionsHealth.selectedItem.toString()
+        return if (aplicaciones != 1) {
             when (unidadTiempo) {
                 "Horas" -> fecha.add(Calendar.HOUR, frecuencia)
                 "Días" -> fecha.add(Calendar.DATE, frecuencia)
@@ -212,7 +212,6 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
         }else{
             null
         }
-        return fecha
     }
 
 
