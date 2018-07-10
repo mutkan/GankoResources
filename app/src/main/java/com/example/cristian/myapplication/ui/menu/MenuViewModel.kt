@@ -5,7 +5,7 @@ import android.graphics.Color
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.db.CouchRx
 import com.example.cristian.myapplication.data.models.*
-import com.example.cristian.myapplication.data.models.RegistroVacuna.Companion.NOT_APPLIED
+import com.example.cristian.myapplication.data.models.ProxStates.Companion.NOT_APPLIED
 import com.example.cristian.myapplication.data.preferences.UserSession
 import com.example.cristian.myapplication.util.*
 import io.reactivex.Maybe
