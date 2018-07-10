@@ -267,7 +267,7 @@
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="24dp"
             android:layout_marginTop="16dp"
-            android:text='@{""+manage.bovino.size()}'
+            android:text='@{""+manage.bovinos.size()}'
             android:visibility='@{isGroup == true ? View.GONE : View.VISIBLE}'
             app:layout_constraintBottom_toTopOf="@+id/imageView4"
             app:layout_constraintEnd_toEndOf="parent"

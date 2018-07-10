@@ -11,6 +11,7 @@ import android.widget.DatePicker
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.Group
 import com.example.cristian.myapplication.data.models.RegistroManejo
+import com.example.cristian.myapplication.data.models.RegistroManejo.Companion.NOT_APPLIED
 import com.example.cristian.myapplication.databinding.ActivityAddManageBinding
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.groups.GroupFragment
@@ -162,7 +163,7 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
 
         return RegistroManejo(idFinca = farmId, fecha = fechaEvento, fechaProx = fechaProximo, frecuencia = frecuencia, numeroAplicaciones = aplicaciones,
                 aplicacion = 1, tipo = evento, otro = otro, tratamiento = tratamiento, producto = producto, observaciones = observaciones,
-                valorProducto = precioProducto, valorAsistencia = precioAsistencia, grupo = group, bovino = bovines)
+                valorProducto = precioProducto, valorAsistencia = precioAsistencia, grupo = group, bovinos = bovines, estadoProximaAplicacion = NOT_APPLIED)
 
     }
 

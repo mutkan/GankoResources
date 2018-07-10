@@ -12,6 +12,7 @@ class RegistroManejo (var _id: String? = null,
                       var fecha: Date? = null,
                       var idDosisUno: String? = null, // = _id
                       var fechaProx: Date? = null,
+                      var estadoProximaAplicacion: Int? = null,
                       var frecuencia: Int? = null,
                       var numeroAplicaciones: Int? = null,
                       var aplicacion: Int? = null,
@@ -23,7 +24,16 @@ class RegistroManejo (var _id: String? = null,
                       var valorProducto: Int? = null,
                       var valorAsistencia: Int? = null,
                       var grupo: Group? = null,
-                      var bovino: List<String>? = listOf()) : Parcelable {
+                      var bovinos: List<String>? = listOf(),
+                      var noBovinos: List<String>? = listOf()) : Parcelable {
     init {
         type = javaClass.simpleName
-    }}
+    }
+
+    companion object {
+        const val NOT_APPLIED = 0
+        const val APPLIED = 1
+        const val SKIPED = 2
+    }
+
+}
