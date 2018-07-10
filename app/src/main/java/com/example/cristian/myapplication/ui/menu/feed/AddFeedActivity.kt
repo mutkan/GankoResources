@@ -13,6 +13,7 @@ import com.example.cristian.myapplication.data.models.RegistroAlimentacion
 import com.example.cristian.myapplication.data.models.toGrupo
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.bovine.ceba.AddCebaBvnActivity
+import com.example.cristian.myapplication.ui.groups.GroupFragment
 import com.example.cristian.myapplication.ui.groups.SelectActivity
 import com.example.cristian.myapplication.util.*
 import com.jakewharton.rxbinding2.view.clicks
@@ -37,6 +38,7 @@ class AddFeedActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDate
     var group: Group? = null
     var bovines: List<String>? = null
     var alimento :String =""
+    var groupFragment: GroupFragment? = null
     val calendar: Calendar by lazy { Calendar.getInstance() }
     val tipo_alimento: Array<String> by lazy { resources.getStringArray(R.array.feed_types)}
     val datePicker: DatePickerDialog by lazy {
@@ -56,9 +58,26 @@ class AddFeedActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDate
 
     }
 
+    fun setupGroupFragment() {
+        if ((group != null || bovines != null) && groupFragment == null) {
+            groupFragment = if (group != null) GroupFragment.instance(12, group!!)
+            else GroupFragment.instance(12, bovines!!)
+
+            supportFragmentManager.beginTransaction()
+                    .replace(R.id.feedContainer, groupFragment)
+                    .commit()
+
+            dis add groupFragment!!.ids
+                    .filter { group == null }
+                    .subscribe { bovines = it }
+        }
+    }
+
+
 
     override fun onResume() {
         super.onResume()
+        setupGroupFragment()
 
         dis add food_type.itemSelections()
                 .subscribeBy (
@@ -109,6 +128,7 @@ class AddFeedActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDate
                 )
     }
 
+
     override fun onDateSet(p0: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         val sDate = "$dayOfMonth/${month + 1}/$year"
         p0?.let {
@@ -134,7 +154,6 @@ class AddFeedActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDate
             if(resultCode == Activity.RESULT_OK){
                 group = data?.extras?.getParcelable(SelectActivity.DATA_GROUP)
                 bovines = data?.extras?.getStringArray(SelectActivity.DATA_BOVINES)?.toList()
-                selected_bovines.text = ""+ bovines!!.size
             }else{
                 finish()
             }
