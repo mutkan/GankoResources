@@ -12,6 +12,9 @@
         <variable
             name="other"
             type="Boolean"/>
+        <variable
+            name="edit"
+            type="Boolean"/>
         <import type="android.view.View"/>
 
     </data>

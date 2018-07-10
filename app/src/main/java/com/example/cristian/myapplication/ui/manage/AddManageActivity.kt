@@ -33,7 +33,8 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
     lateinit var factory: ViewModelProvider.Factory
     val viewModel: MenuViewModel by lazy { buildViewModel<MenuViewModel>(factory) }
     val dis: LifeDisposable = LifeDisposable(this)
-
+    private val edit: Boolean by lazy { intent.getBooleanExtra("edit", false) }
+    lateinit var previousManage: RegistroManejo
     lateinit var datePicker: DatePickerDialog
     lateinit var binding: ActivityAddManageBinding
 
@@ -46,6 +47,7 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
     var groupFragment: GroupFragment? = null
     var group: Group? = null
     var bovines: List<String>? = null
+    var noBovines: List<String>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -215,6 +217,10 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
 
     private fun minusPage() {
         binding.page = binding.page!!.minus(1)
+    }
+
+    companion object {
+        const val PREVIOUS_MANAGE = "previousManage"
     }
 
 

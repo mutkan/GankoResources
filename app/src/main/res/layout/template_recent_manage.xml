@@ -28,11 +28,13 @@
         <ImageView
             android:id="@+id/imageView4"
             android:layout_width="0dp"
-            android:layout_height="1dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/numberGroup"
+            app:layout_constraintTop_toBottomOf="@+id/manage_observations"
             app:srcCompat="@color/menu_button_light" />
 
         <TextView
@@ -214,9 +216,9 @@
             android:id="@+id/productValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text='@{"$ "+ manage.valorProducto}'
             app:layout_constraintBottom_toBottomOf="@+id/aplication"
             app:layout_constraintStart_toStartOf="@+id/textView133"
-            android:text='@{"$ "+ manage.valorProducto}'
             tools:text="$ 40000" />
 
         <TextView
@@ -243,23 +245,22 @@
             android:id="@+id/iconBovine"
             android:layout_width="@dimen/select_resume"
             android:layout_height="@dimen/select_resume"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="16dp"
             android:visibility='@{isGroup == true ? View.GONE : View.VISIBLE}'
-            app:layout_constraintBottom_toBottomOf="@+id/numberBovine"
-            app:layout_constraintEnd_toStartOf="@+id/numberBovine"
-            app:layout_constraintTop_toTopOf="@+id/numberBovine"
-            app:layout_constraintVertical_bias="1.0"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/manage_observations"
             app:srcCompat="@drawable/ic_bovine_grey" />
 
         <ImageView
             android:id="@+id/iconGroup"
             android:layout_width="@dimen/select_resume"
             android:layout_height="@dimen/select_resume"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="16dp"
             android:visibility='@{isGroup == true ? View.VISIBLE : View.GONE}'
-            app:layout_constraintBottom_toBottomOf="@+id/numberGroup"
-            app:layout_constraintEnd_toStartOf="@+id/numberGroup"
-            app:layout_constraintTop_toTopOf="@+id/numberGroup"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/manage_observations"
             app:srcCompat="@drawable/ic_group_grey" />
 
         <TextView
@@ -267,14 +268,13 @@
             style="@style/TextAppearance.AppCompat.Subhead"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginTop="16dp"
-            android:text='@{""+manage.bovinos.size()}'
+            android:layout_marginEnd="8dp"
             android:visibility='@{isGroup == true ? View.GONE : View.VISIBLE}'
-            app:layout_constraintBottom_toTopOf="@+id/imageView4"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/manage_observations"
+            app:bovinos='@{manage.bovinos}'
+            app:noBovinos='@{manage.noBovinos}'
+            app:layout_constraintBottom_toBottomOf="@+id/iconBovine"
+            app:layout_constraintEnd_toStartOf="@+id/iconBovine"
+            app:layout_constraintTop_toTopOf="@+id/iconBovine"
             tools:text="130" />
 
         <TextView
@@ -282,14 +282,12 @@
             style="@style/TextAppearance.AppCompat.Subhead"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
             android:text='@{""+manage.grupo.bovines.size()}'
             android:visibility='@{isGroup == true ? View.VISIBLE : View.GONE}'
-            app:layout_constraintBottom_toTopOf="@+id/imageView4"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/manage_observations"
+            app:layout_constraintBottom_toBottomOf="@+id/iconGroup"
+            app:layout_constraintEnd_toStartOf="@+id/iconGroup"
+            app:layout_constraintTop_toTopOf="@+id/iconGroup"
             tools:text="130" />
 
 

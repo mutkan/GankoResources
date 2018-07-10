@@ -18,6 +18,8 @@ import com.example.cristian.myapplication.data.models.RegistroVacuna
 import com.example.cristian.myapplication.databinding.FragmentNextManageBinding
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.NextManageAdapter
+import com.example.cristian.myapplication.ui.manage.AddManageActivity
+import com.example.cristian.myapplication.ui.manage.AddManageActivity.Companion.PREVIOUS_MANAGE
 import com.example.cristian.myapplication.ui.menu.MenuViewModel
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.add
@@ -26,6 +28,7 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.PublishSubject
 import org.jetbrains.anko.noButton
 import org.jetbrains.anko.support.v4.alert
+import org.jetbrains.anko.support.v4.startActivity
 import org.jetbrains.anko.support.v4.toast
 import org.jetbrains.anko.yesButton
 import java.util.*
@@ -60,7 +63,9 @@ class NextManageFragment : Fragment(), Injectable {
 
         dis add adapter.clickApplyManage
                 .subscribeBy (
-                        onNext = {toast("APLICADO")}
+                        onNext = {
+                            startActivity<AddManageActivity>("edit" to true, PREVIOUS_MANAGE to it)
+                        }
                 )
 
         dis add adapter.clickSkipManage
