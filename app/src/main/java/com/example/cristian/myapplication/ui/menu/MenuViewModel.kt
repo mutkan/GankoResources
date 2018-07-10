@@ -177,6 +177,8 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     //region Vacunas
     fun inserVaccine(registroVacuna: RegistroVacuna): Single<String> = db.insert(registroVacuna).applySchedulers()
 
+    fun inserFirstVaccine(registroVacuna: RegistroVacuna): Single<String> = db.insertDosisUno(registroVacuna).applySchedulers()
+
     fun updateVaccine(registroVacuna: RegistroVacuna): Single<Unit> = db.update(registroVacuna._id!!, registroVacuna).applySchedulers()
 
     fun getVaccinations(): Observable<List<RegistroVacuna>> = db.listObsByExp("idFinca" equalEx farmID, RegistroVacuna::class).applySchedulers()
@@ -186,6 +188,10 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
 
     fun getPendingVaccines(from: Date): Observable<List<RegistroVacuna>> =
             db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProximaAplicacion".lte(from)) andEx ("estadoProximaAplicacion" equalEx NOT_APPLIED), RegistroVacuna::class).applySchedulers()
+
+    fun getVaccinesByDosisUno(idDosisUno:String) : Single<List<RegistroVacuna>> =
+            db.listByExp("idFinca" equalEx farmID andEx ("idDosisUno" equalEx idDosisUno) ,RegistroVacuna::class).applySchedulers()
+
     //endregion
 
 

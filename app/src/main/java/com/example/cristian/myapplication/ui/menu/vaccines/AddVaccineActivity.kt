@@ -13,6 +13,7 @@ import android.widget.DatePicker
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.Group
 import com.example.cristian.myapplication.data.models.RegistroVacuna
+import com.example.cristian.myapplication.data.models.RegistroVacuna.Companion.APPLIED
 import com.example.cristian.myapplication.data.models.RegistroVacuna.Companion.NOT_APPLIED
 import com.example.cristian.myapplication.data.models.toGrupo
 import com.example.cristian.myapplication.databinding.ActivityAddVaccineBinding
@@ -105,20 +106,42 @@ class AddVaccineActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
         super.onResume()
         setupGroupFragment()
 
-        dis add btnAcceptVaccine.clicks()
-                .flatMap { validateFields() }
-                .flatMapSingle {
-                    val vaccine = createVaccine(it)
-                    viewModel.inserVaccine(vaccine)
-                }
-                .subscribeBy(
-                        onNext = {
-                            finish()
-                        },
-                        onError = {
-                            Log.e("ERROR", it.message, it)
-                        }
-                )
+
+        if (edit) {
+            dis add btnAcceptVaccine.clicks()
+                    .flatMap { validateFields() }
+                    .flatMapSingle {
+                        val vaccine = createVaccine(it)
+                        viewModel.inserVaccine(vaccine)
+                    }
+                    .flatMapSingle {
+                        viewModel.updateVaccine(previousVaccine.apply { estadoProximaAplicacion = APPLIED })
+                    }
+                    .subscribeBy(
+                            onNext = {
+                                finish()
+                            },
+                            onError = {
+                                Log.e("ERROR", it.message, it)
+                            }
+                    )
+        } else {
+            dis add btnAcceptVaccine.clicks()
+                    .flatMap { validateFields() }
+                    .flatMapSingle {
+                        val vaccine = createVaccine(it)
+                        viewModel.inserFirstVaccine(vaccine)
+                    }
+                    .subscribeBy(
+                            onNext = {
+                                finish()
+                            },
+                            onError = {
+                                Log.e("ERROR", it.message, it)
+                            }
+                    )
+        }
+
         dis add btnCancelVaccine.clicks()
                 .subscribeBy(
                         onNext = {
@@ -137,19 +160,18 @@ class AddVaccineActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
                         }
                 )
 
-        if (!edit) {
-            dis add vaccinationDate.clicks()
-                    .subscribeBy(
-                            onNext = {
-                                datePicker.apply {
-                                    updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
-                                            calendar.get(Calendar.DAY_OF_MONTH))
-                                    datePicker.tag = "vaccinationDate"
-                                    show()
-                                }
+        dis add vaccinationDate.clicks()
+                .subscribeBy(
+                        onNext = {
+                            datePicker.apply {
+                                updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+                                        calendar.get(Calendar.DAY_OF_MONTH))
+                                datePicker.tag = "vaccinationDate"
+                                show()
                             }
-                    )
-        }
+                        }
+                )
+
         dis add revaccinationRequired.checkedChanges()
                 .subscribeBy(
                         onNext = {
@@ -204,7 +226,11 @@ class AddVaccineActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
             "Meses" -> fecha.add(Calendar.MONTH, proximaAplicacion)
             else -> fecha.add(Calendar.YEAR, proximaAplicacion)
         }
-        return RegistroVacuna(nombre = nombreVacuna, dosisMl = dosis, frecuencia = proximaAplicacion, fecha = fecha, fechaProximaAplicacion = fechaProx, valor = valor, idFinca = idFinca, grupo = group?.toGrupo(), bovinos = bovines, unidadFrecuencia = unidadTiempo, estadoProximaAplicacion = NOT_APPLIED)
+        return if (!edit) {
+            RegistroVacuna(nombre = nombreVacuna, dosisMl = dosis, frecuencia = proximaAplicacion, fecha = fecha, fechaProximaAplicacion = fechaProx, valor = valor, idFinca = idFinca, grupo = group?.toGrupo(), bovinos = bovines, unidadFrecuencia = unidadTiempo, estadoProximaAplicacion = NOT_APPLIED)
+        } else {
+            RegistroVacuna(idDosisUno = previousVaccine.idDosisUno, nombre = nombreVacuna, dosisMl = dosis, frecuencia = proximaAplicacion, fecha = fecha, fechaProximaAplicacion = fechaProx, valor = valor, idFinca = idFinca, grupo = group?.toGrupo(), bovinos = bovines, unidadFrecuencia = unidadTiempo, estadoProximaAplicacion = NOT_APPLIED, noBovinos = noBovines)
+        }
     }
 
     private fun setEdit() {

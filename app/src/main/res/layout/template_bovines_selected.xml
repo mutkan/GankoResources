@@ -145,7 +145,7 @@
             app:layout_constraintGuide_percent="0.5" />
 
         <TextView
-            android:visibility="@{selected ? View.VISIBLE : View.GONE}"
+            android:visibility="@{selected ? View.GONE : View.VISIBLE}"
             android:id="@+id/textView92"
             android:layout_width="88dp"
             android:layout_height="17dp"
