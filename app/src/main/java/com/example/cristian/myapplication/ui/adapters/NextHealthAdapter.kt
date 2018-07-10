@@ -13,9 +13,9 @@ import javax.inject.Inject
 
 class NextHealthAdapter @Inject constructor(): RecyclerView.Adapter<NextHealthAdapter.NextHealthHolder>(){
 
-    val clickApply = PublishSubject.create<Sanidad>()
+    val clickApply: PublishSubject<Sanidad> = PublishSubject.create()
 
-    val clickSkip = PublishSubject.create<Sanidad>()
+    val clickSkip  : PublishSubject<Sanidad> = PublishSubject.create()
 
     var health: List<Sanidad> = emptyList()
         set(value) {

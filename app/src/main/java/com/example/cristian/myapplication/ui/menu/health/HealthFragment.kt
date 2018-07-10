@@ -31,11 +31,13 @@ class HealthFragment : Fragment() , Injectable {
     }
 
 
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         pagerHealth.adapter = adapter
         tabsHealth.setupWithViewPager(pagerHealth)
     }
+
 
     companion object {
         fun instance(): HealthFragment = HealthFragment()

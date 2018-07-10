@@ -113,7 +113,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     .applySchedulers()
 
     fun getHealth(idFinca: String): Single<List<Sanidad>> =
-            db.listByExp("idFinca" equalEx idFinca, Sanidad::class)
+            db.listByExp("idFinca" equalEx idFinca andEx ("proximaAplicacion" equalEx 0), Sanidad::class)
                     .applySchedulers()
 
 
@@ -123,8 +123,8 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
 
 
 
-    fun updateHealth(id: String,sanidad: Sanidad): Single<Unit>
-            = db.update(id, sanidad).applySchedulers()
+    fun updateHealth(sanidad: Sanidad): Single<Unit>
+            = db.update( sanidad._id!!,sanidad).applySchedulers()
 
     fun getMilk(idFinca: String): Single<List<SalidaLeche>> =
             db.listByExp("idFarm" equalEx idFinca, SalidaLeche::class)

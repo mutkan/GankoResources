@@ -13,6 +13,7 @@ class HealthAdapter @Inject constructor(val fragment: HealthFragment) : Fragment
         else -> PendingHealthFragment.instance()
     }
 
+
     override fun getCount(): Int = 3
 
     override fun getPageTitle(position: Int): CharSequence = when(position){
