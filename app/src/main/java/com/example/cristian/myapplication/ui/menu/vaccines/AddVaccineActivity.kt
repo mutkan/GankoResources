@@ -6,9 +6,11 @@ import android.arch.lifecycle.ViewModelProvider
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.support.transition.TransitionManager
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.widget.DatePicker
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.Group
@@ -31,6 +33,7 @@ import com.jakewharton.rxbinding2.widget.checkedChanges
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_add_vaccine.*
+import org.jetbrains.anko.contentView
 import org.jetbrains.anko.startActivityForResult
 import java.util.*
 import javax.inject.Inject
@@ -176,18 +179,32 @@ class AddVaccineActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
                 .subscribeBy(
                         onNext = {
                             if (it) {
-                                nextApplicationTxt.visibility = View.VISIBLE
-                                nextApplicationVaccine.visibility = View.VISIBLE
-                                timeUnitsSpinner.visibility = View.VISIBLE
+                                showNextApplicationGroup()
+
                             } else {
-                                nextApplicationTxt.visibility = View.GONE
-                                nextApplicationVaccine.visibility = View.GONE
-                                timeUnitsSpinner.visibility = View.GONE
+                                hideNextApplicationGroup()
                             }
                         }
                 )
 
     }
+
+    private fun hideNextApplicationGroup() {
+        TransitionManager.beginDelayedTransition(contentView!! as ViewGroup)
+        nextApplicationGroup.apply {
+            visibility = View.GONE
+            translationY = resources.getDimension(R.dimen.select_bar)
+        }
+    }
+
+    private fun showNextApplicationGroup() {
+        TransitionManager.beginDelayedTransition(contentView!! as ViewGroup)
+        nextApplicationGroup.apply {
+            visibility = View.VISIBLE
+            translationY = 0f
+        }
+    }
+
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         val sDate = "$dayOfMonth/${month + 1}/$year"

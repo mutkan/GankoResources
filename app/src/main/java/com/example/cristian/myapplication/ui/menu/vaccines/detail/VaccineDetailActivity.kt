@@ -23,14 +23,14 @@ class VaccineDetailActivity : AppCompatActivity(), HasSupportFragmentInjector {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_vaccine_detail)
-        title = "Detalles Aplicación"
         setSupportActionBar(toolbar)
-        tabs.setupWithViewPager(pager)
-        pager.adapter = adapter
+        val clr = fixColor(7)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back_white)
-        val clr = fixColor(7)
+        tabs.setupWithViewPager(pager)
+        pager.adapter = adapter
         tabs.setBackgroundColor(clr)
+        supportActionBar?.title = "Detalles Aplicación"
 
     }
 

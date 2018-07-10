@@ -1,5 +1,6 @@
 package com.example.cristian.myapplication.ui.groups
 
+import android.app.Activity
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
@@ -37,9 +38,15 @@ class SelectActivity : AppCompatActivity(), HasSupportFragmentInjector {
         supportActionBar?.title = getString(R.string.select_title)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    override fun onSupportNavigateUp(): Boolean {
+        setResult(Activity.RESULT_CANCELED)
         finish()
-        return super.onOptionsItemSelected(item)
+        return true
+    }
+
+    override fun onBackPressed() {
+        setResult(Activity.RESULT_CANCELED)
+        finish()
     }
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> = injector
