@@ -25,11 +25,8 @@ import com.example.cristian.myapplication.ui.bovine.reproductive.add.AddZealActi
 import com.example.cristian.myapplication.ui.bovine.vaccination.VaccinationBvnActivity
 import com.example.cristian.myapplication.ui.farms.AddFarmActivity
 import com.example.cristian.myapplication.ui.farms.FarmActivity
+import com.example.cristian.myapplication.ui.groups.*
 import com.example.cristian.myapplication.ui.menu.feed.AddFeedActivity
-import com.example.cristian.myapplication.ui.groups.AddGroupActivity
-import com.example.cristian.myapplication.ui.groups.BovineSelectedActivity
-import com.example.cristian.myapplication.ui.groups.SaveGroupActivity
-import com.example.cristian.myapplication.ui.groups.SelectActivity
 import com.example.cristian.myapplication.ui.manage.AddManageActivity
 import com.example.cristian.myapplication.ui.menu.MenuActivity
 import com.example.cristian.myapplication.ui.menu.health.AddHealthActivity
@@ -181,5 +178,9 @@ abstract class ActivityComponents {
     @ActivityScope
     @ContributesAndroidInjector
     abstract fun bindAddHealthActivity(): AddHealthActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector
+    abstract fun bindReApplyActivity():ReApplyActivity
 
 }

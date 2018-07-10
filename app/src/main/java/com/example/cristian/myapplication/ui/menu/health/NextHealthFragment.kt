@@ -59,7 +59,7 @@ class NextHealthFragment : Fragment(), Injectable {
                         onNext = {
                             if(it.isEmpty()) emptyNextHealthText.visibility = View.VISIBLE else emptyNextHealthText.visibility = View.GONE
                             adapterNext.health = it
-                            Log.d("MANEJOS", it.toString())
+                            Log.d("SANIDAD", it.toString())
                         }
                 )
 

@@ -41,6 +41,7 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="15/02/2018"
             app:dateFormat="@{feed.fecha}"
+            android:textColor="@color/colorAccent"
             />
 
         <TextView

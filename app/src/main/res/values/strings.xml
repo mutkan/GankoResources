@@ -344,6 +344,10 @@
     <string name="apply">APLICAR</string>
     <string name="pendings">Pendientes</string>
     <string name="skip">OMITIR</string>
+    <string name="group_all">Seleccionar todos</string>
+    <string name="group_action_all">Seleccionar todos</string>
+    <string name="group_no_apply">Sin aplicación</string>
+    <string name="no_feed_register">No hay registros de alimentación</string>
 
     <string-array name="milk_production">
         <item>Litros vendidos</item>

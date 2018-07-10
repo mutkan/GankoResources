@@ -34,12 +34,12 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="24dp"
             android:layout_marginTop="24dp"
+            app:dateFormat="@{sanidad.fecha}"
             app:layout_constraintBottom_toBottomOf="@+id/health_disease"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="15/02/2018"
-            app:dateFormat="@{sanidad.fecha}"
-            />
+            app:layout_constraintVertical_bias="0.0"
+            tools:text="15/02/2018" />
 
         <TextView
             android:id="@+id/disease_diagnosis"
@@ -130,7 +130,7 @@
             style="@style/TextAppearance.AppCompat.Body1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView"
+            android:text="@string/frecuency"
             app:layout_constraintBottom_toBottomOf="@+id/textView19"
             app:layout_constraintStart_toStartOf="@+id/feed_total_value"
             tools:text="Frecuencia" />
@@ -153,7 +153,7 @@
             android:layout_marginLeft="24dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="24dp"
-            android:text="TextView"
+            android:text="@string/Observations"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/health_dose"
@@ -189,7 +189,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="24dp"
             android:layout_marginRight="24dp"
-            android:text="TextView"
+            app:dateFormat="@{sanidad.fechaProxima}"
             android:textColor="@color/colorAccent"
             app:layout_constraintBottom_toBottomOf="@+id/textView77"
             app:layout_constraintEnd_toEndOf="parent"
