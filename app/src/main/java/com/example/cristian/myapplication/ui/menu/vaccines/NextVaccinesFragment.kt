@@ -12,13 +12,16 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.RegistroVacuna
-import com.example.cristian.myapplication.data.models.RegistroVacuna.Companion.APPLIED
 import com.example.cristian.myapplication.data.models.RegistroVacuna.Companion.SKIPED
 import com.example.cristian.myapplication.databinding.FragmentNextVaccinesBinding
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.VaccineAdapter
 import com.example.cristian.myapplication.ui.adapters.VaccineAdapter.Companion.TYPE_NEXT_VACCINATIONS
+import com.example.cristian.myapplication.ui.groups.ReApplyActivity
+import com.example.cristian.myapplication.ui.groups.ReApplyActivity.Companion.EXTRA_ID
+import com.example.cristian.myapplication.ui.groups.ReApplyActivity.Companion.REQUEST_CODE
 import com.example.cristian.myapplication.ui.menu.MenuViewModel
+import com.example.cristian.myapplication.ui.menu.vaccines.AddVaccineActivity.Companion.PREVIOUS_VACCINE
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.add
 import com.example.cristian.myapplication.util.buildViewModel
@@ -26,6 +29,8 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.PublishSubject
 import org.jetbrains.anko.noButton
 import org.jetbrains.anko.support.v4.alert
+import org.jetbrains.anko.support.v4.startActivity
+import org.jetbrains.anko.support.v4.startActivityForResult
 import org.jetbrains.anko.support.v4.toast
 import org.jetbrains.anko.yesButton
 import java.util.*
@@ -77,14 +82,8 @@ class NextVaccinesFragment : Fragment(), Injectable {
 
 
         dis add adapter.clickRevaccination
-                .flatMapSingle { vacuna ->
-                    val revacunacion = setRevaccination(vacuna)
-                    viewModel.inserVaccine(revacunacion).flatMap {
-                        viewModel.updateVaccine(vacuna.apply { estadoProximaAplicacion = APPLIED })
-                    }
-                }
                 .subscribeBy(onNext = {
-                    toast("Vacuna aplicada")
+                    startActivity<AddVaccineActivity>("edit" to true, PREVIOUS_VACCINE to it)
                 })
 
         dis add adapter.clickSkipVaccine

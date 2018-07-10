@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProvider
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import com.example.cristian.myapplication.R
@@ -41,8 +42,6 @@ class ReApplyActivity : AppCompatActivity(), Injectable {
 
         adapter.selecteds = selecteds
         list.adapter = adapter
-
-
         dis add viewModel.listBovinesByDocId(id)
                 .flatMapObservable { it.toObservable() }
                 .doOnNext {
@@ -57,9 +56,10 @@ class ReApplyActivity : AppCompatActivity(), Injectable {
 
 
         dis add btnNext.clicks()
-                .flatMap { ids.toObservable() }
-                .filter { !selecteds.containsKey(it) }
-                .toList()
+                .flatMapSingle {
+                    ids.toObservable().filter { !selecteds.containsKey(it) }
+                            .toList()
+                }
                 .subscribe { noBovines ->
                     val keys = selecteds.keys.toTypedArray()
                     setResult(Activity.RESULT_OK, Intent().apply {
@@ -102,6 +102,7 @@ class ReApplyActivity : AppCompatActivity(), Injectable {
     }
 
     companion object {
+        const val REQUEST_CODE = 1452
         val EXTRA_ID = "extra_id"
 
         val DATA_BOVINES = "data.bovines"

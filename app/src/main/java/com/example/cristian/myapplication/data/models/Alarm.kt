@@ -3,11 +3,11 @@ package com.example.cristian.myapplication.data.models
 import java.util.Date
 
 class Alarm(
-        val _id: String,
-        val _sequence:Long,
-        val title: String,
-        val description: String,
-        val type: String,
+        val _id: String? = null,
+        val _sequence: Long? = null,
+        val title: String? = null,
+        val description: String? = null,
+        val type: String? = null,
         val numeroAplicaciones: Int? = null,
         val aplicacion: Int? = null,
         var grupo: Grupo? = null,

@@ -93,7 +93,7 @@
         <activity android:name=".ui.menu.milk.AddMilkActivity" />
         <activity android:name=".ui.menu.vaccines.AddVaccineActivity" />
         <activity android:name=".ui.manage.AddManageActivity" />
-        <activity android:name=".ui.groups.ReApplyActivity"></activity>
+        <activity android:name=".ui.groups.ReApplyActivity"/>
     </application>
 
 </manifest>

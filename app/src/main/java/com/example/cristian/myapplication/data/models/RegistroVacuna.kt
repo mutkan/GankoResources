@@ -18,7 +18,8 @@ data class RegistroVacuna(var _id: String? = null,
                           var unidadFrecuencia: String? = null,
                           var grupo: Grupo? = null,
                           var valor: Int? = null,
-                          var bovinos: List<String>? = null
+                          var bovinos: List<String>? = listOf(),
+                          var noBovinos:List<String>? = listOf()
 ) : Parcelable {
     init {
         type = javaClass.simpleName
