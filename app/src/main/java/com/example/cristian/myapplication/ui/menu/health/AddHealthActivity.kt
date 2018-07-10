@@ -85,10 +85,26 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
         return true
     }
 
+    fun setupGroupFragment() {
+        if ((group != null || bovines != null) && groupFragment == null) {
+            groupFragment = if (group != null) GroupFragment.instance(8, group!!)
+            else GroupFragment.instance(8, bovines!!)
+
+            supportFragmentManager.beginTransaction()
+                    .replace(R.id.healthContainer, groupFragment)
+                    .commit()
+
+            dis add groupFragment!!.ids
+                    .filter { group == null }
+                    .subscribe { bovines = it }
+        }
+    }
+
 
 
     override fun onResume() {
         super.onResume()
+        setupGroupFragment()
 
         dis add btnBackHealth.clicks()
                 .subscribeBy(
