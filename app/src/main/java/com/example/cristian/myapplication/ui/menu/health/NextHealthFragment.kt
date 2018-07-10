@@ -55,7 +55,7 @@ class NextHealthFragment : Fragment(), Injectable {
         super.onResume()
         binding.recyclerNextHealth.adapter= adapterNext
         binding.recyclerNextHealth.layoutManager = LinearLayoutManager(activity)
-        dis add viewModel.getNextHealth1(from, to)
+        dis add viewModel.getNextHealth(from, to)
                 .subscribeBy(
                         onNext = {
                             if(it.isEmpty()) emptyNextHealthText.visibility = View.VISIBLE else emptyNextHealthText.visibility = View.GONE
@@ -72,10 +72,11 @@ class NextHealthFragment : Fragment(), Injectable {
 
 
         dis add adapterNext.clickSkip
-                .subscribeBy( onNext = {
+                .flatMapSingle {
                     it.estadoProximo = ProxStates.SKIPED
                     viewModel.updateHealth(it._id!!,it)
-                })
+                }
+                .subscribe()
 
     }
 
