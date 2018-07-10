@@ -2,6 +2,7 @@ package com.example.cristian.myapplication.ui.groups
 
 import android.arch.lifecycle.ViewModel
 import com.example.cristian.myapplication.data.db.CouchRx
+import com.example.cristian.myapplication.data.models.Alarm
 import com.example.cristian.myapplication.data.models.Bovino
 import com.example.cristian.myapplication.data.models.Group
 import com.example.cristian.myapplication.data.preferences.UserSession
@@ -9,16 +10,18 @@ import com.example.cristian.myapplication.util.andEx
 import com.example.cristian.myapplication.util.applySchedulers
 import com.example.cristian.myapplication.util.equalEx
 import com.example.cristian.myapplication.util.inEx
+import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
+import io.reactivex.rxkotlin.zipWith
 import javax.inject.Inject
 
 class GroupViewModel @Inject constructor(private val db: CouchRx,
-                                         private val session:UserSession): ViewModel(){
+                                         private val session: UserSession) : ViewModel() {
 
     private val pageSize = 30
 
-    fun farmId():String = session.farmID
+    fun farmId(): String = session.farmID
 
     fun list(): Single<List<Group>> =
             db.listByExp("finca" equalEx session.farmID, Group::class)
@@ -28,24 +31,37 @@ class GroupViewModel @Inject constructor(private val db: CouchRx,
             db.listObsByExp("finca" equalEx session.farmID, Group::class)
                     .applySchedulers()
 
-    fun add(group: Group):Single<Unit> = db.insert(group)
+    fun add(group: Group): Single<Unit> = db.insert(group)
             .map { Unit }
             .applySchedulers()
 
-    fun update(id:String, group: Group):Single<Unit> = db.update(id, group)
+    fun update(id: String, group: Group): Single<Unit> = db.update(id, group)
             .applySchedulers()
 
-    fun remove(id:String):Single<Unit> = db.remove(id)
+    fun remove(id: String): Single<Unit> = db.remove(id)
             .applySchedulers()
 
-    fun listBovines(page:Int):Single<List<Bovino>>{
+    fun listBovines(page: Int): Single<List<Bovino>> {
         val skip = page * pageSize
-        return db.listByExp("finca" equalEx  session.farmID andEx ("retirado" equalEx false), Bovino::class, pageSize, skip)
+        return db.listByExp("finca" equalEx session.farmID andEx ("retirado" equalEx false), Bovino::class, pageSize, skip)
                 .applySchedulers()
     }
 
-    fun listSelected(ids:List<String>):Single<List<Bovino>> =
-            db.listByExp("finca" equalEx session.farmID andEx ("retirado" equalEx false) andEx ("_id" inEx  ids), Bovino::class)
+    fun listSelected(ids: List<String>): Single<List<Bovino>> =
+            db.listByExp("finca" equalEx session.farmID andEx ("retirado" equalEx false) andEx ("_id" inEx ids), Bovino::class)
+                    .applySchedulers()
+
+
+    fun listBovinesByDocId(id: String): Single<List<Bovino>> =
+            db.oneById(id, Alarm::class)
+                    .flatMapSingle { db.listByExp("_id" inEx it.bovinos andEx ("retirado" equalEx false), Bovino::class) }
+                    .applySchedulers()
+
+    fun listAllBovinesByDocId(id:String):Single<Pair<List<Bovino>, List<Bovino>>> = db.oneById(id, Alarm::class)
+            .flatMapSingle { db.listByExp("_id" inEx it.bovinos andEx ("retirado" equalEx false), Bovino::class)
+                    .zipWith(db.listByExp("_id" inEx it.noBovinos andEx ("retirado" equalEx false), Bovino::class))
+            }
+            .applySchedulers()
 
 }
 
