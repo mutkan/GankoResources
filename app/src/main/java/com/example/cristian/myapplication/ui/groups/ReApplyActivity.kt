@@ -37,6 +37,8 @@ class ReApplyActivity : AppCompatActivity(), Injectable {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_select_bovine)
 
+        title = getString(R.string.select_title)
+
         adapter.selecteds = selecteds
         list.adapter = adapter
 
@@ -101,6 +103,7 @@ class ReApplyActivity : AppCompatActivity(), Injectable {
 
     companion object {
         val EXTRA_ID = "extra_id"
+
         val DATA_BOVINES = "data.bovines"
         val DATA_NO_BOVINES = "data.no.bovines"
 
