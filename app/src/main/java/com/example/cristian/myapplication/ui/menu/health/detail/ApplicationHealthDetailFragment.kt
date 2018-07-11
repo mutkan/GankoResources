@@ -18,30 +18,31 @@ import com.example.cristian.myapplication.util.buildViewModel
 import io.reactivex.rxkotlin.subscribeBy
 import javax.inject.Inject
 
-class ApplicationHealthDetailFragment : Fragment(),Injectable {
+class ApplicationHealthDetailFragment : Fragment(), Injectable {
 
     //val dosisUnoHealth : String by lazy { arguments!!.getString(DOSIS_UNO_HEALTH) }
-@Inject
-lateinit var factory: ViewModelProvider.Factory
-private val viewModel: MenuViewModel by lazy { buildViewModel<MenuViewModel>(factory) }
-val dis: LifeDisposable = LifeDisposable(this)
-@Inject
-    lateinit var adapter:ListHealthBovineAdapter
-    lateinit var binding :FragmentApplicationHealthDetailBinding
+    @Inject
+    lateinit var factory: ViewModelProvider.Factory
+    private val viewModel: MenuViewModel by lazy { buildViewModel<MenuViewModel>(factory) }
+    val dis: LifeDisposable = LifeDisposable(this)
+    @Inject
+    lateinit var adapter: ListHealthBovineAdapter
+    lateinit var binding: FragmentApplicationHealthDetailBinding
+    val idDosisUno: String  by lazy { arguments!!.getString(DOSIS_UNO_HEALTH) }
 
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_application_health_detail,container,false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_application_health_detail, container, false)
         binding.listHealth.adapter = adapter
         return binding.root
     }
 
     override fun onResume() {
         super.onResume()
-        dis add viewModel.getHealthApplied()
+        dis add viewModel.getHealthApplied(idDosisUno)
                 .subscribeBy(
                         onSuccess = {
                             adapter.data = it
@@ -49,9 +50,15 @@ val dis: LifeDisposable = LifeDisposable(this)
                 )
 
     }
-    companion object {
-       private const val DOSIS_UNO_HEALTH = "dosisUnoHealth"
 
-        fun instance():ApplicationHealthDetailFragment = ApplicationHealthDetailFragment()
+    companion object {
+        private const val DOSIS_UNO_HEALTH = "dosisUnoHealth"
+
+        fun instance(dosisUno: String) =
+                ApplicationHealthDetailFragment().apply {
+                    arguments = Bundle().apply {
+                        putString(DOSIS_UNO_HEALTH, dosisUno)
+                    }
+                }
     }
 }

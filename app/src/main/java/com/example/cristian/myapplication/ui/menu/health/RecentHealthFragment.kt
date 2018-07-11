@@ -13,6 +13,7 @@ import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.RecentHealthAdapter
 import com.example.cristian.myapplication.ui.menu.MenuViewModel
 import com.example.cristian.myapplication.ui.menu.health.detail.HealthDetailActivity
+import com.example.cristian.myapplication.ui.menu.health.detail.HealthDetailActivity.Companion.ID_FIRST_HEALTH
 import org.jetbrains.anko.support.v4.startActivity
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
@@ -40,6 +41,7 @@ class RecentHealthFragment : Fragment(), Injectable {
         return inflater.inflate(R.layout.fragment_recent_health, container, false)
     }
 
+
     override fun onResume() {
         super.onResume()
 
@@ -49,7 +51,7 @@ class RecentHealthFragment : Fragment(), Injectable {
         dis add adapterRecent.clickHealth
                 .subscribeBy(
                         onNext = {
-                            startActivity<HealthDetailActivity>(HealthDetailActivity.ID_HEALTH to  it._id!! )
+                            startActivity<HealthDetailActivity>(HealthDetailActivity.ID_HEALTH to  it._id!!, ID_FIRST_HEALTH to it.idDosisUno!! )
                         }
                 )
 

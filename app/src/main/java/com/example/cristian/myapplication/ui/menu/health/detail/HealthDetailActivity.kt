@@ -16,7 +16,7 @@ class HealthDetailActivity : AppCompatActivity(), HasSupportFragmentInjector {
     @Inject
     lateinit var injector: DispatchingAndroidInjector<Fragment>
     val idHealth:String by lazy { intent.getStringExtra(ID_HEALTH) }
-   // val idAplicacionUno:String by lazy { intent.getStringExtra(ID_FIRST_HEALTH) }
+    val idAplicacionUno:String by lazy { intent.getStringExtra(ID_FIRST_HEALTH) }
     @Inject
     lateinit var adapter: HealthDetailPagerAdapter
 
@@ -43,6 +43,6 @@ class HealthDetailActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
     companion object {
         const val ID_HEALTH = "idHealth"
-      //  const val ID_FIRST_HEALTH = "idAplicacionUno"
+        const val ID_FIRST_HEALTH = "idAplicacionUno"
     }
 }

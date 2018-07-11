@@ -11,7 +11,7 @@ import javax.inject.Inject
 class HealthDetailPagerAdapter  @Inject constructor(val activity :HealthDetailActivity): FragmentStatePagerAdapter(activity.supportFragmentManager){
     override fun getItem(position: Int): Fragment = when(position) {
         0 -> BovineSelectedFragment.instance(activity.idHealth)
-        else -> ApplicationHealthDetailFragment.instance()
+        else -> ApplicationHealthDetailFragment.instance(activity.idAplicacionUno)
     }
     override fun getCount(): Int =2
 

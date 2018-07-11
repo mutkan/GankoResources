@@ -9,7 +9,6 @@ import java.util.concurrent.TimeUnit
 class Sanidad(
         var _id: String? = null,
         var _sequence: Long? = null,
-
         var type:String ? = null,
         var idFinca: String? = null,
         var fecha: Date? = null,
