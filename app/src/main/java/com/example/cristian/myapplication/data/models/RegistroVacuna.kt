@@ -28,9 +28,4 @@ data class RegistroVacuna(var _id: String? = null,
         type = javaClass.simpleName
     }
 
-    companion object {
-        const val NOT_APPLIED = 0
-        const val APPLIED = 1
-        const val SKIPED = 2
-    }
 }

@@ -153,6 +153,7 @@ class CouchRx @Inject constructor(private val db: Database
         query.addChangeListener {
             if (it.error == null) emitter.onNext(it.results)
             else emitter.onError(it.error)
+
         }
     }
             .flatMap { result ->
