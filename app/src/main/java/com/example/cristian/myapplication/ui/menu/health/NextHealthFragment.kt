@@ -17,12 +17,14 @@ import com.example.cristian.myapplication.databinding.FragmentNextHealthBinding
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.NextHealthAdapter
 import com.example.cristian.myapplication.ui.menu.MenuViewModel
+import com.example.cristian.myapplication.ui.menu.health.AddHealthActivity.Companion.PREVIOUS_HEALTH
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.add
 import com.example.cristian.myapplication.util.buildViewModel
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.fragment_next_health.*
 import kotlinx.android.synthetic.main.fragment_recent_health.*
+import org.jetbrains.anko.support.v4.startActivity
 import org.jetbrains.anko.support.v4.toast
 import java.util.*
 import javax.inject.Inject
@@ -55,7 +57,7 @@ class NextHealthFragment : Fragment(), Injectable {
         super.onResume()
         binding.recyclerNextHealth.adapter= adapterNext
         binding.recyclerNextHealth.layoutManager = LinearLayoutManager(activity)
-        dis add viewModel.getNextHealth1(from, to)
+        dis add viewModel.getNextHealth(from, to)
                 .subscribeBy(
                         onNext = {
                             if(it.isEmpty()) emptyNextHealthText.visibility = View.VISIBLE else emptyNextHealthText.visibility = View.GONE
@@ -68,14 +70,16 @@ class NextHealthFragment : Fragment(), Injectable {
                 .subscribeBy( onNext = {
                     it.estadoProximo = ProxStates.APPLIED
                     viewModel.updateHealth(it._id!!,it)
+                    startActivity<AddHealthActivity>("edit" to true, PREVIOUS_HEALTH to it)
                 })
 
 
         dis add adapterNext.clickSkip
-                .subscribeBy( onNext = {
+                .flatMapSingle {
                     it.estadoProximo = ProxStates.SKIPED
                     viewModel.updateHealth(it._id!!,it)
-                })
+                }
+                .subscribe()
 
     }
 

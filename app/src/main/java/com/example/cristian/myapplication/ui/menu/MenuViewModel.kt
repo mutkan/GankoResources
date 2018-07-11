@@ -117,11 +117,13 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     .applySchedulers()
 
 
-    fun getPendingHealrh(): Single<List<Sanidad>> =
-            db.listByExp("idFinca" equalEx farmID andEx ("proximaAplicacion" equalEx 2), Sanidad::class)
+    fun getNextHealth(from: Date, to: Date): Observable<List<Sanidad>> =
+            db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProxima".betweenDates(from, to)) andEx ("estadoProximo" equalEx ProxStates.NOT_APPLIED), Sanidad::class)
+                    .applySchedulers()
+
+    fun getPendingHealth(from:Date): Observable<List<Sanidad>> =
+        db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProxima" lt from) andEx ("estadoProximo" equalEx ProxStates.NOT_APPLIED), Sanidad::class)
                 .applySchedulers()
-
-
 
     fun updateHealth(id: String,sanidad: Sanidad): Single<Unit>
             = db.update(id, sanidad).applySchedulers()
@@ -211,9 +213,9 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     //endregion
 
 
-    fun getNextHealth1(from: Date, to: Date): Observable<List<Sanidad>> =
-            db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProxima".betweenDates(from, to)) andEx ("estadoProximo" equalEx ProxStates.NOT_APPLIED), Sanidad::class).applySchedulers()
-
     //endregion
+
+
+
 
 }
