@@ -57,7 +57,10 @@ class ReApplyActivity : AppCompatActivity(), Injectable {
                     number.text = "${bovines.size}"
                     showBar()
                 }
+    }
 
+    override fun onResume() {
+        super.onResume()
 
         dis add btnNext.clicks()
                 .flatMapSingle {
@@ -88,7 +91,6 @@ class ReApplyActivity : AppCompatActivity(), Injectable {
                     if (size == 1) showBar()
                     else if (size == 0) hideBar()
                 }
-
     }
 
     private fun hideBar() {
