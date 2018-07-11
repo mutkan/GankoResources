@@ -109,41 +109,24 @@ class AddVaccineActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
         super.onResume()
         setupGroupFragment()
 
-
-        if (edit) {
-            dis add btnAcceptVaccine.clicks()
-                    .flatMap { validateFields() }
-                    .flatMapSingle {
-                        val vaccine = createVaccine(it)
-                        viewModel.inserVaccine(vaccine)
-                    }
-                    .flatMapSingle {
+        dis add btnAcceptVaccine.clicks()
+                .flatMap { validateFields() }
+                .flatMapSingle {
+                    val vaccine = createVaccine(it)
+                    if (edit) viewModel.inserVaccine(vaccine).flatMap {
                         viewModel.updateVaccine(previousVaccine.apply { estadoProximo = APPLIED })
                     }
-                    .subscribeBy(
-                            onNext = {
-                                finish()
-                            },
-                            onError = {
-                                Log.e("ERROR", it.message, it)
-                            }
-                    )
-        } else {
-            dis add btnAcceptVaccine.clicks()
-                    .flatMap { validateFields() }
-                    .flatMapSingle {
-                        val vaccine = createVaccine(it)
-                        viewModel.inserFirstVaccine(vaccine)
-                    }
-                    .subscribeBy(
-                            onNext = {
-                                finish()
-                            },
-                            onError = {
-                                Log.e("ERROR", it.message, it)
-                            }
-                    )
-        }
+                    else viewModel.inserFirstVaccine(vaccine)
+                }
+
+                .subscribeBy(
+                        onNext = {
+                            finish()
+                        },
+                        onError = {
+                            Log.e("ERROR", it.message, it)
+                        }
+                )
 
         dis add btnCancelVaccine.clicks()
                 .subscribeBy(

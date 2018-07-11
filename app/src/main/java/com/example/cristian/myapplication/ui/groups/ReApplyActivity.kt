@@ -4,10 +4,12 @@ import android.app.Activity
 import android.arch.lifecycle.ViewModelProvider
 import android.content.Intent
 import android.os.Bundle
+import android.support.transition.TransitionManager
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.groups.adapters.SelectAdapter
@@ -39,7 +41,8 @@ class ReApplyActivity : AppCompatActivity(), Injectable {
         setContentView(R.layout.fragment_select_bovine)
 
         title = getString(R.string.select_title)
-
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back_white)
         adapter.selecteds = selecteds
         list.adapter = adapter
         dis add viewModel.listBovinesByDocId(id)
@@ -52,6 +55,7 @@ class ReApplyActivity : AppCompatActivity(), Injectable {
                 .subscribe { bovines ->
                     adapter.data = bovines
                     number.text = "${bovines.size}"
+                    showBar()
                 }
 
 
@@ -77,8 +81,25 @@ class ReApplyActivity : AppCompatActivity(), Injectable {
                 }
 
         dis add adapter.onSelectBovine
-                .subscribe { number.text = "${selecteds.size}" }
+                .subscribe {
+                    val size = selecteds.size
+                    number.text = "$size"
+                    if (size == 1) showBar()
+                    else if (size == 0) hideBar()
+                }
 
+    }
+
+    private fun hideBar() {
+        TransitionManager.beginDelayedTransition(bottomBar)
+        bottomBar.visibility = View.GONE
+        bottomBar.translationY = resources.getDimension(R.dimen.select_bar)
+    }
+
+    private fun showBar() {
+        TransitionManager.beginDelayedTransition(bottomBar)
+        bottomBar.visibility = View.VISIBLE
+        bottomBar.translationY = 0f
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
