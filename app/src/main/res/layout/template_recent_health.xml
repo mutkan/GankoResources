@@ -8,11 +8,15 @@
         <variable
             name="health"
             type="com.example.cristian.myapplication.data.models.Sanidad"/>
+        <variable
+            name="clicHealth"
+            type="io.reactivex.subjects.PublishSubject"/>
     </data>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:onClick='@{()->clicHealth.onNext(health)}'>
 
         <TextView
             android:id="@+id/event_date"
@@ -319,7 +323,8 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
-            android:text='@{health.grupo == null ? ""+health.bovinos.size() : health.grupo.nombre}'
+            app:bovinos="@{health.bovinos}"
+            app:noBovinos="@{health.noBovinos}"
             app:layout_constraintEnd_toStartOf="@+id/imageView10"
             app:layout_constraintTop_toBottomOf="@+id/textView126"
             tools:text="120" />

@@ -125,8 +125,8 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
         db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProxima" lt from) andEx ("estadoProximo" equalEx ProxStates.NOT_APPLIED), Sanidad::class)
                 .applySchedulers()
 
-    fun updateHealth(id: String,sanidad: Sanidad): Single<Unit>
-            = db.update(id, sanidad).applySchedulers()
+    fun updateHealth(id:String,sanidad: Sanidad): Single<Unit>
+            = db.update( sanidad._id!!,sanidad).applySchedulers()
 
     fun getMilk(idFinca: String): Single<List<SalidaLeche>> =
             db.listByExp("idFarm" equalEx idFinca, SalidaLeche::class)
@@ -193,6 +193,9 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
 
     fun getVaccinesByDosisUno(idDosisUno:String) : Single<List<RegistroVacuna>> =
             db.listByExp("idFinca" equalEx farmID andEx ("idDosisUno" equalEx idDosisUno) ,RegistroVacuna::class).applySchedulers()
+
+    fun getHealthApplied(idDosisUno: String) : Single<List<Sanidad>> =
+            db.listByExp("idFinca" equalEx farmID andEx ("idDosisUno" equalEx idDosisUno) ,Sanidad::class).applySchedulers()
 
     //endregion
 

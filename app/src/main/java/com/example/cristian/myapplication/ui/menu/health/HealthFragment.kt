@@ -6,6 +6,7 @@ import android.content.Context
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.view.ViewPager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,11 +32,13 @@ class HealthFragment : Fragment() , Injectable {
     }
 
 
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         pagerHealth.adapter = adapter
         tabsHealth.setupWithViewPager(pagerHealth)
     }
+
 
     companion object {
         fun instance(): HealthFragment = HealthFragment()

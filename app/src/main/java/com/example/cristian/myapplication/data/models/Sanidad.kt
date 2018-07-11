@@ -30,7 +30,8 @@ class Sanidad(
         var bovinos: List<String> = listOf(),
         var UnidadesFrecuencia: String? = null,
         var noBovinos: List<String> = listOf(),
-        var estadoProximo:Int = ProxStates.NOT_APPLIED
+        var estadoProximo:Int = ProxStates.NOT_APPLIED,
+        var idDosisUno:String?=null
 
 ): Parcelable{
 

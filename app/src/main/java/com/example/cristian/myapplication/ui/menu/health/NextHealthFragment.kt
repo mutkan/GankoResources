@@ -48,7 +48,7 @@ class NextHealthFragment : Fragment(), Injectable {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-       binding = DataBindingUtil.inflate(inflater,R.layout.fragment_next_health,container,false)
+        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_next_health,container,false)
 
         return binding.root
     }

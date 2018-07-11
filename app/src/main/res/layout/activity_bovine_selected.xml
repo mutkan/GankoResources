@@ -38,10 +38,10 @@
         app:layout_constraintStart_toEndOf="@+id/btnCancel" />
 
     <android.support.constraint.Group
-        android:visibility="gone"
         android:id="@+id/btnGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         app:constraint_referenced_ids="btnCancel,btnOk" />
 
 
