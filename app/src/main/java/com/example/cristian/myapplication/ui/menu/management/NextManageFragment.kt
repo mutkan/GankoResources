@@ -1,7 +1,6 @@
 package com.example.cristian.myapplication.ui.menu.management
 
 
-import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import android.databinding.DataBindingUtil
 import android.databinding.ObservableBoolean
@@ -10,7 +9,6 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.RegistroManejo
 import com.example.cristian.myapplication.data.models.RegistroManejo.Companion.SKIPED

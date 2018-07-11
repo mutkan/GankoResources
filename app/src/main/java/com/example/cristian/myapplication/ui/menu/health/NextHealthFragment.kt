@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.cristian.myapplication.BR.isEmpty
 import com.example.cristian.myapplication.R
+import com.example.cristian.myapplication.data.models.ProxStates
 import com.example.cristian.myapplication.databinding.FragmentNextHealthBinding
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.NextHealthAdapter
@@ -65,17 +66,15 @@ class NextHealthFragment : Fragment(), Injectable {
 
         dis add adapterNext.clickApply
                 .subscribeBy( onNext = {
-                    var san = it
-                    san.proximaAplicacion =1
-                    viewModel.updateHealth(it._id!!,san)
+                    it.estadoProximo = ProxStates.APPLIED
+                    viewModel.updateHealth(it._id!!,it)
                 })
 
 
         dis add adapterNext.clickSkip
                 .subscribeBy( onNext = {
-                    var san = it
-                    san.proximaAplicacion=2
-                    viewModel.updateHealth(it._id!!,san)
+                    it.estadoProximo = ProxStates.SKIPED
+                    viewModel.updateHealth(it._id!!,it)
                 })
 
     }

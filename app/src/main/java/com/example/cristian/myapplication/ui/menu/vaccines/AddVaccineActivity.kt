@@ -13,8 +13,8 @@ import android.widget.DatePicker
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.Group
 import com.example.cristian.myapplication.data.models.RegistroVacuna
-import com.example.cristian.myapplication.data.models.RegistroVacuna.Companion.APPLIED
-import com.example.cristian.myapplication.data.models.RegistroVacuna.Companion.NOT_APPLIED
+import com.example.cristian.myapplication.data.models.ProxStates.Companion.APPLIED
+import com.example.cristian.myapplication.data.models.ProxStates.Companion.NOT_APPLIED
 import com.example.cristian.myapplication.data.models.toGrupo
 import com.example.cristian.myapplication.databinding.ActivityAddVaccineBinding
 import com.example.cristian.myapplication.di.Injectable

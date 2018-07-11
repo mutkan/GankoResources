@@ -5,7 +5,7 @@ import android.graphics.Color
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.db.CouchRx
 import com.example.cristian.myapplication.data.models.*
-import com.example.cristian.myapplication.data.models.RegistroVacuna.Companion.NOT_APPLIED
+import com.example.cristian.myapplication.data.models.ProxStates.Companion.NOT_APPLIED
 import com.example.cristian.myapplication.data.preferences.UserSession
 import com.example.cristian.myapplication.util.*
 import io.reactivex.Maybe
@@ -212,5 +212,8 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
 
 
     fun getNextHealth1(from: Date, to: Date): Observable<List<Sanidad>> =
-            db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProxima".betweenDates(from, to)), Sanidad::class).applySchedulers()
+            db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProxima".betweenDates(from, to)) andEx ("estadoProximo" equalEx ProxStates.NOT_APPLIED), Sanidad::class).applySchedulers()
+
+    //endregion
+
 }

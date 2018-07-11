@@ -203,7 +203,7 @@
             <android.support.v4.widget.NestedScrollView
                 android:id="@+id/nestedPage1"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="1dp"
                 android:visibility='@{page == 1 ? View.VISIBLE : View.GONE}'
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
