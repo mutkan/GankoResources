@@ -78,6 +78,7 @@ class ReApplyActivity : AppCompatActivity(), Injectable {
                     selecteds.clear()
                     adapter.notifyDataSetChanged()
                     number.text = "0"
+                    hideBar()
                 }
 
         dis add adapter.onSelectBovine
@@ -119,6 +120,8 @@ class ReApplyActivity : AppCompatActivity(), Injectable {
                 .doOnNext { selecteds[it] = true }
                 .subscribeBy(onComplete = {
                     adapter.notifyDataSetChanged()
+                    number.text = "${selecteds.size}"
+                    if (bottomBar.visibility == View.GONE) showBar()
                 })
     }
 
