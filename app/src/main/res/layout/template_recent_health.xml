@@ -8,11 +8,15 @@
         <variable
             name="health"
             type="com.example.cristian.myapplication.data.models.Sanidad"/>
+        <variable
+            name="clicHealth"
+            type="io.reactivex.subjects.PublishSubject"/>
     </data>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:onClick='@{()->clicHealth.onNext(health)}'>
 
         <TextView
             android:id="@+id/event_date"
