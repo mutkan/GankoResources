@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit
 class Sanidad(
         var _id: String? = null,
         var _sequence: Long? = null,
+
         var type:String ? = null,
         var idFinca: String? = null,
         var fecha: Date? = null,
@@ -29,7 +30,9 @@ class Sanidad(
         var grupo: Grupo? = null,
         var bovinos: List<String> = listOf(),
         var UnidadesFrecuencia: String? = null,
-        var proximaAplicacion: Int? = null
+        var noBovinos: List<String> = listOf(),
+        var estadoProximo:Int = ProxStates.NOT_APPLIED,
+        var idDosisUno:String?=null
 
 ): Parcelable{
 

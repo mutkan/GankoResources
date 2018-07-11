@@ -55,7 +55,7 @@
                     android:layout_marginStart="16dp"
                     android:ems="10"
                     android:enabled='@{!edit}'
-                    android:hint="Otra"
+                    android:hint="Nombre de la Vacuna"
                     android:inputType="textCapSentences"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -66,7 +66,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:clickable='@{!edit}'
                     android:orientation="horizontal"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/doseTxt">
@@ -77,6 +76,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:checked="true"
+                        android:clickable='@{!edit}'
                         android:text="5ml" />
 
                     <RadioButton
@@ -84,6 +84,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:clickable='@{!edit}'
                         android:text="2ml" />
 
                     <RadioButton
@@ -91,6 +92,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:clickable='@{!edit}'
                         android:text="Otra" />
                 </RadioGroup>
 
@@ -196,6 +198,7 @@
                     android:layout_marginStart="16dp"
                     android:ems="10"
                     android:enabled="@{!edit}"
+                    android:hint="Próxima Aplicación"
                     android:inputType="number"
                     app:layout_constraintEnd_toStartOf="@+id/timeUnitsSpinner"
                     app:layout_constraintStart_toStartOf="parent"

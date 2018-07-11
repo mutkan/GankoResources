@@ -8,11 +8,15 @@
         <variable
             name="health"
             type="com.example.cristian.myapplication.data.models.Sanidad"/>
+        <variable
+            name="clicHealth"
+            type="io.reactivex.subjects.PublishSubject"/>
     </data>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:onClick='@{()->clicHealth.onNext(health)}'>
 
         <TextView
             android:id="@+id/event_date"
@@ -147,7 +151,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
             android:inputType="text"
-            android:text='@{""+ health.dosis +"ml"}'
+            android:text='@{""+ health.dosis}'
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@color/menu_button_light"
             app:layout_constraintStart_toStartOf="parent"
@@ -169,12 +173,13 @@
             android:id="@+id/frequency"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:inputType="numberDecimal"
             android:text='@{"" + health.frecuencia}'
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@color/menu_button_light"
-            app:layout_constraintStart_toStartOf="@+id/textView119"
+            app:layout_constraintStart_toEndOf="@+id/textView108"
             app:layout_constraintTop_toBottomOf="@+id/textView119"
             tools:text="0.3" />
 
@@ -208,11 +213,11 @@
             android:id="@+id/attention_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:text="@string/attention_value"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            app:layout_constraintStart_toStartOf="@+id/frequency"
-            app:layout_constraintTop_toBottomOf="@+id/frequency"
+            app:layout_constraintStart_toStartOf="@+id/textView108"
+            app:layout_constraintTop_toBottomOf="@+id/textView108"
             tools:text="@string/attention_value" />
 
         <TextView
@@ -292,10 +297,9 @@
             android:id="@+id/textView108"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="@string/times_a_day"
-            app:layout_constraintStart_toEndOf="@+id/frequency"
+            android:text="Cada"
+            app:layout_constraintStart_toStartOf="@+id/textView119"
             app:layout_constraintTop_toBottomOf="@+id/textView119" />
 
         <ImageView
@@ -313,7 +317,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
-            android:text='@{""+ health.bovinos.size()}'
+            android:text='@{health.grupo == null ? ""+health.bovinos.size() : health.grupo.nombre}'
             app:layout_constraintEnd_toStartOf="@+id/imageView10"
             app:layout_constraintTop_toBottomOf="@+id/textView126"
             tools:text="120" />
@@ -341,6 +345,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView120"
             tools:text="9" />
+
+        <TextView
+            android:id="@+id/frequencyUnity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@{health.unidadesFrecuencia}"
+            tools:text="dias"
+            app:layout_constraintStart_toEndOf="@+id/frequency"
+            app:layout_constraintTop_toBottomOf="@+id/textView119" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>

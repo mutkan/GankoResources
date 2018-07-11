@@ -2,10 +2,10 @@ package com.example.cristian.myapplication.ui.menu
 
 import android.arch.lifecycle.ViewModel
 import android.graphics.Color
-import com.couchbase.lite.Ordering
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.db.CouchRx
 import com.example.cristian.myapplication.data.models.*
+import com.example.cristian.myapplication.data.models.ProxStates.Companion.NOT_APPLIED
 import com.example.cristian.myapplication.data.preferences.UserSession
 import com.example.cristian.myapplication.util.*
 import io.reactivex.Maybe
@@ -113,17 +113,19 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     .applySchedulers()
 
     fun getHealth(idFinca: String): Single<List<Sanidad>> =
-            db.listByExp("idFinca" equalEx idFinca andEx ("proximaAplicacion" equalEx 0), Sanidad::class)
+            db.listByExp("idFinca" equalEx idFinca andEx ("estadoProximo" equalEx ProxStates.NOT_APPLIED), Sanidad::class)
                     .applySchedulers()
 
 
-    fun getPendingHealrh(): Single<List<Sanidad>> =
-            db.listByExp("idFinca" equalEx farmID andEx ("proximaAplicacion" equalEx 2), Sanidad::class)
+    fun getNextHealth(from: Date, to: Date): Observable<List<Sanidad>> =
+            db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProxima".betweenDates(from, to)) andEx ("estadoProximo" equalEx ProxStates.NOT_APPLIED), Sanidad::class)
+                    .applySchedulers()
+
+    fun getPendingHealth(from:Date): Observable<List<Sanidad>> =
+        db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProxima" lt from) andEx ("estadoProximo" equalEx ProxStates.NOT_APPLIED), Sanidad::class)
                 .applySchedulers()
 
-
-
-    fun updateHealth(sanidad: Sanidad): Single<Unit>
+    fun updateHealth(id:String,sanidad: Sanidad): Single<Unit>
             = db.update( sanidad._id!!,sanidad).applySchedulers()
 
     fun getMilk(idFinca: String): Single<List<SalidaLeche>> =
@@ -177,29 +179,38 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     //region Vacunas
     fun inserVaccine(registroVacuna: RegistroVacuna): Single<String> = db.insert(registroVacuna).applySchedulers()
 
+    fun inserFirstVaccine(registroVacuna: RegistroVacuna): Single<String> = db.insertDosisUno(registroVacuna).applySchedulers()
+
     fun updateVaccine(registroVacuna: RegistroVacuna): Single<Unit> = db.update(registroVacuna._id!!, registroVacuna).applySchedulers()
 
     fun getVaccinations(): Observable<List<RegistroVacuna>> = db.listObsByExp("idFinca" equalEx farmID, RegistroVacuna::class).applySchedulers()
 
     fun getNextVaccines(from: Date, to: Date): Observable<List<RegistroVacuna>> =
-            db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProx".betweenDates(from, to)) andEx ("proxAplicado" equalEx false), RegistroVacuna::class).applySchedulers()
+            db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProxima".betweenDates(from, to)) andEx ("estadoProximo" equalEx NOT_APPLIED), RegistroVacuna::class).applySchedulers()
 
     fun getPendingVaccines(from: Date): Observable<List<RegistroVacuna>> =
-            db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProx".lte(from)) andEx ("proxAplicado" equalEx false), RegistroVacuna::class).applySchedulers()
+            db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProxima".lte(from)) andEx ("estadoProximo" equalEx NOT_APPLIED), RegistroVacuna::class).applySchedulers()
+
+    fun getVaccinesByDosisUno(idDosisUno:String) : Single<List<RegistroVacuna>> =
+            db.listByExp("idFinca" equalEx farmID andEx ("idDosisUno" equalEx idDosisUno) ,RegistroVacuna::class).applySchedulers()
+
+    fun getHealthApplied() : Single<List<Sanidad>> =
+            db.listByExp("idFinca" equalEx farmID ,Sanidad::class).applySchedulers()
+
     //endregion
 
 
     //region Manejo
-    fun insertManage(registroManejo: RegistroManejo): Single<String> = db.insertManage(registroManejo).applySchedulers()
+    fun insertManage(registroManejo: RegistroManejo): Single<String> = db.insertDosisUno(registroManejo).applySchedulers()
 
     fun getManages(): Observable<List<RegistroManejo>> = db.listObsByExp("idFinca" equalEx farmID, RegistroManejo::class).applySchedulers()
 
     fun getNextManages(from: Date, to: Date): Observable<List<RegistroManejo>> =
-            db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProx".betweenDates(from, to)), RegistroManejo::class).applySchedulers()
-
-    fun getNextHealth1(from: Date, to: Date): Observable<List<Sanidad>> =
-            db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProxima".betweenDates(from, to)), Sanidad::class).applySchedulers()
+            db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProximaAplicacion".betweenDates(from, to)), RegistroManejo::class).applySchedulers()
 
     //endregion
+
+
+
 
 }

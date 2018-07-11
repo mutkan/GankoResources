@@ -7,10 +7,24 @@
     tools:context="com.example.cristian.myapplication.ui.bovine.feed.FeedBvnActivity">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler"
+        android:id="@+id/recyclerFeedBovine"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         tools:listitem="@layout/template_feed_bovine" />
+
+    <TextView
+        android:id="@+id/emptyFeedText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:text="@string/no_feed_register"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

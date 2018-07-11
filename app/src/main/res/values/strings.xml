@@ -235,10 +235,9 @@
     <string name="purchase_price">Precio de compra</string>
 
     <string-array name="straw_type">
-        <item>Tipo A</item>
-        <item>Tipo B</item>
-        <item>Tipo C</item>
-        <item>Tipo D</item>
+        <item>Leche</item>
+        <item>Ceba</item>
+        <item>Doble Propósito</item>
     </string-array>
 
     <string-array name="origin">
@@ -345,6 +344,12 @@
     <string name="apply">APLICAR</string>
     <string name="pendings">Pendientes</string>
     <string name="skip">OMITIR</string>
+    <string name="group_all">Seleccionar todos</string>
+    <string name="group_action_all">Seleccionar todos</string>
+    <string name="group_no_apply">Sin aplicación</string>
+    <string name="no_feed_register">No hay registros de alimentación</string>
+    <string name="aplications">Aplicaciones</string>
+    <string name="health_name">Nombre de la sanidad</string>
 
     <string-array name="milk_production">
         <item>Litros vendidos</item>

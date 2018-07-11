@@ -21,6 +21,7 @@ import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.fragment_pending_health.*
 import kotlinx.android.synthetic.main.fragment_recent_health.*
 import org.jetbrains.anko.support.v4.toast
+import java.util.*
 import javax.inject.Inject
 
 
@@ -41,32 +42,16 @@ class PendingHealthFragment : Fragment() , Injectable {
         return  inflater.inflate(R.layout.fragment_pending_health,container,false)
     }
 
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        if(attatch && recyclerPendingHealth != null)
-        {
-            dis add viewModel.getPendingHealrh()
-                    .subscribeBy (
-                            onSuccess = {
-                                if(it.isEmpty()) emptyPendingHealthText.visibility = View.VISIBLE else emptyPendingHealthText.visibility = View.GONE
-                                adapter.pending = it
-                                attatch=true
-                            },
-                            onError = {
-                                toast(it.message!!)
-                            }
-                    )}
 
-    }
 
     override fun onResume() {
         super.onResume()
         recyclerPendingHealth.adapter = adapter
         recyclerPendingHealth.layoutManager = LinearLayoutManager(activity)
 
-        dis add viewModel.getPendingHealrh()
+        dis add viewModel.getPendingHealth(Date())
                 .subscribeBy (
-                        onSuccess = {
+                        onNext = {
                             if(it.isEmpty()) emptyPendingHealthText.visibility = View.VISIBLE else emptyPendingHealthText.visibility = View.GONE
                             adapter.pending = it
                         },

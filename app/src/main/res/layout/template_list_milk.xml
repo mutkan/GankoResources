@@ -63,7 +63,7 @@
             app:layout_constraintStart_toStartOf="@+id/textView21"
             app:layout_constraintTop_toBottomOf="@+id/textView21"
             tools:text="20"
-            android:text='@{"" + milk.valorLitro}'/>
+            android:text='@{"$" + milk.valorLitro}'/>
 
         <TextView
             android:id="@+id/textView26"
@@ -80,7 +80,7 @@
             android:id="@+id/textView27"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text='@{"" + milk.totalLitros}'
+            android:text='@{"$" + milk.totalLitros}'
             app:layout_constraintStart_toStartOf="@+id/textView26"
             app:layout_constraintTop_toBottomOf="@+id/textView26"
             tools:text="20" />
@@ -91,39 +91,20 @@
             android:layout_height="17dp"
             android:layout_marginStart="4dp"
             android:layout_marginLeft="4dp"
-            android:text="@string/liters_sold"
+            android:text="@{milk.operacion}"
+            tools:text="Litros Vendidos"
             android:textColor="@color/textview_label"
             app:layout_constraintStart_toEndOf="@+id/textView18"
             app:layout_constraintTop_toTopOf="@+id/textView18" />
 
-        <TextView
-            android:id="@+id/textView30"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginLeft="4dp"
-            android:text="@string/liters"
-            app:layout_constraintStart_toEndOf="@+id/textView24"
-            app:layout_constraintTop_toTopOf="@+id/textView24" />
-
-        <TextView
-            android:id="@+id/textView31"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginLeft="4dp"
-            android:text="@string/liters"
-            app:layout_constraintStart_toEndOf="@+id/textView27"
-            app:layout_constraintTop_toBottomOf="@+id/textView26" />
-
         <FrameLayout
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:background="@color/separator_gray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView30">
+            app:layout_constraintTop_toBottomOf="@+id/textView27">
 
         </FrameLayout>
     </android.support.constraint.ConstraintLayout>

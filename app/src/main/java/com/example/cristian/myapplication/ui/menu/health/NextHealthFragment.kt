@@ -4,37 +4,28 @@ package com.example.cristian.myapplication.ui.menu.health
 import android.arch.lifecycle.ViewModelProvider
 import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.transition.FragmentTransitionSupport
 import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentTransitionImpl
-import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
-import android.transition.TransitionManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.example.cristian.myapplication.BR.isEmpty
 import com.example.cristian.myapplication.R
-import com.example.cristian.myapplication.data.models.Sanidad
+import com.example.cristian.myapplication.data.models.ProxStates
 import com.example.cristian.myapplication.databinding.FragmentNextHealthBinding
-import com.example.cristian.myapplication.databinding.TemplateSkipHealthBinding
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.NextHealthAdapter
 import com.example.cristian.myapplication.ui.menu.MenuViewModel
+import com.example.cristian.myapplication.ui.menu.health.AddHealthActivity.Companion.PREVIOUS_HEALTH
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.add
 import com.example.cristian.myapplication.util.buildViewModel
-import com.jakewharton.rxbinding2.view.clicks
-import io.reactivex.Observable
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.fragment_next_health.*
 import kotlinx.android.synthetic.main.fragment_recent_health.*
-import org.jetbrains.anko.noButton
-import org.jetbrains.anko.support.v4.alert
+import org.jetbrains.anko.support.v4.startActivity
 import org.jetbrains.anko.support.v4.toast
-import org.jetbrains.anko.yesButton
 import java.util.*
 import javax.inject.Inject
 
@@ -49,7 +40,7 @@ class NextHealthFragment : Fragment(), Injectable {
     @Inject
     lateinit var adapterNext: NextHealthAdapter
     val dis: LifeDisposable = LifeDisposable(this)
-            private val mAlert: AlertDialog by lazy { AlertDialog.Builder(activity!!.applicationContext).create() }
+    private val idFinca: String by lazy { viewModel.getFarmId() }
     val from: Date = Date()
     val to: Date by lazy { from.add(Calendar.DATE, 7)!! }
 
@@ -57,71 +48,39 @@ class NextHealthFragment : Fragment(), Injectable {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
+        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_next_health,container,false)
 
-       binding = DataBindingUtil.inflate(inflater,R.layout.fragment_next_health,container,false)
-        binding.recyclerNextHealth.adapter= adapterNext
-        binding.recyclerNextHealth.layoutManager = LinearLayoutManager(activity)
         return binding.root
     }
 
-
-
     override fun onResume() {
         super.onResume()
-
-        dis add viewModel.getNextHealth1(from, to)
+        binding.recyclerNextHealth.adapter= adapterNext
+        binding.recyclerNextHealth.layoutManager = LinearLayoutManager(activity)
+        dis add viewModel.getNextHealth(from, to)
                 .subscribeBy(
                         onNext = {
                             if(it.isEmpty()) emptyNextHealthText.visibility = View.VISIBLE else emptyNextHealthText.visibility = View.GONE
                             adapterNext.health = it
-
-                            Log.d("MANEJOS", it.toString())
-                        })
-
+                            Log.d("SANIDAD", it.toString())
+                        }
+                )
 
         dis add adapterNext.clickApply
                 .subscribeBy( onNext = {
-                    var san = it
-                    san.proximaAplicacion = 1
-                    alert( "Confirme si desea aplicar sanidad"){yesButton {aplicar(san) }
-                        noButton { toast("Cancelado") }
-                    }.show()},
-                        onError = {
-                            toast(it.message!!)
-                        })
+                    it.estadoProximo = ProxStates.APPLIED
+                    viewModel.updateHealth(it._id!!,it)
+                    startActivity<AddHealthActivity>("edit" to true, PREVIOUS_HEALTH to it)
+                })
 
 
         dis add adapterNext.clickSkip
-                .subscribeBy( onNext = {
-                    var san = it
-                    san.proximaAplicacion = 2
-                    alert( "Confirme si desea omitir sanidad"){yesButton {update(san) }
-                        noButton { toast("Cancelado") }
-                    }.show()})
-
-    }
-
-    private fun update(san:Sanidad) {
-    dis add  viewModel.updateHealth(san).subscribeBy(
-                onSuccess = {toast("Omitido correctamente")
+                .flatMapSingle {
+                    it.estadoProximo = ProxStates.SKIPED
+                    viewModel.updateHealth(it._id!!,it)
                 }
-    )
-        refresh()
-    }
+                .subscribe()
 
-
-    private fun aplicar(san:Sanidad) {
-        dis add  viewModel.updateHealth(san).subscribeBy(
-                onSuccess = {toast("Aplicado correctamente")
-                }
-        )}
-
-    fun refresh(){
-        dis add viewModel.getPendingHealrh().subscribeBy (
-            onSuccess = {
-
-                }
-            )
     }
 
     companion object {

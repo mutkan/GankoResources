@@ -12,6 +12,7 @@ import com.example.cristian.myapplication.ui.menu.health.HealthFragment
 import com.example.cristian.myapplication.ui.menu.health.RecentHealthFragment
 import com.example.cristian.myapplication.ui.menu.health.NextHealthFragment
 import com.example.cristian.myapplication.ui.menu.health.PendingHealthFragment
+import com.example.cristian.myapplication.ui.menu.health.detail.ApplicationHealthDetailFragment
 import com.example.cristian.myapplication.ui.menu.management.ManageFragment
 import com.example.cristian.myapplication.ui.menu.management.NextManageFragment
 import com.example.cristian.myapplication.ui.menu.management.RecentManageFragment

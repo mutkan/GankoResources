@@ -11,6 +11,9 @@
         <variable
             name="otherSelect"
             type="boolean"/>
+        <variable
+            name="edit"
+            type="Boolean" />
 
         <import type="android.view.View"/>
     </data>
@@ -96,6 +99,14 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
+                    <FrameLayout
+                        android:id="@+id/healthContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
                     <TextView
                         android:id="@+id/textView108"
                         style="@style/textview_label"
@@ -105,7 +116,8 @@
                         android:layout_marginTop="24dp"
                         android:text="@string/event"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toBottomOf="@+id/healthContainer" />
+
 
                     <Spinner
                         android:id="@+id/spinnerEvent"
@@ -114,6 +126,7 @@
                         android:layout_marginEnd="16dp"
                         android:layout_marginStart="24dp"
                         android:layout_marginTop="8dp"
+                        android:enabled='@{!edit}'
                         android:entries="@array/health_event"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -141,6 +154,7 @@
                         android:ems="10"
                         android:hint="@string/other"
                         android:inputType="text"
+                        android:enabled='@{!edit}'
                         android:visibility='@{otherSelect == true ? View.VISIBLE : View.GONE}'
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/textView112"
@@ -169,6 +183,7 @@
                         android:ems="10"
                         android:hint="@string/diagnosis"
                         android:inputType="text"
+                        android:enabled='@{!edit}'
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/textView110"
                         app:layout_constraintTop_toBottomOf="@+id/textView110" />
@@ -224,6 +239,7 @@
                         android:ems="10"
                         android:hint="@string/treatment"
                         android:inputType="text"
+                        android:enabled='@{!edit}'
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/textView83"
                         app:layout_constraintTop_toBottomOf="@+id/textView83" />
@@ -252,6 +268,7 @@
                         android:ems="10"
                         android:hint="@string/product"
                         android:inputType="text"
+                        android:enabled='@{!edit}'
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.1"
@@ -296,6 +313,7 @@
                         android:ems="10"
                         android:hint="@string/dosis"
                         android:inputType="text"
+                        android:enabled='@{!edit}'
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
@@ -323,6 +341,7 @@
                         android:ems="10"
                         android:hint="@string/frecuency"
                         android:inputType="number"
+                        android:enabled='@{!edit}'
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView116" />
 
@@ -405,6 +424,7 @@
                         android:ems="10"
                         android:hint="@string/applications_number"
                         android:inputType="number"
+                        android:enabled='@{!edit}'
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
@@ -435,6 +455,7 @@
                         android:ems="10"
                         android:hint="@string/Observations"
                         android:inputType="text"
+                        android:enabled='@{!edit}'
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
@@ -448,6 +469,7 @@
                         android:layout_marginEnd="8dp"
                         android:layout_marginStart="8dp"
                         android:entries="@array/time_units"
+                        android:enabled='@{!edit}'
                         app:layout_constraintBottom_toBottomOf="@+id/frequency"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/frequency" />

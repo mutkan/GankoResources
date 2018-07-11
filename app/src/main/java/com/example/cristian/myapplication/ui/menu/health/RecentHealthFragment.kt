@@ -12,6 +12,7 @@ import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.RecentHealthAdapter
 import com.example.cristian.myapplication.ui.menu.MenuViewModel
+import com.example.cristian.myapplication.ui.menu.health.detail.HealthDetailActivity
 import org.jetbrains.anko.support.v4.startActivity
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
@@ -44,6 +45,13 @@ class RecentHealthFragment : Fragment(), Injectable {
 
         recyclerRecentHealth.adapter = adapterRecent
         recyclerRecentHealth.layoutManager = LinearLayoutManager(activity)
+
+        dis add adapterRecent.clickHealth
+                .subscribeBy(
+                        onNext = {
+                            startActivity<HealthDetailActivity>(HealthDetailActivity.ID_HEALTH to  it._id!! )
+                        }
+                )
 
         dis add viewModel.getHealth(idFinca)
                 .subscribeBy(

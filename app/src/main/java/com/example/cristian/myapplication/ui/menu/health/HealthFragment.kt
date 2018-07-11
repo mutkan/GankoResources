@@ -40,11 +40,6 @@ class HealthFragment : Fragment() , Injectable {
     }
 
 
-    override fun onResume() {
-        super.onResume()
-        }
-
-
     companion object {
         fun instance(): HealthFragment = HealthFragment()
     }

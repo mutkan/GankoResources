@@ -22,5 +22,7 @@ class HealthViewModel @Inject constructor(private val db: CouchRx, private val u
     fun getHealth(): Single<List<Sanidad>> = db.listByExp("idFinca" equalEx farmID, Sanidad::class)
             .applySchedulers()
 
+    fun updateHealth(sanidad: Sanidad): Single<Unit>
+            = db.update( sanidad._id!!,sanidad).applySchedulers()
 
 }
