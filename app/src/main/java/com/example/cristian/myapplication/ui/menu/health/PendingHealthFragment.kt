@@ -19,6 +19,7 @@ import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.fragment_pending_health.*
 import kotlinx.android.synthetic.main.fragment_recent_health.*
 import org.jetbrains.anko.support.v4.toast
+import java.util.*
 import javax.inject.Inject
 
 
@@ -43,9 +44,9 @@ class PendingHealthFragment : Fragment() , Injectable {
         recyclerPendingHealth.adapter = adapter
         recyclerPendingHealth.layoutManager = LinearLayoutManager(activity)
 
-        dis add viewModel.getPendingHealrh()
+        dis add viewModel.getPendingHealth(Date())
                 .subscribeBy (
-                        onSuccess = {
+                        onNext = {
                             if(it.isEmpty()) emptyPendingHealthText.visibility = View.VISIBLE else emptyPendingHealthText.visibility = View.GONE
                             adapter.pending = it
                         },

@@ -12,7 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.RegistroVacuna
-import com.example.cristian.myapplication.data.models.RegistroVacuna.Companion.SKIPED
+import com.example.cristian.myapplication.data.models.ProxStates.Companion.SKIPED
 import com.example.cristian.myapplication.databinding.FragmentNextVaccinesBinding
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.VaccineAdapter
