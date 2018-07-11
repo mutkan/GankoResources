@@ -14,7 +14,11 @@ import com.example.cristian.myapplication.data.models.Sanidad
 import com.example.cristian.myapplication.databinding.ActivityAddHealthBinding
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.groups.GroupFragment
+import com.example.cristian.myapplication.ui.groups.ReApplyActivity
+import com.example.cristian.myapplication.ui.groups.ReApplyActivity.Companion.EXTRA_ID
+import com.example.cristian.myapplication.ui.groups.ReApplyActivity.Companion.REQUEST_CODE
 import com.example.cristian.myapplication.ui.groups.SelectActivity
+import com.example.cristian.myapplication.ui.groups.SelectActivity.Companion.REQUEST_SELECT
 import com.example.cristian.myapplication.ui.menu.MenuViewModel
 import com.example.cristian.myapplication.util.*
 import com.example.cristian.myapplication.work.NotificationWork
@@ -35,6 +39,8 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
     val viewModel: HealthViewModel by lazy { buildViewModel<HealthViewModel>(factory) }
     val dis: LifeDisposable = LifeDisposable(this)
     val menuViewModel: MenuViewModel by lazy { buildViewModel<MenuViewModel>(factory) }
+    private val edit: Boolean by lazy { intent.getBooleanExtra("edit", false) }
+    lateinit var previousHealth: Sanidad
     private val farmId by lazy { menuViewModel.getFarmId() }
     lateinit var datePicker: DatePickerDialog
     lateinit var binding: ActivityAddHealthBinding
@@ -42,7 +48,8 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
     var group: Group? = null
     var bovines: List<String>? = null
     var groupFragment: GroupFragment? = null
-//    val unidades:Array<String> by lazy { resources.getStringArray(R.array.time_units) }
+    val unidades:Array<String> by lazy { resources.getStringArray(R.array.time_units) }
+    val eventos:Array<String> by lazy { resources.getStringArray(R.array.health_event) }
     var unidadTiempo:String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,8 +69,14 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                 Calendar.getInstance().get(Calendar.MONTH),
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
 
-        startActivityForResult<SelectActivity>(SelectActivity.REQUEST_SELECT,
-                SelectActivity.EXTRA_COLOR to 8)
+        if (edit) {
+            previousHealth = intent!!.getParcelableExtra(PREVIOUS_HEALTH)
+            startActivityForResult<ReApplyActivity>(REQUEST_CODE, EXTRA_ID to previousHealth._id!!)
+            setEdit()
+        } else {
+            startActivityForResult<SelectActivity>(REQUEST_SELECT,
+                    SelectActivity.EXTRA_COLOR to 8)
+        }
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -77,7 +90,7 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
         }
     }
     override fun onDateSet(p0: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        dateAddHealth.setText("$dayOfMonth/${month + 1}/$year")
+        dateAddHealth.setText("${dayOfMonth - 1}/${month + 1}/$year")
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -188,6 +201,27 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                 )
     }
 
+    private fun setEdit() {
+        val evento = eventos.indexOf(previousHealth.evento)
+        spinnerEvent.apply {
+         setSelection(evento)
+            isEnabled = false
+        }
+        other.setText(previousHealth.otra.toString())
+        diagnosis.setText(previousHealth.diagnostico.toString())
+        treatment_health.setText(previousHealth.tratamiento.toString())
+        product_health.setText(previousHealth.producto.toString())
+        dosis.setText(previousHealth.dosis.toString())
+        frequency.setText(previousHealth.frecuencia.toString())
+        val unidadTiempo = unidades.indexOf(previousHealth.UnidadesFrecuencia)
+        frecuencyOptionsHealth.apply {
+            setSelection(unidadTiempo)
+            isEnabled = false
+        }
+        applicacion_number.setText(previousHealth.numeroAplicaciones.toString())
+        observations_health.setText(previousHealth.observaciones.toString())
+    }
+
     private fun plusPage() {
 
         binding.page = binding.page!!.plus(1)
@@ -197,8 +231,6 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
     private fun minusPage() {
         binding.page = binding.page!!.minus(1)
     }
-
-
 
     private fun fechaProxima1( fecha:Date, aplicaciones: Int, frecuencia: Int): Date?{
         unidadTiempo = frecuencyOptionsHealth.selectedItem.toString()
@@ -214,5 +246,8 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
         }
     }
 
+    companion object {
+        const val PREVIOUS_HEALTH = "previousHealth"
+    }
 
 }
