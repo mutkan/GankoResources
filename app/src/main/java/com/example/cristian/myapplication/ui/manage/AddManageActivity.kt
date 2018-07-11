@@ -7,14 +7,20 @@ import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.DatePicker
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.Group
+import com.example.cristian.myapplication.data.models.ProxStates.Companion.APPLIED
 import com.example.cristian.myapplication.data.models.RegistroManejo
 import com.example.cristian.myapplication.data.models.RegistroManejo.Companion.NOT_APPLIED
+import com.example.cristian.myapplication.data.models.toGrupo
 import com.example.cristian.myapplication.databinding.ActivityAddManageBinding
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.groups.GroupFragment
+import com.example.cristian.myapplication.ui.groups.ReApplyActivity
+import com.example.cristian.myapplication.ui.groups.ReApplyActivity.Companion.EXTRA_ID
+import com.example.cristian.myapplication.ui.groups.ReApplyActivity.Companion.REQUEST_CODE
 import com.example.cristian.myapplication.ui.groups.SelectActivity
 import com.example.cristian.myapplication.ui.menu.MenuViewModel
 import com.example.cristian.myapplication.util.*
@@ -52,21 +58,73 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_add_manage)
+        binding.edit = edit
+        fixColor(5)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setTitle("Agregar Manejo")
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back_white)
         binding.page = 1
         binding.other = false
         datePicker = DatePickerDialog(this, AddManageActivity@ this,
                 Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH),
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
 
-        startActivityForResult<SelectActivity>(SelectActivity.REQUEST_SELECT,
-                SelectActivity.EXTRA_COLOR to 5)
+        if (edit) {
+            previousManage = intent!!.getParcelableExtra(PREVIOUS_MANAGE)
+            startActivityForResult<ReApplyActivity>(REQUEST_CODE, EXTRA_ID to previousManage._id!!)
+            setEdit()
+        } else {
+            startActivityForResult<SelectActivity>(SelectActivity.REQUEST_SELECT,
+                    SelectActivity.EXTRA_COLOR to 5)
+        }
     }
 
     override fun onResume() {
         super.onResume()
         setupGroupFragment()
+
+        if (edit) {
+            dis add btnSaveManage.clicks()
+                    .flatMap {
+                        validateForm(R.string.empty_fields, product.text.toString(), frecuency.text.toString(), productPrice.text.toString(),
+                                observations.text.toString(), assistancePrice.text.toString())
+                    }
+                    .flatMapSingle {
+                        val manage = createManage(it)
+                        viewModel.insertManage(manage)
+                    }
+                    .flatMapSingle {
+                        viewModel.updateManage(previousManage.apply { estadoProximo = APPLIED })
+                    }
+                    .subscribeBy(
+                            onNext = {
+                                finish()
+                            },
+                            onError = {
+                                Log.e("ERROR", it.message, it)
+                            }
+                    )
+        } else {
+            dis add btnSaveManage.clicks()
+                    .flatMap {
+                        validateForm(R.string.empty_fields, product.text.toString(), frecuency.text.toString(), productPrice.text.toString(),
+                                observations.text.toString(), assistancePrice.text.toString())
+                    }
+                    .flatMapSingle {
+                        val manage = createManage(it)
+                        viewModel.insertManage(manage)
+                    }
+                    .subscribeBy(
+                            onNext = {
+                                toast("Evento registrado")
+                                finish()
+                            },
+                            onError = {
+                                toast(it.message!!)
+                            }
+
+                    )
+        }
 
         dis add spinnerEventType.itemSelections()
                 .subscribeBy(
@@ -75,25 +133,7 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                         }
                 )
 
-        dis add btnSaveManage.clicks()
-                .flatMap {
-                    validateForm(R.string.empty_fields, product.text.toString(), frecuency.text.toString(), productPrice.text.toString(),
-                            observations.text.toString(), assistancePrice.text.toString())
-                }
-                .flatMapSingle {
-                    val manage = createManage(it)
-                    viewModel.insertManage(manage)
-                }
-                .subscribeBy(
-                        onNext = {
-                            toast("Evento registrado")
-                            finish()
-                        },
-                        onError = {
-                            toast(it.message!!)
-                        }
 
-                )
 
         dis add btnNextManage.clicks()
                 .flatMap {
@@ -151,6 +191,7 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
         }
         val tratamiento = treatment.text.toString()
         val aplicaciones = numberAplications.text.toString().toInt()
+
         var fechaProximo = if (aplicaciones != 0) {
             when (unidadTiempo) {
                 "Horas" -> fechaEvento.add(Calendar.HOUR, frecuencia)
@@ -158,21 +199,29 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                 "Meses" -> fechaEvento.add(Calendar.MONTH, frecuencia)
                 else -> fechaEvento.add(Calendar.YEAR, frecuencia)
             }
-        }else {
+        } else {
             null
         }
 
+        var numAplicacion = previousManage.aplicacion!!.plus(1)
 
-        return RegistroManejo(idFinca = farmId, fecha = fechaEvento, fechaProx = fechaProximo, frecuencia = frecuencia, numeroAplicaciones = aplicaciones,
-                aplicacion = 1, tipo = evento, otro = otro, tratamiento = tratamiento, producto = producto, observaciones = observaciones,
-                valorProducto = precioProducto, valorAsistencia = precioAsistencia, grupo = group, bovinos = bovines, estadoProximaAplicacion = NOT_APPLIED)
+        return if (!edit) {
+            RegistroManejo(idFinca = farmId, fecha = fechaEvento, fechaProxima = fechaProximo, frecuencia = frecuencia, unidadFrecuencia = unidadTiempo, numeroAplicaciones = aplicaciones,
+                    aplicacion = 1, tipo = evento, titulo = evento, otro = otro, tratamiento = tratamiento, descripcion = tratamiento, producto = producto, observaciones = observaciones,
+                    valorProducto = precioProducto, valorAsistencia = precioAsistencia, grupo = group?.toGrupo(), bovinos = bovines, estadoProximo = NOT_APPLIED)
+        } else {
+            RegistroManejo(idDosisUno = previousManage.idDosisUno, idFinca = farmId, fecha = fechaEvento, fechaProxima = fechaProximo, frecuencia = frecuencia, unidadFrecuencia = unidadTiempo, numeroAplicaciones = aplicaciones,
+                    aplicacion = numAplicacion, tipo = evento, titulo = evento, otro = otro, tratamiento = tratamiento, descripcion = tratamiento, producto = producto, observaciones = observaciones,
+                    valorProducto = precioProducto, valorAsistencia = precioAsistencia, grupo = group?.toGrupo(), bovinos = bovines, estadoProximo = NOT_APPLIED, noBovinos = noBovines)
+        }
+
 
     }
 
     fun setupGroupFragment() {
         if ((group != null || bovines != null) && groupFragment == null) {
-            groupFragment = if (group != null) GroupFragment.instance(12, group!!)
-            else GroupFragment.instance(12, bovines!!)
+            groupFragment = if (group != null) GroupFragment.instance(5, group!!)
+            else GroupFragment.instance(5, bovines!!)
 
             supportFragmentManager.beginTransaction()
                     .replace(R.id.manageContainer, groupFragment)
@@ -199,15 +248,49 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == SelectActivity.REQUEST_SELECT) {
-            if (resultCode == Activity.RESULT_OK) {
-                group = data?.extras?.getParcelable(SelectActivity.DATA_GROUP)
-                bovines = data?.extras?.getStringArray(SelectActivity.DATA_BOVINES)?.toList()
-
-            } else {
-                finish()
+        when (requestCode) {
+            SelectActivity.REQUEST_SELECT -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    group = data?.extras?.getParcelable(SelectActivity.DATA_GROUP)
+                    bovines = data?.extras?.getStringArray(SelectActivity.DATA_BOVINES)?.toList()
+                    group?.let {
+                        bovines = it.bovines
+                    }
+                } else {
+                    finish()
+                }
+            }
+            REQUEST_CODE -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    bovines = data?.extras?.getStringArray(ReApplyActivity.DATA_BOVINES)?.toList()
+                    noBovines = data?.extras?.getStringArray(ReApplyActivity.DATA_NO_BOVINES)?.toList()
+                } else {
+                    finish()
+                }
             }
         }
+
+
+
+    }
+
+    private fun setEdit() {
+        val unidades = resources.getStringArray(R.array.time_units)
+        val tipoEvento = resources.getStringArray(R.array.event_type)
+        val eventType = tipoEvento.indexOf(previousManage.tipo)
+        val timeUnit = unidades.indexOf(previousManage.unidadFrecuencia)
+        spinnerEventType.setSelection(eventType)
+        spinnerFrecuency.setSelection(timeUnit)
+        if (eventType == 6) otherWhich.setText(previousManage.otro)
+        treatment.setText(previousManage.tratamiento)
+        numberAplications.setText(previousManage.numeroAplicaciones!!)
+        product.setText(previousManage.producto)
+        frecuency.setText(previousManage.frecuencia.toString())
+        productPrice.setText(previousManage.valorProducto.toString())
+        observations.setText(previousManage.observaciones)
+        assistancePrice.setText(previousManage.valorAsistencia.toString())
+
+
     }
 
 

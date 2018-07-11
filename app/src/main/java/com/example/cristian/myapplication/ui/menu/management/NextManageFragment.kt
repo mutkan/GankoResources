@@ -83,7 +83,7 @@ class NextManageFragment : Fragment(), Injectable {
 
         dis add skiped
                 .flatMapSingle {
-                    val manejo = it.apply { estadoProximaAplicacion = SKIPED }
+                    val manejo = it.apply { estadoProximo = SKIPED }
                     viewModel.updateManage(manejo)
                 }.subscribeBy(
                         onNext = {

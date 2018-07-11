@@ -132,11 +132,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:text='@{manage.frecuencia+" veces al día"}'
+            android:text='@{"Cada "+manage.frecuencia+" "+manage.unidadFrecuencia}'
             android:textColor="@color/menu_button"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView18"
-            tools:text="0.5 veces al día" />
+            tools:text="Cada 4 dias" />
 
         <TextView
             android:id="@+id/textView26"
