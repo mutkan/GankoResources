@@ -28,7 +28,7 @@ class ManageBvnViewModel @Inject constructor(private val db: CouchRx, private va
                 .flatMap { it.toObservable().map { it.getString(0) }.toList() }
                 .flatMap { grupos ->
                     Log.d("GRUPOS", grupos.toString())
-                    db.listByExp("bovino" containsEx idBovino orEx  ("grupo" inEx grupos), RegistroManejo::class)
+                    db.listByExp("bovinos" containsEx idBovino orEx  ("grupo" inEx grupos), RegistroManejo::class)
                 }.applySchedulers()
     }
 

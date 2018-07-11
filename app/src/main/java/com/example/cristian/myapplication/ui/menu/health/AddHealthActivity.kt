@@ -7,14 +7,22 @@ import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.widget.DatePicker
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.Group
+import com.example.cristian.myapplication.data.models.ProxStates
+import com.example.cristian.myapplication.data.models.ProxStates.Companion.APPLIED
 import com.example.cristian.myapplication.data.models.Sanidad
+import com.example.cristian.myapplication.data.models.toGrupo
 import com.example.cristian.myapplication.databinding.ActivityAddHealthBinding
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.groups.GroupFragment
+import com.example.cristian.myapplication.ui.groups.ReApplyActivity
+import com.example.cristian.myapplication.ui.groups.ReApplyActivity.Companion.EXTRA_ID
+import com.example.cristian.myapplication.ui.groups.ReApplyActivity.Companion.REQUEST_CODE
 import com.example.cristian.myapplication.ui.groups.SelectActivity
+import com.example.cristian.myapplication.ui.groups.SelectActivity.Companion.REQUEST_SELECT
 import com.example.cristian.myapplication.ui.menu.MenuViewModel
 import com.example.cristian.myapplication.util.*
 import com.example.cristian.myapplication.work.NotificationWork
@@ -35,15 +43,19 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
     val viewModel: HealthViewModel by lazy { buildViewModel<HealthViewModel>(factory) }
     val dis: LifeDisposable = LifeDisposable(this)
     val menuViewModel: MenuViewModel by lazy { buildViewModel<MenuViewModel>(factory) }
+    private val edit: Boolean by lazy { intent.getBooleanExtra("edit", false) }
+    lateinit var previousHealth: Sanidad
     private val farmId by lazy { menuViewModel.getFarmId() }
     lateinit var datePicker: DatePickerDialog
     lateinit var binding: ActivityAddHealthBinding
-    val currentDate : Date = Date()
+    val currentDate: Date = Date()
     var group: Group? = null
+    var noBovines: List<String>? = null
     var bovines: List<String>? = null
     var groupFragment: GroupFragment? = null
-//    val unidades:Array<String> by lazy { resources.getStringArray(R.array.time_units) }
-    var unidadTiempo:String = ""
+    val unidades: Array<String> by lazy { resources.getStringArray(R.array.time_units) }
+    val eventos: Array<String> by lazy { resources.getStringArray(R.array.health_event) }
+    var unidadTiempo: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,20 +74,42 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                 Calendar.getInstance().get(Calendar.MONTH),
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
 
-        startActivityForResult<SelectActivity>(SelectActivity.REQUEST_SELECT,
-                SelectActivity.EXTRA_COLOR to 8)
+        if (edit) {
+            previousHealth = intent!!.getParcelableExtra(PREVIOUS_HEALTH)
+            startActivityForResult<ReApplyActivity>(REQUEST_CODE, EXTRA_ID to previousHealth._id!!)
+            setEdit()
+        } else {
+            startActivityForResult<SelectActivity>(REQUEST_SELECT,
+                    SelectActivity.EXTRA_COLOR to 8)
+        }
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == SelectActivity.REQUEST_SELECT) {
-            if(resultCode == Activity.RESULT_OK){
-                group = data?.extras?.getParcelable(SelectActivity.DATA_GROUP)
-                bovines = data?.extras?.getStringArray(SelectActivity.DATA_BOVINES)?.toList()
-            }else{
-                finish()
+        when (requestCode) {
+            SelectActivity.REQUEST_SELECT -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    group = data?.extras?.getParcelable(SelectActivity.DATA_GROUP)
+                    bovines = data?.extras?.getStringArray(SelectActivity.DATA_BOVINES)?.toList()
+                    group?.let {
+                        bovines = it.bovines
+                    }
+                } else {
+                    finish()
+                }
+            }
+            REQUEST_CODE -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    bovines = data?.extras?.getStringArray(ReApplyActivity.DATA_BOVINES)?.toList()
+                    noBovines = data?.extras?.getStringArray(ReApplyActivity.DATA_NO_BOVINES)?.toList()
+                    Log.d("No bovinos", noBovines.toString())
+                } else {
+                    finish()
+                }
             }
         }
     }
+
     override fun onDateSet(p0: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         dateAddHealth.setText("$dayOfMonth/${month + 1}/$year")
     }
@@ -99,7 +133,6 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                     .subscribe { bovines = it }
         }
     }
-
 
 
     override fun onResume() {
@@ -132,60 +165,140 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                     validateForm(R.string.empty_fields, spinnerEvent.selectedItem.toString(),
                             if (binding.otherSelect) other.text.toString() else "other", diagnosis.text.toString(),
                             dateAddHealth.text.toString(), treatment_health.text.toString(), product_health.text.toString()
-                        )
+                    )
 
-                }.subscribeBy (
+                }.subscribeBy(
                         onNext = {
                             plusPage()
                         }
                 )
 
-        dis add btnFinalizeHealth.clicks()
-                .flatMap {
+        if (edit) {
+            dis add btnFinalizeHealth.clicks()
+                    .flatMap {
 
-                    validateForm(R.string.empty_fields, dosis.text.toString(), frequency.text(),
-                            product_value.text.toString(), attention_value.text.toString(), applicacion_number.text.toString(),
-                            observations_health.text.toString())
-                }
-
-                .flatMapSingle {
-                  //  NotificationWork.notify(0,"Sanidad",binding.diagnosis.text()
-                    val frequencyTime = frequency.text().toLong()
-                    val proxTime = when(unidadTiempo){
-                        "Horas"-> frequencyTime
-                        "Días" -> frequencyTime * 24
-                        "Meses"-> frequencyTime * 24 * 30
-                        else -> frequencyTime * 24 * 30 * 12
-                    }
-                    val notifyTime:Long = when(proxTime){
-                        in 3..24 -> proxTime - 1
-                        else -> proxTime - 24
+                        validateForm(R.string.empty_fields, dosis.text.toString(), frequency.text(),
+                                product_value.text.toString(), attention_value.text.toString(), applicacion_number.text.toString(),
+                                observations_health.text.toString())
                     }
 
-                    viewModel.addHealth(
-                            Sanidad(null, null, null, farmId, dateAddHealth.text.toString().toDate(),
-                                    fechaProxima1( dateAddHealth.text().toDate(), applicacion_number.text().toInt(), frequency.text().toInt()),
-                                    frequency.text().toInt(), spinnerEvent.selectedItem.toString(),
-                                    if(binding.otherSelect) other.text() else null, diagnosis.text(), treatment_health.text(),
-                                    product_health.text(), dosis.text(), null, applicacion_number.text().toInt(), 1,
-                                    observations_health.text(), product_value.text().toInt(), attention_value.text().toInt(),
-                                    null, bovines!! ,unidadTiempo, emptyList())
-                    ).map { it to notifyTime }
-                }
-                .subscribeBy(
-                        onNext = {
-                            NotificationWork.notify(NotificationWork.TYPE_HEALTH,"Sanidad", diagnosis.text(),it.first,
-                                    it.second,TimeUnit.HOURS)
-                            toast("Sanidad agregada exitosamente")
-                            finish() },
-
-                        onComplete = {
-                            toast("onComplete")
-                        },
-                        onError = {
-                            toast(it.message!!)
+                    .flatMapSingle {
+                        //  NotificationWork.notify(0,"Sanidad",binding.diagnosis.text()
+                        val frequencyTime = frequency.text().toLong()
+                        val proxTime = when (unidadTiempo) {
+                            "Horas" -> frequencyTime
+                            "Días" -> frequencyTime * 24
+                            "Meses" -> frequencyTime * 24 * 30
+                            else -> frequencyTime * 24 * 30 * 12
                         }
-                )
+                        val notifyTime: Long = when (proxTime) {
+                            in 3..24 -> proxTime - 1
+                            else -> proxTime - 24
+                        }
+
+                        viewModel.addHealth(
+                                Sanidad(null, null, null, farmId, dateAddHealth.text.toString().toDate(),
+                                        fechaProxima1(dateAddHealth.text().toDate(), applicacion_number.text().toInt(), frequency.text().toInt()),
+                                        frequency.text().toInt(), spinnerEvent.selectedItem.toString(),
+                                        if (binding.otherSelect) other.text() else null, diagnosis.text(), treatment_health.text(),
+                                        product_health.text(), dosis.text(), null, applicacion_number.text().toInt(),
+                                        previousHealth.aplicacion!!.plus(1),
+                                        observations_health.text(), product_value.text().toInt(), attention_value.text().toInt(),
+                                        group?.toGrupo(), bovines!!, unidadTiempo, noBovines!!, ProxStates.NOT_APPLIED, previousHealth.idDosisUno))
+                                .map { it to notifyTime }
+
+
+                    }.flatMapSingle { pair ->
+                        viewModel.updateHealth(previousHealth.apply { estadoProximo = APPLIED }).map { pair }
+                    }
+                    .subscribeBy(
+                            onNext = {
+                                NotificationWork.notify(NotificationWork.TYPE_HEALTH, "Sanidad", diagnosis.text(), it.first,
+                                        it.second, TimeUnit.HOURS)
+                                toast("Sanidad agregada exitosamente")
+                                finish()
+                            },
+
+                            onComplete = {
+                                toast("onComplete")
+                            },
+                            onError = {
+                                Log.e("Error", it.message, it)
+                            }
+                    )
+
+        } else {
+            dis add btnFinalizeHealth.clicks()
+                    .flatMap {
+
+                        validateForm(R.string.empty_fields, dosis.text.toString(), frequency.text(),
+                                product_value.text.toString(), attention_value.text.toString(), applicacion_number.text.toString(),
+                                observations_health.text.toString())
+                    }
+
+                    .flatMapSingle {
+                        //  NotificationWork.notify(0,"Sanidad",binding.diagnosis.text()
+                        val frequencyTime = frequency.text().toLong()
+                        val proxTime = when (unidadTiempo) {
+                            "Horas" -> frequencyTime
+                            "Días" -> frequencyTime * 24
+                            "Meses" -> frequencyTime * 24 * 30
+                            else -> frequencyTime * 24 * 30 * 12
+                        }
+                        val notifyTime: Long = when (proxTime) {
+                            in 3..24 -> proxTime - 1
+                            else -> proxTime - 24
+                        }
+
+                        viewModel.addFirstHealth(
+                                Sanidad(null, null, null, farmId, dateAddHealth.text.toString().toDate(),
+                                        fechaProxima1(dateAddHealth.text().toDate(), applicacion_number.text().toInt(), frequency.text().toInt()),
+                                        frequency.text().toInt(), spinnerEvent.selectedItem.toString(),
+                                        if (binding.otherSelect) other.text() else null, diagnosis.text(), treatment_health.text(),
+                                        product_health.text(), dosis.text(), null, applicacion_number.text().toInt(), 1,
+                                        observations_health.text(), product_value.text().toInt(), attention_value.text().toInt(),
+                                        group?.toGrupo(), bovines!!, unidadTiempo, emptyList())
+                        ).map { it to notifyTime }
+
+                    }
+                    .subscribeBy(
+                            onNext = {
+                                // NotificationWork.notify(NotificationWork.TYPE_HEALTH,"Sanidad", diagnosis.text(),it.first,
+                                //        it.second,TimeUnit.HOURS)
+                                toast("Sanidad agregada exitosamente")
+                                finish()
+                            },
+
+                            onComplete = {
+                                toast("onComplete")
+                            },
+                            onError = {
+                                Log.e("Error", it.message, it)
+                            }
+                    )
+        }
+    }
+
+
+    private fun setEdit() {
+        val evento = eventos.indexOf(previousHealth.evento)
+        spinnerEvent.apply {
+            setSelection(evento)
+            isEnabled = false
+        }
+        other.setText(previousHealth.otra.toString())
+        diagnosis.setText(previousHealth.diagnostico.toString())
+        treatment_health.setText(previousHealth.tratamiento.toString())
+        product_health.setText(previousHealth.producto.toString())
+        dosis.setText(previousHealth.dosis.toString())
+        frequency.setText(previousHealth.frecuencia.toString())
+        val unidadTiempo = unidades.indexOf(previousHealth.UnidadesFrecuencia)
+        frecuencyOptionsHealth.apply {
+            setSelection(unidadTiempo)
+            isEnabled = false
+        }
+        applicacion_number.setText(previousHealth.numeroAplicaciones.toString())
+        observations_health.setText(previousHealth.observaciones.toString())
     }
 
     private fun plusPage() {
@@ -198,9 +311,7 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
         binding.page = binding.page!!.minus(1)
     }
 
-
-
-    private fun fechaProxima1( fecha:Date, aplicaciones: Int, frecuencia: Int): Date?{
+    private fun fechaProxima1(fecha: Date, aplicaciones: Int, frecuencia: Int): Date? {
         unidadTiempo = frecuencyOptionsHealth.selectedItem.toString()
         return if (aplicaciones != 1) {
             when (unidadTiempo) {
@@ -209,10 +320,13 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                 "Meses" -> fecha.add(Calendar.MONTH, frecuencia)
                 else -> fecha.add(Calendar.YEAR, frecuencia)
             }
-        }else{
+        } else {
             null
         }
     }
 
+    companion object {
+        const val PREVIOUS_HEALTH = "previousHealth"
+    }
 
 }

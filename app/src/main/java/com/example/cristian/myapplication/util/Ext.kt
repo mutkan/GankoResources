@@ -207,12 +207,12 @@ fun Date.add(field: Int?, amount: Int?): Date? = if (amount != 0 && amount != nu
 }
 
 @BindingAdapter("app:bovinos", "app:noBovinos")
-fun setApplications(view: TextView, bovinos: List<String>, noBovinos: List<String>) {
+fun setApplications(view: TextView?, bovinos: List<String>, noBovinos: List<String>) {
     when{
-        noBovinos.isEmpty() && bovinos.isNotEmpty() -> view.text = "${bovinos.size}"
+        noBovinos.isEmpty() && bovinos.isNotEmpty() -> view?.text = "${bovinos.size}"
         noBovinos.isNotEmpty() && bovinos.isNotEmpty() -> {
             val tot = noBovinos.size + bovinos.size
-            view.text = "${bovinos.size}/$tot"
+            view?.text = "${bovinos.size}/$tot"
         }
 
     }

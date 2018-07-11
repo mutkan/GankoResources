@@ -26,13 +26,6 @@ import kotlinx.android.synthetic.main.fragment_recent_vaccines.*
 import org.jetbrains.anko.support.v4.startActivity
 import javax.inject.Inject
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-
-/**
- * A simple [Fragment] subclass.
- *
- */
 class RecentVaccinesFragment : Fragment(), Injectable {
 
     @Inject

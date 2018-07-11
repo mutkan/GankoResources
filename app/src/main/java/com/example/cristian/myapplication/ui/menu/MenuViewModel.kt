@@ -125,8 +125,8 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
         db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProxima" lt from) andEx ("estadoProximo" equalEx ProxStates.NOT_APPLIED), Sanidad::class)
                 .applySchedulers()
 
-    fun updateHealth(id: String,sanidad: Sanidad): Single<Unit>
-            = db.update(id, sanidad).applySchedulers()
+    fun updateHealth(id:String,sanidad: Sanidad): Single<Unit>
+            = db.update( sanidad._id!!,sanidad).applySchedulers()
 
     fun getMilk(idFinca: String): Single<List<SalidaLeche>> =
             db.listByExp("idFarm" equalEx idFinca, SalidaLeche::class)
@@ -194,6 +194,9 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     fun getVaccinesByDosisUno(idDosisUno:String) : Single<List<RegistroVacuna>> =
             db.listByExp("idFinca" equalEx farmID andEx ("idDosisUno" equalEx idDosisUno) ,RegistroVacuna::class).applySchedulers()
 
+    fun getHealthApplied(idDosisUno: String) : Single<List<Sanidad>> =
+            db.listByExp("idFinca" equalEx farmID andEx ("idDosisUno" equalEx idDosisUno) ,Sanidad::class).applySchedulers()
+
     //endregion
 
 
@@ -202,8 +205,16 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
 
     fun getManages(): Observable<List<RegistroManejo>> = db.listObsByExp("idFinca" equalEx farmID, RegistroManejo::class).applySchedulers()
 
+    fun updateManage(registroManejo: RegistroManejo): Single<Unit> = db.update(registroManejo._id!!, registroManejo).applySchedulers()
+
     fun getNextManages(from: Date, to: Date): Observable<List<RegistroManejo>> =
-            db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProximaAplicacion".betweenDates(from, to)), RegistroManejo::class).applySchedulers()
+            db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProxima".betweenDates(from, to)) andEx ("estadoProximo" equalEx NOT_APPLIED), RegistroManejo::class).applySchedulers()
+
+    fun getPendingManages(from: Date): Observable<List<RegistroManejo>> =
+            db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProxima".lte(from)) andEx ("estadoProximo" equalEx NOT_APPLIED), RegistroManejo::class).applySchedulers()
+
+    //endregion
+
 
     //endregion
 

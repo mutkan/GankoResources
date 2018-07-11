@@ -9,9 +9,12 @@ import com.example.cristian.myapplication.data.models.Manage
 import com.example.cristian.myapplication.data.models.RegistroManejo
 import com.example.cristian.myapplication.databinding.TemplateRecentManageBinding
 import com.example.cristian.myapplication.util.inflate
+import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
 class RecentManageAdapter @Inject constructor(): RecyclerView.Adapter<RecentManageAdapter.RecentManageHolder>(){
+
+    val clickManage: PublishSubject<RegistroManejo> = PublishSubject.create()
 
     var recentManages: List<RegistroManejo> = emptyList()
         set(value) {
@@ -28,6 +31,7 @@ class RecentManageAdapter @Inject constructor(): RecyclerView.Adapter<RecentMana
     override fun onBindViewHolder(holder: RecentManageHolder, position: Int) {
         holder.binding?.manage = recentManages[position]
         holder.binding?.isGroup = recentManages[position].grupo != null
+        holder.binding?.clickManage = clickManage
     }
 
     class RecentManageHolder(itemView: View): RecyclerView.ViewHolder(itemView) {

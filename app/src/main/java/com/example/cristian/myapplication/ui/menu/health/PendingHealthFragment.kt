@@ -2,9 +2,11 @@ package com.example.cristian.myapplication.ui.menu.health
 
 
 import android.arch.lifecycle.ViewModelProvider
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,15 +31,18 @@ class PendingHealthFragment : Fragment() , Injectable {
     val viewModel: MenuViewModel by lazy { buildViewModel<MenuViewModel>(factory) }
     val dis: LifeDisposable = LifeDisposable(this)
     private val idFinca: String by lazy { viewModel.getFarmId() }
-
-    @Inject
-    lateinit var adapter: PendingHealthAdapter
+    var attatch:Boolean= false
+    var adapter = PendingHealthAdapter()
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-      return  inflater.inflate(R.layout.fragment_pending_health,container,false)
+
+
+        return  inflater.inflate(R.layout.fragment_pending_health,container,false)
     }
+
+
 
     override fun onResume() {
         super.onResume()
