@@ -14,6 +14,7 @@ import com.example.cristian.myapplication.ui.menu.health.NextHealthFragment
 import com.example.cristian.myapplication.ui.menu.health.PendingHealthFragment
 import com.example.cristian.myapplication.ui.menu.management.ManageFragment
 import com.example.cristian.myapplication.ui.menu.management.NextManageFragment
+import com.example.cristian.myapplication.ui.menu.management.PendingManageFragment
 import com.example.cristian.myapplication.ui.menu.management.RecentManageFragment
 import com.example.cristian.myapplication.ui.menu.meadow.MeadowFragment
 import com.example.cristian.myapplication.ui.menu.milk.MilkFragment
@@ -102,6 +103,10 @@ abstract class FragmentComponent{
     @FragmentScope
     @ContributesAndroidInjector()
     abstract fun bindNextManageFragment(): NextManageFragment
+
+    @FragmentScope
+    @ContributesAndroidInjector()
+    abstract fun bindPendingManageFragment(): PendingManageFragment
 
 
 

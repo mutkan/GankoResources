@@ -205,10 +205,10 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     fun updateManage(registroManejo: RegistroManejo): Single<Unit> = db.update(registroManejo._id!!, registroManejo).applySchedulers()
 
     fun getNextManages(from: Date, to: Date): Observable<List<RegistroManejo>> =
-            db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProx".betweenDates(from, to)) andEx ("estadoProximaAplicacion" equalEx NOT_APPLIED), RegistroManejo::class).applySchedulers()
+            db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProxima".betweenDates(from, to)) andEx ("estadoProximo" equalEx NOT_APPLIED), RegistroManejo::class).applySchedulers()
 
     fun getPendingManages(from: Date): Observable<List<RegistroManejo>> =
-            db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProx".lte(from)) andEx ("estadoProximaAplicacion" equalEx NOT_APPLIED), RegistroManejo::class).applySchedulers()
+            db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProxima".lte(from)) andEx ("estadoProximo" equalEx NOT_APPLIED), RegistroManejo::class).applySchedulers()
 
     //endregion
 

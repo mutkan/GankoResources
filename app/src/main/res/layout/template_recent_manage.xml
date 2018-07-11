@@ -11,12 +11,17 @@
         <variable
             name="isGroup"
             type="Boolean"/>
+        <variable
+            name="clickManage"
+            type="io.reactivex.subjects.PublishSubject"/>
         <import type="android.view.View"/>
     </data>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:onClick='@{()->clickManage.onNext(manage)}'
+        >
 
         <android.support.constraint.Guideline
             android:id="@+id/guideline13"

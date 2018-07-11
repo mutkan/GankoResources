@@ -191,7 +191,6 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
         }
         val tratamiento = treatment.text.toString()
         val aplicaciones = numberAplications.text.toString().toInt()
-
         var fechaProximo = if (aplicaciones != 0) {
             when (unidadTiempo) {
                 "Horas" -> fechaEvento.add(Calendar.HOUR, frecuencia)
@@ -203,16 +202,24 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
             null
         }
 
-        var numAplicacion = previousManage.aplicacion!!.plus(1)
+        var numAplicacion: Int
+
+        if (edit) {
+            numAplicacion = previousManage.aplicacion!!.plus(1)
+        }
+        else{
+            numAplicacion = 1
+        }
+
 
         return if (!edit) {
             RegistroManejo(idFinca = farmId, fecha = fechaEvento, fechaProxima = fechaProximo, frecuencia = frecuencia, unidadFrecuencia = unidadTiempo, numeroAplicaciones = aplicaciones,
                     aplicacion = 1, tipo = evento, titulo = evento, otro = otro, tratamiento = tratamiento, descripcion = tratamiento, producto = producto, observaciones = observaciones,
-                    valorProducto = precioProducto, valorAsistencia = precioAsistencia, grupo = group?.toGrupo(), bovinos = bovines, estadoProximo = NOT_APPLIED)
+                    valorProducto = precioProducto, valorAsistencia = precioAsistencia, grupo = group, bovinos = bovines, estadoProximo = NOT_APPLIED)
         } else {
             RegistroManejo(idDosisUno = previousManage.idDosisUno, idFinca = farmId, fecha = fechaEvento, fechaProxima = fechaProximo, frecuencia = frecuencia, unidadFrecuencia = unidadTiempo, numeroAplicaciones = aplicaciones,
                     aplicacion = numAplicacion, tipo = evento, titulo = evento, otro = otro, tratamiento = tratamiento, descripcion = tratamiento, producto = producto, observaciones = observaciones,
-                    valorProducto = precioProducto, valorAsistencia = precioAsistencia, grupo = group?.toGrupo(), bovinos = bovines, estadoProximo = NOT_APPLIED, noBovinos = noBovines)
+                    valorProducto = precioProducto, valorAsistencia = precioAsistencia, grupo = group, bovinos = bovines, estadoProximo = NOT_APPLIED, noBovinos = noBovines)
         }
 
 
@@ -280,10 +287,12 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
         val eventType = tipoEvento.indexOf(previousManage.tipo)
         val timeUnit = unidades.indexOf(previousManage.unidadFrecuencia)
         spinnerEventType.setSelection(eventType)
+        spinnerEventType.isEnabled = false
         spinnerFrecuency.setSelection(timeUnit)
+        spinnerFrecuency.isEnabled = false
         if (eventType == 6) otherWhich.setText(previousManage.otro)
         treatment.setText(previousManage.tratamiento)
-        numberAplications.setText(previousManage.numeroAplicaciones!!)
+        numberAplications.setText(previousManage.numeroAplicaciones!!.toString())
         product.setText(previousManage.producto)
         frecuency.setText(previousManage.frecuencia.toString())
         productPrice.setText(previousManage.valorProducto.toString())

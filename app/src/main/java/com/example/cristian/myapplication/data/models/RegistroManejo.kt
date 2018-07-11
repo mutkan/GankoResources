@@ -26,7 +26,7 @@ class RegistroManejo (var _id: String? = null,
                       var observaciones: String? = null,
                       var valorProducto: Int? = null,
                       var valorAsistencia: Int? = null,
-                      var grupo: Grupo? = null,
+                      var grupo: Group? = null,
                       var bovinos: List<String>? = listOf(),
                       var noBovinos: List<String>? = listOf()) : Parcelable {
     init {
