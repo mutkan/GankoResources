@@ -4,9 +4,12 @@ package com.example.cristian.myapplication.ui.menu.health
 import android.arch.lifecycle.ViewModelProvider
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.support.transition.FragmentTransitionSupport
 import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentTransitionImpl
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
+import android.transition.TransitionManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -101,9 +104,9 @@ class NextHealthFragment : Fragment(), Injectable {
     private fun update(san:Sanidad) {
     dis add  viewModel.updateHealth(san).subscribeBy(
                 onSuccess = {toast("Omitido correctamente")
-                    refresh()
                 }
     )
+        refresh()
     }
 
 
@@ -116,7 +119,7 @@ class NextHealthFragment : Fragment(), Injectable {
     fun refresh(){
         dis add viewModel.getPendingHealrh().subscribeBy (
             onSuccess = {
-                PendingHealthFragment.instance().adapter.pending = it
+
                 }
             )
     }
