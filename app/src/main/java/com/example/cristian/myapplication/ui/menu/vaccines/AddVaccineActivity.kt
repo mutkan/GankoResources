@@ -244,9 +244,9 @@ class AddVaccineActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
             else -> fecha.add(Calendar.YEAR, proximaAplicacion)
         }
         return if (!edit) {
-            RegistroVacuna(nombre = nombreVacuna, titulo = nombreVacuna, descripcion = "Aplicación de $nombreVacuna, $dosis ml", dosisMl = dosis, frecuencia = proximaAplicacion, fecha = fecha, fechaProxima = fechaProx, valor = valor, idFinca = idFinca, grupo = group?.toGrupo(), bovinos = bovines, unidadFrecuencia = unidadTiempo, estadoProximo = NOT_APPLIED)
+            RegistroVacuna(nombre = nombreVacuna, titulo = nombreVacuna, descripcion = "Aplicación de vacuna contra $nombreVacuna, $dosis ml", dosisMl = dosis, frecuencia = proximaAplicacion, fecha = fecha, fechaProxima = fechaProx, valor = valor, idFinca = idFinca, grupo = group?.toGrupo(), bovinos = bovines, unidadFrecuencia = unidadTiempo, estadoProximo = NOT_APPLIED)
         } else {
-            RegistroVacuna(idDosisUno = previousVaccine.idDosisUno, titulo = nombreVacuna, descripcion = "Aplicación de $nombreVacuna, $dosis ml", nombre = nombreVacuna, dosisMl = dosis, frecuencia = proximaAplicacion, fecha = fecha, fechaProxima = fechaProx, valor = valor, idFinca = idFinca, grupo = group?.toGrupo(), bovinos = bovines, unidadFrecuencia = unidadTiempo, estadoProximo = NOT_APPLIED, noBovinos = noBovines)
+            RegistroVacuna(idDosisUno = previousVaccine.idDosisUno, titulo = nombreVacuna, descripcion = "Aplicación de vacuna contra $nombreVacuna, $dosis ml", nombre = nombreVacuna, dosisMl = dosis, frecuencia = proximaAplicacion, fecha = fecha, fechaProxima = fechaProx, valor = valor, idFinca = idFinca, grupo = group?.toGrupo(), bovinos = bovines, unidadFrecuencia = unidadTiempo, estadoProximo = NOT_APPLIED, noBovinos = noBovines)
         }
     }
 
