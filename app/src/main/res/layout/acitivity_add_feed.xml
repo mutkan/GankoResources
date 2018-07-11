@@ -132,7 +132,7 @@
         app:layout_constraintEnd_toEndOf="@+id/textView20"
         app:layout_constraintStart_toStartOf="@+id/textView20"
         app:layout_constraintTop_toBottomOf="@+id/textView20"
-        tools:text="$0" />
+        android:text="$0" />
 
     <Button
         android:id="@+id/btnCancelFeed"
