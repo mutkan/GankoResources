@@ -3,7 +3,6 @@ package com.example.cristian.myapplication.di.modules
 import com.example.cristian.myapplication.di.FragmentScope
 import com.example.cristian.myapplication.ui.groups.BovineSelectedFragment
 import com.example.cristian.myapplication.ui.menu.health.detail.ApplicationHealthDetailFragment
-import com.example.cristian.myapplication.ui.menu.vaccines.detail.ApplicationsDetailFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

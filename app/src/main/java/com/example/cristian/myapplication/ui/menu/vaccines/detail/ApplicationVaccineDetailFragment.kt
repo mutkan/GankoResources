@@ -22,7 +22,7 @@ import javax.inject.Inject
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
 
-class ApplicationsDetailFragment : Fragment(), Injectable {
+class ApplicationVaccineDetailFragment : Fragment(), Injectable {
     // TODO: Rename and change types of parameters
     val dosisUno: String by lazy { arguments!!.getString(DOSIS_UNO) }
     @Inject
@@ -58,7 +58,7 @@ class ApplicationsDetailFragment : Fragment(), Injectable {
         private const val DOSIS_UNO = "dosisUno"
 
         fun instance(dosisUno: String) =
-                ApplicationsDetailFragment().apply {
+                ApplicationVaccineDetailFragment().apply {
                     arguments = Bundle().apply {
                         putString(DOSIS_UNO, dosisUno)
                     }

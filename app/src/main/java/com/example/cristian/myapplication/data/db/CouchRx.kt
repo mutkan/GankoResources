@@ -145,11 +145,12 @@ class CouchRx @Inject constructor(private val db: Database
         }
     }
 
-    fun <T : Any> listObsByExp(expression: Expression, kClass: KClass<T>): Observable<List<T>> = Observable.create<ResultSet> { emitter ->
+    fun <T : Any> listObsByExp(expression: Expression, kClass: KClass<T>, orderBy: Array<Ordering> = emptyArray()): Observable<List<T>> = Observable.create<ResultSet> { emitter ->
         val query = QueryBuilder
                 .select(SelectResult.all(), SelectResult.expression(Meta.id), SelectResult.expression(Meta.sequence))
                 .from(DataSource.database(db))
                 .where(expression andEx ("type" equalEx kClass.simpleName.toString()))
+                .orderBy(*orderBy)
         query.addChangeListener {
             if (it.error == null) emitter.onNext(it.results)
             else emitter.onError(it.error)
