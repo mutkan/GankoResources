@@ -213,6 +213,9 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     fun getPendingManages(from: Date): Observable<List<RegistroManejo>> =
             db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProxima".lte(from)) andEx ("estadoProximo" equalEx NOT_APPLIED), RegistroManejo::class).applySchedulers()
 
+    fun getManagesByDosisUno(idDosisUno:String) : Single<List<RegistroManejo>> =
+            db.listByExp("idFinca" equalEx farmID andEx ("idDosisUno" equalEx idDosisUno) ,RegistroManejo::class).applySchedulers()
+
     //endregion
 
 

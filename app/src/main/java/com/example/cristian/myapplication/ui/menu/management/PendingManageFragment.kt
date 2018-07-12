@@ -15,7 +15,6 @@ import com.example.cristian.myapplication.data.models.RegistroManejo
 import com.example.cristian.myapplication.databinding.FragmentPendingManageBinding
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.PendingManageAdapter
-import com.example.cristian.myapplication.ui.manage.AddManageActivity
 import com.example.cristian.myapplication.ui.menu.MenuViewModel
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel

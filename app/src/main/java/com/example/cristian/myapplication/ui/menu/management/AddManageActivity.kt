@@ -1,4 +1,4 @@
-package com.example.cristian.myapplication.ui.manage
+package com.example.cristian.myapplication.ui.menu.management
 
 import android.app.Activity
 import android.app.DatePickerDialog
@@ -14,7 +14,6 @@ import com.example.cristian.myapplication.data.models.Group
 import com.example.cristian.myapplication.data.models.ProxStates.Companion.APPLIED
 import com.example.cristian.myapplication.data.models.RegistroManejo
 import com.example.cristian.myapplication.data.models.RegistroManejo.Companion.NOT_APPLIED
-import com.example.cristian.myapplication.data.models.toGrupo
 import com.example.cristian.myapplication.databinding.ActivityAddManageBinding
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.groups.GroupFragment

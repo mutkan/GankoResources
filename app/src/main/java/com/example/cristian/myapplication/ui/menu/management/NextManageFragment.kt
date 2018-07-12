@@ -12,12 +12,10 @@ import android.view.ViewGroup
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.RegistroManejo
 import com.example.cristian.myapplication.data.models.RegistroManejo.Companion.SKIPED
-import com.example.cristian.myapplication.data.models.RegistroVacuna
 import com.example.cristian.myapplication.databinding.FragmentNextManageBinding
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.NextManageAdapter
-import com.example.cristian.myapplication.ui.manage.AddManageActivity
-import com.example.cristian.myapplication.ui.manage.AddManageActivity.Companion.PREVIOUS_MANAGE
+import com.example.cristian.myapplication.ui.menu.management.AddManageActivity.Companion.PREVIOUS_MANAGE
 import com.example.cristian.myapplication.ui.menu.MenuViewModel
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.add
