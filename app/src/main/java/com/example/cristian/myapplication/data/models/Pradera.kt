@@ -21,7 +21,8 @@ class Pradera(
         var mantenimiento: MutableList<Mantenimiento>? = mutableListOf(),
         var aforo: MutableList<Aforo>? = mutableListOf(),
         var group: String? = null,
-        var available: Boolean? = null
+        var available: Boolean? = null,
+        var bovinos:List<String>? =  listOf()
 ) : Parcelable {
     init {
         type = javaClass.simpleName

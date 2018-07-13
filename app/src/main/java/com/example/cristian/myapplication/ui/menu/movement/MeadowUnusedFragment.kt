@@ -90,13 +90,18 @@ class MeadowUnusedFragment : Fragment(), Injectable {
                             pradera.fechaOcupacion = Date()
                             pradera.available = false
                             pradera.group = viewBind.selectedGroup.selectedItem.toString()
+                            dis add viewmodel.getGroupById(viewBind.selectedGroup.selectedItem.toString())
+                                    .subscribeBy ( onSuccess = {
+                                        toast(""+it[0].bovines)
+                                        pradera.bovinos = it[0].bovines
+                                    })
                             dis add viewmodel.updateMeadow(pradera._id!!, pradera)
                                     .subscribeBy(
                                             onSuccess = {
                                                 getUnusedMeadows()
                                                 adapter.notifyDataSetChanged()
                                                 MeadowUsedFragment.instance().adapter.notifyDataSetChanged()
-                                                toast("Datos guardados correctamente")
+                                               // toast("Datos guardados correctamente")
                                             },
                                             onError = {
                                                 toast(it.message!!)

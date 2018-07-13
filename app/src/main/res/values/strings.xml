@@ -350,6 +350,7 @@
     <string name="no_feed_register">No hay registros de alimentación</string>
     <string name="aplications">Aplicaciones</string>
     <string name="health_name">Nombre de la sanidad</string>
+    <string name="ground_type">Tipo de Graminea</string>
 
     <string-array name="milk_production">
         <item>Litros vendidos</item>
