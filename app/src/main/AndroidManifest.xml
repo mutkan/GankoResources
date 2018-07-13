@@ -92,14 +92,16 @@
         <activity android:name=".ui.groups.BovineSelectedActivity" />
         <activity android:name=".ui.menu.milk.AddMilkActivity" />
         <activity android:name=".ui.menu.vaccines.AddVaccineActivity" />
-        <activity android:name=".ui.manage.AddManageActivity" />
+        <activity android:name=".ui.menu.management.AddManageActivity" />
         <activity android:name=".ui.groups.ReApplyActivity" />
         <activity
             android:name=".ui.menu.vaccines.detail.VaccineDetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ui.menu.health.detail.HealthDetailActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            ></activity>
+        <activity
+            android:name=".ui.menu.health.detail.HealthDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ui.menu.management.detail.ManageDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

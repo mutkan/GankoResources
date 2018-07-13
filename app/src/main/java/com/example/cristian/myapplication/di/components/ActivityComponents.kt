@@ -24,10 +24,11 @@ import com.example.cristian.myapplication.ui.farms.AddFarmActivity
 import com.example.cristian.myapplication.ui.farms.FarmActivity
 import com.example.cristian.myapplication.ui.groups.*
 import com.example.cristian.myapplication.ui.menu.feed.AddFeedActivity
-import com.example.cristian.myapplication.ui.manage.AddManageActivity
+import com.example.cristian.myapplication.ui.menu.management.AddManageActivity
 import com.example.cristian.myapplication.ui.menu.MenuActivity
 import com.example.cristian.myapplication.ui.menu.health.AddHealthActivity
 import com.example.cristian.myapplication.ui.menu.health.detail.HealthDetailActivity
+import com.example.cristian.myapplication.ui.menu.management.detail.ManageDetailActivity
 import com.example.cristian.myapplication.ui.menu.meadow.ManageMeadowActivity
 import com.example.cristian.myapplication.ui.menu.meadow.aforo.AddAforoActivity
 import com.example.cristian.myapplication.ui.menu.meadow.mantenimiento.AddMantenimientoActivity
@@ -189,5 +190,9 @@ abstract class ActivityComponents {
     @ActivityScope
     @ContributesAndroidInjector(modules = [HealthDetailModule::class])
     abstract fun bindHealthDetailActivity(): HealthDetailActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector(modules = [ManageDetailModule::class])
+    abstract fun bindManageDetailActivity(): ManageDetailActivity
 
 }

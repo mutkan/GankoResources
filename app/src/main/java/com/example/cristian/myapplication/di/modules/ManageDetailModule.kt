@@ -2,20 +2,18 @@ package com.example.cristian.myapplication.di.modules
 
 import com.example.cristian.myapplication.di.FragmentScope
 import com.example.cristian.myapplication.ui.groups.BovineSelectedFragment
-import com.example.cristian.myapplication.ui.menu.vaccines.detail.ApplicationVaccineDetailFragment
+import com.example.cristian.myapplication.ui.menu.management.detail.ApplicationManageDetailFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
 @Module
-abstract class VaccinesDetailModule {
+abstract class ManageDetailModule{
 
     @FragmentScope
     @ContributesAndroidInjector
-    abstract fun bindApplicationsDetail(): ApplicationVaccineDetailFragment
+    abstract fun bindApplicationManageDetailFragment(): ApplicationManageDetailFragment
 
     @FragmentScope
     @ContributesAndroidInjector
     abstract fun bindBovineSelectedFragment(): BovineSelectedFragment
-
-
 }

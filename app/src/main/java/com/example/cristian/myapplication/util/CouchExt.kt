@@ -2,6 +2,7 @@ package com.example.cristian.myapplication.util
 
 import com.couchbase.lite.ArrayFunction
 import com.couchbase.lite.Expression
+import com.couchbase.lite.Ordering
 import java.util.*
 
 // EQUAL TO
@@ -69,3 +70,10 @@ private fun makeExpressionArray(values: List<Any>): List<Expression> {
 }
 
 fun String.betweenDates(from:Date, to:Date):Expression = Expression.property(this).between(Expression.date(from), Expression.date(to))
+
+infix fun String.orderEx(ordering: Int): Ordering = when(ordering){
+    DESCENDING -> Ordering.property(this).descending()
+    else -> Ordering.property(this).ascending()
+}
+const val DESCENDING = 0
+const val ASCENDING = 1

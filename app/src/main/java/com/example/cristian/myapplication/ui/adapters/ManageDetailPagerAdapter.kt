@@ -4,15 +4,15 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentStatePagerAdapter
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.ui.groups.BovineSelectedFragment
-import com.example.cristian.myapplication.ui.menu.vaccines.detail.ApplicationVaccineDetailFragment
-import com.example.cristian.myapplication.ui.menu.vaccines.detail.VaccineDetailActivity
+import com.example.cristian.myapplication.ui.menu.management.detail.ApplicationManageDetailFragment
+import com.example.cristian.myapplication.ui.menu.management.detail.ManageDetailActivity
 import javax.inject.Inject
 
-class VaccineDetailPagerAdapter @Inject constructor(val activity: VaccineDetailActivity) : FragmentStatePagerAdapter(activity.supportFragmentManager) {
+class ManageDetailPagerAdapter @Inject constructor(val activity: ManageDetailActivity): FragmentStatePagerAdapter(activity.supportFragmentManager) {
 
     override fun getItem(position: Int): Fragment = when (position) {
-        0 -> BovineSelectedFragment.instance(activity.idVaccine)
-        else -> ApplicationVaccineDetailFragment.instance(activity.idDosisUno)
+        0 -> BovineSelectedFragment.instance(activity.idManage)
+        else -> ApplicationManageDetailFragment.instance(activity.idDosisUno)
     }
 
     override fun getCount(): Int = 2

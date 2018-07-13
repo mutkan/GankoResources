@@ -15,8 +15,9 @@ import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.databinding.FragmentRecentManageBinding
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.RecentManageAdapter
-import com.example.cristian.myapplication.ui.manage.AddManageActivity
 import com.example.cristian.myapplication.ui.menu.MenuViewModel
+import com.example.cristian.myapplication.ui.menu.management.detail.ManageDetailActivity
+import com.example.cristian.myapplication.ui.menu.management.detail.ManageDetailActivity.Companion.ID_FIRST_MANAGE
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
 import com.example.cristian.myapplication.util.subscribeByAction
@@ -24,7 +25,6 @@ import com.jakewharton.rxbinding2.view.clicks
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.fragment_recent_manage.*
 import org.jetbrains.anko.support.v4.startActivity
-import org.jetbrains.anko.support.v4.toast
 import javax.inject.Inject
 
 
@@ -59,6 +59,12 @@ class RecentManageFragment : Fragment(), Injectable {
     override fun onResume() {
         super.onResume()
 
+        dis add adapter.clickManage
+                .subscribeBy(
+                        onNext = {
+                            startActivity<ManageDetailActivity>(ManageDetailActivity.ID_MANAGE to it._id!!, ID_FIRST_MANAGE to it.idDosisUno!!)
+                        }
+                )
 
         dis add viewModel.getManages()
                 .subscribeBy(
