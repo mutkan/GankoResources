@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.cristian.myapplication.R
+import com.example.cristian.myapplication.data.models.ProxStates
 import com.example.cristian.myapplication.data.models.Sanidad
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.PendingHealthAdapter
@@ -20,6 +21,7 @@ import com.example.cristian.myapplication.util.buildViewModel
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.fragment_pending_health.*
 import kotlinx.android.synthetic.main.fragment_recent_health.*
+import org.jetbrains.anko.support.v4.startActivity
 import org.jetbrains.anko.support.v4.toast
 import java.util.*
 import javax.inject.Inject
@@ -58,7 +60,23 @@ class PendingHealthFragment : Fragment() , Injectable {
                         onError = {
                             toast(it.message!!)
                         }
-                )}
+                )
+
+        dis add adapter.clickApply
+                .subscribeBy( onNext = {
+                    it.estadoProximo = ProxStates.APPLIED
+                    viewModel.updateHealth(it._id!!,it)
+                    startActivity<AddHealthActivity>("edit" to true, AddHealthActivity.PREVIOUS_HEALTH to it)
+                })
+
+
+        dis add adapter.clickSkip
+                .flatMapSingle {
+                    it.estadoProximo = ProxStates.SKIPED
+                    viewModel.updateHealth(it._id!!,it)
+                }
+                .subscribe()
+    }
 
 
 

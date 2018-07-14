@@ -13,6 +13,10 @@ import javax.inject.Inject
 
 class PendingHealthAdapter @Inject constructor():RecyclerView.Adapter<PendingHealthAdapter.PendingHealthHolder>(){
 
+    val clickApply: PublishSubject<Sanidad> = PublishSubject.create()
+
+    val clickSkip  : PublishSubject<Sanidad> = PublishSubject.create()
+
     var  pending :List<Sanidad> = emptyList()
         set(value) {
             field = value
@@ -27,6 +31,8 @@ class PendingHealthAdapter @Inject constructor():RecyclerView.Adapter<PendingHea
 
     override fun onBindViewHolder(holder: PendingHealthHolder, position: Int) {
             holder.binding?.sanidad = pending[position]
+            holder.binding?.clickApply = clickApply
+            holder.binding?.clickSkip = clickSkip
     }
 
 

@@ -8,6 +8,12 @@
         <variable
             name="sanidad"
             type="com.example.cristian.myapplication.data.models.Sanidad"/>
+        <variable
+            name="clickApply"
+            type="io.reactivex.subjects.PublishSubject"/>
+        <variable
+            name="clickSkip"
+            type="io.reactivex.subjects.PublishSubject"/>
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -49,7 +55,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/pengingHealthObservations"
+            app:layout_constraintTop_toBottomOf="@+id/button6"
             app:srcCompat="@color/line_template_straw" />
 
         <TextView
@@ -96,6 +102,29 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="08/06/2018" />
+
+        <Button
+            android:id="@+id/button5"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:layout_marginTop="24dp"
+            android:text="Aplicar"
+            android:onClick="@{()-> clickApply.onNext(sanidad)}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bovineNumber" />
+
+        <Button
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:id="@+id/button6"
+            android:onClick="@{()-> clickSkip.onNext(sanidad)}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="Omitir"
+            app:layout_constraintBottom_toBottomOf="@+id/button5"
+            app:layout_constraintEnd_toStartOf="@+id/button5" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>
