@@ -125,7 +125,7 @@ class MeadowFragment : Fragment(), Injectable {
                         }.show()
                     } else {
                         val options = listOf("Administrar", "Remover")
-                        selector("Seleccione una opcion", options, { dialogInterface, i ->
+                        selector("Seleccione una opcion", options) { _, i ->
                             when (i) {
                                 0 -> startActivity<ManageMeadowActivity>(MEADOWID to meadow._id!!)
                                 else -> {
@@ -144,7 +144,7 @@ class MeadowFragment : Fragment(), Injectable {
                                             }
                                 }
                             }
-                        })
+                        }
                     }
 
                 }

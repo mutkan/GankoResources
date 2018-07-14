@@ -2,6 +2,7 @@ package com.example.cristian.myapplication.ui.menu
 
 import android.arch.lifecycle.ViewModel
 import android.graphics.Color
+import com.couchbase.lite.Expression
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.db.CouchRx
 import com.example.cristian.myapplication.data.models.*
@@ -137,7 +138,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     fun getMeadows(idFinca: String): Single<Pair<List<Pradera>, Long>> =
             db.listByExp("idFinca" equalEx idFinca, Pradera::class)
                     .map {
-                        it.toObservable().toList()
+                        Single.just(it)
                     }.flatMap {
                         it.zipWith(it.flatMapObservable { it.toObservable() }.filter { it.isEmptyMeadow == false }.count())
                     }
@@ -152,21 +153,16 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     fun updateMeadow(id: String, pradera: Pradera): Single<Unit> =
             db.update(id, pradera).applySchedulers()
 
-    fun getUsedMeadows(idFinca: String): Single<MutableList<Pradera>> =
-            db.listByExp("idFinca" equalEx idFinca, Pradera::class)
-                    .flatMapObservable { it.toObservable() }
-                    .filter { it.available == false }
-                    .toList().applySchedulers()
-
-    fun getUnusedMeadows(idFinca: String): Single<MutableList<Pradera>> =
-            db.listByExp("idFinca" equalEx idFinca, Pradera::class)
-                    .flatMapObservable { it.toObservable() }
-                    .filter { it.available == true }
-                    .toList()
+    fun getUsedMeadows(idFinca: String): Observable<List<Pradera>> =
+            db.listObsByExp("idFinca" equalEx idFinca andEx ("available" equalEx false), Pradera::class)
                     .applySchedulers()
 
-    fun getGroups(idFinca: String): Single<List<Group>> =
-            db.listByExp("finca" equalEx idFinca, Group::class)
+    fun getUnusedMeadows(idFinca: String): Observable<List<Pradera>> =
+            db.listObsByExp("idFinca" equalEx idFinca andEx ("available" equalEx true), Pradera::class)
+                    .applySchedulers()
+
+    fun getGroups(idFinca: String): Observable<List<Group>> =
+            db.listObsByExp("finca" equalEx idFinca andEx (Expression.property("pradera").isNullOrMissing), Group::class)
                     .applySchedulers()
 
     // Filtros

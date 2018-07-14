@@ -14,7 +14,7 @@ class MovementUsedAdapter:RecyclerView.Adapter<MovementUsedAdapter.MovementHolde
 
     val onClickMeadow:PublishSubject<Pradera> = PublishSubject.create()
 
-    var data:MutableList<Pradera> = mutableListOf()
+    var data:List<Pradera> = mutableListOf()
     set(value) {
         field = value
         notifyDataSetChanged()

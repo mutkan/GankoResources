@@ -11,11 +11,16 @@ class Group(
         val finca: String,
         var nombre: String,
         var color: Int,
-        var bovines: List<String> = emptyList()
+        var bovines: List<String> = emptyList(),
+        var pradera: String? = null
 ) : Parcelable {
 
     init {
         type = javaClass.simpleName
+    }
+
+    override fun toString(): String {
+        return this.nombre
     }
 
 }

@@ -17,6 +17,7 @@ import com.example.cristian.myapplication.ui.menu.MenuViewModel
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
 import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.fragment_meadow_used.*
 import org.jetbrains.anko.noButton
 import org.jetbrains.anko.support.v4.alert
@@ -33,6 +34,7 @@ class MeadowUsedFragment : Fragment(), Injectable {
     val viewmodel: MenuViewModel by lazy { buildViewModel<MenuViewModel>(factory) }
     val adapter = MovementUsedAdapter()
     val dis = LifeDisposable(this)
+    val clickRemoveGroupFromMeadow: PublishSubject<Pradera> = PublishSubject.create()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -50,26 +52,30 @@ class MeadowUsedFragment : Fragment(), Injectable {
                 .subscribe {
                     removeGroupFromMeadow(it)
                 }
+
+        dis add clickRemoveGroupFromMeadow
+                .flatMapSingle { pradera ->
+                    pradera.fechaSalida = Date()
+                    pradera.available = true
+                    viewmodel.updateMeadow(pradera._id!!, pradera)
+                }
+                .subscribeBy(
+                        onNext = {
+                            toast("Datos guardados correctamente")
+                        },
+                        onError = {
+                            toast(it.message!!)
+                        }
+                )
+
     }
+
 
     fun removeGroupFromMeadow(pradera: Pradera) {
         alert {
             title = "¿Desea desocupar esta pradera?"
             yesButton {
-                pradera.fechaSalida = Date()
-                pradera.available = true
-                dis add viewmodel.updateMeadow(pradera._id!!, pradera)
-                        .subscribeBy(
-                                onSuccess = {
-                                    getMeadows()
-                                    adapter.notifyDataSetChanged()
-                                    MeadowUnusedFragment.instance().adapter.notifyDataSetChanged()
-                                    toast("Datos guardados correctamente")
-                                },
-                                onError = {
-                                    toast(it.message!!)
-                                }
-                        )
+                clickRemoveGroupFromMeadow.onNext(pradera)
             }
             noButton { }
         }.show()
@@ -78,11 +84,9 @@ class MeadowUsedFragment : Fragment(), Injectable {
     fun getMeadows() {
         dis add viewmodel.getUsedMeadows(viewmodel.getFarmId())
                 .subscribeBy {
-                    if (it.isEmpty()) noData.visibility = View.VISIBLE
-                    else {
-                        adapter.data = it
-                        noData.visibility = View.GONE
-                    }
+                    noData.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
+                    adapter.data = it
+
                 }
     }
 
