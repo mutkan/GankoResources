@@ -153,6 +153,10 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     fun updateMeadow(id: String, pradera: Pradera): Single<Unit> =
             db.update(id, pradera).applySchedulers()
 
+    fun updateGroup(group: Group): Single<Unit> =
+            db.update(group._id!!,group).applySchedulers()
+
+
     fun getUsedMeadows(idFinca: String): Observable<List<Pradera>> =
             db.listObsByExp("idFinca" equalEx idFinca andEx ("available" equalEx false), Pradera::class)
                     .applySchedulers()
@@ -165,8 +169,8 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
             db.listObsByExp("finca" equalEx idFinca andEx (Expression.property("pradera").isNullOrMissing), Group::class)
                     .applySchedulers()
 
-    fun getGroupById(idGroup: String) : Single<List<Group>> =
-            db.listByExp( "nombre" equalEx idGroup ,Group::class)
+    fun getGroupById(idGroup: String) : Maybe<Group> =
+            db.oneByExp( "nombre" equalEx idGroup ,Group::class)
                     .applySchedulers()
 
     // Filtros

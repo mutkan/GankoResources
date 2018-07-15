@@ -73,6 +73,7 @@ class MeadowUnusedFragment : Fragment(), Injectable {
                 bovinos = grupo.bovines
             }
             viewmodel.updateMeadow(pradera._id!!, pradera)
+                    .flatMap { viewmodel.updateGroup(grupo.apply { this.pradera = pradera.identificador!!.toString() }) }
         }.subscribeBy(
                 onNext = {
                     toast("Datos guardados correctamente")
@@ -92,19 +93,23 @@ class MeadowUnusedFragment : Fragment(), Injectable {
     }
 
     fun findGroupsToUseMeadow(pradera: Pradera) {
-        alert {
-            val viewBind = TemplateSpinnerGroupBinding.inflate(layoutInflater, null, false)
-            viewBind.groups = arrayGroup
-            title = "Añada un grupo a esta pradera"
-            customView {
-                this.addView(viewBind.root, null)
-            }
-            yesButton {
-                val group = viewBind.selectedGroup.selectedItem as Group
-                clickAddGroup.onNext(pradera to group)
-            }
-            noButton {}
-        }.show()
+        if (arrayGroup.size >0 ){
+            alert {
+                val viewBind = TemplateSpinnerGroupBinding.inflate(layoutInflater, null, false)
+                viewBind.groups = arrayGroup
+                title = "Añada un grupo a esta pradera"
+                customView {
+                    this.addView(viewBind.root, null)
+                }
+                yesButton {
+                    val group = viewBind.selectedGroup.selectedItem as Group
+                    clickAddGroup.onNext(pradera to group)
+                }
+                noButton {}
+            }.show()
+        }else{
+            toast("No hay grupos disponibles")
+        }
     }
 
 

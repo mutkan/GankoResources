@@ -13,24 +13,25 @@ import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.ManageMovementsAdapter
 import kotlinx.android.synthetic.main.fragment_movement.*
 
-class MovementFragment : Fragment(),Injectable {
+class MovementFragment : Fragment(), Injectable {
 
     lateinit var binding: FragmentMovementBinding
-    val adapter : ManageMovementsAdapter by lazy {ManageMovementsAdapter(context!!,activity!!.supportFragmentManager)}
+    val adapter: ManageMovementsAdapter by lazy { ManageMovementsAdapter(context!!, activity!!.supportFragmentManager) }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_movement, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_movement, container, false)
         return binding.root
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         movementTab.setupWithViewPager(movementPager)
         movementPager.adapter = adapter
     }
 
+
     companion object {
-        fun instance():MovementFragment = MovementFragment()
+        fun instance(): MovementFragment = MovementFragment()
     }
 }

@@ -55,9 +55,18 @@ class MeadowUsedFragment : Fragment(), Injectable {
 
         dis add clickRemoveGroupFromMeadow
                 .flatMapSingle { pradera ->
-                    pradera.fechaSalida = Date()
-                    pradera.available = true
+                    val grupo = pradera.group
+                    pradera.apply {
+                        fechaSalida = Date()
+                        available = true
+                        bovinos = listOf()
+                        group = null
+                    }
                     viewmodel.updateMeadow(pradera._id!!, pradera)
+                            .flatMapMaybe { viewmodel.getGroupById(grupo!!) }
+                            .flatMapSingle {
+                                viewmodel.updateGroup(it.apply { this.pradera = null })
+                            }
                 }
                 .subscribeBy(
                         onNext = {
