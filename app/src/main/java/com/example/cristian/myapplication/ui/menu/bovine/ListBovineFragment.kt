@@ -27,6 +27,7 @@ import com.example.cristian.myapplication.ui.bovine.RemoveBovineActivity
 import com.example.cristian.myapplication.ui.groups.SelectGroupFragment
 import com.example.cristian.myapplication.ui.menu.MenuViewModel
 import com.example.cristian.myapplication.util.LifeDisposable
+import com.example.cristian.myapplication.util.add
 import com.example.cristian.myapplication.util.buildViewModel
 import com.example.cristian.myapplication.util.subscribeByAction
 import com.jakewharton.rxbinding2.view.clicks
@@ -39,6 +40,7 @@ import org.jetbrains.anko.support.v4.alert
 import org.jetbrains.anko.support.v4.find
 import org.jetbrains.anko.support.v4.startActivity
 import org.jetbrains.anko.support.v4.toast
+import java.util.*
 import javax.inject.Inject
 
 class ListBovineFragment : Fragment(), Injectable {
@@ -52,7 +54,7 @@ class ListBovineFragment : Fragment(), Injectable {
     val viewModel: MenuViewModel by lazy { buildViewModel<MenuViewModel>(factory) }
 
     lateinit var binding: FragmentListBovineBinding
-    private var filter:Filter = Filter()
+    private var filter: Filter = Filter()
     private val idFinca: String by lazy { viewModel.getFarmId() }
     val isEmpty: ObservableBoolean = ObservableBoolean(false)
 
@@ -61,7 +63,7 @@ class ListBovineFragment : Fragment(), Injectable {
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
 
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_list_bovine, container, false )
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_list_bovine, container, false)
         return binding.root
     }
 
@@ -93,7 +95,7 @@ class ListBovineFragment : Fragment(), Injectable {
                             startActivity<DetailBovineActivity>(BOVINE to it)
                         },
                         onComplete = {
-                            Log.i("Bovine","On complete bovine")
+                            Log.i("Bovine", "On complete bovine")
                         },
                         onError = {
                             toast(it.message!!)
@@ -114,37 +116,38 @@ class ListBovineFragment : Fragment(), Injectable {
                 }
 
     }
-    fun filterBovines(){
-        var listFilter : List<Bovino> = emptyList()
+
+    fun filterBovines() {
+        var listFilter: List<Bovino> = emptyList()
         dis add viewModel.getBovinesFilter(idFinca)
                 .subscribeBy(
                         onSuccess = {
                             isEmpty.set(it.isEmpty())
-                            filter.meat_purpose=true
-                            filter.milk_purpose=true
+                            filter.meat_purpose = true
+                            filter.milk_purpose = true
 
-                            if (filter.milk_purpose) listFilter = listFilter.plus( it.filter { it.proposito == "Lecheria"})
-                            if (filter.meat_purpose) listFilter = listFilter.plus( it.filter { it.proposito == "Ceba" })
-                            if (filter.both_purpose) listFilter =listFilter.plus( it.filter { it.proposito == "Ambos" })
-                            if (filter.retired)  listFilter = listFilter.plus(it.filter { it.retirado == true     })
+                            if (filter.milk_purpose) listFilter = listFilter.plus(it.filter { it.proposito == "Lecheria" })
+                            if (filter.meat_purpose) listFilter = listFilter.plus(it.filter { it.proposito == "Ceba" })
+                            if (filter.both_purpose) listFilter = listFilter.plus(it.filter { it.proposito == "Ambos" })
+                            if (filter.retired) listFilter = listFilter.plus(it.filter { it.retirado == true })
 
-                            adapter.bovines= listFilter
+                            adapter.bovines = listFilter
                         },
                         onError = {
                             toast(it.message!!)
                         }
                 )
     }
+
     fun goToAddBovine() {
         startActivity<AddBovineActivity>()
     }
 
     companion object {
-        val BOVINE : String = "bovino"
-        val EXTRA_ID:String = "idBovino"
-        fun instance():ListBovineFragment=ListBovineFragment()
+        val BOVINE: String = "bovino"
+        val EXTRA_ID: String = "idBovino"
+        fun instance(): ListBovineFragment = ListBovineFragment()
     }
-
 
 
 }
