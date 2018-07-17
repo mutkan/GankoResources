@@ -17,7 +17,6 @@ import io.reactivex.Single
 import io.reactivex.rxkotlin.toObservable
 import io.reactivex.rxkotlin.zipWith
 import io.reactivex.subjects.PublishSubject
-import java.time.Month
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -227,15 +226,16 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
 
     //endregion
 
-    //region Reportes
+    //region ReportesReproductivo
     private val VAR_CONF = ArrayExpression.variable("servicio.diagnostico.confirmacion")
     private val VAR_SERV = ArrayExpression.variable("servicio")
     private val VAR_ABORTO = ArrayExpression.variable("servicio.novedad.novedad")
     private val VAR_FECHAPOSPARTO = ArrayExpression.variable("servicio.posFechaParto")
     private val VAR_FINALIZADO = ArrayExpression.variable("servicio.finalizado")
     private val VAR_PARTO = ArrayExpression.variable("servicio.parto")
+    private val VAR_FECHA_PARTO = ArrayExpression.variable("servicio.parto.fecha")
 
-    fun reportePartos(mes: Int, anio: Int): Single<List<ReportePartos>> =
+    fun reporteFuturosPartos(mes: Int, anio: Int): Single<List<ReporteFuturosPartos>> =
             db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra")
                     andEx (ArrayFunction.length(Expression.property("servicios")).greaterThanOrEqualTo(Expression.value(1)))
                     andEx (ArrayExpression.any(VAR_SERV).`in`(Expression.property("servicios")))
@@ -254,11 +254,11 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                         !serv.finalizado!! && month == mes && year == anio
                     }.map {
                         val serv = it.servicios!![0]
-                        ReportePartos(it.codigo!!, it.nombre, serv.fecha!!, serv.posFechaParto!!)
+                        ReporteFuturosPartos(it.codigo!!, it.nombre, serv.fecha!!, serv.posFechaParto!!)
                     }.toList().applySchedulers()
 
 
-    fun reportePartos(from: Date, to: Date): Single<List<ReportePartos>> =
+    fun reporteFuturosPartos(from: Date, to: Date): Single<List<ReporteFuturosPartos>> =
             db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra")
                     andEx (ArrayFunction.length(Expression.property("servicios")).greaterThanOrEqualTo(Expression.value(1)))
                     andEx (ArrayExpression.any(VAR_SERV).`in`(Expression.property("servicios")))
@@ -271,7 +271,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     .flatMapObservable { it.toObservable() }
                     .map {
                         val serv = it.servicios!![0]
-                        ReportePartos(it.codigo!!, it.nombre, serv.fecha!!, serv.posFechaParto!!)
+                        ReporteFuturosPartos(it.codigo!!, it.nombre, serv.fecha!!, serv.posFechaParto!!)
                     }.toList().applySchedulers()
 
 
@@ -299,7 +299,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     }.toList().applySchedulers()
 
 
-    fun reporteSecado(from: Date, to: Date): Single<List<ReportePartos>> =
+    fun reporteSecado(from: Date, to: Date): Single<List<ReporteFuturosPartos>> =
             db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra")
                     andEx (ArrayFunction.length(Expression.property("servicios")).greaterThanOrEqualTo(Expression.value(1)))
                     andEx (ArrayExpression.any(VAR_SERV).`in`(Expression.property("servicios")))
@@ -316,7 +316,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     }
                     .map {
                         val serv = it.servicios!![0]
-                        ReportePartos(it.codigo!!, it.nombre, serv.fecha!!, serv.posFechaParto!!.add(Calendar.DATE, -60)!!)
+                        ReporteFuturosPartos(it.codigo!!, it.nombre, serv.fecha!!, serv.posFechaParto!!.add(Calendar.DATE, -60)!!)
                     }.toList().applySchedulers()
 
     fun reportePreparacion(mes: Int, anio: Int): Single<List<ReportePreparacion>> =
@@ -378,6 +378,90 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                                     ReporteDiasVacios(bovino.codigo!!, bovino.nombre, ultimoParto.fecha!!, ultimoServicio.fecha!!, diasVacios)
                                 }
                     }.toList().applySchedulers()
+
+    fun reportePartosAtendidos(from: Date, to: Date): Single<List<ReportePartosAtendidos>> =
+            db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra")
+                    andEx (ArrayExpression.any(VAR_SERV).`in`(Expression.property("servicios")))
+                    .satisfies(VAR_PARTO.notNullOrMissing())
+                    andEx (ArrayExpression.any(VAR_SERV).`in`(Expression.property("servicios")))
+                    .satisfies(VAR_FECHA_PARTO.between(Expression.date(from), Expression.date(to)))
+                    , Bovino::class)
+                    .flatMapObservable { it.toObservable() }
+                    .flatMap { bovino ->
+                        bovino.servicios!!.toObservable()
+                                .map {
+                                    val parto = it.parto!!
+                                    ReportePartosAtendidos(bovino.codigo!!, bovino.nombre, parto.fecha, parto.sexoCria, parto.estadoCria)
+                                }
+                    }.toList().applySchedulers()
+
+    fun reportePartosAtendidos(mes: Int, anio: Int): Single<List<ReportePartosAtendidos>> =
+            db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra")
+                    andEx (ArrayExpression.any(VAR_SERV).`in`(Expression.property("servicios")))
+                    .satisfies(VAR_PARTO.notNullOrMissing())
+                    , Bovino::class)
+                    .flatMapObservable { it.toObservable() }
+                    .flatMap { bovino ->
+                        bovino.servicios!!.toObservable()
+                                .filter { serv ->
+                                    val fechaParto = serv.parto!!.fecha
+                                    val cal = Calendar.getInstance()
+                                    cal.timeInMillis = fechaParto.time
+                                    val month = cal.get(Calendar.MONTH)
+                                    val year = cal.get(Calendar.YEAR)
+                                    !serv.finalizado!! && month == mes && year == anio
+                                }
+                                .map {
+                                    val parto = it.parto!!
+                                    ReportePartosAtendidos(bovino.codigo!!, bovino.nombre, parto.fecha, parto.sexoCria, parto.estadoCria)
+                                }
+                    }.toList().applySchedulers()
+
+    fun reporteAbortos(from: Date, to: Date): Single<List<ReporteAbortos>> =
+            db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra")
+                    andEx (ArrayExpression.any(VAR_SERV).`in`(Expression.property("servicios")))
+                    .satisfies(VAR_ABORTO.equalTo(Expression.string("Aborto")))
+                    , Bovino::class)
+                    .flatMapObservable { it.toObservable() }
+                    .flatMap { bovino ->
+                        bovino.servicios!!.toObservable()
+                                .map { servicio ->
+                                    val novedad = servicio.novedad!!
+                                    ReporteAbortos(bovino.codigo!!, bovino.nombre, servicio.fecha!!, novedad.fecha)
+                                }
+                    }.toList().applySchedulers()
+
+    fun reporteTresServicios(): Single<List<ReporteTresServicios>> =
+            db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra")
+                    andEx (ArrayFunction.length(Expression.property("servicios")).greaterThanOrEqualTo(Expression.value(3)))
+                    , Bovino::class)
+                    .flatMapObservable {
+                        it.toObservable()
+                                .filter { bovino ->
+                                    val servicios = bovino.servicios!!
+                                    servicios[0].diagnostico?.confirmacion?.not() ?: false && servicios[1].diagnostico?.confirmacion?.not() ?: false && servicios[2].diagnostico?.confirmacion?.not() ?: false
+                                }.map { bovino ->
+                                    val ultimoServicio = bovino.servicios!![0]
+                                    val ultimoParto = bovino.servicios!!.find { it.parto != null }
+                                    val dif = if (ultimoParto != null) ultimoServicio.fecha!!.time - ultimoParto.fecha!!.time else 0
+                                    val diasVacios = TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS)
+                                    ReporteTresServicios(bovino.codigo!!, bovino.nombre, ultimoServicio.fecha!!, diasVacios)
+                                }
+                    }
+                    .toList().applySchedulers()
+
+    fun reporteCelos(): Single<List<ReporteCelos>> =
+            db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra")
+                    andEx (ArrayFunction.length(Expression.property("celos")).greaterThanOrEqualTo(Expression.value(1)))
+                    , Bovino::class)
+                    .flatMapObservable {
+                        it.toObservable()
+                                .map { bovino ->
+                                    ReporteCelos(bovino.codigo!!, bovino.nombre, bovino.celos!![0])
+                                }
+                    }
+                    .toList().applySchedulers()
+
 
     //endregion
 
