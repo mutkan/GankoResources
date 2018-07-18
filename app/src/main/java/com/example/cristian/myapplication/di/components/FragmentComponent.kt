@@ -1,6 +1,7 @@
 package com.example.cristian.myapplication.di.components
 
 import com.example.cristian.myapplication.di.FragmentScope
+import com.example.cristian.myapplication.di.modules.ManageModule
 import com.example.cristian.myapplication.di.modules.VaccinesModule
 
 import com.example.cristian.myapplication.ui.groups.SelectGroupFragment
@@ -94,21 +95,8 @@ abstract class FragmentComponent{
     abstract fun bindVaccinesFragment(): VaccinesFragment
 
     @FragmentScope
-    @ContributesAndroidInjector()
+    @ContributesAndroidInjector(modules = [(ManageModule::class)])
     abstract fun bindManageFragment(): ManageFragment
-
-    @FragmentScope
-    @ContributesAndroidInjector()
-    abstract fun bindRecentManageFragment(): RecentManageFragment
-
-    @FragmentScope
-    @ContributesAndroidInjector()
-    abstract fun bindNextManageFragment(): NextManageFragment
-
-    @FragmentScope
-    @ContributesAndroidInjector()
-    abstract fun bindPendingManageFragment(): PendingManageFragment
-
 
 
 
