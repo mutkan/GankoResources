@@ -15,6 +15,7 @@ import com.jakewharton.rxbinding2.widget.checkedChanges
 import com.jakewharton.rxbinding2.widget.itemSelections
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.fragment_select_report.*
+import android.widget.ArrayAdapter
 
 
 class SelectReportFragment : Fragment() {
@@ -43,11 +44,31 @@ class SelectReportFragment : Fragment() {
         dis add categoriesSpinner.itemSelections()
                 .subscribeBy(
                         onNext = {
-                            //when (it){
-                            //REPORTE_REPRODUCTIVOS -> binding.reportType
-                            //}
+                            checkCategoriesSpinnerChanges(it)
                         }
                 )
+    }
+
+     private fun checkCategoriesSpinnerChanges(selected: Int){
+        when (selected) {
+            REPORTE_REPRODUCTIVOS -> setEntries(resources.getStringArray(R.array.reproductive_type))
+            REPORTE_PROD_LECHE -> setEntries(resources.getStringArray(R.array.milk_type))
+            REPORTE_CEBA ->  setEntries(resources.getStringArray(R.array.meat_type))
+            REPORTE_PRADERAS -> setEntries(resources.getStringArray(R.array.meadows_type))
+            REPORTE_ALIMENTACION -> setEntries(resources.getStringArray(R.array.feed_type))
+            REPORTE_MOVIMIENTOS ->  setEntries(resources.getStringArray(R.array.movements_type))
+            REPORTE_ENTRADAS -> setEntries(resources.getStringArray(R.array.input_type))
+            REPORTE_SALIDAS -> setEntries(resources.getStringArray(R.array.output_type))
+            REPORTE_VACUNAS -> setEntries(resources.getStringArray(R.array.vaccine_type))
+            REPORTE_SANIDAD -> setEntries(resources.getStringArray(R.array.health_type))
+            REPORTE_MANEJO -> setEntries(resources.getStringArray(R.array.manage_type))
+            REPORTE_PAJILLAS -> setEntries(resources.getStringArray(R.array.straw__reports_type))
+        }
+    }
+
+    private fun setEntries(tipos: Array<String>) {
+        val spinnerArrayAdapter = ArrayAdapter<String>(this.context, R.layout.support_simple_spinner_dropdown_item, tipos)
+        reportType.adapter = spinnerArrayAdapter
     }
 
     companion object {
@@ -66,7 +87,6 @@ class SelectReportFragment : Fragment() {
 
         fun instance(): SelectReportFragment = SelectReportFragment()
     }
-
 
 
 }
