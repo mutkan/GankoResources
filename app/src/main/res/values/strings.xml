@@ -35,6 +35,7 @@
     <string name="straw">PAJILLAS</string>
     <string name="prairies">PRADERAS</string>
     <string name="reports">REPORTES</string>
+    <string name="averages">PROMEDIOS</string>
     <string name="logout">Cerrar Sesión</string>
     <string name="menu_groups">GRUPOS</string>
     <string name="notifications">NOTIFICACIONES</string>
@@ -358,6 +359,7 @@
     <string name="date_rank">Rango de fechas</string>
     <string name="from">Desde</string>
     <string name="to">Hasta</string>
+    <string name="report_of_month">Reporte del mes</string>
     <string name="download_text">Descargar</string>
     <string name="view_text">Visualizar</string>
 
@@ -464,6 +466,21 @@
 
     <string-array name="output_type">
         <item>Salida</item>
+    </string-array>
+
+    <string-array name="months">
+        <item>Enero</item>
+        <item>Febrero</item>
+        <item>Marzo</item>
+        <item>Abril</item>
+        <item>Mayo</item>
+        <item>Junio</item>
+        <item>Julio</item>
+        <item>Agosto</item>
+        <item>Septiembre</item>
+        <item>Octubre</item>
+        <item>Noviembre</item>
+        <item>Diciembre</item>
     </string-array>
 
 
