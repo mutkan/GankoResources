@@ -1,178 +1,215 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.menu.reports.SelectReportFragment">
+    >
 
-    <!-- TODO: Update blank fragment layout -->
+    <data>
+        <variable
+            name="monthly"
+            type="Boolean"/>
+        <import type="android.view.View"/>
 
-    <TextView
-        android:id="@+id/textView31"
-        style="@style/textview_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/category_select"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Seleccione una categoría" />
+    </data>
 
-    <Spinner
-        android:id="@+id/categoriesSpinner"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:layout_marginTop="8dp"
-        android:entries="@array/categories"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/textView31"
-        app:layout_constraintTop_toBottomOf="@+id/textView31" />
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.menu.reports.SelectReportFragment">
 
-    <TextView
-        android:id="@+id/textView44"
-        style="@style/textview_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/report_type"
-        app:layout_constraintStart_toStartOf="@+id/categoriesSpinner"
-        app:layout_constraintTop_toBottomOf="@+id/categoriesSpinner"
-        tools:text="Tipo de reporte" />
 
-    <Spinner
-        android:id="@+id/reportType"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/textView44"
-        app:layout_constraintTop_toBottomOf="@+id/textView44" />
-
-    <TextView
-        android:id="@+id/textView45"
-        style="@style/textview_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/create_report"
-        app:layout_constraintStart_toStartOf="@+id/reportType"
-        app:layout_constraintTop_toBottomOf="@+id/reportType"
-        tools:text="Generar reporte" />
-
-    <RadioGroup
-        android:id="@+id/typeDateGroup"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/textView45"
-        app:layout_constraintTop_toBottomOf="@+id/textView45"
-        tools:orientation="horizontal">
-
-        <RadioButton
-            android:id="@+id/monthlyRadioButton"
+        <TextView
+            android:id="@+id/textView31"
+            style="@style/textview_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/monthly"
-            tools:text="Mensual" />
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:text="@string/category_select"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Seleccione una categoría" />
 
-        <RadioButton
-            android:id="@+id/rankRadioButton"
+        <Spinner
+            android:id="@+id/categoriesSpinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:layout_marginTop="8dp"
+            android:entries="@array/categories"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textView31"
+            app:layout_constraintTop_toBottomOf="@+id/textView31" />
+
+        <TextView
+            android:id="@+id/textView44"
+            style="@style/textview_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/date_rank"
-            tools:text="Rango de fechas" />
-    </RadioGroup>
+            android:layout_marginTop="16dp"
+            android:text="@string/report_type"
+            app:layout_constraintStart_toStartOf="@+id/categoriesSpinner"
+            app:layout_constraintTop_toBottomOf="@+id/categoriesSpinner"
+            tools:text="Tipo de reporte" />
 
-    <TextView
-        android:id="@+id/textView47"
-        style="@style/textview_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/from"
-        app:layout_constraintStart_toStartOf="@+id/typeDateGroup"
-        app:layout_constraintTop_toBottomOf="@+id/typeDateGroup"
-        tools:text="Desde:" />
+        <Spinner
+            android:id="@+id/reportType"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textView44"
+            app:layout_constraintTop_toBottomOf="@+id/textView44" />
 
-    <TextView
-        android:id="@+id/textView48"
-        style="@style/textview_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/to"
-        app:layout_constraintStart_toStartOf="@+id/toDateText"
-        app:layout_constraintTop_toBottomOf="@+id/typeDateGroup"
-        tools:text="Hasta:" />
+        <TextView
+            android:id="@+id/textView45"
+            style="@style/textview_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/create_report"
+            app:layout_constraintStart_toStartOf="@+id/reportType"
+            app:layout_constraintTop_toBottomOf="@+id/reportType"
+            tools:text="Generar reporte" />
 
-    <TextView
-        android:id="@+id/fromDateText"
-        style="@style/edit_text"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:clickable="true"
-        android:focusable="false"
-        android:hint="dd/mm/aaaa"
-        android:inputType="date"
-        android:text="TextView"
-        app:layout_constraintEnd_toStartOf="@+id/toDateText"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView47"
-        tools:text="19/06/2018" />
+        <RadioGroup
+            android:id="@+id/typeDateGroup"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:layout_marginTop="8dp"
+            android:checkedButton="@+id/rankRadioButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textView45"
+            app:layout_constraintTop_toBottomOf="@+id/textView45"
+            tools:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/toDateText"
-        style="@style/edit_text"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:clickable="true"
-        android:focusable="false"
-        android:hint="dd/mm/aaaa"
-        android:inputType="date"
-        android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/fromDateText"
-        app:layout_constraintTop_toBottomOf="@+id/textView48"
-        tools:text="22/06/2018" />
+            <RadioButton
+                android:id="@+id/monthlyRadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/monthly"
+                tools:text="Mensual" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabDownload"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:clickable="true"
-        app:fabSize="normal"
-        android:src="@drawable/ic__download"
-        app:layout_constraintEnd_toStartOf="@+id/fabView"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fromDateText" />
+            <RadioButton
+                android:id="@+id/rankRadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/date_rank"
+                tools:text="Rango de fechas" />
+        </RadioGroup>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        app:fabSize="normal"
-        android:src="@drawable/ic_eye"
-        app:layout_constraintBottom_toBottomOf="@+id/fabDownload"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/fabDownload" />
+        <TextView
+            android:id="@+id/textView47"
+            style="@style/textview_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/from"
+            android:visibility='@{monthly == true ? View.GONE : View.VISIBLE}'
+            app:layout_constraintStart_toStartOf="@+id/typeDateGroup"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerMonth"
+            tools:text="Desde:" />
 
-</android.support.constraint.ConstraintLayout>
+        <TextView
+            android:id="@+id/textView48"
+            style="@style/textview_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/to"
+            android:visibility='@{monthly == true ? View.GONE : View.VISIBLE}'
+            app:layout_constraintStart_toStartOf="@+id/toDateText"
+            app:layout_constraintTop_toTopOf="@+id/textView47"
+            tools:text="Hasta:" />
+
+        <TextView
+            android:id="@+id/fromDateText"
+            style="@style/edit_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:clickable="true"
+            android:focusable="false"
+            android:visibility='@{monthly == true ? View.GONE : View.VISIBLE}'
+            android:hint="@string/date_value"
+            android:inputType="date"
+            app:layout_constraintEnd_toStartOf="@+id/toDateText"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView47"
+            tools:text="19/06/2018" />
+
+        <TextView
+            android:id="@+id/toDateText"
+            style="@style/edit_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:clickable="true"
+            android:visibility='@{monthly == true ? View.GONE : View.VISIBLE}'
+            android:focusable="false"
+            android:inputType="date"
+            android:hint="@string/date_value"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/fromDateText"
+            app:layout_constraintTop_toBottomOf="@+id/textView48"
+            tools:text="22/06/2018" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabDownload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:clickable="true"
+            app:fabSize="normal"
+            android:src="@drawable/ic__download"
+            app:layout_constraintEnd_toStartOf="@+id/fabView"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fromDateText" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            app:fabSize="normal"
+            android:src="@drawable/ic_eye"
+            app:layout_constraintBottom_toBottomOf="@+id/fabDownload"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/fabDownload" />
+
+        <TextView
+            android:id="@+id/textView52"
+            style="@style/textview_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/report_of_month"
+            android:visibility='@{monthly == true ? View.VISIBLE : View.GONE}'
+            app:layout_constraintStart_toStartOf="@+id/typeDateGroup"
+            app:layout_constraintTop_toBottomOf="@+id/typeDateGroup" />
+
+        <Spinner
+            android:id="@+id/spinnerMonth"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:layout_marginTop="8dp"
+            android:entries="@array/months"
+            android:visibility='@{monthly == true ? View.VISIBLE : View.GONE}'
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textView52"
+            app:layout_constraintTop_toBottomOf="@+id/textView52" />
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

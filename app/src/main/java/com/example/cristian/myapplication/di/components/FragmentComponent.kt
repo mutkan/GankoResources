@@ -1,6 +1,8 @@
 package com.example.cristian.myapplication.di.components
 
 import com.example.cristian.myapplication.di.FragmentScope
+import com.example.cristian.myapplication.di.modules.ManageModule
+import com.example.cristian.myapplication.di.modules.ReportsModule
 import com.example.cristian.myapplication.di.modules.VaccinesModule
 
 import com.example.cristian.myapplication.ui.groups.SelectGroupFragment
@@ -22,6 +24,7 @@ import com.example.cristian.myapplication.ui.menu.milk.MilkFragment
 import com.example.cristian.myapplication.ui.menu.movement.MeadowUnusedFragment
 import com.example.cristian.myapplication.ui.menu.movement.MeadowUsedFragment
 import com.example.cristian.myapplication.ui.menu.movement.MovementFragment
+import com.example.cristian.myapplication.ui.menu.reports.ReportsFragment
 import com.example.cristian.myapplication.ui.menu.vaccines.VaccinesFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -94,22 +97,12 @@ abstract class FragmentComponent{
     abstract fun bindVaccinesFragment(): VaccinesFragment
 
     @FragmentScope
-    @ContributesAndroidInjector()
+    @ContributesAndroidInjector(modules = [(ManageModule::class)])
     abstract fun bindManageFragment(): ManageFragment
 
     @FragmentScope
-    @ContributesAndroidInjector()
-    abstract fun bindRecentManageFragment(): RecentManageFragment
-
-    @FragmentScope
-    @ContributesAndroidInjector()
-    abstract fun bindNextManageFragment(): NextManageFragment
-
-    @FragmentScope
-    @ContributesAndroidInjector()
-    abstract fun bindPendingManageFragment(): PendingManageFragment
-
-
+    @ContributesAndroidInjector(modules = [(ReportsModule::class)])
+    abstract fun bindReportsFragment(): ReportsFragment
 
 
 
