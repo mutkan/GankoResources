@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.menu.reports.SelectReportFragment">
-
-    <!-- TODO: Update blank fragment layout -->
 
     <TextView
         android:id="@+id/textView31"
@@ -156,8 +155,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:clickable="true"
-        app:fabSize="normal"
         android:src="@drawable/ic__download"
+        app:fabSize="normal"
         app:layout_constraintEnd_toStartOf="@+id/fabView"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -168,11 +167,37 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
-        app:fabSize="normal"
         android:src="@drawable/ic_eye"
+        app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="@+id/fabDownload"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/fabDownload" />
+
+    <TextView
+        android:id="@+id/textView55"
+        style="@style/textview_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/download_text"
+        app:layout_constraintEnd_toStartOf="@+id/textView56"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fabDownload"
+        tools:text="Descargar" />
+
+    <TextView
+        android:id="@+id/textView56"
+        style="@style/textview_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/view_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/textView55"
+        app:layout_constraintTop_toBottomOf="@+id/fabView"
+        tools:text="Visualizar" />
 
 </android.support.constraint.ConstraintLayout>

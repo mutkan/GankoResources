@@ -358,6 +358,8 @@
     <string name="date_rank">Rango de fechas</string>
     <string name="from">Desde</string>
     <string name="to">Hasta</string>
+    <string name="download_text">Descargar</string>
+    <string name="view_text">Visualizar</string>
 
     <string-array name="milk_production">
         <item>Litros vendidos</item>
