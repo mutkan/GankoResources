@@ -82,8 +82,8 @@ class AddZealActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
 
     private fun calculateNextZeal(year: Int, month: Int, dayOfMonth: Int) {
         val zealDate = Calendar.getInstance().apply { set(year, month, dayOfMonth) }
-        val nextZeal = zealDate.apply { add(Calendar.DATE, 27) }
-        nextZealDate = Date(nextZeal.timeInMillis)
+        val nextZeal = zealDate.apply { add(Calendar.DATE, 21) }
+        nextZealDate = nextZeal.time
         possibleZealDate.text = nextZealDate.toStringFormat()
         possibleZealDate.visibility = View.VISIBLE
         possibleZealDateTxt.visibility = View.VISIBLE

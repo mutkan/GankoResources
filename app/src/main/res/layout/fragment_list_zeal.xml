@@ -92,11 +92,11 @@
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:clickable="true"
+            android:visibility="gone"
             app:fabSize="normal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_add_black"
-            android:layout_marginRight="8dp" />
+            app:srcCompat="@drawable/ic_add_black" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>

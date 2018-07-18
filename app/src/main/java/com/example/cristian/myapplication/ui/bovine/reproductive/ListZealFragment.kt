@@ -38,6 +38,16 @@ class ListZealFragment : Fragment(), Injectable {
     val dis: LifeDisposable by lazy { LifeDisposable(this) }
     val idBovino: String by lazy { arguments!!.getString(ID_BOVINO) }
     val isEmpty: ObservableBoolean = ObservableBoolean(false)
+    var daysSinceLastZeal: Long = 10
+        set(value) {
+            field = value
+            fabAddZeal.visibility = if (onService || value < 10) View.GONE else View.VISIBLE
+        }
+    var onService = false
+        set(value) {
+            field = value
+            fabAddZeal.visibility = if (value || daysSinceLastZeal < 10) View.GONE else View.VISIBLE
+        }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_list_zeal, container, false)
@@ -64,9 +74,9 @@ class ListZealFragment : Fragment(), Injectable {
         dis add viewModel.getOnServiceForBovine(idBovino)
                 .subscribeBy(
                         onSuccess = {
-                            val activeService =it.isNotEmpty()
+                            val activeService = it.isNotEmpty()
                             listZealAdapter.activeService = activeService
-                            fabAddZeal.visibility = if (activeService) View.GONE else View.VISIBLE
+                            onService = activeService
                         }
                 )
 
@@ -89,8 +99,8 @@ class ListZealFragment : Fragment(), Injectable {
         if (lastZeal != null) {
             val now = Date()
             val dif = now.time - lastZeal.time
-            val days = TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS)
-            fabAddZeal.visibility = if (days >= 20) View.VISIBLE else View.GONE
+            daysSinceLastZeal = TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS)
+
         }
     }
 

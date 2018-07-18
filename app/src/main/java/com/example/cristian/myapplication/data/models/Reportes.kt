@@ -28,7 +28,8 @@ data class ReporteDiasVacios(
         val nombre: String?,
         val fechaUltimoParto: Date,
         val fechaUltimoServicio: Date,
-        val diasVacios: Long
+        val diasVacios: Long,
+        val enServicio:Boolean
 )
 
 data class ReportePartosAtendidos(
