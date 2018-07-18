@@ -351,6 +351,13 @@
     <string name="aplications">Aplicaciones</string>
     <string name="health_name">Nombre de la sanidad</string>
     <string name="ground_type">Tipo de Graminea</string>
+    <string name="category_select">Seleccione una categoría</string>
+    <string name="report_type">Tipo de reporte</string>
+    <string name="create_report">Generar reporte</string>
+    <string name="monthly">Mensual</string>
+    <string name="date_rank">Rango de fechas</string>
+    <string name="from">Desde</string>
+    <string name="to">Hasta</string>
 
     <string-array name="milk_production">
         <item>Litros vendidos</item>
@@ -372,6 +379,91 @@
         <item>Meses</item>
         <item>Años</item>
     </string-array>
+
+    <!--Reports-->
+    <string-array name="categories">
+        <item>Reproductivos</item>
+        <item>Producción de leche</item>
+        <item>Ceba</item>
+        <item>Praderas</item>
+        <item>Alimentación</item>
+        <item>Movimientos</item>
+        <item>Entradas</item>
+        <item>Salidas</item>
+        <item>Vacunas</item>
+        <item>Sanidad</item>
+        <item>Manejo</item>
+        <item>Pajilas</item>
+    </string-array>
+
+    <string-array name="reproductive_type">
+        <item>Partos</item>
+        <item>Secado</item>
+        <item>Preparación</item>
+        <item>Días abiertos</item>
+        <item>Partos atendidos</item>
+        <item>Abortos</item>
+        <item>Tres servicios</item>
+        <item>Celos</item>
+        <item>Resumen reproductivo</item>
+    </string-array>
+
+    <string-array name="milk_type">
+        <item>Consolidado de leche</item>
+        <item>Reporte de leche</item>
+    </string-array>
+
+    <string-array name="meat_type">
+        <item>Destetos</item>
+        <item>Ganancia diaria de peso</item>
+    </string-array>
+
+    <string-array name="vaccine_type">
+        <item>Vacunas</item>
+    </string-array>
+
+    <string-array name="health_type">
+        <item>Sanidad</item>
+    </string-array>
+
+    <string-array name="manage_type">
+        <item>Manejo</item>
+    </string-array>
+
+    <string-array name="meadows_type">
+        <item>Praderas</item>
+        <item>Ocupación de praderas</item>
+    </string-array>
+
+    <string-array name="feed_type">
+        <item>Alimentación</item>
+        <item>Suplementos usados</item>
+    </string-array>
+
+    <string-array name="movements_type">
+        <item>Animales en pradera</item>
+    </string-array>
+
+    <string-array name="straw__reports_type">
+        <item>Pajillas</item>
+    </string-array>
+
+    <string-array name="input_type">
+        <item>Inventario</item>
+        <item>Terneras en estaca</item>
+        <item>Terneras destetas</item>
+        <item>Novillas de levante</item>
+        <item>Novillas vientre</item>
+        <item>Abortos</item>
+        <item>Horras</item>
+        <item>Celos</item>
+        <item>Vacas</item>
+    </string-array>
+
+    <string-array name="output_type">
+        <item>Salida</item>
+    </string-array>
+
 
 </resources>
 
