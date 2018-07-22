@@ -360,8 +360,6 @@
     <string name="from">Desde</string>
     <string name="to">Hasta</string>
     <string name="report_of_month">Reporte del mes</string>
-    <string name="download_text">Descargar</string>
-    <string name="view_text">Visualizar</string>
 
     <string-array name="milk_production">
         <item>Litros vendidos</item>
