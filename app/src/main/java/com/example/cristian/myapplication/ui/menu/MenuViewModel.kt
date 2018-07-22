@@ -227,20 +227,15 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     //endregion
 
     //region ReportesReproductivo
-    private val VAR_CONF = ArrayExpression.variable("servicio.diagnostico.confirmacion")
     private val VAR_SERV = ArrayExpression.variable("servicio")
     private val VAR_NOVEDAD = ArrayExpression.variable("servicio.novedad.novedad")
-    private val VAR_FECHA_NOVEDAD = ArrayExpression.variable("servicio.novedad.fecha")
-    private val VAR_FECHAPOSPARTO = ArrayExpression.variable("servicio.posFechaParto")
-    private val VAR_FINALIZADO = ArrayExpression.variable("servicio.finalizado")
     private val VAR_PARTO = ArrayExpression.variable("servicio.parto")
     private val VAR_EMPADRE = ArrayExpression.variable("servicio.empadre")
     private val VAR_FECHA_PARTO = ArrayExpression.variable("servicio.parto.fecha")
 
     fun reporteFuturosPartos(mes: Int, anio: Int): Single<List<ReporteFuturosPartos>> =
             db.listByExp("finca" equalEx farmID
-                    andEx (ArrayExpression.any(VAR_SERV).`in`(Expression.property("servicios")))
-                    .satisfies(VAR_FINALIZADO.equalTo(Expression.booleanValue(false)))
+                    andEx ("servicios[0].finalizado" equalEx false)
                     , Bovino::class)
                     .flatMapObservable { it.toObservable() }
                     .filter {
@@ -259,18 +254,10 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
 
     fun reporteFuturosPartos(from: Date, to: Date): Single<List<ReporteFuturosPartos>> =
             db.listByExp("finca" equalEx farmID
-                    andEx (ArrayExpression.any(VAR_SERV).`in`(Expression.property("servicios")))
-                    .satisfies(VAR_FINALIZADO.equalTo(Expression.booleanValue(false)))
-                    andEx (ArrayExpression.any(VAR_SERV).`in`(Expression.property("servicios")))
-                    .satisfies(VAR_FECHAPOSPARTO.between(Expression.date(from), Expression.date(to)))
+                    andEx ("servicios[0].finalizado" equalEx false)
+                    andEx ("servicios[0].posFechaParto".betweenDates(from, to))
                     , Bovino::class)
                     .flatMapObservable { it.toObservable() }
-                    .filter {
-                        val serv = it.servicios!![0]
-                        val fechaPosParto = serv.posFechaParto!!
-                        val fechaPreparacion = fechaPosParto.add(Calendar.DATE, -30)!!
-                        !serv.finalizado!! && fechaPreparacion.after(from) && fechaPreparacion.before(to)
-                    }
                     .map {
                         val serv = it.servicios!![0]
                         ReporteFuturosPartos(it.codigo!!, it.nombre, serv.fecha!!, serv.posFechaParto!!)
@@ -279,8 +266,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
 
     fun reporteSecado(mes: Int, anio: Int): Single<List<ReporteSecado>> =
             db.listByExp("finca" equalEx farmID
-                    andEx (ArrayExpression.any(VAR_SERV).`in`(Expression.property("servicios")))
-                    .satisfies(VAR_FINALIZADO.equalTo(Expression.booleanValue(false)))
+                    andEx ("servicios[0].finalizado" equalEx false)
                     , Bovino::class)
                     .flatMapObservable { it.toObservable() }
                     .filter {
@@ -298,27 +284,22 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     }.toList().applySchedulers()
 
 
-    fun reporteSecado(from: Date, to: Date): Single<List<ReporteFuturosPartos>> =
-            db.listByExp("finca" equalEx farmID
-                    andEx (ArrayExpression.any(VAR_SERV).`in`(Expression.property("servicios")))
-                    .satisfies(VAR_FINALIZADO.equalTo(Expression.booleanValue(false)))
+    fun reporteSecado(from: Date, to: Date): Single<List<ReporteFuturosPartos>>{
+        val fromParto = from.add(Calendar.DATE, 60)
+        val toParto = to.add(Calendar.DATE, 60)
+           return db.listByExp("finca" equalEx farmID
+                    andEx ("servicios[0].finalizado" equalEx false)
+                    andEx ("servicios[0].posFechaParto".betweenDates(fromParto!!, toParto!!))
                     , Bovino::class)
                     .flatMapObservable { it.toObservable() }
-                    .filter {
-                        val serv = it.servicios!![0]
-                        val fechaPosParto = serv.posFechaParto!!
-                        val fechaSecado = fechaPosParto.add(Calendar.DATE, -60)!!
-                        !serv.finalizado!! && fechaSecado.after(from) && fechaSecado.before(to)
-                    }
                     .map {
                         val serv = it.servicios!![0]
                         ReporteFuturosPartos(it.codigo!!, it.nombre, serv.fecha!!, serv.posFechaParto!!.add(Calendar.DATE, -60)!!)
-                    }.toList().applySchedulers()
+                    }.toList().applySchedulers()}
 
     fun reportePreparacion(mes: Int, anio: Int): Single<List<ReportePreparacion>> =
             db.listByExp("finca" equalEx farmID
-                    andEx (ArrayExpression.any(VAR_SERV).`in`(Expression.property("servicios")))
-                    .satisfies(VAR_FINALIZADO.equalTo(Expression.booleanValue(false)))
+                    andEx ("servicios[0].finalizado" equalEx false)
                     , Bovino::class)
                     .flatMapObservable { it.toObservable() }
                     .filter {
@@ -336,23 +317,19 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     }.toList().applySchedulers()
 
 
-    fun reportePreparacion(from: Date, to: Date): Single<List<ReportePreparacion>> =
-            db.listByExp("finca" equalEx farmID andEx (ArrayExpression.any(VAR_SERV).`in`(Expression.property("servicios")))
-                    .satisfies(VAR_FINALIZADO.equalTo(Expression.booleanValue(false)))
-                    andEx (ArrayExpression.any(VAR_SERV).`in`(Expression.property("servicios")))
-                    .satisfies(VAR_FECHAPOSPARTO.between(Expression.date(from), Expression.date(to)))
-                    , Bovino::class)
-                    .flatMapObservable { it.toObservable() }
-                    .filter {
-                        val serv = it.servicios!![0]
-                        val fechaPosParto = serv.posFechaParto!!
-                        val fechaPreparacion = fechaPosParto.add(Calendar.DATE, -30)!!
-                        !serv.finalizado!! && fechaPreparacion.after(from) && fechaPreparacion.before(to)
-                    }
-                    .map {
-                        val serv = it.servicios!![0]
-                        ReportePreparacion(it.codigo!!, it.nombre, serv.fecha!!, serv.posFechaParto!!.add(Calendar.DATE, -30)!!)
-                    }.toList().applySchedulers()
+    fun reportePreparacion(from: Date, to: Date): Single<List<ReportePreparacion>> {
+        val fromParto = from.add(Calendar.DATE, 30)
+        val toParto = to.add(Calendar.DATE, 30)
+        return db.listByExp("finca" equalEx farmID
+                andEx ("servicios[0].finalizado" equalEx false)
+                andEx ("servicios[0].posFechaParto".betweenDates(fromParto!!, toParto!!))
+                , Bovino::class)
+                .flatMapObservable { it.toObservable() }
+                .map {
+                    val serv = it.servicios!![0]
+                    ReportePreparacion(it.codigo!!, it.nombre, serv.fecha!!, serv.posFechaParto!!.add(Calendar.DATE, -30)!!)
+                }.toList().applySchedulers()
+    }
 
     fun reporteDiasVacios(): Single<List<ReporteDiasVacios>> =
             db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra")
@@ -661,3 +638,4 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
 
     //endregion
 }
+
