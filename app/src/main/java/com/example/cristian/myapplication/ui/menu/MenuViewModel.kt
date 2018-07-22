@@ -2,6 +2,7 @@ package com.example.cristian.myapplication.ui.menu
 
 import android.arch.lifecycle.ViewModel
 import android.graphics.Color
+import android.util.Log
 import com.couchbase.lite.ArrayExpression
 import com.couchbase.lite.ArrayFunction
 import com.couchbase.lite.Expression
@@ -284,18 +285,19 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     }.toList().applySchedulers()
 
 
-    fun reporteSecado(from: Date, to: Date): Single<List<ReporteFuturosPartos>>{
+    fun reporteSecado(from: Date, to: Date): Single<List<ReporteFuturosPartos>> {
         val fromParto = from.add(Calendar.DATE, 60)
         val toParto = to.add(Calendar.DATE, 60)
-           return db.listByExp("finca" equalEx farmID
-                    andEx ("servicios[0].finalizado" equalEx false)
-                    andEx ("servicios[0].posFechaParto".betweenDates(fromParto!!, toParto!!))
-                    , Bovino::class)
-                    .flatMapObservable { it.toObservable() }
-                    .map {
-                        val serv = it.servicios!![0]
-                        ReporteFuturosPartos(it.codigo!!, it.nombre, serv.fecha!!, serv.posFechaParto!!.add(Calendar.DATE, -60)!!)
-                    }.toList().applySchedulers()}
+        return db.listByExp("finca" equalEx farmID
+                andEx ("servicios[0].finalizado" equalEx false)
+                andEx ("servicios[0].posFechaParto".betweenDates(fromParto!!, toParto!!))
+                , Bovino::class)
+                .flatMapObservable { it.toObservable() }
+                .map {
+                    val serv = it.servicios!![0]
+                    ReporteFuturosPartos(it.codigo!!, it.nombre, serv.fecha!!, serv.posFechaParto!!.add(Calendar.DATE, -60)!!)
+                }.toList().applySchedulers()
+    }
 
     fun reportePreparacion(mes: Int, anio: Int): Single<List<ReportePreparacion>> =
             db.listByExp("finca" equalEx farmID
@@ -551,8 +553,10 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     .satisfies(VAR_PARTO.notNullOrMissing())
                     , Bovino::class)
                     .flatMapObservable {
-                        it.toObservable().flatMapSingle { bovino ->
-                            bovino.servicios?.toObservable()?.filter { it.parto != null && it.parto?.intervalo != 0 }?.toList()?.map { it[0].parto!!.intervalo }
+                        it.toObservable().flatMapMaybe { bovino ->
+                            bovino.servicios?.toObservable()?.filter { it.parto != null && it.parto?.intervalo != 0 && it.parto?.intervalo != null }?.firstElement()?.map {
+                                it.parto!!.intervalo
+                            }
                         }
                     }.toList()
                     .flatMapMaybe {
@@ -616,12 +620,20 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                                 }
                     }.count().applySchedulers()
 
-    fun reporteVacunas(from: Date, to: Date): Single<List<RegistroVacuna>> =
+    fun reporteVacunas(from: Date, to: Date): Single<List<ReporteVacunas>> =
             db.listByExp("idFinca" equalEx farmID
                     andEx "fecha".betweenDates(from, to)
-                    , RegistroVacuna::class, orderBy = arrayOf("fecha" orderEx DESCENDING)).applySchedulers()
+                    , RegistroVacuna::class, orderBy = arrayOf("fecha" orderEx DESCENDING))
+                    .flatMapObservable {
+                        it.toObservable()
+                    }.flatMap { reg ->
+                        reg.bovinos?.toObservable()?.flatMapMaybe { db.oneById(it, Bovino::class) }
+                                ?.map {
+                                    ReporteVacunas(it.codigo!!, it.nombre, reg.fecha!!, reg.nombre!!)
+                                }
+                    }.toList().applySchedulers()
 
-    fun reporteVacunas(mes: Int, anio: Int): Single<List<RegistroVacuna>> =
+    fun reporteVacunas(mes: Int, anio: Int): Single<List<ReporteVacunas>> =
             db.listByExp("idFinca" equalEx farmID, RegistroVacuna::class, orderBy = arrayOf("fecha" orderEx DESCENDING))
                     .flatMapObservable {
                         it.toObservable().filter {
@@ -632,8 +644,12 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                             val year = cal.get(Calendar.YEAR)
                             month == mes && year == anio
                         }
-                    }.toList()
-                    .applySchedulers()
+                    }.flatMap { reg ->
+                        reg.bovinos?.toObservable()?.flatMapMaybe { db.oneById(it, Bovino::class) }
+                                ?.map {
+                                    ReporteVacunas(it.codigo!!, it.nombre, reg.fecha!!, reg.nombre!!)
+                                }
+                    }.toList().applySchedulers()
 
 
     //endregion
