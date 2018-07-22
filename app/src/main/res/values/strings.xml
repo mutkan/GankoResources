@@ -465,7 +465,7 @@
     <string-array name="output_type">
         <item>Salida</item>
     </string-array>
-    
+
     <string-array name="months">
         <item>Enero</item>
         <item>Febrero</item>

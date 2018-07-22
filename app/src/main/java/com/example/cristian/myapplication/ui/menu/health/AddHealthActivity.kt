@@ -263,8 +263,8 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                     }
                     .subscribeBy(
                             onNext = {
-                                // NotificationWork.notify(NotificationWork.TYPE_HEALTH,"Sanidad", diagnosis.text(),it.first,
-                                //        it.second,TimeUnit.HOURS)
+                                 NotificationWork.notify(NotificationWork.TYPE_HEALTH,"Sanidad", diagnosis.text(),it.first,
+                                        it.second,TimeUnit.HOURS)
                                 toast("Sanidad agregada exitosamente")
                                 finish()
                             },

@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.cristian.myapplication.R
+import com.example.cristian.myapplication.data.models.ProxStates
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.RecentHealthAdapter
 import com.example.cristian.myapplication.ui.menu.MenuViewModel
@@ -51,14 +52,18 @@ class RecentHealthFragment : Fragment(), Injectable {
         dis add adapterRecent.clickHealth
                 .subscribeBy(
                         onNext = {
-                            startActivity<HealthDetailActivity>(HealthDetailActivity.ID_HEALTH to  it._id!!, ID_FIRST_HEALTH to it.idDosisUno!! )
+                            if (it.estadoProximo == ProxStates.APPLIED) {
+                                startActivity<HealthDetailActivity>(HealthDetailActivity.ID_HEALTH to it._id!!, ID_FIRST_HEALTH to it.idDosisUno!!)
+                            }else{
+                                toast("No hay más aplicaciones de sanidad")
+                            }
                         }
                 )
 
         dis add viewModel.getHealth(idFinca)
                 .subscribeBy(
                         onSuccess = {
-                            if(it.isEmpty()) emptyHealthText.visibility = View.VISIBLE else emptyHealthText.visibility = View.GONE
+                            if (it.isEmpty()) emptyHealthText.visibility = View.VISIBLE else emptyHealthText.visibility = View.GONE
                             adapterRecent.health = it
                         },
                         onError = {
