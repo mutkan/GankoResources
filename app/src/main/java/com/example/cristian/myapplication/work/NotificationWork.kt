@@ -1,12 +1,17 @@
 package com.example.cristian.myapplication.work
 
+import android.content.Intent
 import android.support.v4.app.NotificationCompat
 import android.support.v4.app.NotificationManagerCompat
 import androidx.work.*
 import com.example.cristian.myapplication.App
 
 import com.example.cristian.myapplication.R
+import com.example.cristian.myapplication.ui.menu.MenuActivity
 import java.util.concurrent.TimeUnit
+import android.app.PendingIntent
+
+
 
 
 class NotificationWork:Worker(){
@@ -24,10 +29,14 @@ class NotificationWork:Worker(){
             else -> R.drawable.ic_notify_vac
         }
 
+        val intent =Intent(applicationContext, MenuActivity::class.java)
+        val pendingIntent = PendingIntent.getActivity(applicationContext, 0, intent, 0)
+
         val notification = NotificationCompat.Builder(applicationContext, App.CHANNEL_ID)
                 .setSmallIcon(icon)
                 .setContentTitle(title)
                 .setContentText(msg)
+                .setContentIntent(pendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .build()
         NotificationManagerCompat.from(applicationContext)

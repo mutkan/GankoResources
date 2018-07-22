@@ -121,6 +121,7 @@ class MenuActivity : AppCompatActivity(),Injectable,HasSupportFragmentInjector {
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
+
         toggle.syncState()
     }
 
