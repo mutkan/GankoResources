@@ -52,11 +52,7 @@ class RecentHealthFragment : Fragment(), Injectable {
         dis add adapterRecent.clickHealth
                 .subscribeBy(
                         onNext = {
-                            if (it.estadoProximo == ProxStates.APPLIED) {
-                                startActivity<HealthDetailActivity>(HealthDetailActivity.ID_HEALTH to it._id!!, ID_FIRST_HEALTH to it.idDosisUno!!)
-                            }else{
-                                toast("No hay más aplicaciones de sanidad")
-                            }
+                            startActivity<HealthDetailActivity>(HealthDetailActivity.ID_HEALTH to it._id!!, ID_FIRST_HEALTH to it.idDosisUno!!)
                         }
                 )
 
