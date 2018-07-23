@@ -29,10 +29,11 @@ class NotificationWork:Worker(){
             TYPE_MANAGEMENT -> {R.drawable.ic_notify_man}
             else -> {R.drawable.ic_notify_vac}
         }
-        val intent: Intent = when (type){
-           TYPE_HEALTH->   Intent( applicationContext, MenuActivity::class.java)
-           TYPE_MANAGEMENT-> Intent(applicationContext,MenuActivity::class.java)
-           else -> Intent(applicationContext,MenuActivity::class.java)
+        val intent: Intent = Intent( applicationContext, MenuActivity::class.java)
+            when (type){
+           TYPE_HEALTH-> intent.putExtra("fragment",0)
+           TYPE_MANAGEMENT-> intent.putExtra("fragment",1)
+           else -> intent.putExtra("fragment",2)
         }
 
         val color = when(type){
@@ -41,13 +42,13 @@ class NotificationWork:Worker(){
             else -> Color.RED
         }
 
-        val pendingIntent = PendingIntent.getActivity(applicationContext, 0, intent, 0)
+        val pendingIntent = PendingIntent.getActivity(applicationContext, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT)
 
         val notification = NotificationCompat.Builder(applicationContext, App.CHANNEL_ID)
                 .setSmallIcon(icon)
                 .setContentTitle(title)
                 .setContentText(msg)
-                .setVibrate(longArrayOf(500,8000,500))
+                .setVibrate(longArrayOf(500,800,500))
                 .setColor(color)
                 .setLights(Color.GREEN, 3000, 3000)
                 .setContentIntent(pendingIntent)
