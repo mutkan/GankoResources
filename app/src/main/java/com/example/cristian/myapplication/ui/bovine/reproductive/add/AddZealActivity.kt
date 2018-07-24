@@ -59,12 +59,11 @@ class AddZealActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
                 }
                 .flatMapSingle { bovino ->
                     val ultimoCelo = bovino.celos!![0].toStringFormat()
-                    Single.create<Unit> { e ->
-                        val dif = nextZealDate.time - Date().time
-                        val notifyTime = TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS) - 1
-                        e.onSuccess(NotificationWork.notify(0, "Recordatorio Celo", "Es probable que el bovino ${bovino.nombre} entre en celo mañana, fecha de ultimo celo $ultimoCelo", idBovino,
-                                notifyTime, TimeUnit.DAYS))
-                    }
+                    val dif = nextZealDate.time - Date().time
+                    val notifyTime = TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS) - 1
+                    Single.just(NotificationWork.notify(0, "Recordatorio Celo", "Es probable que el bovino ${bovino.nombre} entre en celo mañana, fecha de ultimo celo $ultimoCelo", idBovino,
+                            notifyTime, TimeUnit.DAYS))
+
                 }
                 .subscribeBy(
                         onNext = {
