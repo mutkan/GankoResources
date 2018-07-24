@@ -29,14 +29,14 @@ class ReproductiveBvnViewModel @Inject constructor(private val db: CouchRx, priv
             .map { Pair(it.celos, it.fechaProximoCelo) }
             .applySchedulers()
 
-    fun insertZeal(idBovino: String, zeal: Date, nextZeal: Date): Maybe<Unit> = db.oneById(idBovino, Bovino::class)
+    fun insertZeal(idBovino: String, zeal: Date, nextZeal: Date): Maybe<Bovino> = db.oneById(idBovino, Bovino::class)
             .flatMapSingleElement { b ->
                 Log.d("BOVINO", b.toString())
                 val celos = b.celos?.toMutableList() ?: mutableListOf()
                 b.fechaProximoCelo = nextZeal
                 celos.add(0, zeal)
                 b.celos = celos.toList()
-                db.update(idBovino, b)
+                db.update(idBovino, b).map { b }
             }
             .applySchedulers()
 

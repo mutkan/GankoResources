@@ -12,10 +12,13 @@ import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.bovine.reproductive.ListZealFragment.Companion.ID_BOVINO
 import com.example.cristian.myapplication.ui.bovine.reproductive.ReproductiveBvnViewModel
 import com.example.cristian.myapplication.util.*
+import com.example.cristian.myapplication.work.NotificationWork
 import com.jakewharton.rxbinding2.view.clicks
+import io.reactivex.Single
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_add_zeal.*
 import java.util.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class AddZealActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, Injectable {
@@ -53,6 +56,15 @@ class AddZealActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
                 .flatMapMaybe {
                     Log.d("IDBOVINO", idBovino)
                     viewModel.insertZeal(idBovino, it[0].toDate(), nextZealDate)
+                }
+                .flatMapSingle { bovino ->
+                    val ultimoCelo = bovino.celos!![0].toStringFormat()
+                    Single.create<Unit> { e ->
+                        val dif = nextZealDate.time - Date().time
+                        val notifyTime = TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS) - 1
+                        e.onSuccess(NotificationWork.notify(0, "Recordatorio Celo", "Es probable que el bovino ${bovino.nombre} entre en celo mañana, fecha de ultimo celo $ultimoCelo", idBovino,
+                                notifyTime, TimeUnit.DAYS))
+                    }
                 }
                 .subscribeBy(
                         onNext = {
