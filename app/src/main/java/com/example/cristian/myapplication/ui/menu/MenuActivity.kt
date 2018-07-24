@@ -26,6 +26,7 @@ import com.example.cristian.myapplication.ui.menu.management.ManageFragment
 import com.example.cristian.myapplication.ui.menu.vaccines.VaccinesFragment
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
+import com.example.cristian.myapplication.util.fixColor
 import com.example.cristian.myapplication.util.putFragment
 import com.jakewharton.rxbinding2.widget.RxSearchView
 import com.jakewharton.rxbinding2.widget.queryTextChanges
@@ -79,27 +80,34 @@ class MenuActivity : AppCompatActivity(),Injectable,HasSupportFragmentInjector {
             }
         }
         recycler.layoutManager = gridManager
+
         if (intent.extras!= null) {
 
             Log.d("pending","pendiente")
             when (intent.extras.get("fragment")){
                 0->{
-                    putFragment(R.id.content_frame, HealthFragment.instance())}
-                1-> putFragment(R.id.content_frame, ManageFragment.instance())
-                else -> putFragment(R.id.content_frame, VaccinesFragment.instance())
+                    fixColor(8)
+                    supportActionBar?.setTitle(R.string.health)
+                    putFragment(R.id.content_frame, HealthFragment.instance()) }
+                1->{
+                    fixColor(5)
+                    supportActionBar?.setTitle(R.string.management)
+                    putFragment(R.id.content_frame, ManageFragment.instance())
+                }
+                else -> {
+                    fixColor(7)
+                    supportActionBar?.setTitle(R.string.vaccines)
+                    putFragment(R.id.content_frame, VaccinesFragment.instance())}
             }}
-         else {
+        else {
             clickOnMenu(viewModel.content, true)
             putFragment(R.id.content_frame, ListBovineFragment.instance())
         }
-
 
     }
 
     override fun onResume() {
         super.onResume()
-
-
 
         dis add adapter.clickMenu
                 .subscribe {
@@ -118,9 +126,6 @@ class MenuActivity : AppCompatActivity(),Injectable,HasSupportFragmentInjector {
                         }
                     }
                 }
-
-
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -137,6 +142,7 @@ class MenuActivity : AppCompatActivity(),Injectable,HasSupportFragmentInjector {
 
         return super.onCreateOptionsMenu(menu)
     }
+
 
 
     override fun onPostCreate(savedInstanceState: Bundle?) {

@@ -117,7 +117,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     .applySchedulers()
 
     fun getHealth(idFinca: String): Single<List<Sanidad>> =
-            db.listByExp("idFinca" equalEx idFinca, Sanidad::class)
+            db.listByExp("idFinca" equalEx idFinca, Sanidad::class, orderBy = arrayOf("fecha" orderEx DESCENDING))
                     .applySchedulers()
 
 

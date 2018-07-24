@@ -36,12 +36,6 @@ class NotificationWork:Worker(){
            else -> intent.putExtra("fragment",2)
         }
 
-        val color = when(type){
-            TYPE_HEALTH -> Color.BLUE
-            TYPE_MANAGEMENT -> Color.YELLOW
-            else -> Color.RED
-        }
-
         val pendingIntent = PendingIntent.getActivity(applicationContext, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT)
 
         val notification = NotificationCompat.Builder(applicationContext, App.CHANNEL_ID)
@@ -49,7 +43,6 @@ class NotificationWork:Worker(){
                 .setContentTitle(title)
                 .setContentText(msg)
                 .setVibrate(longArrayOf(500,800,500))
-                .setColor(color)
                 .setLights(Color.GREEN, 3000, 3000)
                 .setContentIntent(pendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
