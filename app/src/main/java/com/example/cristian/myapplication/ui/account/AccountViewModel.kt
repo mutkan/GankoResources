@@ -14,21 +14,21 @@ import javax.inject.Inject
 class AccountViewModel @Inject constructor(private val loginClient: LoginClient,
                                            val session: UserSession) : ViewModel() {
 
-    fun Login(userLogin: UserLogin): Observable<String> = loginClient.login(userLogin)
+/*    fun Login(userLogin: UserLogin): Observable<String> = loginClient.login(userLogin)
             .flatMap { validateResponse(it) }
             .flatMap {
                 saveSession(it)
             }
             .applySchedulers()
-
-//    fun Login(userLogin: UserLogin): Observable<String> = Observable.create<String> {
-//        if(userLogin.email == "cristian" && userLogin.password == "1234"){
-//            session.logged = true
-//            it.onNext(userLogin.email)
-//        }
-//        else throw Throwable("Usuario Inactivo, Contacte a su Proveedor")
-//    }
-//            .applySchedulers()
+*/
+    fun Login(userLogin: UserLogin): Observable<String> = Observable.create<String> {
+        if(userLogin.username == "cristian" && userLogin.pass == "1234"){
+            session.logged = true
+            it.onNext(userLogin.username)
+        }
+        else throw Throwable("Usuario Inactivo, Contacte a su Proveedor")
+    }
+            .applySchedulers()
 
 
 //    fun validateState(loginResponse: LoginResponse) = Observable.create<String>{
