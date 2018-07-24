@@ -12,10 +12,11 @@ import com.example.cristian.myapplication.ui.menu.MenuActivity
 import java.util.concurrent.TimeUnit
 import android.app.PendingIntent
 import android.graphics.Color
+import com.example.cristian.myapplication.ui.bovine.reproductive.ReproductiveBvnActivity
 import com.example.cristian.myapplication.ui.menu.MenuNavigation
 
 
-class NotificationWork:Worker(){
+class NotificationWork : Worker() {
 
     override fun doWork(): Result {
 
@@ -24,19 +25,20 @@ class NotificationWork:Worker(){
         val id = inputData.getString(ARG_ID, null)
         val type = inputData.getInt(ARG_TYPE, 0)
 
-        val icon = when(type){
-            TYPE_HEALTH -> {R.drawable.ic_notify_hea}
-            TYPE_MANAGEMENT -> {R.drawable.ic_notify_man}
-            else -> {R.drawable.ic_notify_vac}
+        val icon = when (type) {
+            TYPE_HEALTH -> R.drawable.ic_notify_hea
+            TYPE_MANAGEMENT -> R.drawable.ic_notify_man
+            TYPE_VACCINES -> R.drawable.ic_notify_vac
+            else -> R.drawable.ic_bovine
         }
-        val intent: Intent = Intent( applicationContext, MenuActivity::class.java)
-            when (type){
-           TYPE_HEALTH-> intent.putExtra("fragment",0)
-           TYPE_MANAGEMENT-> intent.putExtra("fragment",1)
-           else -> intent.putExtra("fragment",2)
+        val intent: Intent = when (type) {
+            TYPE_HEALTH -> Intent(applicationContext, MenuActivity::class.java).apply { putExtra("fragment", 0) }
+            TYPE_MANAGEMENT -> Intent(applicationContext, MenuActivity::class.java).apply { putExtra("fragment", 1) }
+            TYPE_VACCINES -> Intent(applicationContext, MenuActivity::class.java).apply { putExtra("fragment", 2) }
+            else -> Intent(applicationContext, ReproductiveBvnActivity::class.java).apply { putExtra("idBovino", id) }
         }
 
-        val color = when(type){
+        val color = when (type) {
             TYPE_HEALTH -> Color.BLUE
             TYPE_MANAGEMENT -> Color.YELLOW
             else -> Color.RED
@@ -48,7 +50,7 @@ class NotificationWork:Worker(){
                 .setSmallIcon(icon)
                 .setContentTitle(title)
                 .setContentText(msg)
-                .setVibrate(longArrayOf(500,800,500))
+                .setVibrate(longArrayOf(500, 800, 500))
                 .setColor(color)
                 .setLights(Color.GREEN, 3000, 3000)
                 .setContentIntent(pendingIntent)
@@ -69,10 +71,11 @@ class NotificationWork:Worker(){
         const val TYPE_HEALTH = 0
         const val TYPE_MANAGEMENT = 1
         const val TYPE_VACCINES = 2
+        const val TYPE_REPRODUCTIVE = 3
 
-        fun notify(type:Int, title:String, msg:String, docId:String, time:Long, timeUnit: TimeUnit){
+        fun notify(type: Int, title: String, msg: String, docId: String, time: Long, timeUnit: TimeUnit) {
 
-            val data: Data = mapOf( docId to ARG_ID,
+            val data: Data = mapOf(docId to ARG_ID,
                     ARG_TITLE to title,
                     ARG_DESCRIPTION to msg,
                     ARG_TYPE to type)

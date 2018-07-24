@@ -20,6 +20,7 @@ import com.example.cristian.myapplication.ui.bovine.reproductive.ListServiceFrag
 import com.example.cristian.myapplication.ui.bovine.reproductive.ListServiceFragment.Companion.TYPE_DIAGNOSIS
 import com.example.cristian.myapplication.ui.bovine.reproductive.ReproductiveBvnViewModel
 import com.example.cristian.myapplication.util.*
+import com.example.cristian.myapplication.work.NotificationWork
 import com.jakewharton.rxbinding2.view.clicks
 import com.jakewharton.rxbinding2.widget.checkedChanges
 import io.reactivex.Observable
@@ -27,6 +28,7 @@ import io.reactivex.Single
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_add_diagnosis.*
 import java.util.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class AddDiagnosisActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDateSetListener {
@@ -102,6 +104,27 @@ class AddDiagnosisActivity : AppCompatActivity(), Injectable, DatePickerDialog.O
                 .flatMapMaybe {
                     val servicio = if (type == TYPE_DIAGNOSIS) setDiagnosis(it) else setNovedad(it)
                     viewModel.updateServicio(idBovino, servicio)
+                }
+                .flatMapSingle { bovino ->
+                    val ultimoServicio = bovino.servicios!![0]
+                    val fechaUltimoServicio = ultimoServicio.fecha!!.toStringFormat()
+                    return@flatMapSingle if (type == TYPE_DIAGNOSIS && ultimoServicio.diagnostico?.confirmacion == true) {
+                        val posibleParto = ultimoServicio.posFechaParto!!
+                        val dif = posibleParto.time - Date().time
+                        val notifyTimeSecado = TimeUnit.DAYS.convert((dif - 60), TimeUnit.MILLISECONDS)
+                        val notifyTimePreparacion = TimeUnit.DAYS.convert((dif - 30), TimeUnit.MILLISECONDS)
+                        val notifyTimeParto = TimeUnit.DAYS.convert((dif - 1), TimeUnit.MILLISECONDS)
+                        Single.just({
+                            NotificationWork.notify(NotificationWork.TYPE_REPRODUCTIVE, "Recordatorio Secado", "Comenzar secado del bovino: ${bovino.nombre}, fecha del servicio: $fechaUltimoServicio, posible parto: ${posibleParto.toStringFormat()}", idBovino,
+                                    notifyTimeSecado, TimeUnit.DAYS)
+                            NotificationWork.notify(NotificationWork.TYPE_REPRODUCTIVE, "Recordatorio Preparación", "Comenzar preparación para el parto del bovino: ${bovino.nombre}, fecha del servicio: $fechaUltimoServicio, posible parto: ${posibleParto.toStringFormat()}", idBovino,
+                                    notifyTimePreparacion, TimeUnit.DAYS)
+                            NotificationWork.notify(NotificationWork.TYPE_REPRODUCTIVE, "Recordatorio Parto", "Es probable que el parto del bovino: ${bovino.nombre} sea mañana, fecha del servicio: $fechaUltimoServicio, posible parto: ${posibleParto.toStringFormat()}", idBovino,
+                                    notifyTimeParto, TimeUnit.DAYS)
+                        })
+                    } else {
+                        Single.just(Unit)
+                    }
                 }
                 .subscribeBy(
                         onNext = {

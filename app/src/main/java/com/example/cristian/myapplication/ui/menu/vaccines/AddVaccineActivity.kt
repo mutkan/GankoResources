@@ -29,6 +29,7 @@ import com.example.cristian.myapplication.ui.groups.SelectActivity.Companion.REQ
 import com.example.cristian.myapplication.ui.menu.MenuViewModel
 import com.example.cristian.myapplication.util.*
 import com.example.cristian.myapplication.work.NotificationWork
+import com.example.cristian.myapplication.work.NotificationWork.Companion.TYPE_VACCINES
 import com.jakewharton.rxbinding2.view.clicks
 import com.jakewharton.rxbinding2.widget.checkedChanges
 import io.reactivex.Observable
@@ -197,7 +198,7 @@ class AddVaccineActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
                 otherDose.text() != "" -> otherDose.text().toInt()
                 else -> null
             }
-            e.onSuccess(NotificationWork.notify(0, "Recordatorio Vacunas", "Aplicación de vacuna contra $nombreVacuna, $dosis ml", docId,
+            e.onSuccess(NotificationWork.notify(TYPE_VACCINES, "Recordatorio Vacunas", "Aplicación de vacuna contra $nombreVacuna, $dosis ml", docId,
                     notifyTime, TimeUnit.HOURS))
         } else {
             e.onSuccess(Unit)

@@ -13,6 +13,7 @@ import com.example.cristian.myapplication.ui.bovine.reproductive.ListZealFragmen
 import com.example.cristian.myapplication.ui.bovine.reproductive.ReproductiveBvnViewModel
 import com.example.cristian.myapplication.util.*
 import com.example.cristian.myapplication.work.NotificationWork
+import com.example.cristian.myapplication.work.NotificationWork.Companion.TYPE_REPRODUCTIVE
 import com.jakewharton.rxbinding2.view.clicks
 import io.reactivex.Single
 import io.reactivex.rxkotlin.subscribeBy
@@ -61,7 +62,7 @@ class AddZealActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
                     val ultimoCelo = bovino.celos!![0].toStringFormat()
                     val dif = nextZealDate.time - Date().time
                     val notifyTime = TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS) - 1
-                    Single.just(NotificationWork.notify(0, "Recordatorio Celo", "Es probable que el bovino ${bovino.nombre} entre en celo mañana, fecha de ultimo celo $ultimoCelo", idBovino,
+                    Single.just(NotificationWork.notify(TYPE_REPRODUCTIVE, "Recordatorio Celo", "Es probable que el bovino ${bovino.nombre} entre en celo mañana, fecha de ultimo celo $ultimoCelo", idBovino,
                             notifyTime, TimeUnit.DAYS))
 
                 }
