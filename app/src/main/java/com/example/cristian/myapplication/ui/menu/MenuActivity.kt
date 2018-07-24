@@ -3,12 +3,14 @@ package com.example.cristian.myapplication.ui.menu
 import android.app.SearchManager
 import android.arch.lifecycle.ViewModelProvider
 import android.content.Context
+import android.databinding.DataBindingUtil
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
+import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
@@ -18,6 +20,7 @@ import android.view.MenuItem
 import android.widget.SearchView
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.R.id.*
+import com.example.cristian.myapplication.databinding.ActivityMenuBinding
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.MenuAdapter
 import com.example.cristian.myapplication.ui.menu.bovine.ListBovineFragment
@@ -72,6 +75,8 @@ class MenuActivity : AppCompatActivity(),Injectable,HasSupportFragmentInjector {
         recycler.adapter = adapter
         adapter.items = viewModel.data
 
+        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, GravityCompat.END)
+
         val gridManager: GridLayoutManager = GridLayoutManager(this, 2)
         gridManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup(){
             override fun getSpanSize(position: Int): Int = when(viewModel.data[position].type){
@@ -87,7 +92,6 @@ class MenuActivity : AppCompatActivity(),Injectable,HasSupportFragmentInjector {
             when (intent.extras.get("fragment")){
                 0->{
                     fixColor(8)
-                    supportActionBar?.setTitle(R.string.health)
                     putFragment(R.id.content_frame, HealthFragment.instance()) }
                 1->{
                     fixColor(5)
@@ -105,6 +109,7 @@ class MenuActivity : AppCompatActivity(),Injectable,HasSupportFragmentInjector {
         }
 
     }
+
 
     override fun onResume() {
         super.onResume()
@@ -142,8 +147,6 @@ class MenuActivity : AppCompatActivity(),Injectable,HasSupportFragmentInjector {
 
         return super.onCreateOptionsMenu(menu)
     }
-
-
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
