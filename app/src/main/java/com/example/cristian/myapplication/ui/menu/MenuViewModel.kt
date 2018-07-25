@@ -1,11 +1,13 @@
 package com.example.cristian.myapplication.ui.menu
 
+import android.arch.lifecycle.Transformations.map
 import android.arch.lifecycle.ViewModel
 import android.graphics.Color
 import android.util.Log
 import com.couchbase.lite.ArrayExpression
 import com.couchbase.lite.ArrayFunction
 import com.couchbase.lite.Expression
+import com.example.cristian.myapplication.BR.ceba
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.db.CouchRx
 import com.example.cristian.myapplication.data.models.*
@@ -118,7 +120,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     .applySchedulers()
 
     fun getHealth(idFinca: String): Single<List<Sanidad>> =
-            db.listByExp("idFinca" equalEx idFinca, Sanidad::class)
+            db.listByExp("idFinca" equalEx idFinca, Sanidad::class, orderBy = arrayOf("fecha" orderEx DESCENDING))
                     .applySchedulers()
 
 
@@ -653,5 +655,32 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
 
 
     //endregion
-}
 
+    //Reporte sanidad
+
+    fun reporteSanidad(from: Date, to: Date): Single<List<Sanidad>> =
+            db.listByExp("finca" equalEx farmID andEx "fecha".betweenDates(from, to), Sanidad::class
+                    , orderBy = arrayOf("fecha" orderEx DESCENDING))
+                    .applySchedulers()
+
+    fun reporteSanidad(mes: Int, anio: Int): Single<List<Sanidad>> =
+            db.listByExp("finca" equalEx farmID, Sanidad::class
+                    , orderBy = arrayOf("fecha" orderEx DESCENDING))
+                    .flatMapObservable {
+                        it.toObservable().filter {
+                            val fechaSanidad = it.fecha!!
+                            val cal = Calendar.getInstance()
+                            cal.timeInMillis = fechaSanidad.time
+                            val month = cal.get(Calendar.MONTH)
+                            val year = cal.get(Calendar.YEAR)
+                            month == mes && year == anio
+                        }
+                    }.toList()
+                    .applySchedulers()
+
+    //Reporte ganancia de peso
+
+    //  fun reporteGananciaPeso(from: Date, to:Date): Single<List<ReporteGananciaPeso>> =
+
+
+}
