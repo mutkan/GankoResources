@@ -3,7 +3,6 @@ package com.example.cristian.myapplication.ui.menu
 import android.app.SearchManager
 import android.arch.lifecycle.ViewModelProvider
 import android.content.Context
-import android.databinding.DataBindingUtil
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
@@ -19,8 +18,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.SearchView
 import com.example.cristian.myapplication.R
-import com.example.cristian.myapplication.R.id.*
-import com.example.cristian.myapplication.databinding.ActivityMenuBinding
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.MenuAdapter
 import com.example.cristian.myapplication.ui.menu.bovine.ListBovineFragment
@@ -31,12 +28,10 @@ import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
 import com.example.cristian.myapplication.util.fixColor
 import com.example.cristian.myapplication.util.putFragment
-import com.jakewharton.rxbinding2.widget.RxSearchView
 import com.jakewharton.rxbinding2.widget.queryTextChanges
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
-import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.activity_menu.*
 import javax.inject.Inject
 

@@ -48,7 +48,7 @@ class AddCebaBvnActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListen
         dis add btnAddCebaBvn.clicks()
                 .flatMap { validateForm(R.string.empty_fields, dateAddCebaBvn.text.toString(), weightAddCebaBvn.text.toString()) }
                 .flatMapSingle {
-                    viewModel.addCeba(Ceba(null, null, null, "", idBovino, it[0].toDate(), it[1].toFloat(), 0f,false))
+                    viewModel.addCeba(Ceba(null, null, null, "","", idBovino, it[0].toDate(), it[1].toFloat(), 0f,false))
                 }
                 .subscribeBy(
                         onNext = {

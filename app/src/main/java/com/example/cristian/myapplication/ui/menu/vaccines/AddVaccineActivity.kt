@@ -28,14 +28,18 @@ import com.example.cristian.myapplication.ui.groups.SelectActivity
 import com.example.cristian.myapplication.ui.groups.SelectActivity.Companion.REQUEST_SELECT
 import com.example.cristian.myapplication.ui.menu.MenuViewModel
 import com.example.cristian.myapplication.util.*
+import com.example.cristian.myapplication.work.NotificationWork
+import com.example.cristian.myapplication.work.NotificationWork.Companion.TYPE_VACCINES
 import com.jakewharton.rxbinding2.view.clicks
 import com.jakewharton.rxbinding2.widget.checkedChanges
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_add_vaccine.*
 import org.jetbrains.anko.contentView
 import org.jetbrains.anko.startActivityForResult
 import java.util.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class AddVaccineActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDateSetListener {
@@ -113,12 +117,14 @@ class AddVaccineActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
                 .flatMap { validateFields() }
                 .flatMapSingle {
                     val vaccine = createVaccine(it)
-                    if (edit) viewModel.inserVaccine(vaccine).flatMap {
-                        viewModel.updateVaccine(previousVaccine.apply { estadoProximo = APPLIED })
+                    if (edit) viewModel.inserVaccine(vaccine).flatMap { id ->
+                        viewModel.updateVaccine(previousVaccine.apply { estadoProximo = APPLIED }).map { id }
                     }
                     else viewModel.inserFirstVaccine(vaccine)
                 }
-
+                .flatMapSingle { docId ->
+                    setNotification(docId)
+                }
                 .subscribeBy(
                         onNext = {
                             finish()
@@ -171,6 +177,34 @@ class AddVaccineActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
                 )
 
     }
+
+    private fun setNotification(docId: String): Single<Unit>? = Single.create<Unit> { e ->
+        if (revaccinationRequired.isChecked) {
+            val proximaAplicacion = nextApplicationVaccine.text().toLong()
+            val unidadTiempo = timeUnitsSpinner.selectedItem.toString()
+            val proxTime = when (unidadTiempo) {
+                "Horas" -> proximaAplicacion
+                "Días" -> proximaAplicacion * 24
+                "Meses" -> proximaAplicacion * 24 * 30
+                else -> proximaAplicacion * 24 * 30 * 12
+            }
+            val notifyTime: Long = when (proxTime) {
+                in 3..24 -> proxTime - 1
+                else -> proxTime - 24
+            }
+            val nombreVacuna = otherVaccine.text()
+            val dosis = when {
+                dosisVacuna != -1 -> dosisVacuna
+                otherDose.text() != "" -> otherDose.text().toInt()
+                else -> null
+            }
+            e.onSuccess(NotificationWork.notify(TYPE_VACCINES, "Recordatorio Vacunas", "Aplicación de vacuna contra $nombreVacuna, $dosis ml", docId,
+                    notifyTime, TimeUnit.HOURS))
+        } else {
+            e.onSuccess(Unit)
+        }
+    }
+
 
     private fun hideNextApplicationGroup() {
         TransitionManager.beginDelayedTransition(contentView!! as ViewGroup)
