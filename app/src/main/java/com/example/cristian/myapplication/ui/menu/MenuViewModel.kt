@@ -687,7 +687,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
 
     //Reporte ganancia de peso
 
-  //  fun reporteGananciaPeso(from: Date, to:Date): Single<List<ReporteGananciaPeso>> =
+
 
 
 
