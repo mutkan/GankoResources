@@ -51,14 +51,14 @@ class RecentHealthFragment : Fragment(), Injectable {
         dis add adapterRecent.clickHealth
                 .subscribeBy(
                         onNext = {
-                            startActivity<HealthDetailActivity>(HealthDetailActivity.ID_HEALTH to  it._id!!, ID_FIRST_HEALTH to it.idDosisUno!! )
+                            startActivity<HealthDetailActivity>(HealthDetailActivity.ID_HEALTH to it._id!!, ID_FIRST_HEALTH to it.idAplicacionUno!!)
                         }
                 )
 
         dis add viewModel.getHealth(idFinca)
                 .subscribeBy(
                         onSuccess = {
-                            if(it.isEmpty()) emptyHealthText.visibility = View.VISIBLE else emptyHealthText.visibility = View.GONE
+                            if (it.isEmpty()) emptyHealthText.visibility = View.VISIBLE else emptyHealthText.visibility = View.GONE
                             adapterRecent.health = it
                         },
                         onError = {

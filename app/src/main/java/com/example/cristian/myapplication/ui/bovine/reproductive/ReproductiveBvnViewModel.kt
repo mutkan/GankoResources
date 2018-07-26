@@ -29,14 +29,14 @@ class ReproductiveBvnViewModel @Inject constructor(private val db: CouchRx, priv
             .map { Pair(it.celos, it.fechaProximoCelo) }
             .applySchedulers()
 
-    fun insertZeal(idBovino: String, zeal: Date, nextZeal: Date): Maybe<Unit> = db.oneById(idBovino, Bovino::class)
+    fun insertZeal(idBovino: String, zeal: Date, nextZeal: Date): Maybe<Bovino> = db.oneById(idBovino, Bovino::class)
             .flatMapSingleElement { b ->
                 Log.d("BOVINO", b.toString())
                 val celos = b.celos?.toMutableList() ?: mutableListOf()
                 b.fechaProximoCelo = nextZeal
                 celos.add(0, zeal)
                 b.celos = celos.toList()
-                db.update(idBovino, b)
+                db.update(idBovino, b).map { b }
             }
             .applySchedulers()
 
@@ -45,7 +45,7 @@ class ReproductiveBvnViewModel @Inject constructor(private val db: CouchRx, priv
                 val servicios = b.servicios!!.toMutableList()
                 servicios[0] = servicio
                 b.servicios = servicios.toList()
-                db.update(idBovino, b)
+                db.update(idBovino, b).map { b }
             }.applySchedulers()
 
     fun addParto(idBovino: String, servicio: Servicio) = db.oneById(idBovino, Bovino::class)
@@ -102,12 +102,12 @@ class ReproductiveBvnViewModel @Inject constructor(private val db: CouchRx, priv
                     }
 
 
-    fun insertService(idBovino: String, servicio: Servicio): Single<Unit> = db.oneById(idBovino, Bovino::class)
+    fun insertService(idBovino: String, servicio: Servicio): Single<Bovino> = db.oneById(idBovino, Bovino::class)
             .flatMapSingle { bovino ->
                 val s = bovino.servicios?.toMutableList() ?: mutableListOf()
                 s.add(0,servicio)
                 bovino.servicios = s.toList()
-                db.update(idBovino, bovino)
+                db.update(idBovino, bovino).map { bovino }
             }.applySchedulers()
 
     fun getAllBulls(): Single<List<Bovino>> = db.listByExp("finca" equalEx farmId andEx ("genero" equalEx "Macho"), Bovino::class)

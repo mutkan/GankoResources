@@ -8,6 +8,7 @@ import java.util.*
 class Ceba(var _id: String? = null,
            var _sequence:Long?=null,
            var type:String?=null,
+           var finca: String? = null,
            var tipo: String? = null,
            var bovino: String? = null,
            var fecha: Date? = null,

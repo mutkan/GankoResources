@@ -9,26 +9,29 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
+import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.SearchView
 import com.example.cristian.myapplication.R
-import com.example.cristian.myapplication.R.id.*
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.MenuAdapter
 import com.example.cristian.myapplication.ui.menu.bovine.ListBovineFragment
+import com.example.cristian.myapplication.ui.menu.health.HealthFragment
+import com.example.cristian.myapplication.ui.menu.management.ManageFragment
+import com.example.cristian.myapplication.ui.menu.vaccines.VaccinesFragment
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
+import com.example.cristian.myapplication.util.fixColor
 import com.example.cristian.myapplication.util.putFragment
-import com.jakewharton.rxbinding2.widget.RxSearchView
 import com.jakewharton.rxbinding2.widget.queryTextChanges
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
-import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.activity_menu.*
 import javax.inject.Inject
 
@@ -67,6 +70,8 @@ class MenuActivity : AppCompatActivity(),Injectable,HasSupportFragmentInjector {
         recycler.adapter = adapter
         adapter.items = viewModel.data
 
+        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, GravityCompat.END)
+
         val gridManager: GridLayoutManager = GridLayoutManager(this, 2)
         gridManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup(){
             override fun getSpanSize(position: Int): Int = when(viewModel.data[position].type){
@@ -75,10 +80,31 @@ class MenuActivity : AppCompatActivity(),Injectable,HasSupportFragmentInjector {
             }
         }
         recycler.layoutManager = gridManager
-        clickOnMenu(viewModel.content, true)
-        putFragment(R.id.content_frame,ListBovineFragment.instance())
+
+        if (intent.extras!= null) {
+
+            Log.d("pending","pendiente")
+            when (intent.extras.get("fragment")){
+                0->{
+                    fixColor(8)
+                    putFragment(R.id.content_frame, HealthFragment.instance()) }
+                1->{
+                    fixColor(5)
+                    supportActionBar?.setTitle(R.string.management)
+                    putFragment(R.id.content_frame, ManageFragment.instance())
+                }
+                else -> {
+                    fixColor(7)
+                    supportActionBar?.setTitle(R.string.vaccines)
+                    putFragment(R.id.content_frame, VaccinesFragment.instance())}
+            }}
+        else {
+            clickOnMenu(viewModel.content, true)
+            putFragment(R.id.content_frame, ListBovineFragment.instance())
+        }
 
     }
+
 
     override fun onResume() {
         super.onResume()
@@ -100,7 +126,6 @@ class MenuActivity : AppCompatActivity(),Injectable,HasSupportFragmentInjector {
                         }
                     }
                 }
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -118,9 +143,9 @@ class MenuActivity : AppCompatActivity(),Injectable,HasSupportFragmentInjector {
         return super.onCreateOptionsMenu(menu)
     }
 
-
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
+
         toggle.syncState()
     }
 
@@ -139,6 +164,7 @@ class MenuActivity : AppCompatActivity(),Injectable,HasSupportFragmentInjector {
         val MENU1 = 1
         val MENU2 = 2
         val NOMENU = 3
+
     }
 
     fun noMenu(){
