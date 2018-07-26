@@ -197,8 +197,8 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                         }
 
                         viewModel.addHealth(
-                                Sanidad(null, null, null, farmId, dateAddHealth.text.toString().toDate(),
-                                        fechaProxima1(dateAddHealth.text().toDate(), applicacion_number.text().toInt(), frequency.text().toInt()),
+                                Sanidad(null, null, null, farmId, spinnerEvent.selectedItem.toString(), frecuencyOptionsHealth.selectedItem.toString(),
+                                        dateAddHealth.text.toString().toDate(), fechaProxima1(dateAddHealth.text().toDate(), applicacion_number.text().toInt(), frequency.text().toInt()),
                                         frequency.text().toInt(), spinnerEvent.selectedItem.toString(),
                                         if (binding.otherSelect) other.text() else null, diagnosis.text(), treatment_health.text(),
                                         product_health.text(), dosis.text(), null, applicacion_number.text().toInt(),
@@ -251,8 +251,8 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                         }
 
                         viewModel.addFirstHealth(
-                                Sanidad(null, null, null, farmId, dateAddHealth.text.toString().toDate(),
-                                        fechaProxima1(dateAddHealth.text().toDate(), applicacion_number.text().toInt(), frequency.text().toInt()),
+                                Sanidad(null, null, null, farmId, spinnerEvent.selectedItem.toString(), frecuencyOptionsHealth.selectedItem.toString(),
+                                        dateAddHealth.text.toString().toDate(), fechaProxima1(dateAddHealth.text().toDate(), applicacion_number.text().toInt(), frequency.text().toInt()),
                                         frequency.text().toInt(), spinnerEvent.selectedItem.toString(),
                                         if (binding.otherSelect) other.text() else null, diagnosis.text(), treatment_health.text(),
                                         product_health.text(), dosis.text(), null, applicacion_number.text().toInt(), 1,

@@ -11,6 +11,8 @@ class Sanidad(
         var _sequence: Long? = null,
         var type:String ? = null,
         var idFinca: String? = null,
+        var titulo: String? = null,
+        var descripcion: String? = null,
         var fecha: Date? = null,
         var fechaProxima: Date? = null, //Calculo automatico
         var frecuencia: Int? = null,
