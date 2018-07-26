@@ -173,6 +173,8 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                         }
                 )
 
+        unidadTiempo = frecuencyOptionsHealth.selectedItem.toString()
+
         if (edit) {
             dis add btnFinalizeHealth.clicks()
                     .flatMap {
@@ -312,7 +314,7 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
     }
 
     private fun fechaProxima1(fecha: Date, aplicaciones: Int, frecuencia: Int): Date? {
-        unidadTiempo = frecuencyOptionsHealth.selectedItem.toString()
+       // unidadTiempo = frecuencyOptionsHealth.selectedItem.toString()
         return if (aplicaciones != 1) {
             when (unidadTiempo) {
                 "Horas" -> fecha.add(Calendar.HOUR, frecuencia)
