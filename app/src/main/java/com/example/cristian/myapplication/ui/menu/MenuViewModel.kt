@@ -662,7 +662,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
 
     //region REPORTES MANEJO
 
-    lateinit var registro: RegistroManejo
+/* lateinit var registro: RegistroManejo
     fun reporteManejo(from: Date, to: Date): Single<List<ReporteManejo>> =
             db.listByExp("idFinca" equalEx farmID andEx ("fecha".betweenDates(from, to))
                     andEx ("estadoProximo" equalEx APPLIED), RegistroManejo::class)
@@ -677,6 +677,11 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                         ReporteManejo(codigo, registro.tipo!!, registro.fecha!!, registro.tipo!!, registro.tratamiento!!, registro.producto!!)
                     }
                     .toList().applySchedulers()
+*
+*
+* */
+
+
     //endregion
 
     /*
