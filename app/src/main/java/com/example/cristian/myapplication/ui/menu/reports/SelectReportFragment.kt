@@ -1,9 +1,11 @@
 package com.example.cristian.myapplication.ui.menu.reports
 
 
+import android.arch.lifecycle.ViewModelProvider
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,9 +18,21 @@ import com.jakewharton.rxbinding2.widget.itemSelections
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.fragment_select_report.*
 import android.widget.ArrayAdapter
+import com.example.cristian.myapplication.di.Injectable
+import com.example.cristian.myapplication.ui.menu.MenuViewModel
+import com.example.cristian.myapplication.util.add
+import com.example.cristian.myapplication.util.buildViewModel
+import com.jakewharton.rxbinding2.view.clicks
+import org.jetbrains.anko.support.v4.toast
+import java.util.*
+import javax.inject.Inject
 
 
-class SelectReportFragment : Fragment() {
+class SelectReportFragment : Fragment(), Injectable {
+
+    @Inject
+    lateinit var factory: ViewModelProvider.Factory
+    val viewmodel: MenuViewModel by lazy { buildViewModel<MenuViewModel>(factory) }
 
     lateinit var binding: FragmentSelectReportBinding
 
@@ -33,6 +47,19 @@ class SelectReportFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+
+        dis add fabView.clicks()
+                .flatMapSingle {
+                    val from = Date()
+                    val to: Date by lazy { from.add(Calendar.DATE, 7)!! }
+                    viewmodel.reporteManejo(from, to)
+                }
+                .subscribeBy(
+                        onNext = {
+                            Log.d("REPORTE", it.toString())
+                            toast("FUNCAAA !!"+ it.toString())
+                        }
+                )
 
         dis add typeDateGroup.checkedChanges()
                 .subscribeBy(

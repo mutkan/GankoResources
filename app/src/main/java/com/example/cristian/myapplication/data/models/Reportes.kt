@@ -59,3 +59,12 @@ data class ReporteCelos(
         val nombre: String?,
         val fechaCelo: Date
 )
+
+data class ReporteManejo(
+        val codigo: String,
+        val nombre: String,
+        val fechaEvento: Date,
+        val evento: String,
+        val tratamiento: String,
+        val producto: String
+)

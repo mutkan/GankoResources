@@ -8,6 +8,7 @@ import com.couchbase.lite.Expression
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.db.CouchRx
 import com.example.cristian.myapplication.data.models.*
+import com.example.cristian.myapplication.data.models.ProxStates.Companion.APPLIED
 import com.example.cristian.myapplication.data.models.ProxStates.Companion.NOT_APPLIED
 import com.example.cristian.myapplication.data.preferences.UserSession
 import com.example.cristian.myapplication.util.*
@@ -198,11 +199,11 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
             db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProxima".lte(from)) andEx ("estadoProximo" equalEx NOT_APPLIED), RegistroVacuna::class, orderBy = arrayOf("fecha" orderEx ASCENDING)).applySchedulers()
 
     fun getVaccinesByDosisUno(idDosisUno: String): Single<List<RegistroVacuna>> =
-            db.listByExp("idFinca" equalEx farmID andEx ("idDosisUno" equalEx idDosisUno), RegistroVacuna::class, orderBy = arrayOf("fecha" orderEx DESCENDING)).applySchedulers()
+            db.listByExp("idFinca" equalEx farmID andEx ("idAplicacionUno" equalEx idDosisUno), RegistroVacuna::class, orderBy = arrayOf("fecha" orderEx DESCENDING)).applySchedulers()
 
     //endregion
     fun getHealthApplied(idDosisUno: String): Single<List<Sanidad>> =
-            db.listByExp("idFinca" equalEx farmID andEx ("idDosisUno" equalEx idDosisUno), Sanidad::class).applySchedulers()
+            db.listByExp("idFinca" equalEx farmID andEx ("idAplicacionUno" equalEx idDosisUno), Sanidad::class).applySchedulers()
 
 
     //region Manejo
@@ -219,12 +220,10 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
             db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProxima".lte(from)) andEx ("estadoProximo" equalEx NOT_APPLIED), RegistroManejo::class).applySchedulers()
 
     fun getManagesByDosisUno(idDosisUno: String): Single<List<RegistroManejo>> =
-            db.listByExp("idFinca" equalEx farmID andEx ("idDosisUno" equalEx idDosisUno), RegistroManejo::class).applySchedulers()
+            db.listByExp("idFinca" equalEx farmID andEx ("idAplicacionUno" equalEx idDosisUno), RegistroManejo::class).applySchedulers()
 
     //endregion
 
-
-    //endregion
 
     //region ReportesReproductivo
     private val VAR_CONF = ArrayExpression.variable("servicio.diagnostico.confirmacion")
@@ -660,4 +659,33 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
 
 
     //endregion
+
+    //region REPORTES MANEJO
+
+    lateinit var registro: RegistroManejo
+    fun reporteManejo(from: Date, to: Date): Single<List<ReporteManejo>> =
+            db.listByExp("idFinca" equalEx farmID andEx ("fecha".betweenDates(from, to))
+                    andEx ("estadoProximo" equalEx APPLIED), RegistroManejo::class)
+                    .flatMapObservable { it.toObservable() }
+                    .map {
+                        registro = it
+                        val bovinos = it.bovinos
+                        bovinos!!.toObservable()
+                    }
+                    .map {
+                        val codigo = it.toString()
+                        ReporteManejo(codigo, registro.tipo!!, registro.fecha!!, registro.tipo!!, registro.tratamiento!!, registro.producto!!)
+                    }
+                    .toList().applySchedulers()
+    //endregion
+
+    /*
+    fun reporteFuturosPartos(from: Date, to: Date): Single<List<ReporteFuturosPartos>> =
+
+                    .map {
+                        val serv = it.servicios!![0]
+                        ReporteFuturosPartos(it.codigo!!, it.nombre, serv.fecha!!, serv.posFechaParto!!)
+                    }.toList().applySchedulers()
+    * */
+
 }

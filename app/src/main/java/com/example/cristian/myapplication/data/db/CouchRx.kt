@@ -278,7 +278,7 @@ class CouchRx @Inject constructor(private val db: Database
     fun <T : Any> insertDosisUno(doc: T): Single<String> = Single.create {
         val document = objectToDocument(doc)
         document.setArray("channels", MutableArray().addString(session.userId))
-        document.setString("idDosisUno", document.id)
+        document.setString("idAplicacionUno", document.id)
         db.save(document)
         it.onSuccess(document.id)
     }
