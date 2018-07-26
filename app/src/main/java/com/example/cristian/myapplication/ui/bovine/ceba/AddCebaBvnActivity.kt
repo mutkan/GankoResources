@@ -82,7 +82,7 @@ class AddCebaBvnActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListen
 
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        dateAddCebaBvn.text = "$dayOfMonth/$month/$year"
+        dateAddCebaBvn.text = "$dayOfMonth/$month+1/$year"
     }
 
     companion object {

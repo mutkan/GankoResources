@@ -128,10 +128,11 @@ class MeadowFragment : Fragment(), Injectable {
                             noButton { }
                         }.show()
                     } else {
-                        val options = listOf("Administrar", "Remover")
+                        val options = listOf("Administrar", "Alertas","Remover")
                         selector("Seleccione una opcion", options) { _, i ->
                             when (i) {
                                 0 -> startActivity<ManageMeadowActivity>(MEADOWID to meadow._id!!)
+                                1 -> startActivity<ManageMeadowAlertActivity>(MEADOWID to meadow._id!!)
                                 else -> {
                                     meadow.isUsedMeadow = false
                                     meadow.isEmptyMeadow = true

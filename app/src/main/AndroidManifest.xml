@@ -101,8 +101,11 @@
         <activity
             android:name=".ui.menu.health.detail.HealthDetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ui.menu.management.detail.ManageDetailActivity"
+        <activity
+            android:name=".ui.menu.management.detail.ManageDetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ui.menu.meadow.ManageMeadowAlertActivity" />
+        <activity android:name=".ui.menu.meadow.AddMeadowAlertActivity"></activity>
     </application>
 
 </manifest>

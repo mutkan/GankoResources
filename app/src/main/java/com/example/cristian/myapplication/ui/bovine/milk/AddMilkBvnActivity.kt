@@ -80,6 +80,7 @@ class AddMilkBvnActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListen
 
         dis add dateAddMilkBovine.clicks()
                 .subscribe { datePicker.show() }
+
     }
 
     override fun onDateSet(p0: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
