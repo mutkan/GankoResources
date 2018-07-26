@@ -95,7 +95,7 @@ data class ReporteGananciaPeso(
 data class ReporteVacunas(
         val codigo: String,
         val nombre: String?,
-        val fechaVacunacion: String,
+        val fechaVacunacion: Date,
         val vacunaAplicada: String
 )
 

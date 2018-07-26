@@ -12,6 +12,7 @@ import com.example.cristian.myapplication.ui.menu.MenuActivity
 import java.util.concurrent.TimeUnit
 import android.app.PendingIntent
 import android.graphics.Color
+import com.example.cristian.myapplication.ui.bovine.reproductive.ReproductiveBvnActivity
 import com.example.cristian.myapplication.ui.menu.MenuNavigation
 import java.util.*
 
@@ -26,25 +27,18 @@ class NotificationWork : Worker() {
         val type = inputData.getInt(ARG_TYPE, 0)
 
         val icon = when (type) {
-            TYPE_HEALTH -> {
-                R.drawable.ic_notify_hea
-            }
-            TYPE_MANAGEMENT -> {
-                R.drawable.ic_notify_man
-            }
-            TYPE_MEADOW -> {
-                R.drawable.ic_notify_man
-            }
-            else -> {
-                R.drawable.ic_notify_vac
-            }
+            TYPE_HEALTH -> R.drawable.ic_notify_hea
+            TYPE_MANAGEMENT -> R.drawable.ic_notify_man
+            TYPE_VACCINES -> R.drawable.ic_notify_vac
+            TYPE_MEADOW -> R.drawable.ic_prairies
+            else -> R.drawable.ic_bovine
         }
-        val intent: Intent = Intent(applicationContext, MenuActivity::class.java)
-        when (type) {
-            TYPE_HEALTH -> intent.putExtra("fragment", 0)
-            TYPE_MANAGEMENT -> intent.putExtra("fragment", 1)
-            TYPE_MEADOW -> intent.putExtra("fragment", 3)
-            else -> intent.putExtra("fragment", 2)
+        val intent: Intent = when (type) {
+            TYPE_HEALTH -> Intent(applicationContext, MenuActivity::class.java).apply { putExtra("fragment", 0) }
+            TYPE_MANAGEMENT -> Intent(applicationContext, MenuActivity::class.java).apply { putExtra("fragment", 1) }
+            TYPE_VACCINES -> Intent(applicationContext, MenuActivity::class.java).apply { putExtra("fragment", 2) }
+            TYPE_MEADOW -> Intent(applicationContext, MenuActivity::class.java).apply { putExtra("fragment", 4) }
+            else -> Intent(applicationContext, ReproductiveBvnActivity::class.java).apply { putExtra("idBovino", id) }
         }
 
         val pendingIntent = PendingIntent.getActivity(applicationContext, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT)
@@ -74,7 +68,9 @@ class NotificationWork : Worker() {
         const val TYPE_HEALTH = 0
         const val TYPE_MANAGEMENT = 1
         const val TYPE_VACCINES = 2
-        const val TYPE_MEADOW = 3
+        const val TYPE_REPRODUCTIVE = 3
+        const val TYPE_MEADOW = 4
+
 
         fun notify(type: Int, title: String, msg: String, docId: String, time: Long, timeUnit: TimeUnit) {
 

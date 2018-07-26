@@ -190,7 +190,7 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
         }
         val tratamiento = treatment.text.toString()
         val aplicaciones = numberAplications.text.toString().toInt()
-        var fechaProximo = if (aplicaciones != 0) {
+        var fechaProximo = if (aplicaciones > 1) {
             when (unidadTiempo) {
                 "Horas" -> fechaEvento.add(Calendar.HOUR, frecuencia)
                 "Días" -> fechaEvento.add(Calendar.DATE, frecuencia)
@@ -201,13 +201,15 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
             null
         }
 
-        var numAplicacion: Int
-
-        if (edit) {
-            numAplicacion = previousManage.aplicacion!!.plus(1)
+        var numAplicacion = if (edit) {
+            if (previousManage.numeroAplicaciones!! > previousManage.aplicacion!!){
+                previousManage.aplicacion!!.plus(1)
+            } else {
+                previousManage.aplicacion!!
+            }
         }
         else{
-            numAplicacion = 1
+            1
         }
 
 
@@ -216,7 +218,7 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                     aplicacion = 1, tipo = evento, titulo = evento, otro = otro, tratamiento = tratamiento, descripcion = tratamiento, producto = producto, observaciones = observaciones,
                     valorProducto = precioProducto, valorAsistencia = precioAsistencia, grupo = group, bovinos = bovines, estadoProximo = NOT_APPLIED)
         } else {
-            RegistroManejo(idDosisUno = previousManage.idDosisUno, idFinca = farmId, fecha = fechaEvento, fechaProxima = fechaProximo, frecuencia = frecuencia, unidadFrecuencia = unidadTiempo, numeroAplicaciones = aplicaciones,
+            RegistroManejo(idAplicacionUno = previousManage.idAplicacionUno, idFinca = farmId, fecha = fechaEvento, fechaProxima = if (aplicaciones > numAplicacion){fechaProximo} else {null}, frecuencia = frecuencia, unidadFrecuencia = unidadTiempo, numeroAplicaciones = aplicaciones,
                     aplicacion = numAplicacion, tipo = evento, titulo = evento, otro = otro, tratamiento = tratamiento, descripcion = tratamiento, producto = producto, observaciones = observaciones,
                     valorProducto = precioProducto, valorAsistencia = precioAsistencia, grupo = group, bovinos = bovines, estadoProximo = NOT_APPLIED, noBovinos = noBovines)
         }

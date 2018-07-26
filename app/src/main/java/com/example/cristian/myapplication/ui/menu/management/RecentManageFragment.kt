@@ -62,7 +62,7 @@ class RecentManageFragment : Fragment(), Injectable {
         dis add adapter.clickManage
                 .subscribeBy(
                         onNext = {
-                            startActivity<ManageDetailActivity>(ManageDetailActivity.ID_MANAGE to it._id!!, ID_FIRST_MANAGE to it.idDosisUno!!)
+                            startActivity<ManageDetailActivity>(ManageDetailActivity.ID_MANAGE to it._id!!, ID_FIRST_MANAGE to it.idAplicacionUno!!)
                         }
                 )
 

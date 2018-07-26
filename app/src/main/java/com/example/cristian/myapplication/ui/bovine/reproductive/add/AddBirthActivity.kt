@@ -17,6 +17,7 @@ import com.example.cristian.myapplication.ui.bovine.reproductive.ListServiceFrag
 import com.example.cristian.myapplication.ui.bovine.reproductive.ListServiceFragment.Companion.ARG_SERVICE
 import com.example.cristian.myapplication.ui.bovine.reproductive.ReproductiveBvnViewModel
 import com.example.cristian.myapplication.util.*
+import com.example.cristian.myapplication.work.NotificationWork
 import com.jakewharton.rxbinding2.view.clicks
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -99,6 +100,11 @@ class AddBirthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDat
                 .flatMapMaybe {
                     val servicio = setParto(it)
                     viewModel.addParto(idBovino, servicio)
+                }.flatMapSingle {bovino ->
+                    Single.just({
+                        NotificationWork.notify(NotificationWork.TYPE_REPRODUCTIVE, "Recordatorio Días vacios", "El bovino ${bovino.nombre} cumplirá 45 días vacios mañana", idBovino,
+                                44, TimeUnit.DAYS)
+                    })
                 }
                 .subscribeBy(
                         onNext = {

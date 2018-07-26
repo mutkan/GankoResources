@@ -126,8 +126,8 @@ class MenuActivity : AppCompatActivity(), Injectable, HasSupportFragmentInjector
             when (intent.extras.get("fragment")) {
                 0 -> clickOnMenu(9)
                 1 -> clickOnMenu(6)
-                3 -> clickOnMenu(11)
-                else -> clickOnMenu(8)
+                2 -> clickOnMenu(8)
+                else -> clickOnMenu(11)
             }
         } else {
             clickOnMenu(viewModel.content, true)
