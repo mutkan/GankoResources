@@ -114,7 +114,13 @@ class AddServiceActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
                 }
                 .flatMapSingle {
                     val servicio = createService(it)
-                    viewModel.insertService(idBovino, servicio)
+                    if (serviceType.checkedRadioButtonId == R.id.naturalMating)
+                        viewModel.insertService(idBovino, servicio)
+                    else
+                        viewModel.insertService(idBovino, servicio).flatMap { bovino ->
+                            val pajilla = bullCodeOrStrawSpinner.selectedItem as Straw
+                            viewModel.markStrawAsUsed(pajilla._id!!).map { bovino }
+                        }
                 }
                 .flatMapSingle { bovino ->
                     val ultimoServicio = bovino.servicios!![0].fecha!!.toStringFormat()

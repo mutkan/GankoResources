@@ -220,7 +220,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="@{sanidad.unidadesFrecuencia}"
+            android:text="@{sanidad.unidadFrecuencia}"
             app:layout_constraintBottom_toBottomOf="@+id/health_frequency"
             app:layout_constraintStart_toEndOf="@+id/health_frequency"
             tools:text="días" />

@@ -110,6 +110,9 @@ class ReproductiveBvnViewModel @Inject constructor(private val db: CouchRx, priv
                 db.update(idBovino, bovino).map { bovino }
             }.applySchedulers()
 
+    fun markStrawAsUsed(strawID: String): Single<Unit>
+    = db.oneById(strawID,Straw::class).flatMapSingle { db.update(it._id!!,it.apply { state = Straw.USED_STRAW }) }.applySchedulers()
+
     fun getAllBulls(): Single<List<Bovino>> = db.listByExp("finca" equalEx farmId andEx ("genero" equalEx "Macho"), Bovino::class)
             .flatMap {
                 it.toObservable().filter {
@@ -122,7 +125,7 @@ class ReproductiveBvnViewModel @Inject constructor(private val db: CouchRx, priv
 
             .applySchedulers()
 
-    fun getAllStraws(): Single<List<Straw>> = db.listByExp("idFarm" equalEx farmId, Straw::class)
+    fun getAllStraws(): Single<List<Straw>> = db.listByExp("idFarm" equalEx farmId andEx ("state" equalEx Straw.UNUSED_STRAW), Straw::class)
             .applySchedulers()
 
 
