@@ -11,6 +11,12 @@
         <variable
             name="isGroup"
             type="Boolean"/>
+        <variable
+            name="clickSkipManage"
+            type="io.reactivex.subjects.PublishSubject"/>
+        <variable
+            name="clickApplyManage"
+            type="io.reactivex.subjects.PublishSubject"/>
         <import type="android.view.View"/>
     </data>
 
@@ -62,7 +68,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="24dp"
             android:layout_marginTop="16dp"
-            android:text='@{""+manage.bovino.size()}'
+            android:text='@{""+manage.bovinos.size()}'
             android:visibility='@{isGroup == true ? View.GONE : View.VISIBLE}'
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/manage_observations"
@@ -114,7 +120,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="24dp"
-            app:dateFormat="@{manage.fechaProx}"
+            app:dateFormat="@{manage.fechaProxima}"
             android:textColor="@color/check_filter"
             app:layout_constraintBottom_toBottomOf="@+id/event_name"
             app:layout_constraintEnd_toEndOf="parent"
@@ -140,6 +146,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginTop="45dp"
             android:text="@string/apply"
+            android:onClick='@{()->clickApplyManage.onNext(manage)}'
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/manage_observations" />
 
@@ -149,6 +156,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/skip"
+            android:onClick='@{()->clickSkipManage.onNext(manage)}'
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btnApply" />
 

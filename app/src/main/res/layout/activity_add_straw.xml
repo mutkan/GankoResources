@@ -74,6 +74,18 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/layetteText" />
 
+            <TextView
+                android:id="@+id/purposeText"
+                style="@style/textview_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="24dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/purpose"
+                app:layout_constraintStart_toStartOf="@+id/origin"
+                app:layout_constraintTop_toBottomOf="@+id/origin" />
+
             <Spinner
                 android:id="@+id/spinner"
                 android:layout_width="match_parent"
@@ -162,33 +174,6 @@
                 android:ems="10"
                 android:hint="@string/money_value"
                 android:inputType="number"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/valueText" />
-
-            <TextView
-                android:id="@+id/purposeText"
-                style="@style/textview_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="24dp"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="16dp"
-                android:text="@string/purpose"
-                app:layout_constraintStart_toStartOf="@+id/origin"
-                app:layout_constraintTop_toBottomOf="@+id/origin" />
-
-            <EditText
-                android:id="@+id/purpose"
-                style="@style/edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:ems="10"
-                android:hint="@string/purpose"
-                android:inputType="text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/valueText" />

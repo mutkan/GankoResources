@@ -1,5 +1,6 @@
 package com.example.cristian.myapplication.ui.adapters
 
+import android.database.DataSetObserver
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentStatePagerAdapter
 import com.example.cristian.myapplication.R
@@ -8,10 +9,11 @@ import javax.inject.Inject
 
 class HealthAdapter @Inject constructor(val fragment: HealthFragment) : FragmentStatePagerAdapter(fragment.childFragmentManager) {
     override fun getItem(position: Int): Fragment = when(position){
-        0 -> RecentHealthFragment.instance()
+        0 ->  RecentHealthFragment.instance()
         1 -> NextHealthFragment.instance()
         else -> PendingHealthFragment.instance()
     }
+
 
     override fun getCount(): Int = 3
 

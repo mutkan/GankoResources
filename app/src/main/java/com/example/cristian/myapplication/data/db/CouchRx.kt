@@ -111,6 +111,33 @@ class CouchRx @Inject constructor(private val db: Database
             .map { dictionaryToObject(it.first, it.second, it.third, kClass) }
             .toList()
 
+
+    fun <T : Any> listByExpNoType(expression: Expression, kClass: KClass<T>, limit: Int? = null, skip: Int? = null, orderBy:Array<Ordering> = emptyArray()): Single<List<T>> = Single.create<ResultSet> {
+        val query = QueryBuilder
+                .select(SelectResult.all(), SelectResult.expression(Meta.id), SelectResult.expression(Meta.sequence))
+                .from(DataSource.database(db))
+                .where(expression)
+                .orderBy(*orderBy)
+
+
+        val result: ResultSet = if (limit != null && skip != null)
+            query.limit(Expression.intValue(limit), Expression.intValue(skip)).execute()
+        else if(limit!=null)
+            query.limit(Expression.intValue(limit)).execute()
+        else query.execute()
+
+        it.onSuccess(result)
+    }
+            .flatMapObservable { it.toObservable() }
+            .map {
+                val id = it.getString("id")
+                val sequence = it.getLong("sequence")
+                val content = it.getDictionary(dbName)
+                Triple(id, sequence, content)
+            }
+            .map { dictionaryToObject(it.first, it.second, it.third, kClass) }
+            .toList()
+
     fun ListObsByQuery(query: Query): Observable<ResultSet> = Observable.create { emitter ->
         query.addChangeListener {
             if (it.error == null) emitter.onNext(it.results)
@@ -118,14 +145,16 @@ class CouchRx @Inject constructor(private val db: Database
         }
     }
 
-    fun <T : Any> listObsByExp(expression: Expression, kClass: KClass<T>): Observable<List<T>> = Observable.create<ResultSet> { emitter ->
+    fun <T : Any> listObsByExp(expression: Expression, kClass: KClass<T>, orderBy: Array<Ordering> = emptyArray()): Observable<List<T>> = Observable.create<ResultSet> { emitter ->
         val query = QueryBuilder
                 .select(SelectResult.all(), SelectResult.expression(Meta.id), SelectResult.expression(Meta.sequence))
                 .from(DataSource.database(db))
                 .where(expression andEx ("type" equalEx kClass.simpleName.toString()))
+                .orderBy(*orderBy)
         query.addChangeListener {
             if (it.error == null) emitter.onNext(it.results)
             else emitter.onError(it.error)
+
         }
     }
             .flatMap { result ->
@@ -246,7 +275,7 @@ class CouchRx @Inject constructor(private val db: Database
         return mapper.convertValue(map, kClass.java)
     }
 
-    fun <T : Any> insertManage(doc: T): Single<String> = Single.create {
+    fun <T : Any> insertDosisUno(doc: T): Single<String> = Single.create {
         val document = objectToDocument(doc)
         document.setArray("channels", MutableArray().addString(session.userId))
         document.setString("idDosisUno", document.id)

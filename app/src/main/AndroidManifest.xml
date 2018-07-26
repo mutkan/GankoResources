@@ -3,6 +3,7 @@
     package="com.example.cristian.myapplication">
 
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -62,11 +63,13 @@
 
         <activity android:name=".ui.bovine.ceba.CebaBvnActivity" />
         <activity android:name=".ui.bovine.ceba.AddCebaBvnActivity" />
-        <activity android:name=".ui.bovine.reproductive.ReproductiveBvnActivity" android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.bovine.reproductive.ReproductiveBvnActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ui.bovine.reproductive.add.AddZealActivity" />
         <activity android:name=".ui.bovine.reproductive.add.AddServiceActivity" />
-        <activity android:name=".ui.bovine.reproductive.add.AddDiagnosisActivity"/>
-        <activity android:name=".ui.bovine.reproductive.add.AddBirthActivity"/>
+        <activity android:name=".ui.bovine.reproductive.add.AddDiagnosisActivity" />
+        <activity android:name=".ui.bovine.reproductive.add.AddBirthActivity" />
         <activity android:name=".ui.menu.straw.StrawAddActivity" />
 
         <provider
@@ -88,9 +91,21 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ui.groups.AddGroupActivity" />
         <activity android:name=".ui.groups.BovineSelectedActivity" />
-        <activity android:name=".ui.menu.milk.AddMilkActivity"/>
-        <activity android:name=".ui.menu.vaccines.AddVaccineActivity"/>
-        <activity android:name=".ui.manage.AddManageActivity"/>
+        <activity android:name=".ui.menu.milk.AddMilkActivity" />
+        <activity android:name=".ui.menu.vaccines.AddVaccineActivity" />
+        <activity android:name=".ui.menu.management.AddManageActivity" />
+        <activity android:name=".ui.groups.ReApplyActivity" />
+        <activity
+            android:name=".ui.menu.vaccines.detail.VaccineDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.menu.health.detail.HealthDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.menu.management.detail.ManageDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ui.menu.meadow.ManageMeadowAlertActivity" />
+        <activity android:name=".ui.menu.meadow.AddMeadowAlertActivity"></activity>
     </application>
 
 </manifest>

@@ -3,6 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <data>
+        <variable
+            name="isEmpty"
+            type="android.databinding.ObservableBoolean"/>
+        <import type="android.view.View"/>
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -68,6 +72,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/historicalTxt"
             tools:listitem="@layout/template_zeal" />
+        <TextView
+            android:id="@+id/emptyMsg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility='@{isEmpty ? View.VISIBLE : View.GONE}'
+            android:text="No hay celos registrados"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fabAddZeal"
@@ -76,11 +92,11 @@
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:clickable="true"
+            android:visibility="gone"
             app:fabSize="normal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_add_black"
-            android:layout_marginRight="8dp" />
+            app:srcCompat="@drawable/ic_add_black" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>

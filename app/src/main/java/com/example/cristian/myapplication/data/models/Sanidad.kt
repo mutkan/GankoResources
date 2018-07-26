@@ -13,7 +13,7 @@ class Sanidad(
         var idFinca: String? = null,
         var fecha: Date? = null,
         var fechaProxima: Date? = null, //Calculo automatico
-        var frecuencia: Float? = null,
+        var frecuencia: Int? = null,
         var evento: String? = null,
         var otra: String? = null,
         var diagnostico: String? = null,
@@ -29,7 +29,9 @@ class Sanidad(
         var grupo: Grupo? = null,
         var bovinos: List<String> = listOf(),
         var UnidadesFrecuencia: String? = null,
-        var proximaAplicacion: Int? = null
+        var noBovinos: List<String> = listOf(),
+        var estadoProximo:Int = ProxStates.NOT_APPLIED,
+        var idDosisUno:String?=null
 
 ): Parcelable{
 

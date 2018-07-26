@@ -2,6 +2,7 @@ package com.example.cristian.myapplication.ui.bovine.reproductive
 
 import android.arch.lifecycle.ViewModelProvider
 import android.databinding.DataBindingUtil
+import android.databinding.ObservableBoolean
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -31,11 +32,13 @@ class ListServiceFragment : Fragment(), Injectable {
     private val idBovino: String by lazy { arguments!!.getString(ARG_ID, "") }
     private val tipo:Int by lazy { arguments!!.getInt(FRAGMENT_TYPE, TYPE_SERVICES) }
     private val dis: LifeDisposable = LifeDisposable(this)
+    private val isEmpty:ObservableBoolean = ObservableBoolean(false)
     @Inject
     lateinit var adapter: ListServiceBovineAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_list_service, container, false)
+        binding.isEmpty = isEmpty
         return binding.root
     }
 
@@ -53,6 +56,8 @@ class ListServiceFragment : Fragment(), Injectable {
                     .subscribeBy(
                             onSuccess = {
                                 adapter.services = it
+                                isEmpty.set(it.isEmpty())
+
                             }
                     )
 
@@ -85,6 +90,7 @@ class ListServiceFragment : Fragment(), Injectable {
                     .subscribeBy(
                             onSuccess = {
                                 adapter.services = it
+                                isEmpty.set(it.isEmpty())
                             }
                     )
         }

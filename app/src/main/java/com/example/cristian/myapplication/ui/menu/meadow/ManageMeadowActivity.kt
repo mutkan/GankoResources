@@ -2,9 +2,12 @@ package com.example.cristian.myapplication.ui.menu.meadow
 
 import android.arch.lifecycle.ViewModelProvider
 import android.databinding.DataBindingUtil
+import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.view.View
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.Pradera
@@ -40,6 +43,9 @@ class ManageMeadowActivity : AppCompatActivity(), Injectable, HasSupportFragment
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_manage_meadow)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        val color = ContextCompat.getColor(this, R.color.prairie_primary)
+        supportActionBar?.setBackgroundDrawable(ColorDrawable(color))
         manageTab.setupWithViewPager(managePager)
     }
 

@@ -29,7 +29,7 @@ class SelectBovineFragment : Fragment(), Injectable {
     val viewModel: GroupViewModel by lazy { buildViewModel<GroupViewModel>(factory) }
 
     val createGroup: Boolean by lazy { arguments?.getBoolean(ARG_EDITABLE) ?: false }
-    val selecteds: HashMap<String, Boolean> = HashMap()
+    var selecteds: HashMap<String, Boolean> = HashMap()
     val adapter: SelectAdapter = SelectAdapter()
 
     val dis:LifeDisposable = LifeDisposable(this)
@@ -72,7 +72,7 @@ class SelectBovineFragment : Fragment(), Injectable {
 
         dis add btnList.clicks()
                 .subscribe {
-                    startActivity<BovineSelectedActivity>(BovineSelectedActivity.EXTRA_SELECTED to selecteds)
+                    startActivityForResult<BovineSelectedActivity>(7895,BovineSelectedActivity.EXTRA_SELECTED to selecteds.keys.toTypedArray())
                 }
 
         dis add adapter.onSelectBovine
@@ -86,8 +86,17 @@ class SelectBovineFragment : Fragment(), Injectable {
 
     }
 
-    private fun hideBar() {
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == 7895 && resultCode == Activity.RESULT_OK) {
+            selecteds = HashMap(data!!.getStringArrayExtra(BovineSelectedActivity.DATA_ITEMS).associateBy({it},{true}))
+            val size = selecteds.size
+            number.text = "$size"
+            if (size == 0) hideBar()
+        }
+    }
+
+    private fun hideBar() {
         TransitionManager.beginDelayedTransition(bottomBar)
         bottomBar.visibility = View.GONE
         bottomBar.translationY = resources.getDimension(R.dimen.select_bar)

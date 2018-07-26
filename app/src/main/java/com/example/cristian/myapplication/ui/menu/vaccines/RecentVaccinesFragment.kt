@@ -16,6 +16,8 @@ import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.VaccineAdapter
 import com.example.cristian.myapplication.ui.adapters.VaccineAdapter.Companion.TYPE_VACCINATIONS
 import com.example.cristian.myapplication.ui.menu.MenuViewModel
+import com.example.cristian.myapplication.ui.menu.vaccines.detail.VaccineDetailActivity
+import com.example.cristian.myapplication.ui.menu.vaccines.detail.VaccineDetailActivity.Companion.ID_FIRST_VACCINE
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
 import com.jakewharton.rxbinding2.view.clicks
@@ -24,13 +26,6 @@ import kotlinx.android.synthetic.main.fragment_recent_vaccines.*
 import org.jetbrains.anko.support.v4.startActivity
 import javax.inject.Inject
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-
-/**
- * A simple [Fragment] subclass.
- *
- */
 class RecentVaccinesFragment : Fragment(), Injectable {
 
     @Inject
@@ -58,6 +53,14 @@ class RecentVaccinesFragment : Fragment(), Injectable {
 
     override fun onResume() {
         super.onResume()
+
+        dis add adapter.clickVacuna
+                .subscribeBy(
+                        onNext = {
+                            startActivity<VaccineDetailActivity>(VaccineDetailActivity.ID_VACCINE to it._id!!, ID_FIRST_VACCINE to it.idDosisUno!!)
+                        }
+                )
+
         dis add viewModel.getVaccinations()
                 .subscribeBy(
                         onNext = {

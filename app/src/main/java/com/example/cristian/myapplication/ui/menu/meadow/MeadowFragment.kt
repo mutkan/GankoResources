@@ -49,13 +49,17 @@ class MeadowFragment : Fragment(), Injectable {
         return inflater.inflate(R.layout.fragment_meadow, container, false)
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         activity!!.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         gridMeadow.adapter = adapter
         val layout = GridLayoutManager(context, 10)
         gridMeadow.layoutManager = layout
         gridMeadow.itemAnimator.changeDuration = 0
+    }
+
+    override fun onResume() {
+        super.onResume()
 
         dis add viewModel.getMeadows(viewModel.getFarmId())
                 .subscribeBy {
@@ -124,10 +128,11 @@ class MeadowFragment : Fragment(), Injectable {
                             noButton { }
                         }.show()
                     } else {
-                        val options = listOf("Administrar", "Remover")
-                        selector("Seleccione una opcion", options, { dialogInterface, i ->
+                        val options = listOf("Administrar", "Alertas","Remover")
+                        selector("Seleccione una opcion", options) { _, i ->
                             when (i) {
                                 0 -> startActivity<ManageMeadowActivity>(MEADOWID to meadow._id!!)
+                                1 -> startActivity<ManageMeadowAlertActivity>(MEADOWID to meadow._id!!)
                                 else -> {
                                     meadow.isUsedMeadow = false
                                     meadow.isEmptyMeadow = true
@@ -144,7 +149,7 @@ class MeadowFragment : Fragment(), Injectable {
                                             }
                                 }
                             }
-                        })
+                        }
                     }
 
                 }

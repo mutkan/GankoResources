@@ -33,7 +33,6 @@ class FarmActivity : AppCompatActivity(), Injectable {
     val viewModel: FarmViewModel by lazy { buildViewModel<FarmViewModel>(factory) }
     @Inject
     lateinit var listFarmAdapter: ListFarmAdapter
-    var userId: String = "miusuario"
     val dis: LifeDisposable = LifeDisposable(this)
     private val mAlert: AlertDialog by lazy { AlertDialog.Builder(this).create() }
     private lateinit var alertBinding: TemplateAlertDeleteFarmBinding
@@ -52,7 +51,7 @@ class FarmActivity : AppCompatActivity(), Injectable {
 
     override fun onResume() {
         super.onResume()
-        dis add viewModel.getAllByUser(userId)
+        dis add viewModel.getAllByUser()
                 .subscribeBy(
                         onNext = {
                             isEmpty.set(it.isEmpty())

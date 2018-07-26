@@ -69,13 +69,13 @@ class ReproductiveBvnViewModel @Inject constructor(private val db: CouchRx, priv
 
     fun getEmptyDaysForBovine(idBovino: String, servicioActual: Date): Single<Long> = db.oneById(idBovino, Bovino::class)
             .flatMapObservable {
-                it.servicios?.toObservable() ?: Observable.just(Servicio())
+                it.servicios?.toObservable()
             }.filter {
                 it.parto != null
             }.toList()
             .map {
                 if (it.isNotEmpty()) {
-                    val ultimoParto = it.last().fecha!!.time
+                    val ultimoParto = it.first().fecha!!.time
                     val dif = servicioActual.time - ultimoParto
                     return@map TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS)
                 } else {
@@ -86,13 +86,13 @@ class ReproductiveBvnViewModel @Inject constructor(private val db: CouchRx, priv
     fun getLastBirthAndEmptyDays(idBovino: String, servicioActual: Date): Single<Pair<Long, Date?>> =
             db.oneById(idBovino, Bovino::class)
                     .flatMapObservable {
-                        it.servicios?.toObservable() ?: Observable.just(Servicio())
+                        it.servicios?.toObservable()
                     }.filter {
                         it.parto != null
                     }.toList()
                     .map {
                         if (it.isNotEmpty()) {
-                            val ultimoParto = it.last().parto!!.fecha
+                            val ultimoParto = it.first().parto!!.fecha
                             val dif = servicioActual.time - ultimoParto.time
                             val diasVacios = TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS)
                             return@map diasVacios to ultimoParto
@@ -100,16 +100,6 @@ class ReproductiveBvnViewModel @Inject constructor(private val db: CouchRx, priv
                             0L to null
                         }
                     }
-
-    fun getBirths(idBovino: String): Single<List<Parto>> = db.oneById(idBovino, Bovino::class)
-            .flatMapObservable {
-                it.servicios?.toObservable() ?: Observable.just(Servicio())
-            }.filter {
-                it.parto != null
-            }.map {
-                it.parto!!
-            }
-            .toList()
 
 
     fun insertService(idBovino: String, servicio: Servicio): Single<Unit> = db.oneById(idBovino, Bovino::class)

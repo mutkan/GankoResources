@@ -1,6 +1,6 @@
 <resources>
 
-    <string name="base_url">http://www.google.com</string>
+    <string name="base_url">http://104.209.144.166:8080</string>
 
     <string name="app_name">Ganko Bovinos</string>
     <string name="email">Email</string>
@@ -35,6 +35,7 @@
     <string name="straw">PAJILLAS</string>
     <string name="prairies">PRADERAS</string>
     <string name="reports">REPORTES</string>
+    <string name="averages">PROMEDIOS</string>
     <string name="logout">Cerrar Sesión</string>
     <string name="menu_groups">GRUPOS</string>
     <string name="notifications">NOTIFICACIONES</string>
@@ -235,10 +236,9 @@
     <string name="purchase_price">Precio de compra</string>
 
     <string-array name="straw_type">
-        <item>Tipo A</item>
-        <item>Tipo B</item>
-        <item>Tipo C</item>
-        <item>Tipo D</item>
+        <item>Leche</item>
+        <item>Ceba</item>
+        <item>Doble Propósito</item>
     </string-array>
 
     <string-array name="origin">
@@ -294,6 +294,18 @@
         <item>Concentrado</item>
     </string-array>
 
+    <string-array name="meadow_alarm_type">
+        <item>Ocupacion</item>
+        <item>Descanso</item>
+        <item>Fertilizacion</item>
+    </string-array>
+    <string-array name="meadow_alarm_time">
+        <item>Hora(s)</item>
+        <item>Dia(s)</item>
+        <item>Mes(es)</item>
+        <item>Año(s)</item>
+    </string-array>
+
     <string name="remove_group">¿ Desea eliminar el grupo ?</string>
     <string name="group_removed">Grupo eliminado</string>
     <string name="select_clear">¿ Desea limpiar la selección ?</string>
@@ -334,7 +346,7 @@
     <string name="channel_name">Ganko Alertas</string>
     <string name="channel_description">Alertas de proximos eventos</string>
     <string name="frequency_in_days">Frecuencia en días</string>
-    <string name="bovine_number">Núemro de bovinos</string>
+    <string name="bovine_number">Número de bovinos</string>
     <string name="recents">Recientes</string>
     <string name="next">Próximos</string>
     <string name="no_health_register">No hay registros de sanidad</string>
@@ -345,6 +357,22 @@
     <string name="apply">APLICAR</string>
     <string name="pendings">Pendientes</string>
     <string name="skip">OMITIR</string>
+    <string name="group_all">Seleccionar todos</string>
+    <string name="group_action_all">Seleccionar todos</string>
+    <string name="group_no_apply">Sin aplicación</string>
+    <string name="no_feed_register">No hay registros de alimentación</string>
+    <string name="aplications">Aplicaciones</string>
+    <string name="health_name">Nombre de la sanidad</string>
+    <string name="ground_type">Tipo de Graminea</string>
+    <string name="category_select">Seleccione una categoría</string>
+    <string name="report_type">Tipo de reporte</string>
+    <string name="create_report">Generar reporte</string>
+    <string name="monthly">Mensual</string>
+    <string name="date_rank">Rango de fechas</string>
+    <string name="from">Desde</string>
+    <string name="to">Hasta</string>
+    <string name="report_of_month">Reporte del mes</string>
+    <string name="time_value">Tiempo</string>
 
     <string-array name="milk_production">
         <item>Litros vendidos</item>
@@ -366,6 +394,106 @@
         <item>Meses</item>
         <item>Años</item>
     </string-array>
+
+    <!--Reports-->
+    <string-array name="categories">
+        <item>Reproductivos</item>
+        <item>Producción de leche</item>
+        <item>Ceba</item>
+        <item>Praderas</item>
+        <item>Alimentación</item>
+        <item>Movimientos</item>
+        <item>Entradas</item>
+        <item>Salidas</item>
+        <item>Vacunas</item>
+        <item>Sanidad</item>
+        <item>Manejo</item>
+        <item>Pajilas</item>
+    </string-array>
+
+    <string-array name="reproductive_type">
+        <item>Partos</item>
+        <item>Secado</item>
+        <item>Preparación</item>
+        <item>Días abiertos</item>
+        <item>Partos atendidos</item>
+        <item>Abortos</item>
+        <item>Tres servicios</item>
+        <item>Celos</item>
+        <item>Resumen reproductivo</item>
+    </string-array>
+
+    <string-array name="milk_type">
+        <item>Consolidado de leche</item>
+        <item>Reporte de leche</item>
+    </string-array>
+
+    <string-array name="meat_type">
+        <item>Destetos</item>
+        <item>Ganancia diaria de peso</item>
+    </string-array>
+
+    <string-array name="vaccine_type">
+        <item>Vacunas</item>
+    </string-array>
+
+    <string-array name="health_type">
+        <item>Sanidad</item>
+    </string-array>
+
+    <string-array name="manage_type">
+        <item>Manejo</item>
+    </string-array>
+
+    <string-array name="meadows_type">
+        <item>Praderas</item>
+        <item>Ocupación de praderas</item>
+    </string-array>
+
+    <string-array name="feed_type">
+        <item>Alimentación</item>
+        <item>Suplementos usados</item>
+    </string-array>
+
+    <string-array name="movements_type">
+        <item>Animales en pradera</item>
+    </string-array>
+
+    <string-array name="straw__reports_type">
+        <item>Pajillas</item>
+    </string-array>
+
+    <string-array name="input_type">
+        <item>Inventario</item>
+        <item>Terneras en estaca</item>
+        <item>Terneras destetas</item>
+        <item>Novillas de levante</item>
+        <item>Novillas vientre</item>
+        <item>Abortos</item>
+        <item>Horras</item>
+        <item>Celos</item>
+        <item>Vacas</item>
+    </string-array>
+
+    <string-array name="output_type">
+        <item>Salida</item>
+    </string-array>
+
+    <string-array name="months">
+        <item>Enero</item>
+        <item>Febrero</item>
+        <item>Marzo</item>
+        <item>Abril</item>
+        <item>Mayo</item>
+        <item>Junio</item>
+        <item>Julio</item>
+        <item>Agosto</item>
+        <item>Septiembre</item>
+        <item>Octubre</item>
+        <item>Noviembre</item>
+        <item>Diciembre</item>
+    </string-array>
+
 
 </resources>
 

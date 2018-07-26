@@ -25,7 +25,7 @@ class AddFarmActivity : AppCompatActivity(), Injectable {
     lateinit var factory: ViewModelProvider.Factory
     val viewModel: FarmViewModel by lazy { buildViewModel<FarmViewModel>(factory) }
     val dis: LifeDisposable = LifeDisposable(this)
-    private val userId: String = "miusuario"
+    private val userId: String by lazy { viewModel.getUserId() }
     private var edit: Boolean = false
     private lateinit var farm: Finca
 

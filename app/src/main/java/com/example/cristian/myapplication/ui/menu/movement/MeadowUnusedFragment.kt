@@ -2,16 +2,14 @@ package com.example.cristian.myapplication.ui.menu.movement
 
 
 import android.arch.lifecycle.ViewModelProvider
-import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.constraint.ConstraintLayout
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Spinner
 import com.example.cristian.myapplication.R
+import com.example.cristian.myapplication.data.models.Group
 import com.example.cristian.myapplication.data.models.Pradera
 import com.example.cristian.myapplication.databinding.TemplateSpinnerGroupBinding
 import com.example.cristian.myapplication.di.Injectable
@@ -20,7 +18,7 @@ import com.example.cristian.myapplication.ui.menu.MenuViewModel
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
 import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.rxkotlin.toObservable
+import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.fragment_meadow_unused.*
 import org.jetbrains.anko.customView
 import org.jetbrains.anko.noButton
@@ -29,6 +27,7 @@ import org.jetbrains.anko.support.v4.toast
 import org.jetbrains.anko.yesButton
 import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 class MeadowUnusedFragment : Fragment(), Injectable {
 
@@ -37,6 +36,8 @@ class MeadowUnusedFragment : Fragment(), Injectable {
     val viewmodel: MenuViewModel by lazy { buildViewModel<MenuViewModel>(factory) }
     val adapter = MovementUnusedAdapter()
     val dis = LifeDisposable(this)
+    lateinit var arrayGroup: ArrayList<Group>
+    val clickAddGroup: PublishSubject<Pair<Pradera, Group>> = PublishSubject.create()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -54,59 +55,61 @@ class MeadowUnusedFragment : Fragment(), Injectable {
                 .subscribe {
                     findGroupsToUseMeadow(it)
                 }
+
+        dis add viewmodel.getGroups(viewmodel.getFarmId())
+                .subscribeBy(
+                        onNext = {
+                            arrayGroup = ArrayList(it)
+                        }
+                )
+
+        dis add clickAddGroup.flatMapSingle {
+            val pradera = it.first
+            val grupo = it.second
+            pradera.apply {
+                fechaOcupacion = Date()
+                available = false
+                group = grupo.nombre
+                bovinos = grupo.bovines
+            }
+            viewmodel.updateMeadow(pradera._id!!, pradera)
+                    .flatMap { viewmodel.updateGroup(grupo.apply { this.pradera = pradera.identificador!!.toString() }) }
+        }.subscribeBy(
+                onNext = {
+                    toast("Datos guardados correctamente")
+                }
+        )
+
     }
 
-    fun getUnusedMeadows(){
+    fun getUnusedMeadows() {
         dis add viewmodel.getUnusedMeadows(viewmodel.getFarmId())
-                .subscribeBy {
-                    if (it.isEmpty()) noData.visibility = View.VISIBLE
-                    else {
-                        adapter.data = it
-                        noData.visibility = View.GONE
-                    }
-                }
+                .subscribeBy(
+                        onNext = {
+                            noData.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
+                            adapter.data = it
+                        }
+                )
     }
 
     fun findGroupsToUseMeadow(pradera: Pradera) {
-        val arrayGroup = arrayListOf<String>()
-        dis add viewmodel.getGroups(viewmodel.getFarmId())
-                .flatMapObservable {
-                    if(it.isEmpty()) toast("No hay grupos disponibles para el movimiento")
-                    it.toObservable()
+        if (arrayGroup.size >0 ){
+            alert {
+                val viewBind = TemplateSpinnerGroupBinding.inflate(layoutInflater, null, false)
+                viewBind.groups = arrayGroup
+                title = "Añada un grupo a esta pradera"
+                customView {
+                    this.addView(viewBind.root, null)
                 }
-                .map {
-                    toast("group")
-                    arrayGroup.add(it.nombre)
-                }.subscribe {
-                    alert {
-                        val viewBind = TemplateSpinnerGroupBinding.inflate(layoutInflater,null,false)
-                        viewBind.groups = arrayGroup
-                        title = "Añada un grupo a esta pradera"
-                        customView {
-
-                            this.addView(viewBind.root, null)
-                        }
-                        yesButton {
-                            pradera.fechaOcupacion = Date()
-                            pradera.available = false
-                            pradera.group = viewBind.selectedGroup.selectedItem.toString()
-                            dis add viewmodel.updateMeadow(pradera._id!!, pradera)
-                                    .subscribeBy(
-                                            onSuccess = {
-                                                getUnusedMeadows()
-                                                adapter.notifyDataSetChanged()
-                                                MeadowUsedFragment.instance().adapter.notifyDataSetChanged()
-                                                toast("Datos guardados correctamente")
-                                            },
-                                            onError = {
-                                                toast(it.message!!)
-                                            }
-                                    )
-                        }
-                        noButton {}
-                    }.show()
+                yesButton {
+                    val group = viewBind.selectedGroup.selectedItem as Group
+                    clickAddGroup.onNext(pradera to group)
                 }
-
+                noButton {}
+            }.show()
+        }else{
+            toast("No hay grupos disponibles")
+        }
     }
 
 

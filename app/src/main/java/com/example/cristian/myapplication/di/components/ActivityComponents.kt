@@ -1,10 +1,7 @@
 package com.example.cristian.myapplication.di.components
 
 import com.example.cristian.myapplication.di.ActivityScope
-import com.example.cristian.myapplication.di.modules.AddGroupModule
-import com.example.cristian.myapplication.di.modules.MeadowModule
-import com.example.cristian.myapplication.di.modules.ReproductiveModule
-import com.example.cristian.myapplication.di.modules.SelectModule
+import com.example.cristian.myapplication.di.modules.*
 import com.example.cristian.myapplication.ui.account.LoginActivity
 import com.example.cristian.myapplication.ui.bovine.AddBovineActivity
 import com.example.cristian.myapplication.ui.bovine.DetailBovineActivity
@@ -25,20 +22,22 @@ import com.example.cristian.myapplication.ui.bovine.reproductive.add.AddZealActi
 import com.example.cristian.myapplication.ui.bovine.vaccination.VaccinationBvnActivity
 import com.example.cristian.myapplication.ui.farms.AddFarmActivity
 import com.example.cristian.myapplication.ui.farms.FarmActivity
+import com.example.cristian.myapplication.ui.groups.*
 import com.example.cristian.myapplication.ui.menu.feed.AddFeedActivity
-import com.example.cristian.myapplication.ui.groups.AddGroupActivity
-import com.example.cristian.myapplication.ui.groups.BovineSelectedActivity
-import com.example.cristian.myapplication.ui.groups.SaveGroupActivity
-import com.example.cristian.myapplication.ui.groups.SelectActivity
-import com.example.cristian.myapplication.ui.manage.AddManageActivity
+import com.example.cristian.myapplication.ui.menu.management.AddManageActivity
 import com.example.cristian.myapplication.ui.menu.MenuActivity
 import com.example.cristian.myapplication.ui.menu.health.AddHealthActivity
+import com.example.cristian.myapplication.ui.menu.health.detail.HealthDetailActivity
+import com.example.cristian.myapplication.ui.menu.management.detail.ManageDetailActivity
+import com.example.cristian.myapplication.ui.menu.meadow.AddMeadowAlertActivity
 import com.example.cristian.myapplication.ui.menu.meadow.ManageMeadowActivity
+import com.example.cristian.myapplication.ui.menu.meadow.ManageMeadowAlertActivity
 import com.example.cristian.myapplication.ui.menu.meadow.aforo.AddAforoActivity
 import com.example.cristian.myapplication.ui.menu.meadow.mantenimiento.AddMantenimientoActivity
 import com.example.cristian.myapplication.ui.menu.milk.AddMilkActivity
 import com.example.cristian.myapplication.ui.menu.straw.StrawAddActivity
 import com.example.cristian.myapplication.ui.menu.vaccines.AddVaccineActivity
+import com.example.cristian.myapplication.ui.menu.vaccines.detail.VaccineDetailActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -135,7 +134,7 @@ abstract class ActivityComponents {
 
     @ActivityScope
     @ContributesAndroidInjector()
-    abstract  fun bindAddFeedActivity(): AddFeedActivity
+    abstract fun bindAddFeedActivity(): AddFeedActivity
 
     @ActivityScope
     @ContributesAndroidInjector()
@@ -181,5 +180,29 @@ abstract class ActivityComponents {
     @ActivityScope
     @ContributesAndroidInjector
     abstract fun bindAddHealthActivity(): AddHealthActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector
+    abstract fun bindReApplyActivity(): ReApplyActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector(modules = [VaccinesDetailModule::class])
+    abstract fun bindVaccineDetailActivity(): VaccineDetailActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector(modules = [HealthDetailModule::class])
+    abstract fun bindHealthDetailActivity(): HealthDetailActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector(modules = [ManageDetailModule::class])
+    abstract fun bindManageDetailActivity(): ManageDetailActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector
+    abstract fun bindAddMeadowAlertActivity(): AddMeadowAlertActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector
+    abstract fun bindManageMeadowAlertActivity(): ManageMeadowAlertActivity
 
 }

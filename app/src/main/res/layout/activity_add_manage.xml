@@ -12,6 +12,9 @@
         <variable
             name="other"
             type="Boolean"/>
+        <variable
+            name="edit"
+            type="Boolean"/>
         <import type="android.view.View"/>
 
     </data>
@@ -46,6 +49,154 @@
             app:layout_constraintTop_toBottomOf="@+id/manageContainer">
 
             <android.support.v4.widget.NestedScrollView
+                android:id="@+id/nestedPage1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:visibility='@{page == 1 ? View.VISIBLE : View.GONE}'
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/constrain"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/eventType"
+                        style="@style/textview_label"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/event_type"
+                        app:layout_constraintEnd_toEndOf="@+id/eventDate"
+                        app:layout_constraintStart_toStartOf="@+id/eventDate"
+                        app:layout_constraintTop_toBottomOf="@+id/eventDate" />
+
+                    <Spinner
+                        android:id="@+id/spinnerEventType"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:entries="@array/event_type"
+                        app:layout_constraintEnd_toEndOf="@+id/eventType"
+                        app:layout_constraintStart_toStartOf="@+id/eventType"
+                        android:clickable='@{!edit}'
+                        app:layout_constraintTop_toBottomOf="@+id/eventType" />
+
+                    <TextView
+                        android:id="@+id/whichLabel"
+                        style="@style/textview_label"
+                        android:layout_width="0dp"
+                        android:layout_height="21dp"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/other_which"
+                        android:visibility='@{other == true ? View.VISIBLE : View.GONE}'
+                        app:layout_constraintEnd_toEndOf="@+id/spinnerEventType"
+                        app:layout_constraintStart_toStartOf="@+id/spinnerEventType"
+                        app:layout_constraintTop_toBottomOf="@+id/spinnerEventType" />
+
+                    <EditText
+                        android:id="@+id/otherWhich"
+                        style="@style/edit_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:ems="10"
+                        android:hint="@string/write_the_other_event_type"
+                        android:enabled='@{!edit}'
+                        android:inputType="textAutoCorrect"
+                        android:visibility='@{other == true ? View.VISIBLE : View.GONE}'
+                        app:layout_constraintEnd_toEndOf="@+id/whichLabel"
+                        app:layout_constraintStart_toStartOf="@+id/whichLabel"
+                        app:layout_constraintTop_toBottomOf="@+id/whichLabel" />
+
+                    <TextView
+                        android:id="@+id/eventDateLabel"
+                        style="@style/textview_label"
+                        android:layout_width="0dp"
+                        android:layout_height="17dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/event_date"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/eventDate"
+                        style="@style/edit_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:hint="@string/date_value"
+                        app:layout_constraintEnd_toEndOf="@+id/eventDateLabel"
+                        app:layout_constraintStart_toStartOf="@+id/eventDateLabel"
+                        app:layout_constraintTop_toBottomOf="@+id/eventDateLabel" />
+
+                    <TextView
+                        android:id="@+id/treatmentLabel"
+                        style="@style/textview_label"
+                        android:layout_width="0dp"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/treatment_or_strategy"
+                        app:layout_constraintEnd_toEndOf="@+id/spinnerEventType"
+                        app:layout_constraintStart_toStartOf="@+id/spinnerEventType"
+                        app:layout_constraintTop_toBottomOf="@+id/otherWhich" />
+
+                    <EditText
+                        android:id="@+id/treatment"
+                        style="@style/edit_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:ems="10"
+                        android:enabled='@{!edit}'
+                        android:hint="@string/treatment_or_strategy_applied"
+                        android:inputType="textAutoCorrect"
+                        app:layout_constraintEnd_toEndOf="@+id/treatmentLabel"
+                        app:layout_constraintStart_toStartOf="@+id/treatmentLabel"
+                        app:layout_constraintTop_toBottomOf="@+id/treatmentLabel" />
+
+                    <EditText
+                        android:id="@+id/numberAplications"
+                        style="@style/edit_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:enabled='@{!edit}'
+                        android:ems="10"
+                        android:hint="@string/number_of_aplications"
+                        android:inputType="number"
+                        app:layout_constraintEnd_toEndOf="@+id/numberAplicationsText"
+                        app:layout_constraintStart_toStartOf="@+id/numberAplicationsText"
+                        app:layout_constraintTop_toBottomOf="@+id/numberAplicationsText" />
+
+                    <TextView
+                        android:id="@+id/numberAplicationsText"
+                        style="@style/textview_label"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/number_of_aplications"
+                        app:layout_constraintEnd_toEndOf="@+id/treatment"
+                        app:layout_constraintStart_toStartOf="@+id/treatment"
+                        app:layout_constraintTop_toBottomOf="@+id/treatment" />
+
+                </android.support.constraint.ConstraintLayout>
+
+
+            </android.support.v4.widget.NestedScrollView>
+
+            <android.support.v4.widget.NestedScrollView
                 android:id="@+id/nestedPage2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -66,6 +217,7 @@
                         android:layout_width="110dp"
                         android:layout_height="wrap_content"
                         android:entries="@array/time_units"
+                        android:clickable='@{!edit}'
                         app:layout_constraintBottom_toBottomOf="@+id/frecuency"
                         app:layout_constraintEnd_toEndOf="@+id/frecuencyLabel"
                         app:layout_constraintTop_toTopOf="@+id/frecuency" />
@@ -90,6 +242,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:ems="10"
+                        android:enabled='@{!edit}'
                         android:hint="@string/product_applied"
                         android:inputType="textAutoCorrect"
                         app:layout_constraintEnd_toEndOf="@+id/productLabel"
@@ -114,6 +267,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:ems="10"
+                        android:enabled='@{!edit}'
                         android:hint="@string/frecuency"
                         android:inputType="number"
                         app:layout_constraintEnd_toStartOf="@+id/spinnerFrecuency"
@@ -197,149 +351,7 @@
                 </android.support.constraint.ConstraintLayout>
             </android.support.v4.widget.NestedScrollView>
 
-            <android.support.v4.widget.NestedScrollView
-                android:id="@+id/nestedPage1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:visibility='@{page == 1 ? View.VISIBLE : View.GONE}'
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
 
-                <android.support.constraint.ConstraintLayout
-                    android:id="@+id/constrain"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:id="@+id/eventType"
-                        style="@style/textview_label"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginTop="16dp"
-                        android:text="@string/event_type"
-                        app:layout_constraintEnd_toEndOf="@+id/eventDate"
-                        app:layout_constraintStart_toStartOf="@+id/eventDate"
-                        app:layout_constraintTop_toBottomOf="@+id/eventDate" />
-
-                    <Spinner
-                        android:id="@+id/spinnerEventType"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:entries="@array/event_type"
-                        app:layout_constraintEnd_toEndOf="@+id/eventType"
-                        app:layout_constraintStart_toStartOf="@+id/eventType"
-                        app:layout_constraintTop_toBottomOf="@+id/eventType" />
-
-                    <TextView
-                        android:id="@+id/whichLabel"
-                        style="@style/textview_label"
-                        android:layout_width="0dp"
-                        android:layout_height="21dp"
-                        android:layout_marginTop="16dp"
-                        android:text="@string/other_which"
-                        android:visibility='@{other == true ? View.VISIBLE : View.GONE}'
-                        app:layout_constraintEnd_toEndOf="@+id/spinnerEventType"
-                        app:layout_constraintStart_toStartOf="@+id/spinnerEventType"
-                        app:layout_constraintTop_toBottomOf="@+id/spinnerEventType" />
-
-                    <EditText
-                        android:id="@+id/otherWhich"
-                        style="@style/edit_text"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:ems="10"
-                        android:hint="@string/write_the_other_event_type"
-                        android:inputType="textAutoCorrect"
-                        android:visibility='@{other == true ? View.VISIBLE : View.GONE}'
-                        app:layout_constraintEnd_toEndOf="@+id/whichLabel"
-                        app:layout_constraintStart_toStartOf="@+id/whichLabel"
-                        app:layout_constraintTop_toBottomOf="@+id/whichLabel" />
-
-                    <TextView
-                        android:id="@+id/eventDateLabel"
-                        style="@style/textview_label"
-                        android:layout_width="0dp"
-                        android:layout_height="17dp"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="16dp"
-                        android:text="@string/event_date"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="1.0"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/eventDate"
-                        style="@style/edit_text"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:clickable="true"
-                        android:focusable="false"
-                        android:hint="@string/date_value"
-                        app:layout_constraintEnd_toEndOf="@+id/eventDateLabel"
-                        app:layout_constraintStart_toStartOf="@+id/eventDateLabel"
-                        app:layout_constraintTop_toBottomOf="@+id/eventDateLabel" />
-
-                    <TextView
-                        android:id="@+id/treatmentLabel"
-                        style="@style/textview_label"
-                        android:layout_width="0dp"
-                        android:layout_height="24dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginTop="16dp"
-                        android:text="@string/treatment_or_strategy"
-                        app:layout_constraintEnd_toEndOf="@+id/spinnerEventType"
-                        app:layout_constraintStart_toStartOf="@+id/spinnerEventType"
-                        app:layout_constraintTop_toBottomOf="@+id/otherWhich" />
-
-                    <EditText
-                        android:id="@+id/treatment"
-                        style="@style/edit_text"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:ems="10"
-                        android:hint="@string/treatment_or_strategy_applied"
-                        android:inputType="textAutoCorrect"
-                        app:layout_constraintEnd_toEndOf="@+id/treatmentLabel"
-                        app:layout_constraintStart_toStartOf="@+id/treatmentLabel"
-                        app:layout_constraintTop_toBottomOf="@+id/treatmentLabel" />
-
-                    <EditText
-                        android:id="@+id/numberAplications"
-                        style="@style/edit_text"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:ems="10"
-                        android:hint="@string/number_of_aplications"
-                        android:inputType="number"
-                        app:layout_constraintEnd_toEndOf="@+id/numberAplicationsText"
-                        app:layout_constraintStart_toStartOf="@+id/numberAplicationsText"
-                        app:layout_constraintTop_toBottomOf="@+id/numberAplicationsText" />
-
-                    <TextView
-                        android:id="@+id/numberAplicationsText"
-                        style="@style/textview_label"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:text="@string/number_of_aplications"
-                        app:layout_constraintEnd_toEndOf="@+id/treatment"
-                        app:layout_constraintStart_toStartOf="@+id/treatment"
-                        app:layout_constraintTop_toBottomOf="@+id/treatment" />
-
-                </android.support.constraint.ConstraintLayout>
-
-
-            </android.support.v4.widget.NestedScrollView>
         </android.support.constraint.ConstraintLayout>
 
         <Button

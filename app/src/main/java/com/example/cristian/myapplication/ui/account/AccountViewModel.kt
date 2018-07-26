@@ -12,32 +12,41 @@ import io.reactivex.Observable
 import javax.inject.Inject
 
 class AccountViewModel @Inject constructor(private val loginClient: LoginClient,
-                                           val session: UserSession):ViewModel(){
+                                           val session: UserSession) : ViewModel() {
 
-//    fun Login(userLogin: UserLogin): Observable<String> = loginClient.login(userLogin)
-//            .flatMap { validateResponse(it) }
-//            .flatMap { validateState(it) }
-//            .applySchedulers()
-
+/*    fun Login(userLogin: UserLogin): Observable<String> = loginClient.login(userLogin)
+            .flatMap { validateResponse(it) }
+            .flatMap {
+                saveSession(it)
+            }
+            .applySchedulers()
+*/
     fun Login(userLogin: UserLogin): Observable<String> = Observable.create<String> {
-        if(userLogin.email == "cristian" && userLogin.password == "1234"){
+        if(userLogin.username == "cristian" && userLogin.pass == "1234"){
             session.logged = true
-            it.onNext(userLogin.email)
+            it.onNext(userLogin.username)
         }
         else throw Throwable("Usuario Inactivo, Contacte a su Proveedor")
     }
             .applySchedulers()
 
 
-    fun validateState(loginResponse: LoginResponse) = Observable.create<String>{
-        if(loginResponse.user.estado == "activo"){
-            session.token = loginResponse.token
-            session.userId = loginResponse.user.id
-            session.logged = true
-            it.onNext(loginResponse.token)
+//    fun validateState(loginResponse: LoginResponse) = Observable.create<String>{
+//        if(loginResponse.user.estado == "activo"){
+//            session.token = loginResponse.token
+//            session.userId = loginResponse.user.id
+//            session.logged = true
+//            it.onNext(loginResponse.token)
+//
+//        }
+//        else throw Throwable("Usuario Inactivo, Contacte a su Proveedor")
+//    }
 
-        }
-        else throw Throwable("Usuario Inactivo, Contacte a su Proveedor")
+    fun saveSession(loginResponse: LoginResponse) = Observable.create<String> {
+        session.logged = true
+        session.token = loginResponse.token
+        session.userId = loginResponse.user
+        it.onNext(loginResponse.user)
     }
 }
 

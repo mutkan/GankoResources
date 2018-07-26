@@ -1,7 +1,6 @@
 package com.example.cristian.myapplication.ui.menu.management
 
 
-import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import android.databinding.DataBindingUtil
 import android.databinding.ObservableBoolean
@@ -10,16 +9,24 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
 import com.example.cristian.myapplication.R
+import com.example.cristian.myapplication.data.models.RegistroManejo
+import com.example.cristian.myapplication.data.models.RegistroManejo.Companion.SKIPED
 import com.example.cristian.myapplication.databinding.FragmentNextManageBinding
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.NextManageAdapter
+import com.example.cristian.myapplication.ui.menu.management.AddManageActivity.Companion.PREVIOUS_MANAGE
 import com.example.cristian.myapplication.ui.menu.MenuViewModel
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.add
 import com.example.cristian.myapplication.util.buildViewModel
 import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.subjects.PublishSubject
+import org.jetbrains.anko.noButton
+import org.jetbrains.anko.support.v4.alert
+import org.jetbrains.anko.support.v4.startActivity
+import org.jetbrains.anko.support.v4.toast
+import org.jetbrains.anko.yesButton
 import java.util.*
 import javax.inject.Inject
 
@@ -36,6 +43,7 @@ class NextManageFragment : Fragment(), Injectable {
     val isEmpty: ObservableBoolean = ObservableBoolean(false)
     val from: Date = Date()
     val to: Date by lazy { from.add(Calendar.DATE, 7)!! }
+    val skiped: PublishSubject<RegistroManejo> = PublishSubject.create()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -49,6 +57,20 @@ class NextManageFragment : Fragment(), Injectable {
     override fun onResume() {
         super.onResume()
 
+        dis add adapter.clickApplyManage
+                .subscribeBy (
+                        onNext = {
+                            startActivity<AddManageActivity>("edit" to true, PREVIOUS_MANAGE to it)
+                        }
+                )
+
+        dis add adapter.clickSkipManage
+                .subscribeBy (
+                        onNext = {
+                            showAlert(it)
+                        }
+                )
+
         dis add viewModel.getNextManages(from, to)
                 .subscribeBy(
                         onNext = {
@@ -57,74 +79,34 @@ class NextManageFragment : Fragment(), Injectable {
                         }
                 )
 
+        dis add skiped
+                .flatMapSingle {
+                    val manejo = it.apply { estadoProximo = SKIPED }
+                    viewModel.updateManage(manejo)
+                }.subscribeBy(
+                        onNext = {
+                            toast("Manejo Omitido")
+                        }
+                )
 
+
+    }
+
+    private fun showAlert(registroManejo: RegistroManejo) {
+        alert {
+            title = "Omitir manejo"
+            message = "¿Está seguro de omitir esta aplicación? Esta acción no podrá ser revertida."
+            yesButton {
+                message = "Aceptar"
+                skiped.onNext(registroManejo)
+            }
+            noButton {
+                message = "Cancelar"
+            }
+        }.show()
     }
 
     companion object {
         fun instance(): NextManageFragment = NextManageFragment()
     }
-
-    /*
-    * class ManageFragment : Fragment(),Injectable{
-
-    @Inject
-    lateinit var factory: ViewModelProvider.Factory
-    val viewModel: MenuViewModel by lazy { buildViewModel<MenuViewModel>(factory) }
-    val dis: LifeDisposable = LifeDisposable(this)
-    private val idFinca: String by lazy { viewModel.getFarmId() }
-
-    @Inject
-    lateinit var adapter: ManageBovineAdapter
-    lateinit var binding: FragmentManageBinding
-    val isEmpty: ObservableBoolean = ObservableBoolean(false)
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_manage, container, false)
-        binding.isEmpty = isEmpty
-        return binding.root
-    }
-
-    override fun onResume() {
-        super.onResume()
-        recyclerListManageFragment.adapter = adapter
-
-        dis add viewModel.getManagement(idFinca)
-                .subscribeBy (
-                        onSuccess = {
-                            isEmpty.set(it.isEmpty())
-                            adapter.manage = it
-                        },
-                        onError = {
-                            toast(it.message!!)
-                        }
-                )
-
-        dis add btnAddManageFragment.clicks()
-                .subscribeByAction(
-                        onNext = {
-                            startActivity<AddManageActivity>()
-                        },
-                        onHttpError = {},
-                        onError = {}
-                )
-
-    }
-
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == RESULT_OK) {
-            toast("Funca !!${data!!.extras["bovines"]}")
-        }
-    }
-    companion object {
-        fun instance():ManageFragment = ManageFragment()
-    }
-}
-    *
-    * */
-
-
 }

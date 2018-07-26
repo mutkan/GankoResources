@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.Feed
+import com.example.cristian.myapplication.data.models.RegistroAlimentacion
 import com.example.cristian.myapplication.databinding.TemplateFeedBovineBinding
 import com.example.cristian.myapplication.util.inflate
 import javax.inject.Inject
@@ -15,23 +16,23 @@ import javax.inject.Inject
  */
 class FeedBovineAdapter @Inject constructor(): RecyclerView.Adapter<FeedBovineAdapter.FeedBovineHolder>(){
 
-    var feed: List<Feed> = emptyList()
+    var feed: List<RegistroAlimentacion> = emptyList()
         set(value) {
             field = value
             notifyDataSetChanged()
         }
 
     override fun onBindViewHolder(holder: FeedBovineHolder, position: Int) {
-        //holder!!.binding.feed = feed[position]
+        holder.binding?.feed = feed[position]
     }
 
     override fun getItemCount(): Int = feed.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedBovineHolder
-            = FeedBovineHolder(parent.inflate(R.layout.template_manage_bovine))
+            = FeedBovineHolder(parent.inflate(R.layout.template_feed_bovine))
 
 
     class FeedBovineHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val binding: TemplateFeedBovineBinding? = DataBindingUtil.bind(itemView)
+        val binding: TemplateFeedBovineBinding? = DataBindingUtil.bind(itemView)!!
     }
 }
