@@ -204,7 +204,7 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                                         product_health.text(), dosis.text(), null, applicacion_number.text().toInt(),
                                         previousHealth.aplicacion!!.plus(1),
                                         observations_health.text(), product_value.text().toInt(), attention_value.text().toInt(),
-                                        group?.toGrupo(), bovines!!, unidadTiempo, noBovines!!, ProxStates.NOT_APPLIED, previousHealth.idDosisUno))
+                                        group?.toGrupo(), bovines!!, unidadTiempo, noBovines!!, ProxStates.NOT_APPLIED, previousHealth.idAplicacionUno))
                                 .map { it to notifyTime }
 
 
@@ -292,7 +292,7 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
         product_health.setText(previousHealth.producto.toString())
         dosis.setText(previousHealth.dosis.toString())
         frequency.setText(previousHealth.frecuencia.toString())
-        val unidadTiempo = unidades.indexOf(previousHealth.UnidadesFrecuencia)
+        val unidadTiempo = unidades.indexOf(previousHealth.unidadFrecuencia)
         frecuencyOptionsHealth.apply {
             setSelection(unidadTiempo)
             isEnabled = false

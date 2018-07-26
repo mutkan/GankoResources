@@ -359,7 +359,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="@{health.unidadesFrecuencia}"
+            android:text="@{health.unidadFrecuencia}"
             tools:text="dias"
             app:layout_constraintStart_toEndOf="@+id/frequency"
             app:layout_constraintTop_toBottomOf="@+id/textView119" />

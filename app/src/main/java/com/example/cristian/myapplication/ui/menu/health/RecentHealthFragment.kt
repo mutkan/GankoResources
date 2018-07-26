@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.cristian.myapplication.R
-import com.example.cristian.myapplication.data.models.ProxStates
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.RecentHealthAdapter
 import com.example.cristian.myapplication.ui.menu.MenuViewModel
@@ -52,7 +51,7 @@ class RecentHealthFragment : Fragment(), Injectable {
         dis add adapterRecent.clickHealth
                 .subscribeBy(
                         onNext = {
-                            startActivity<HealthDetailActivity>(HealthDetailActivity.ID_HEALTH to it._id!!, ID_FIRST_HEALTH to it.idDosisUno!!)
+                            startActivity<HealthDetailActivity>(HealthDetailActivity.ID_HEALTH to it._id!!, ID_FIRST_HEALTH to it.idAplicacionUno!!)
                         }
                 )
 

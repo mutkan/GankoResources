@@ -45,7 +45,7 @@ class ManageDetailActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
     companion object {
         const val ID_MANAGE = "idVacuna"
-        const val ID_FIRST_MANAGE = "idDosisUno"
+        const val ID_FIRST_MANAGE = "idAplicacionUno"
     }
 
 }
