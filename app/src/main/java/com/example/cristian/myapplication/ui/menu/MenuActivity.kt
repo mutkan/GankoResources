@@ -79,16 +79,14 @@ class MenuActivity : AppCompatActivity(),Injectable,HasSupportFragmentInjector {
             }
         }
         recycler.layoutManager = gridManager
-        if (intent.extras!= null) {
 
-            Log.d("pending","pendiente")
+        if (intent.extras!= null) {
             when (intent.extras.get("fragment")){
-                0->{
-                    putFragment(R.id.content_frame, HealthFragment.instance())}
+                0->{ putFragment(R.id.content_frame, HealthFragment.instance())}
                 1-> putFragment(R.id.content_frame, ManageFragment.instance())
                 else -> putFragment(R.id.content_frame, VaccinesFragment.instance())
             }}
-         else {
+        else {
             clickOnMenu(viewModel.content, true)
             putFragment(R.id.content_frame, ListBovineFragment.instance())
         }
@@ -123,6 +121,7 @@ class MenuActivity : AppCompatActivity(),Injectable,HasSupportFragmentInjector {
 
     }
 
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         this.menu = menu
         menuInflater.inflate(R.menu.toolbar_menu, menu)
@@ -137,7 +136,6 @@ class MenuActivity : AppCompatActivity(),Injectable,HasSupportFragmentInjector {
 
         return super.onCreateOptionsMenu(menu)
     }
-
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
@@ -165,6 +163,7 @@ class MenuActivity : AppCompatActivity(),Injectable,HasSupportFragmentInjector {
 
     fun noMenu(){
         state = NOMENU
+
         onPrepareOptionsMenu(menu)
     }
 
@@ -189,6 +188,7 @@ class MenuActivity : AppCompatActivity(),Injectable,HasSupportFragmentInjector {
 
         return super.onPrepareOptionsMenu(menu)
     }
+
 
     fun clickOnMenu(content: Int, firsttime:Boolean = false){
 

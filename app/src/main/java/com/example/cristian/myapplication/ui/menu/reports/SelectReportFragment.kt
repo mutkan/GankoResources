@@ -1,9 +1,11 @@
 package com.example.cristian.myapplication.ui.menu.reports
 
 
+import android.content.Context
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,23 +18,38 @@ import com.jakewharton.rxbinding2.widget.itemSelections
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.fragment_select_report.*
 import android.widget.ArrayAdapter
+import com.example.cristian.myapplication.excel.TemplateExcel
+import com.example.cristian.myapplication.pdf.TemplatePdf
+import com.example.cristian.myapplication.ui.menu.MenuActivity
+import com.jakewharton.rxbinding2.view.clicks
+import org.jetbrains.anko.support.v4.toast
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.PrintStream
 
 
 class SelectReportFragment : Fragment() {
 
     lateinit var binding: FragmentSelectReportBinding
-
+    lateinit var templatePdf:TemplatePdf
+    lateinit var templateExcel: TemplateExcel
     val dis: LifeDisposable = LifeDisposable(this)
+    val header = arrayOf("id","nombre","edad")
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_select_report, container, false)
+        templatePdf = TemplatePdf(context!!)
+        templateExcel = TemplateExcel(context!!)
         return binding.root
     }
 
     override fun onResume() {
         super.onResume()
+
+
 
         dis add typeDateGroup.checkedChanges()
                 .subscribeBy(
@@ -47,7 +64,39 @@ class SelectReportFragment : Fragment() {
                             checkCategoriesSpinnerChanges(it)
                         }
                 )
+
+        dis add fabView.clicks()
+                .subscribeBy (
+                        onNext = {
+                            pdf("reporte",1)
+                            //templatePdf.ViewPdf()
+                            templateExcel.saveExcelFile("reporte.xlsx")
+
+                            templateExcel.viewExcel(activity!!)
+                        }
+                )
+        dis add fabDownload.clicks()
+                .subscribeBy(onNext = {
+                        pdf("reporte",2)
+                        toast("Reporte guardado")
+                        templateExcel.saveExcelFile("reporte.xlsx")
+
+                })
+
     }
+
+
+
+    private  fun pdf(nombre:String,dir:Int){
+        templatePdf.openFile("reporte", dir)
+        templatePdf.addData("Reportes sanidad","")
+        templatePdf.addTitle("Hola","Mundo","12/0/2018")
+        templatePdf.createTable(header,datos())
+        templatePdf.closeFile()
+    }
+
+    private fun datos():ArrayList<List<String>> = arrayListOf(listOf("1","Dda","21"),listOf("2","pp","32"), listOf("33","sd","sd"))
+
 
      private fun checkCategoriesSpinnerChanges(selected: Int){
         when (selected) {
