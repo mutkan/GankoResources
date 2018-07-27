@@ -29,7 +29,9 @@ import com.example.cristian.myapplication.ui.menu.MenuActivity
 import com.example.cristian.myapplication.ui.menu.health.AddHealthActivity
 import com.example.cristian.myapplication.ui.menu.health.detail.HealthDetailActivity
 import com.example.cristian.myapplication.ui.menu.management.detail.ManageDetailActivity
+import com.example.cristian.myapplication.ui.menu.meadow.AddMeadowAlertActivity
 import com.example.cristian.myapplication.ui.menu.meadow.ManageMeadowActivity
+import com.example.cristian.myapplication.ui.menu.meadow.ManageMeadowAlertActivity
 import com.example.cristian.myapplication.ui.menu.meadow.aforo.AddAforoActivity
 import com.example.cristian.myapplication.ui.menu.meadow.mantenimiento.AddMantenimientoActivity
 import com.example.cristian.myapplication.ui.menu.milk.AddMilkActivity
@@ -194,5 +196,13 @@ abstract class ActivityComponents {
     @ActivityScope
     @ContributesAndroidInjector(modules = [ManageDetailModule::class])
     abstract fun bindManageDetailActivity(): ManageDetailActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector
+    abstract fun bindAddMeadowAlertActivity(): AddMeadowAlertActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector
+    abstract fun bindManageMeadowAlertActivity(): ManageMeadowAlertActivity
 
 }

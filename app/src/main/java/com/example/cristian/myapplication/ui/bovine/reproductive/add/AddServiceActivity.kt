@@ -16,12 +16,16 @@ import com.example.cristian.myapplication.ui.bovine.reproductive.ListServiceFrag
 import com.example.cristian.myapplication.ui.bovine.reproductive.ListZealFragment.Companion.ARG_ZEAL
 import com.example.cristian.myapplication.ui.bovine.reproductive.ReproductiveBvnViewModel
 import com.example.cristian.myapplication.util.*
+import com.example.cristian.myapplication.work.NotificationWork
+import com.example.cristian.myapplication.work.NotificationWork.Companion.TYPE_REPRODUCTIVE
 import com.jakewharton.rxbinding2.view.clicks
 import com.jakewharton.rxbinding2.widget.checkedChanges
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_add_service.*
 import java.util.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class AddServiceActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDateSetListener {
@@ -110,7 +114,19 @@ class AddServiceActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
                 }
                 .flatMapSingle {
                     val servicio = createService(it)
-                    viewModel.insertService(idBovino, servicio) }
+                    if (serviceType.checkedRadioButtonId == R.id.naturalMating)
+                        viewModel.insertService(idBovino, servicio)
+                    else
+                        viewModel.insertService(idBovino, servicio).flatMap { bovino ->
+                            val pajilla = bullCodeOrStrawSpinner.selectedItem as Straw
+                            viewModel.markStrawAsUsed(pajilla._id!!).map { bovino }
+                        }
+                }
+                .flatMapSingle { bovino ->
+                    val ultimoServicio = bovino.servicios!![0].fecha!!.toStringFormat()
+                    Single.just(NotificationWork.notify(TYPE_REPRODUCTIVE, "Recordatorio Diagnostico de preñez", "Verificar preñez del bovino ${bovino.nombre}, fecha del servicio $ultimoServicio", idBovino,
+                            34, TimeUnit.DAYS))
+                }
                 .subscribeBy(
                         onNext = {
                             finish()
@@ -130,7 +146,7 @@ class AddServiceActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
 
     }
 
-    private fun createService(params: List<String>): Servicio{
+    private fun createService(params: List<String>): Servicio {
         val fecha = params[0].toDate()
         val condicion = params[1].toDouble()
         val montaN = getString(R.string.monta_natural)

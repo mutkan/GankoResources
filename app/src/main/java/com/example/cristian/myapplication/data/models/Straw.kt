@@ -16,7 +16,7 @@ class Straw(
         var bull: String? = null,
         var origin: String? = null,
         var value: String? = null,
-        var state: String? = null
+        var state: Int? = UNUSED_STRAW
 
 ):Parcelable{
 
@@ -26,6 +26,11 @@ class Straw(
 
     override fun toString(): String {
         return "Canastilla: ${this.layette}, Id: ${this.idStraw}"
+    }
+
+    companion object {
+        const val UNUSED_STRAW = 0
+        const val USED_STRAW = 1
     }
 
 }

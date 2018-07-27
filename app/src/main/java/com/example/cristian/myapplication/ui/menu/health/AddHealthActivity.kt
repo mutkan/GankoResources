@@ -173,6 +173,8 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                         }
                 )
 
+        unidadTiempo = frecuencyOptionsHealth.selectedItem.toString()
+
         if (edit) {
             dis add btnFinalizeHealth.clicks()
                     .flatMap {
@@ -197,14 +199,14 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                         }
 
                         viewModel.addHealth(
-                                Sanidad(null, null, null, farmId, dateAddHealth.text.toString().toDate(),
-                                        fechaProxima1(dateAddHealth.text().toDate(), applicacion_number.text().toInt(), frequency.text().toInt()),
+                                Sanidad(null, null, null, farmId, spinnerEvent.selectedItem.toString(), frecuencyOptionsHealth.selectedItem.toString(),
+                                        dateAddHealth.text.toString().toDate(), fechaProxima1(dateAddHealth.text().toDate(), applicacion_number.text().toInt(), frequency.text().toInt()),
                                         frequency.text().toInt(), spinnerEvent.selectedItem.toString(),
                                         if (binding.otherSelect) other.text() else null, diagnosis.text(), treatment_health.text(),
                                         product_health.text(), dosis.text(), null, applicacion_number.text().toInt(),
                                         previousHealth.aplicacion!!.plus(1),
                                         observations_health.text(), product_value.text().toInt(), attention_value.text().toInt(),
-                                        group?.toGrupo(), bovines!!, unidadTiempo, noBovines!!, ProxStates.NOT_APPLIED, previousHealth.idDosisUno))
+                                        group?.toGrupo(), bovines!!, unidadTiempo, noBovines!!, ProxStates.NOT_APPLIED, previousHealth.idAplicacionUno))
                                 .map { it to notifyTime }
 
 
@@ -251,8 +253,8 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                         }
 
                         viewModel.addFirstHealth(
-                                Sanidad(null, null, null, farmId, dateAddHealth.text.toString().toDate(),
-                                        fechaProxima1(dateAddHealth.text().toDate(), applicacion_number.text().toInt(), frequency.text().toInt()),
+                                Sanidad(null, null, null, farmId, spinnerEvent.selectedItem.toString(), frecuencyOptionsHealth.selectedItem.toString(),
+                                        dateAddHealth.text.toString().toDate(), fechaProxima1(dateAddHealth.text().toDate(), applicacion_number.text().toInt(), frequency.text().toInt()),
                                         frequency.text().toInt(), spinnerEvent.selectedItem.toString(),
                                         if (binding.otherSelect) other.text() else null, diagnosis.text(), treatment_health.text(),
                                         product_health.text(), dosis.text(), null, applicacion_number.text().toInt(), 1,
@@ -292,7 +294,7 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
         product_health.setText(previousHealth.producto.toString())
         dosis.setText(previousHealth.dosis.toString())
         frequency.setText(previousHealth.frecuencia.toString())
-        val unidadTiempo = unidades.indexOf(previousHealth.UnidadesFrecuencia)
+        val unidadTiempo = unidades.indexOf(previousHealth.unidadFrecuencia)
         frecuencyOptionsHealth.apply {
             setSelection(unidadTiempo)
             isEnabled = false
@@ -312,7 +314,7 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
     }
 
     private fun fechaProxima1(fecha: Date, aplicaciones: Int, frecuencia: Int): Date? {
-        unidadTiempo = frecuencyOptionsHealth.selectedItem.toString()
+       // unidadTiempo = frecuencyOptionsHealth.selectedItem.toString()
         return if (aplicaciones != 1) {
             when (unidadTiempo) {
                 "Horas" -> fecha.add(Calendar.HOUR, frecuencia)

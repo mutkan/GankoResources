@@ -57,7 +57,7 @@ class RecentVaccinesFragment : Fragment(), Injectable {
         dis add adapter.clickVacuna
                 .subscribeBy(
                         onNext = {
-                            startActivity<VaccineDetailActivity>(VaccineDetailActivity.ID_VACCINE to it._id!!, ID_FIRST_VACCINE to it.idDosisUno!!)
+                            startActivity<VaccineDetailActivity>(VaccineDetailActivity.ID_VACCINE to it._id!!, ID_FIRST_VACCINE to it.idAplicacionUno!!)
                         }
                 )
 

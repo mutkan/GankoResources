@@ -43,6 +43,6 @@ class VaccineDetailActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
     companion object {
         const val ID_VACCINE = "idVacuna"
-        const val ID_FIRST_VACCINE = "idDosisUno"
+        const val ID_FIRST_VACCINE = "idAplicacionUno"
     }
 }

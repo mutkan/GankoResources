@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.menu.meadow.AddMeadowAlertActivity">
+
+    <Button
+        android:id="@+id/btnCancelMeadowAlarm"
+        style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="@dimen/button_width"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_cancel"
+        app:layout_constraintEnd_toStartOf="@+id/btnAddMeadowAlarm"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btnAddMeadowAlarm" />
+
+    <Button
+        android:id="@+id/btnAddMeadowAlarm"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="@dimen/button_width"
+        android:layout_height="50dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/btn_add"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btnCancelMeadowAlarm" />
+
+    <TextView
+        android:id="@+id/textView53"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/type"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Spinner
+        android:id="@+id/meadowAlarmType"
+        style="@style/edit_text"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
+        android:entries="@array/meadow_alarm_type"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/textView53"
+        app:layout_constraintTop_toBottomOf="@+id/textView53" />
+
+    <TextView
+        android:id="@+id/textView58"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/time_value"
+        app:layout_constraintStart_toStartOf="@+id/meadowAlarmType"
+        app:layout_constraintTop_toBottomOf="@+id/meadowAlarmType" />
+
+    <EditText
+        android:id="@+id/meadowAlarmDate"
+        style="@style/edit_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:hint="@string/value"
+        android:inputType="number"
+        app:layout_constraintEnd_toStartOf="@+id/meadowAlarmTime"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView58" />
+
+    <ImageView
+        android:id="@+id/imageView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/meadowAlarmType"
+        app:layout_constraintEnd_toEndOf="@+id/meadowAlarmType"
+        app:layout_constraintTop_toTopOf="@+id/meadowAlarmType"
+        app:srcCompat="@drawable/ic_arrow_drop_down" />
+
+    <Spinner
+        android:id="@+id/meadowAlarmTime"
+        style="@style/edit_text"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="8dp"
+        android:entries="@array/meadow_alarm_time"
+        app:layout_constraintBottom_toBottomOf="@+id/meadowAlarmDate"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/meadowAlarmDate"
+        app:layout_constraintTop_toTopOf="@+id/meadowAlarmDate" />
+
+    <ImageView
+        android:id="@+id/imageView14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/meadowAlarmTime"
+        app:layout_constraintEnd_toEndOf="@+id/meadowAlarmTime"
+        app:layout_constraintTop_toTopOf="@+id/meadowAlarmTime"
+        app:srcCompat="@drawable/ic_arrow_drop_down" />
+
+</android.support.constraint.ConstraintLayout>
