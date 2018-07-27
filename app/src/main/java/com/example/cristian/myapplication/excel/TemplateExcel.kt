@@ -29,7 +29,7 @@ import kotlin.collections.ArrayList
 class TemplateExcel(var context: Context){
     lateinit var excelfile :File
 
-    fun saveExcelFile( fileName: String) {
+    fun saveExcelFile( fileName: String, opcion:Int,activity: Activity) {
         val wb = HSSFWorkbook()
         var c: Cell? = null
         var sheet1: Sheet? = null
@@ -51,12 +51,15 @@ class TemplateExcel(var context: Context){
         sheet1!!.setColumnWidth(1, 15 * 500)
         sheet1!!.setColumnWidth(2, 15 * 500)
 
-         excelfile = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName)
+
+        excelfile = if (opcion==1) File.createTempFile("reporte", null, context.getCacheDir())
+        else File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName)
+
 
         var os = FileOutputStream(excelfile)
             wb.write(os)
                 os?.close()
-
+        if (opcion==1) viewExcel(activity)
 
     }
 

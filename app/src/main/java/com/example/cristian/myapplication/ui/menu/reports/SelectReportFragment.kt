@@ -22,6 +22,8 @@ import com.example.cristian.myapplication.excel.TemplateExcel
 import com.example.cristian.myapplication.pdf.TemplatePdf
 import com.example.cristian.myapplication.ui.menu.MenuActivity
 import com.jakewharton.rxbinding2.view.clicks
+import org.jetbrains.anko.support.v4.alert
+import org.jetbrains.anko.support.v4.selector
 import org.jetbrains.anko.support.v4.toast
 import java.io.File
 import java.io.FileOutputStream
@@ -48,7 +50,7 @@ class SelectReportFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-
+        val options = listOf("PDF","Excel")
 
 
         dis add typeDateGroup.checkedChanges()
@@ -68,22 +70,29 @@ class SelectReportFragment : Fragment() {
         dis add fabView.clicks()
                 .subscribeBy (
                         onNext = {
-                            pdf("reporte",1)
-                            //templatePdf.ViewPdf()
-                            templateExcel.saveExcelFile("reporte.xlsx")
 
-                            templateExcel.viewExcel(activity!!)
+                            selector("Seleccione el formato que desea", options) { dialogInterface, i ->
+                                if (i==0)  pdf("reporte",1)
+                                else templateExcel.saveExcelFile("reporte.xlsx",1,activity!!)
+                                    //templateExcel.viewExcel(activity!!)
+
+
+                            }
                         }
                 )
         dis add fabDownload.clicks()
-                .subscribeBy(onNext = {
-                        pdf("reporte",2)
-                        toast("Reporte guardado")
-                        templateExcel.saveExcelFile("reporte.xlsx")
+                .subscribeBy {
 
-                })
+                    selector("Seleccione el formato que desea", options) { dialogInterface, i ->
+                        if (i==0)  pdf("reporte",2)
+                        else  templateExcel.saveExcelFile("reporte.xlsx",2,activity!!)
+                        toast("Reporte guardado")
+
+                    }
+                }
 
     }
+
 
 
 
@@ -93,7 +102,10 @@ class SelectReportFragment : Fragment() {
         templatePdf.addTitle("Hola","Mundo","12/0/2018")
         templatePdf.createTable(header,datos())
         templatePdf.closeFile()
+        if (dir==1) templatePdf.ViewPdf()
     }
+
+
 
     private fun datos():ArrayList<List<String>> = arrayListOf(listOf("1","Dda","21"),listOf("2","pp","32"), listOf("33","sd","sd"))
 
