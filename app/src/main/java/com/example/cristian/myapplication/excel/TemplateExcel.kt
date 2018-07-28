@@ -50,10 +50,12 @@ class TemplateExcel(var context: Context){
         sheet1!!.setColumnWidth(0, 15 * 500)
         sheet1!!.setColumnWidth(1, 15 * 500)
         sheet1!!.setColumnWidth(2, 15 * 500)
-
+        val folder = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString())
+        if (!folder.exists())
+            folder.mkdir()
 
         excelfile = if (opcion==1) File.createTempFile("reporte", null, context.getCacheDir())
-        else File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName)
+        else File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),fileName)
 
 
         var os = FileOutputStream(excelfile)

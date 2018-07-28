@@ -34,7 +34,7 @@ class TemplatePdf(var context: Context) {
     }
     fun  createFile(reportName:String,dir: Int){
         if (dir==2){
-        val folder : File = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString(),"REPORTES GANKO")
+        val folder : File = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString())
         if (!folder.exists())
             folder.mkdir()
 
@@ -74,7 +74,7 @@ class TemplatePdf(var context: Context) {
         document.add(paragraph)
     }
 
-        fun createTable(header:Array<String>,registros:ArrayList<List<String>>){
+        fun createTable(header:Array<String>,registros:ArrayList<Array<String>>){
         paragraph = Paragraph()
         paragraph.font = fontFile
         var pdfTable: PdfPTable = PdfPTable(header.size)
@@ -86,14 +86,12 @@ class TemplatePdf(var context: Context) {
             pdfCell.horizontalAlignment = Element.ALIGN_CENTER
             pdfCell.backgroundColor = BaseColor.GRAY
             pdfTable.addCell(pdfCell) }
-        for (filas in registros.indices){
-            var row: List<String> = registros[filas]
-            for ( cols in registros.indices ){
-                pdfCell = PdfPCell(Phrase(row[cols]))
-                pdfCell.horizontalAlignment = Element.ALIGN_CENTER
-                pdfCell.fixedHeight= 40f
-                pdfTable.addCell(pdfCell) }}
 
+        for (regis in registros){
+            for(item in regis){
+                pdfTable.addCell(item)
+            }
+        }
             paragraph.add(pdfTable)
             document.add(paragraph)
 

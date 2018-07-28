@@ -1,10 +1,11 @@
 package com.example.cristian.myapplication.ui.menu.reports
 
 
-import android.content.Context
+import android.arch.lifecycle.ViewModelProvider
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,26 +18,34 @@ import com.jakewharton.rxbinding2.widget.itemSelections
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.fragment_select_report.*
 import android.widget.ArrayAdapter
+import android.widget.HeaderViewListAdapter
+import com.example.cristian.myapplication.data.models.ReporteSanidad
+import com.example.cristian.myapplication.data.models.Sanidad
+import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.excel.TemplateExcel
 import com.example.cristian.myapplication.pdf.TemplatePdf
-import com.example.cristian.myapplication.ui.menu.MenuActivity
+import com.example.cristian.myapplication.ui.menu.MenuViewModel
+import com.example.cristian.myapplication.util.add
+import com.example.cristian.myapplication.util.buildViewModel
 import com.jakewharton.rxbinding2.view.clicks
-import org.jetbrains.anko.support.v4.alert
 import org.jetbrains.anko.support.v4.selector
 import org.jetbrains.anko.support.v4.toast
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
-import java.io.PrintStream
+import java.util.*
+import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 
-class SelectReportFragment : Fragment() {
-
+class SelectReportFragment : Fragment() , Injectable {
+    @Inject
+    lateinit var factory: ViewModelProvider.Factory
+    val viewmodel: MenuViewModel by lazy { buildViewModel<MenuViewModel>(factory) }
     lateinit var binding: FragmentSelectReportBinding
     lateinit var templatePdf:TemplatePdf
     lateinit var templateExcel: TemplateExcel
     val dis: LifeDisposable = LifeDisposable(this)
-    val header = arrayOf("id","nombre","edad")
+    private val idFinca: String by lazy { viewmodel.getFarmId() }
+    val options = listOf("PDF","Excel")
+    var tiposdata : Array<String> = emptyArray()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -49,8 +58,9 @@ class SelectReportFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        val options = listOf("PDF","Excel")
 
+        val header = arrayOf("Producto","Tratamiento","Evento","Diagnostico")
+        var selectedType : String
 
         dis add typeDateGroup.checkedChanges()
                 .subscribeBy(
@@ -66,47 +76,58 @@ class SelectReportFragment : Fragment() {
                         }
                 )
 
+        dis add reportType.itemSelections()
+                .subscribeBy(onNext = {
+                    selectedType = tiposdata[it]
+                    toast(selectedType)
+
+                })
+
         dis add fabView.clicks()
                 .subscribeBy (
                         onNext = {
+                            dis add  viewmodel.getHealth(idFinca).subscribeBy(
+                                    onSuccess = {
+                                        selector("Seleccione el formato que desea", options) { dialogInterface, i ->
+                                            if (i==0)  pdf("reporte",1,header,it)
+                                            else templateExcel.saveExcelFile("reporte.xlsx",1,activity!!)}
+                                    }
+                            )
 
-                            selector("Seleccione el formato que desea", options) { dialogInterface, i ->
-                                if (i==0)  pdf("reporte",1)
-                                else templateExcel.saveExcelFile("reporte.xlsx",1,activity!!)
-                                    //templateExcel.viewExcel(activity!!)
-
-
-                            }
                         }
                 )
-        dis add fabDownload.clicks()
+      /*  dis add fabDownload.clicks()
                 .subscribeBy {
 
                     selector("Seleccione el formato que desea", options) { dialogInterface, i ->
-                        if (i==0)  pdf("reporte",2)
+                        if (i==0)  pdf("reporte",2,header,)
                         else  templateExcel.saveExcelFile("reporte.xlsx",2,activity!!)
                         toast("Reporte guardado")
 
                     }
                 }
-
+*/
     }
 
 
 
 
-    private  fun pdf(nombre:String,dir:Int){
+    private  fun pdf(nombre:String,dir:Int,header:Array<String>,list:List<Sanidad>){
+        var array :Array<String> = emptyArray()
+        for (item in list){
+            array=array.plus(listOf(item.producto!!,item.tratamiento!!,item.evento!!,item.diagnostico!!))
+        }
+
         templatePdf.openFile("reporte", dir)
-        templatePdf.addData("Reportes sanidad","")
-        templatePdf.addTitle("Hola","Mundo","12/0/2018")
-        templatePdf.createTable(header,datos())
+        templatePdf.addTitle("Hola","Mundo",Calendar.getInstance().time.toString())
+        templatePdf.createTable(header, arrayListOf(array))
         templatePdf.closeFile()
         if (dir==1) templatePdf.ViewPdf()
     }
 
 
 
-    private fun datos():ArrayList<List<String>> = arrayListOf(listOf("1","Dda","21"),listOf("2","pp","32"), listOf("33","sd","sd"))
+    private fun datos():ArrayList<Array<String>> = arrayListOf(arrayOf("1","Dda","21","sd"), arrayOf("2","pp","32","asd"),arrayOf("sd","33","sd","sd"),arrayOf("sd","33","sd","sd"),arrayOf("sd","33","sd","sd"))
 
 
      private fun checkCategoriesSpinnerChanges(selected: Int){
@@ -126,10 +147,13 @@ class SelectReportFragment : Fragment() {
         }
     }
 
-    private fun setEntries(tipos: Array<String>) {
+    private fun setEntries(tipos: Array<String>){
         val spinnerArrayAdapter = ArrayAdapter<String>(this.context, R.layout.support_simple_spinner_dropdown_item, tipos)
         reportType.adapter = spinnerArrayAdapter
+            tiposdata = tipos
     }
+
+
 
     companion object {
         const val REPORTE_REPRODUCTIVOS = 0
