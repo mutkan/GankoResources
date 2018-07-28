@@ -18,8 +18,6 @@ import com.jakewharton.rxbinding2.widget.itemSelections
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.fragment_select_report.*
 import android.widget.ArrayAdapter
-import android.widget.HeaderViewListAdapter
-import com.example.cristian.myapplication.data.models.ReporteSanidad
 import com.example.cristian.myapplication.data.models.Sanidad
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.excel.TemplateExcel
@@ -32,7 +30,6 @@ import org.jetbrains.anko.support.v4.selector
 import org.jetbrains.anko.support.v4.toast
 import java.util.*
 import javax.inject.Inject
-import kotlin.collections.ArrayList
 
 
 class SelectReportFragment : Fragment() , Injectable {
@@ -124,11 +121,6 @@ class SelectReportFragment : Fragment() , Injectable {
         templatePdf.closeFile()
         if (dir==1) templatePdf.ViewPdf()
     }
-
-
-
-    private fun datos():ArrayList<Array<String>> = arrayListOf(arrayOf("1","Dda","21","sd"), arrayOf("2","pp","32","asd"),arrayOf("sd","33","sd","sd"),arrayOf("sd","33","sd","sd"),arrayOf("sd","33","sd","sd"))
-
 
      private fun checkCategoriesSpinnerChanges(selected: Int){
         when (selected) {
