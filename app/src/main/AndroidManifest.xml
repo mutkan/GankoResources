@@ -104,6 +104,7 @@
         <activity
             android:name=".ui.menu.management.detail.ManageDetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".pdf.ViewPdfActivity"></activity>
         <activity android:name=".ui.menu.meadow.ManageMeadowAlertActivity" />
         <activity android:name=".ui.menu.meadow.AddMeadowAlertActivity"></activity>
     </application>

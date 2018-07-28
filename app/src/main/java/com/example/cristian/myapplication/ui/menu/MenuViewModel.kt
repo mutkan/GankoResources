@@ -720,6 +720,48 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     }.toList().applySchedulers()
     //endregion
 
+    //region reportes ceba
+
+    /*fun getBovineInfo(idBovino: String): Maybe<Bovino> =
+            db.oneById(idBovino,Bovino::class)
+                    .applySchedulers()
+
+    fun getListCeba(idBovino: String,mes: Int,anio: Int): Single<List<ReporteGananciaPeso>> =
+            db.listByExp("bovino" equalEx idBovino, Ceba::class
+                    , orderBy = arrayOf("fecha" orderEx DESCENDING))
+                    .flatMapObservable {
+                        it.toObservable().filter{
+
+                        }
+                    }
+                    .filter { it.eliminado == false }
+                    .toList()
+                    .applySchedulers()
+    fun reporteSanidad(mes: Int, anio: Int): Single<List<ReporteSanidad>> =
+            db.listByExp("finca" equalEx farmID, Sanidad::class
+                    , orderBy = arrayOf("fecha" orderEx DESCENDING))
+                    .flatMapObservable {
+                        it.toObservable().filter {
+                            val fechaSanidad = it.fecha!!
+                            val cal = Calendar.getInstance()
+                            cal.timeInMillis = fechaSanidad.time
+                            val month = cal.get(Calendar.MONTH)
+                            val year = cal.get(Calendar.YEAR)
+                            month == mes && year == anio
+                        }
+                    }.flatMap { sanidad ->
+                        sanidad.bovinos?.toObservable()?.flatMapMaybe { db.oneById(it, Bovino::class) }
+                                ?.map {
+                                    ReporteSanidad(it.codigo!!, it.nombre, sanidad.fecha!!, sanidad.evento!!, sanidad.diagnostico!!, sanidad.producto!!)
+                                }
+                    }.toList().applySchedulers()
+*/
+    //endregion
+
+    // region reportes leche
+
+
+    // endregion
     //region REPORTES MANEJO
 
 /* lateinit var registro: RegistroManejo

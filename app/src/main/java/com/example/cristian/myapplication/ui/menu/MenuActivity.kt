@@ -29,6 +29,7 @@ import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
 import com.example.cristian.myapplication.util.fixColor
 import com.example.cristian.myapplication.util.putFragment
+import com.jakewharton.rxbinding2.widget.RxSearchView
 import com.jakewharton.rxbinding2.widget.queryTextChanges
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -84,6 +85,17 @@ class MenuActivity : AppCompatActivity(), Injectable, HasSupportFragmentInjector
         recycler.layoutManager = gridManager
 
 
+        if (intent.extras!= null) {
+            when (intent.extras.get("fragment")){
+                0->{ putFragment(R.id.content_frame, HealthFragment.instance())}
+                1-> putFragment(R.id.content_frame, ManageFragment.instance())
+                else -> putFragment(R.id.content_frame, VaccinesFragment.instance())
+            }}
+        else {
+            clickOnMenu(viewModel.content, true)
+            putFragment(R.id.content_frame, ListBovineFragment.instance())
+        }
+
     }
 
 
@@ -107,6 +119,9 @@ class MenuActivity : AppCompatActivity(), Injectable, HasSupportFragmentInjector
                         }
                     }
                 }
+
+
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

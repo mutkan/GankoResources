@@ -36,8 +36,9 @@ def anko_version = "0.10.4"
 def work_version = "1.0.0-alpha03"
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
     //noinspection GradleCompatible
     implementation "com.android.support:appcompat-v7:$support_version"
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
@@ -72,6 +73,7 @@ dependencies {
     implementation 'com.google.dagger:dagger:2.16'
     kapt 'com.google.dagger:dagger-compiler:2.16'
     implementation 'com.google.dagger:dagger-android-support:2.16'
+
     // if you use the support libraries
     kapt 'com.google.dagger:dagger-android-processor:2.16'
 
@@ -86,15 +88,19 @@ dependencies {
     //couchbase
     implementation 'com.couchbase.lite:couchbase-lite-android:2.0.0'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.5'
-    implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.5"
+    implementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.9.5'
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.android.support:gridlayout-v7:27.1.1'
 
     //ColorPicker
     implementation 'com.github.QuadFlask:colorpicker:0.0.13'
 
+    //pdfFile
+    implementation 'com.itextpdf:itextg:5.5.10'
+    implementation 'com.github.barteksc:android-pdf-viewer:2.8.1'
+
     //Work Manager
     implementation "android.arch.work:work-runtime-ktx:$work_version"
     implementation "android.arch.work:work-firebase:$work_version"
-
+    implementation 'org.apache.poi:poi:3.17'
 }
