@@ -235,3 +235,53 @@ data class ReporteSalidas(
         val fechaSalida: Date,
         val tipoSalida: String
 )
+
+fun getHeader(tipoReporte:String):List<String> =
+
+    when(tipoReporte){
+         "Partos"-> listOf("")
+         "Secado"-> listOf("Codigo","Nombre","Fecha servicio","Fecha secado")
+         "Preparación"-> listOf("Codigo","Nombre","Fecha de parto","Fecha de preparación")
+         "Días abiertos"-> listOf("Codigo","Nombre","Ultimo parto","Ultimo servicio","Dias vacios","En servicio")
+         "Partos atendidos"-> listOf("Codigo","Nombre","Fecha parto","Sexo cria", "Estado cria")
+         "Abortos"-> listOf("Codigo","Nombre","Fecha servicio","Fecha confirmacion aborto")
+         "Tres servicios"-> listOf("Codigo","Nombre","Ultimo servicio","Dias vacios")
+         "Celos"-> listOf("Codigo","Nombre","Fecha celo")
+         "Resumen reproductivo"-> listOf()
+         //LECHE
+         "Consolidado de leche"-> listOf("Codigo","Total produccion","Valor")
+         "Reporte de leche"-> listOf("Codigo","Nombre","Ultimo parto","En produccion","Promedio produccion","Total produccion")
+         //CEBA
+         "Destetos"-> listOf("Codigo","Nombre","Fecha nacimiento","Fecha destete","Codigo madre","Nombre madre")
+         "Ganancia diaria de peso"-> listOf("Codigo","Nombre","Fecha nacimiento","GDP","Proposito")
+         //PRADERAS
+         "Praderas"-> listOf("Numero","Tipo gaminea","Fecha fertilizacion","Producto","Cantidad")
+         "Ocupación de praderas"-> listOf("Numero","Fecha ocupacion","Fecha descanso","Fecha fertilización")
+         //ALIMENTACION
+         "Alimentacion"-> listOf("Codigo","Nombre","Racion","Producto","Valor total")
+         "Suplementos usados"-> listOf("Nombre","Total usado","Valor total")
+         //MOVIMIENTOS
+         "Animales en pradera"-> listOf("Lote","Codigo","Nombre","Fecha ingreso","Fecha salida")
+         //ENTRADAS
+         "Inventario"-> listOf("Codigo","Nombre","Nacimiento","Propósito","Color","Raza","Partos","C.Madre","C.Padre")
+         "Terneras en estaca"-> listOf("Codigo","Nombre","Nacimiento","Proposito","Raza","C.Madre", "C.Padre")
+         "Terneras destetas"-> listOf("Codigo","Nombre","Nacimiento","Proposito","Raza","C.Madre","C.Padre")
+         "Novillas de levante"-> listOf("Codigo","Nombre","Nacimiento","Proposito","Raza")
+         "Novillas vientre"-> listOf("Codigo","Nombre","Nacimiento","Proposito","Raza")
+         "Horras"-> listOf("Codigo","Nombre","Nacimiento","Proposito","Raza")
+         "Vacas"-> listOf("Codigo","Nombre","Nacimiento","Proposito","Raza")
+         //SALIDAS
+         "Salida"-> listOf("Codigo","Nombre","Fecha salida","Tipo salida")
+         //VACUNAS
+         "Vacunas"-> listOf("Codigo","Nombre","Fecha vacunacion","Vacuna aplicada")
+         //SANIDAD
+         "Sanidad"-> listOf("Codigo","Nombre","Fecha evento","Evento","Diagnostico","Producto")
+         //MANEJO
+         "Manejo"-> listOf("Codigo","Nombre","Fecha evento","Evento","Tratamiento","Producto")
+         //PAJILLAS
+         "Pajillas"-> listOf("Codigo","Canastilla","Proposito","Toro","Procedencia")
+         else -> emptyList()
+
+
+        }
+
