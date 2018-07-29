@@ -74,7 +74,7 @@ class TemplatePdf(var context: Context) {
         document.add(paragraph)
     }
 
-        fun createTable(header:Array<String>,registros:ArrayList<Array<String>>){
+        fun createTable(header:List<String>,registros:List<List<String>>){
         paragraph = Paragraph()
         paragraph.font = fontFile
         var pdfTable: PdfPTable = PdfPTable(header.size)

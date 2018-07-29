@@ -19,6 +19,7 @@ import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.fragment_select_report.*
 import android.widget.ArrayAdapter
 import com.example.cristian.myapplication.data.models.Sanidad
+import com.example.cristian.myapplication.data.models.getHeader
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.excel.TemplateExcel
 import com.example.cristian.myapplication.pdf.TemplatePdf
@@ -26,6 +27,7 @@ import com.example.cristian.myapplication.ui.menu.MenuViewModel
 import com.example.cristian.myapplication.util.add
 import com.example.cristian.myapplication.util.buildViewModel
 import com.jakewharton.rxbinding2.view.clicks
+import kotlinx.android.synthetic.main.fragment_aforo.*
 import org.jetbrains.anko.support.v4.selector
 import org.jetbrains.anko.support.v4.toast
 import java.util.*
@@ -56,8 +58,8 @@ class SelectReportFragment : Fragment() , Injectable {
     override fun onResume() {
         super.onResume()
 
-        val header = arrayOf("Producto","Tratamiento","Evento","Diagnostico")
-        var selectedType : String
+        var header : List<String> = emptyList()
+        var selectedType : String = "Partos"
 
         dis add typeDateGroup.checkedChanges()
                 .subscribeBy(
@@ -76,13 +78,14 @@ class SelectReportFragment : Fragment() , Injectable {
         dis add reportType.itemSelections()
                 .subscribeBy(onNext = {
                     selectedType = tiposdata[it]
-                    toast(selectedType)
+
 
                 })
 
         dis add fabView.clicks()
                 .subscribeBy (
                         onNext = {
+                          header = getHeader(selectedType)
                             dis add  viewmodel.getHealth(idFinca).subscribeBy(
                                     onSuccess = {
                                         selector("Seleccione el formato que desea", options) { dialogInterface, i ->
@@ -109,15 +112,15 @@ class SelectReportFragment : Fragment() , Injectable {
 
 
 
-    private  fun pdf(nombre:String,dir:Int,header:Array<String>,list:List<Sanidad>){
-        var array :Array<String> = emptyArray()
+    private  fun pdf(nombre:String,dir:Int,header:List<String>,list:List<Sanidad>){
+        var array :List<String> = emptyList()
         for (item in list){
             array=array.plus(listOf(item.producto!!,item.tratamiento!!,item.evento!!,item.diagnostico!!))
         }
 
         templatePdf.openFile("reporte", dir)
         templatePdf.addTitle("Hola","Mundo",Calendar.getInstance().time.toString())
-        templatePdf.createTable(header, arrayListOf(array))
+        templatePdf.createTable(header, listOf(array))
         templatePdf.closeFile()
         if (dir==1) templatePdf.ViewPdf()
     }
@@ -143,6 +146,7 @@ class SelectReportFragment : Fragment() , Injectable {
         val spinnerArrayAdapter = ArrayAdapter<String>(this.context, R.layout.support_simple_spinner_dropdown_item, tipos)
         reportType.adapter = spinnerArrayAdapter
             tiposdata = tipos
+
     }
 
 
