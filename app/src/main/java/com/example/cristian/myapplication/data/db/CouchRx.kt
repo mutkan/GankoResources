@@ -1,6 +1,7 @@
 package com.example.cristian.myapplication.data.db
 
 import com.couchbase.lite.*
+import com.example.cristian.myapplication.data.models.Alarm
 import com.example.cristian.myapplication.data.preferences.UserSession
 import com.example.cristian.myapplication.util.andEx
 import com.example.cristian.myapplication.util.equalEx

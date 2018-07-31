@@ -24,6 +24,7 @@ import com.example.cristian.myapplication.ui.menu.milk.MilkFragment
 import com.example.cristian.myapplication.ui.menu.movement.MeadowUnusedFragment
 import com.example.cristian.myapplication.ui.menu.movement.MeadowUsedFragment
 import com.example.cristian.myapplication.ui.menu.movement.MovementFragment
+import com.example.cristian.myapplication.ui.menu.notifications.NotificationsFragment
 import com.example.cristian.myapplication.ui.menu.reports.ReportsFragment
 import com.example.cristian.myapplication.ui.menu.vaccines.VaccinesFragment
 import dagger.Module
@@ -103,6 +104,10 @@ abstract class FragmentComponent{
     @FragmentScope
     @ContributesAndroidInjector(modules = [(ReportsModule::class)])
     abstract fun bindReportsFragment(): ReportsFragment
+
+    @FragmentScope
+    @ContributesAndroidInjector
+    abstract fun bindNotificationsFragment(): NotificationsFragment
 
 
 

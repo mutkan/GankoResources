@@ -5,8 +5,8 @@ import java.util.Date
 class Alarm(
         val _id: String? = null,
         val _sequence: Long? = null,
-        val title: String? = null,
-        val description: String? = null,
+        val titulo: String? = null,
+        val descripcion: String? = null,
         val type: String? = null,
         val numeroAplicaciones: Int? = null,
         val aplicacion: Int? = null,

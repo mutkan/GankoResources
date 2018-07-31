@@ -25,7 +25,10 @@ import java.text.SimpleDateFormat
 import java.util.*
 import com.squareup.picasso.Picasso
 import android.graphics.drawable.Drawable
-
+import android.widget.ImageView
+import com.example.cristian.myapplication.data.models.RegistroManejo
+import com.example.cristian.myapplication.data.models.RegistroVacuna
+import com.example.cristian.myapplication.data.models.Sanidad
 
 
 val format = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
@@ -208,7 +211,7 @@ fun Date.add(field: Int?, amount: Int?): Date? = if (amount != 0 && amount != nu
 
 @BindingAdapter("app:bovinos", "app:noBovinos")
 fun setApplications(view: TextView?, bovinos: List<String>, noBovinos: List<String>) {
-    when{
+    when {
         noBovinos.isEmpty() && bovinos.isNotEmpty() -> view?.text = "${bovinos.size}"
         noBovinos.isNotEmpty() && bovinos.isNotEmpty() -> {
             val tot = noBovinos.size + bovinos.size

@@ -228,6 +228,9 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
 
     //endregion
 
+    fun getNotifications(from: Date, to: Date): Single<List<Alarm>> =
+            db.listByExpNoType("idFinca" equalEx farmID andEx ("fechaProxima".betweenDates(from, to)) andEx ("estadoProximo" equalEx NOT_APPLIED),Alarm::class, orderBy = arrayOf("fecha" orderEx DESCENDING)).applySchedulers()
+
     //region ReportesReproductivo
     private val VAR_SERV = ArrayExpression.variable("servicio")
     private val VAR_NOVEDAD = ArrayExpression.variable("servicio.novedad.novedad")
@@ -300,7 +303,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                 .map {
                     val serv = it.servicios!![0]
                     //ReporteFuturosPartos(it.codigo!!, it.nombre, serv.fecha!!, serv.posFechaParto!!.add(Calendar.DATE, -60)!!)
-                    listOf(it.codigo!!,it.nombre!!,serv.fecha!!.toStringFormat(),serv.posFechaParto!!.add(Calendar.DATE,-60)!!.toStringFormat())
+                    listOf(it.codigo!!, it.nombre!!, serv.fecha!!.toStringFormat(), serv.posFechaParto!!.add(Calendar.DATE, -60)!!.toStringFormat())
                 }.toList().applySchedulers()
     }
 
@@ -404,7 +407,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                                 }
                     }.toList().applySchedulers()
 
-    fun reporteAbortos(from: Date, to: Date): Single<List<List<String>>>  =
+    fun reporteAbortos(from: Date, to: Date): Single<List<List<String>>> =
             db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra")
                     andEx (ArrayExpression.any(VAR_SERV).`in`(Expression.property("servicios")))
                     .satisfies(VAR_NOVEDAD.equalTo(Expression.string("Aborto")))
@@ -450,7 +453,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                                 }
                     }.toList().applySchedulers()
 
-    fun reporteTresServicios(): Single<List<List<String>>>  =
+    fun reporteTresServicios(): Single<List<List<String>>> =
             db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra")
                     andEx (ArrayFunction.length(Expression.property("servicios")).greaterThanOrEqualTo(Expression.value(3)))
                     , Bovino::class)
@@ -478,7 +481,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     .flatMapObservable {
                         it.toObservable()
                                 .map { bovino ->
-                                   // ReporteCelos(bovino.codigo!!, bovino.nombre, bovino.celos!![0])
+                                    // ReporteCelos(bovino.codigo!!, bovino.nombre, bovino.celos!![0])
                                     listOf(bovino.codigo!!, bovino.nombre!!, bovino.celos!![0].toStringFormat())
                                 }
                     }
@@ -643,7 +646,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     }.flatMap { reg ->
                         reg.bovinos?.toObservable()?.flatMapMaybe { db.oneById(it, Bovino::class) }
                                 ?.map {
-                                  //  ReporteVacunas(it.codigo!!, it.nombre, reg.fecha!!, reg.nombre!!)
+                                    //  ReporteVacunas(it.codigo!!, it.nombre, reg.fecha!!, reg.nombre!!)
                                     listOf(it.codigo!!, it.nombre!!, reg.fecha!!.toStringFormat(), reg.nombre!!)
                                 }
                     }.toList().applySchedulers()
@@ -662,11 +665,10 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     }.flatMap { reg ->
                         reg.bovinos?.toObservable()?.flatMapMaybe { db.oneById(it, Bovino::class) }
                                 ?.map {
-                                   // ReporteVacunas(it.codigo!!, it.nombre, reg.fecha!!, reg.nombre!!)
+                                    // ReporteVacunas(it.codigo!!, it.nombre, reg.fecha!!, reg.nombre!!)
                                     listOf(it.codigo!!, it.nombre!!, reg.fecha!!.toStringFormat(), reg.nombre!!)
                                 }
                     }.toList().applySchedulers()
-
 
 
     //region reporte sanidad
@@ -698,7 +700,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     }.flatMap { sanidad ->
                         sanidad.bovinos?.toObservable()?.flatMapMaybe { db.oneById(it, Bovino::class) }
                                 ?.map {
-                                   // ReporteSanidad(it.codigo!!, it.nombre, sanidad.fecha!!, sanidad.evento!!, sanidad.diagnostico!!, sanidad.producto!!)
+                                    // ReporteSanidad(it.codigo!!, it.nombre, sanidad.fecha!!, sanidad.evento!!, sanidad.diagnostico!!, sanidad.producto!!)
                                     listOf(it.codigo!!, it.nombre!!, sanidad.fecha!!.toStringFormat(), sanidad.evento!!, sanidad.diagnostico!!, sanidad.producto!!)
 
                                 }
@@ -715,7 +717,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     }.flatMap { manejo ->
                         manejo.bovinos?.toObservable()?.flatMapMaybe { db.oneById(it, Bovino::class) }
                                 ?.map {
-                                   // ReporteManejo(it.codigo!!, it.nombre, manejo.fecha!!, manejo.tipo!!, manejo.tratamiento!!, manejo.producto!!)
+                                    // ReporteManejo(it.codigo!!, it.nombre, manejo.fecha!!, manejo.tipo!!, manejo.tratamiento!!, manejo.producto!!)
                                     listOf(it.codigo!!, it.nombre!!, manejo.fecha!!.toStringFormat(), manejo.tipo!!, manejo.tratamiento!!, manejo.producto!!)
                                 }
                     }.toList().applySchedulers()
@@ -735,7 +737,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     }.flatMap { manejo ->
                         manejo.bovinos?.toObservable()?.flatMapMaybe { db.oneById(it, Bovino::class) }
                                 ?.map {
-                                  //  ReporteManejo(it.codigo!!, it.nombre, manejo.fecha!!, manejo.tipo!!, manejo.tratamiento!!, manejo.producto!!)
+                                    //  ReporteManejo(it.codigo!!, it.nombre, manejo.fecha!!, manejo.tipo!!, manejo.tratamiento!!, manejo.producto!!)
                                     listOf(it.codigo!!, it.nombre!!, manejo.fecha!!.toStringFormat(), manejo.tipo!!, manejo.tratamiento!!, manejo.producto!!)
                                 }
                     }.toList().applySchedulers()

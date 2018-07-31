@@ -16,6 +16,7 @@ import com.example.cristian.myapplication.ui.menu.management.ManageFragment
 import com.example.cristian.myapplication.ui.menu.meadow.MeadowFragment
 import com.example.cristian.myapplication.ui.menu.milk.MilkFragment
 import com.example.cristian.myapplication.ui.menu.movement.MovementFragment
+import com.example.cristian.myapplication.ui.menu.notifications.NotificationsFragment
 import com.example.cristian.myapplication.ui.menu.reports.ReportsFragment
 import com.example.cristian.myapplication.ui.menu.vaccines.VaccinesFragment
 import com.example.cristian.myapplication.util.putFragment
@@ -75,6 +76,7 @@ class MenuNavigation @Inject constructor(val activity: MenuActivity, val sesion:
     }
 
     fun navigateToNotification() {
+        activity.putFragment(R.id.content_frame,NotificationsFragment.instance())
 
     }
 

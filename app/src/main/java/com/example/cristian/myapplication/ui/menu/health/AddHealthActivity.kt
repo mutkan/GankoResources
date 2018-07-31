@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.widget.DatePicker
+import android.widget.Toast
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.Group
 import com.example.cristian.myapplication.data.models.ProxStates
@@ -173,7 +174,13 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                         }
                 )
 
-        unidadTiempo = frecuencyOptionsHealth.selectedItem.toString()
+//        unidadTiempo = frecuencyOptionsHealth.selectedItem.toString()
+        dis add frecuencyOptionsHealth.itemSelections()
+                .subscribeBy(
+                        onNext = {
+                            unidadTiempo = unidades[it]
+                        }
+                )
 
         if (edit) {
             dis add btnFinalizeHealth.clicks()

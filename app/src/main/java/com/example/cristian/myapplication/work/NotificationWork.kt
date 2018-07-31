@@ -74,7 +74,7 @@ class NotificationWork : Worker() {
 
         fun notify(type: Int, title: String, msg: String, docId: String, time: Long, timeUnit: TimeUnit) {
 
-            val data: Data = mapOf(docId to ARG_ID,
+            val data: Data = mapOf(ARG_ID to docId ,
                     ARG_TITLE to title,
                     ARG_DESCRIPTION to msg,
                     ARG_TYPE to type)
