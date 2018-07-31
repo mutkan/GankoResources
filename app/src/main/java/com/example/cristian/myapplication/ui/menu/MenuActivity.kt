@@ -25,16 +25,19 @@ import com.example.cristian.myapplication.ui.menu.health.HealthFragment
 import com.example.cristian.myapplication.ui.menu.management.ManageFragment
 import com.example.cristian.myapplication.ui.menu.meadow.MeadowFragment
 import com.example.cristian.myapplication.ui.menu.vaccines.VaccinesFragment
+import com.example.cristian.myapplication.ui.search.SearchActivity
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
 import com.example.cristian.myapplication.util.fixColor
 import com.example.cristian.myapplication.util.putFragment
+import com.jakewharton.rxbinding2.view.clicks
 import com.jakewharton.rxbinding2.widget.RxSearchView
 import com.jakewharton.rxbinding2.widget.queryTextChanges
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import kotlinx.android.synthetic.main.activity_menu.*
+import org.jetbrains.anko.startActivity
 import javax.inject.Inject
 
 
@@ -127,14 +130,16 @@ class MenuActivity : AppCompatActivity(), Injectable, HasSupportFragmentInjector
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         this.menu = menu
         menuInflater.inflate(R.menu.toolbar_menu, menu)
-        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        val searchView = menu.findItem(R.id.search_toolbar).actionView as SearchView
-        searchView.setSearchableInfo(
-                searchManager.getSearchableInfo(componentName))
+//        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+//        val searchView = menu.findItem(R.id.search_toolbar)
+//        searchView.setSearchableInfo(
+//                searchManager.getSearchableInfo(componentName))
 
-        dis add searchView.queryTextChanges()
-                .doOnNext { viewModel.querySubject.onNext(it.toString()) }
-                .subscribe()
+
+
+//        dis add searchView.queryTextChanges()
+//                .doOnNext { viewModel.querySubject.onNext(it.toString()) }
+//                .subscribe()
 
         if (intent.extras != null) {
             Log.d("pending", "pendiente")
@@ -163,6 +168,7 @@ class MenuActivity : AppCompatActivity(), Injectable, HasSupportFragmentInjector
         }
         when (item!!.itemId) {
             R.id.filter_toolbar -> drawer.openDrawer(GravityCompat.END)
+            R.id.search_toolbar -> startActivity<SearchActivity>(SELECTED_FRAGMENT to viewModel.content)
         }
 
         return super.onOptionsItemSelected(item)
@@ -172,7 +178,7 @@ class MenuActivity : AppCompatActivity(), Injectable, HasSupportFragmentInjector
         val MENU1 = 1
         val MENU2 = 2
         val NOMENU = 3
-
+        const val SELECTED_FRAGMENT = "selectedFragment"
     }
 
     fun noMenu() {
@@ -241,5 +247,6 @@ class MenuActivity : AppCompatActivity(), Injectable, HasSupportFragmentInjector
         }
 
     }
+
 
 }
