@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 class FarmViewModel @Inject constructor(private val db: CouchRx, private val userSession: UserSession) : ViewModel() {
 
-    private val userId = userSession.userId
+    private val userId = userSession.userId!!
     fun getUserId(): String = userId
 
     fun addFarm(farm: Finca): Single<String> = db.insert(farm).applySchedulers()
