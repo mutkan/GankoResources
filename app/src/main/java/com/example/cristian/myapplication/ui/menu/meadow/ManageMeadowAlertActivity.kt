@@ -53,9 +53,8 @@ class ManageMeadowAlertActivity : AppCompatActivity(),Injectable {
         dis add viewModel.getMeadowAlert(idMeadow)
                 .subscribeBy {
                     adapter.data = it.toMutableList().asReversed()
-                    if (it.isEmpty()) {
-                        emptyListMeadowAlarm.visibility = View.VISIBLE
-                    }
+                    if (it.isEmpty()) emptyListMeadowAlarm.visibility = View.VISIBLE
+                    else emptyListMeadowAlarm.visibility = View.GONE
                 }
 
         dis add btnAddMeadowAlarm.clicks()

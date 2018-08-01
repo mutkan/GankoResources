@@ -42,7 +42,7 @@ class AforoFragment : Fragment(),Injectable {
         super.onResume()
         listAforo.adapter = adapter
         listAforo.layoutManager = LinearLayoutManager(context)
-        if(meadow.aforo!!.size == 0) emptyListAforo.visibility = View.VISIBLE
+        if(meadow.aforo!!.isEmpty()) emptyListAforo.visibility = View.VISIBLE
         else {
             adapter.data = meadow.aforo!!
             emptyListAforo.visibility = View.GONE
@@ -51,7 +51,8 @@ class AforoFragment : Fragment(),Injectable {
         dis add viewmodel.getMeadow(meadow._id!!)
                 .subscribeBy {
                     adapter.data = meadow.aforo!!
-                    emptyListAforo.visibility = View.GONE
+                    if(meadow.aforo!!.isEmpty()) emptyListAforo.visibility = View.VISIBLE
+                    else emptyListAforo.visibility = View.GONE
                 }
 
         dis add addAforo.clicks()

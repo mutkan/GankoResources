@@ -41,7 +41,7 @@ class MaintenanceFragment : Fragment(),Injectable {
         super.onResume()
         listMaintenance.adapter = adapter
         listMaintenance.layoutManager = LinearLayoutManager(context)
-        if(meadow.mantenimiento!!.size == 0) emptyListMaintenance.visibility = View.VISIBLE
+        if(meadow.mantenimiento!!.isEmpty()) emptyListMaintenance.visibility = View.VISIBLE
         else {
             emptyListMaintenance.visibility = View.GONE
             adapter.data = meadow.mantenimiento!!
@@ -49,8 +49,9 @@ class MaintenanceFragment : Fragment(),Injectable {
 
         dis add viewmodel.getMeadow(meadow._id!!)
                 .subscribeBy {
-                    emptyListMaintenance.visibility = View.GONE
                     adapter.data = it.mantenimiento!!
+                    if(it.mantenimiento!!.isEmpty()) emptyListMaintenance.visibility = View.VISIBLE
+                    else emptyListMaintenance.visibility = View.GONE
                 }
 
         dis add addMaintenance.clicks()

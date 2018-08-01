@@ -10,11 +10,15 @@
         <variable
             name="position"
             type="Integer"/>
+        <variable
+            name="onClick"
+            type="io.reactivex.subjects.PublishSubject"/>
     </data>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:onClick="@{()->onClick.onNext(vacuna)}">
 
         <TextView
             android:id="@+id/textView89"
