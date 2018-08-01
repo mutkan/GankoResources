@@ -21,6 +21,7 @@ import com.example.cristian.myapplication.ui.menu.health.HealthViewModel
 import com.example.cristian.myapplication.ui.menu.meadow.MeadowViewModel
 import com.example.cristian.myapplication.ui.menu.milk.MilkViewModel
 import com.example.cristian.myapplication.ui.menu.straw.StrawViewModel
+import com.example.cristian.myapplication.ui.search.SearchViewModel
 import com.example.cristian.myapplication.util.AppViewModelFactory
 import dagger.Binds
 import dagger.Module
@@ -95,7 +96,7 @@ abstract class ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(FeedViewModel::class)
-    abstract fun bindFeedViewModel(viewModel: FeedViewModel):ViewModel
+    abstract fun bindFeedViewModel(viewModel: FeedViewModel): ViewModel
 
     @Binds
     @IntoMap
@@ -122,5 +123,9 @@ abstract class ViewModelModule {
     @ViewModelKey(HealthViewModel::class)
     abstract fun bindHealthViewModel(viewModel: HealthViewModel): ViewModel
 
+    @Binds
+    @IntoMap
+    @ViewModelKey(SearchViewModel::class)
+    abstract fun bindSearchViewModel(viewModel: SearchViewModel): ViewModel
 
 }

@@ -42,6 +42,10 @@ infix fun Expression.orEx(expression: Expression): Expression = this.or(expressi
 infix fun Expression.betweenEx(expressions: List<Expression>) =
         this.between(expressions[0], expressions[1])
 
+// REGEX
+
+infix fun String.regexEx(value: String): Expression = Expression.property(this)
+        .regex(Expression.string(value))
 
 // Array
 infix fun String.inEx(values: List<Any>): Expression =

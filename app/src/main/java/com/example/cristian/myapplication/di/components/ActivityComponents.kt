@@ -38,6 +38,7 @@ import com.example.cristian.myapplication.ui.menu.milk.AddMilkActivity
 import com.example.cristian.myapplication.ui.menu.straw.StrawAddActivity
 import com.example.cristian.myapplication.ui.menu.vaccines.AddVaccineActivity
 import com.example.cristian.myapplication.ui.menu.vaccines.detail.VaccineDetailActivity
+import com.example.cristian.myapplication.ui.search.SearchActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -204,5 +205,9 @@ abstract class ActivityComponents {
     @ActivityScope
     @ContributesAndroidInjector
     abstract fun bindManageMeadowAlertActivity(): ManageMeadowAlertActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector
+    abstract fun bindSearchActivity(): SearchActivity
 
 }
