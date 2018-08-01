@@ -6,10 +6,13 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Build
 import android.support.multidex.MultiDexApplication
+import com.couchbase.lite.*
+import com.example.cristian.myapplication.data.preferences.UserSession
 import com.example.cristian.myapplication.di.AppInjector
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
+import java.net.URI
 import javax.inject.Inject
 
 class App: MultiDexApplication(),HasActivityInjector{
@@ -17,11 +20,21 @@ class App: MultiDexApplication(),HasActivityInjector{
     @Inject
     lateinit var injector:DispatchingAndroidInjector<Activity>
 
+    @Inject
+    lateinit var session:UserSession
+
+    @Inject
+    lateinit var db: Database
+
     override fun activityInjector(): AndroidInjector<Activity> = injector
+
+    var replicator: Replicator? = null
 
     override fun onCreate() {
         super.onCreate()
         AppInjector.init(this)
+        createNotificationChannel()
+        startReplicator()
 
     }
 
@@ -34,6 +47,18 @@ class App: MultiDexApplication(),HasActivityInjector{
             channel.description = description
             val notificationManager = getSystemService(NotificationManager::class.java)
             notificationManager!!.createNotificationChannel(channel)
+        }
+    }
+
+    fun startReplicator(){
+        if(session.userId != null){
+            val config = ReplicatorConfiguration(db, URLEndpoint(URI(getString(R.string.url_sync))))
+            config.replicatorType = ReplicatorConfiguration.ReplicatorType.PUSH_AND_PULL
+            config.isContinuous = true
+
+            config.channels = mutableListOf(session.userId)
+            replicator = Replicator(config)
+            replicator?.start()
         }
     }
 

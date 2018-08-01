@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="base_url">http://104.209.144.166:8080</string>
+    <string name="url_sync">ws://104.209.144.166:4984/ganko</string>
+</resources>
