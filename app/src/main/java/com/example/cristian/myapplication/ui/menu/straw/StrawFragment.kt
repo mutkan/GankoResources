@@ -48,7 +48,8 @@ class StrawFragment :Fragment(), Injectable {
                 .subscribeBy (
                         onSuccess = {
                             adapter.straw = it
-                            if (it.isEmpty()) toast(R.string.empty_list)
+                            if (it.isEmpty()) emptyListStraw.visibility = View.VISIBLE
+                            else emptyListStraw.visibility = View.GONE
                         },
                         onError = {
                             toast(it.message!!)

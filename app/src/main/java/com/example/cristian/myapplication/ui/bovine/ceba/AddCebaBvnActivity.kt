@@ -38,7 +38,7 @@ class AddCebaBvnActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListen
                 Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH),
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
         onDateSet(null, Calendar.getInstance().get(Calendar.YEAR),
-                Calendar.getInstance().get(Calendar.MONTH) + 1,
+                Calendar.getInstance().get(Calendar.MONTH),
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
 
     }
@@ -82,7 +82,7 @@ class AddCebaBvnActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListen
 
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        dateAddCebaBvn.text = "$dayOfMonth/$month+1/$year"
+        dateAddCebaBvn.text = "$dayOfMonth/${month+1}/$year"
     }
 
     companion object {

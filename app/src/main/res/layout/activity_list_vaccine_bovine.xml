@@ -32,7 +32,7 @@
             android:id="@+id/emptyVaccines"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="No Hay Registros"
+            android:text="@string/no_reg"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:visibility='@{isEmpty ?  View.VISIBLE : View.GONE}'
             app:layout_constraintBottom_toBottomOf="parent"

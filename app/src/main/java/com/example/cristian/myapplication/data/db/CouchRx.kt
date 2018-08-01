@@ -36,9 +36,24 @@ class CouchRx @Inject constructor(private val db: Database
     }
 
     fun <T : Any> update(id: String, doc: T): Single<Unit> = Single.create {
-        val document = objectToDocument(doc, id)
-        db.save(document)
+
+        val document = objectToDocument(doc)
+        val docComplete = db.getDocument(id).toMutable()
+
+        val files = docComplete.getDictionary("files")
+        val channels = docComplete.getArray("channels")
+        val attachments = docComplete.getDictionary("_attachments")
+
+        docComplete.setData(document.toMap())
+        if (files != null) docComplete.setDictionary("files", files)
+        if(channels != null) docComplete.setArray("channels", channels)
+        if(attachments != null)docComplete.setDictionary("_attachments", attachments)
+
+
+        db.save(docComplete)
         it.onSuccess(Unit)
+
+
     }
 
     fun remove(id: String): Single<Unit> = Single.create {

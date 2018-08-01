@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import com.example.cristian.myapplication.App
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.UserLogin
 import com.example.cristian.myapplication.data.preferences.UserSession
@@ -47,13 +48,14 @@ class LoginActivity : AppCompatActivity(), Injectable {
                 .subscribeByAction(
                         onNext = {
                             Log.d("ID", it)
+                            // (application as App).startReplicator()
                             startActivity<FarmActivity>()
                             finish()
                         },
                         onHttpError = { this.toast(R.string.http_404)
                         Log.d("HTTPERROR", it.toString())},
                         onError = {
-                            toast(it.message!!)
+                            toast("Usuario o contraseña incorrectos")
                             Log.e("ERROR", it.message, it)
                         }
                 )

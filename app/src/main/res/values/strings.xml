@@ -1,6 +1,6 @@
 <resources>
 
-    <string name="base_url">http://104.209.144.166:8080</string>
+
 
     <string name="app_name">Ganko Bovinos</string>
     <string name="email">Email</string>
@@ -373,6 +373,7 @@
     <string name="to">Hasta</string>
     <string name="report_of_month">Reporte del mes</string>
     <string name="time_value">Tiempo</string>
+    <string name="no_reg">No existen registros</string>
 
     <string-array name="milk_production">
         <item>Litros vendidos</item>
