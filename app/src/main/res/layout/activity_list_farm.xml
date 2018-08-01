@@ -46,7 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility='@{isEmpty ? View.VISIBLE : View.GONE}'
-            android:text="No hay fincas registradas"
+            android:text="@string/no_reg"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
