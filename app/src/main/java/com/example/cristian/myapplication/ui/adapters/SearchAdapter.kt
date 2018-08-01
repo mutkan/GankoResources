@@ -9,6 +9,7 @@ import com.example.cristian.myapplication.data.models.*
 import com.example.cristian.myapplication.databinding.*
 import com.example.cristian.myapplication.ui.search.SearchActivity
 import com.example.cristian.myapplication.util.inflate
+import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
 class SearchAdapter @Inject constructor() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -18,6 +19,8 @@ class SearchAdapter @Inject constructor() : RecyclerView.Adapter<RecyclerView.Vi
             field = value
             notifyDataSetChanged()
         }
+
+    val onClick : PublishSubject<Any> = PublishSubject.create()
 
     override fun getItemViewType(position: Int): Int =
             data[position].type
@@ -39,10 +42,10 @@ class SearchAdapter @Inject constructor() : RecyclerView.Adapter<RecyclerView.Vi
         when (holder) {
             is SearchFeedHolder -> holder.bind(data[position].item as RegistroAlimentacion)
             is SearchStrawHolder -> holder.bind(data[position].item as Straw)
-            is SearchBovineHolder -> holder.bind(data[position].item as Bovino)
-            is SearchHealthHolder -> holder.bind(data[position].item as Sanidad)
-            is SearchVaccineHolder -> holder.bind(data[position].item as RegistroVacuna)
-            is SearchManageHolder -> holder.bind(data[position].item as RegistroManejo)
+            is SearchBovineHolder -> holder.bind(data[position].item as Bovino,onClick)
+            is SearchHealthHolder -> holder.bind(data[position].item as Sanidad,onClick)
+            is SearchVaccineHolder -> holder.bind(data[position].item as RegistroVacuna,onClick)
+            is SearchManageHolder -> holder.bind(data[position].item as RegistroManejo,onClick)
         }
     }
 
@@ -62,29 +65,33 @@ class SearchAdapter @Inject constructor() : RecyclerView.Adapter<RecyclerView.Vi
 
     class SearchBovineHolder(view: View) : RecyclerView.ViewHolder(view) {
         val binding: TemplateBovineBinding = DataBindingUtil.bind(view)!!
-        fun bind(bovino: Bovino) {
+        fun bind(bovino: Bovino,onClick : PublishSubject<Any>) {
             binding.bovino = bovino
+            binding.onClickBovine = onClick
         }
     }
 
     class SearchHealthHolder(view: View) : RecyclerView.ViewHolder(view) {
         val binding: TemplateListHealthBovineBinding = DataBindingUtil.bind(view)!!
-        fun bind(sanidad: Sanidad) {
+        fun bind(sanidad: Sanidad,onClick : PublishSubject<Any>) {
             binding.sanidad = sanidad
+            binding.onClick = onClick
         }
     }
 
     class SearchVaccineHolder(view: View) : RecyclerView.ViewHolder(view) {
         val binding: TemplateListVaccineBovineBinding = DataBindingUtil.bind(view)!!
-        fun bind(vacuna: RegistroVacuna) {
+        fun bind(vacuna: RegistroVacuna,onClick : PublishSubject<Any>) {
             binding.vacuna = vacuna
+            binding.onClick = onClick
         }
     }
 
     class SearchManageHolder(view: View) : RecyclerView.ViewHolder(view) {
         val binding: TemplateListManagementBovineBinding = DataBindingUtil.bind(view)!!
-        fun bind(manejo: RegistroManejo) {
+        fun bind(manejo: RegistroManejo,onClick : PublishSubject<Any>) {
             binding.manejo = manejo
+            binding.onClick = onClick
         }
     }
 }

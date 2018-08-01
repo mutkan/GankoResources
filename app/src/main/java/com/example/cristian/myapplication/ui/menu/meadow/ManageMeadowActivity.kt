@@ -17,6 +17,7 @@ import com.example.cristian.myapplication.ui.adapters.ManageMeadowAdapter
 import com.example.cristian.myapplication.ui.menu.MenuViewModel
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
+import com.example.cristian.myapplication.util.fixColor
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
@@ -44,8 +45,9 @@ class ManageMeadowActivity : AppCompatActivity(), Injectable, HasSupportFragment
         binding = DataBindingUtil.setContentView(this, R.layout.activity_manage_meadow)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val color = ContextCompat.getColor(this, R.color.prairie_primary)
-        supportActionBar?.setBackgroundDrawable(ColorDrawable(color))
+        fixColor(10)
+
+
         manageTab.setupWithViewPager(managePager)
     }
 

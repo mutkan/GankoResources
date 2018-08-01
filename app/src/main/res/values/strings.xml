@@ -373,6 +373,7 @@
     <string name="to">Hasta</string>
     <string name="report_of_month">Reporte del mes</string>
     <string name="time_value">Tiempo</string>
+    <string name="no_reg">No existen registros</string>
 
     <string-array name="milk_production">
         <item>Litros vendidos</item>

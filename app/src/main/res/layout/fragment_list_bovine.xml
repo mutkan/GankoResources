@@ -44,9 +44,9 @@
             android:id="@+id/emptyMsg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility='@{isEmpty ? View.VISIBLE : View.GONE}'
-            android:text="No hay bovinos registrados"
+            android:text="@string/empty_list"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:visibility='@{isEmpty ? View.VISIBLE : View.GONE}'
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"

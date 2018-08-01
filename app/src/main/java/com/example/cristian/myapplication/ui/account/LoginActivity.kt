@@ -55,7 +55,7 @@ class LoginActivity : AppCompatActivity(), Injectable {
                         onHttpError = { this.toast(R.string.http_404)
                         Log.d("HTTPERROR", it.toString())},
                         onError = {
-                            toast(it.message!!)
+                            toast("Usuario o contraseña incorrectos")
                             Log.e("ERROR", it.message, it)
                         }
                 )
