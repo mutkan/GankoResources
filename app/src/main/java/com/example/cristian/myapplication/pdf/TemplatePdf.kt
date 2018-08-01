@@ -5,10 +5,12 @@ import android.content.Context
 import android.content.Context.DOWNLOAD_SERVICE
 import android.content.Intent
 import android.os.Environment
+import android.util.Log
 import com.itextpdf.text.*
 import com.itextpdf.text.pdf.PdfPCell
 import com.itextpdf.text.pdf.PdfPTable
 import com.itextpdf.text.pdf.PdfWriter
+import org.jetbrains.anko.toast
 import java.io.File
 import java.io.FileOutputStream
 
@@ -74,7 +76,7 @@ class TemplatePdf(var context: Context) {
         document.add(paragraph)
     }
 
-        fun createTable(header:List<String>,registros:List<List<String>>){
+        fun createTable(header:List<String>,reportes:List<List<String>>){
         paragraph = Paragraph()
         paragraph.font = fontFile
         var pdfTable: PdfPTable = PdfPTable(header.size)
@@ -87,11 +89,22 @@ class TemplatePdf(var context: Context) {
             pdfCell.backgroundColor = BaseColor.GRAY
             pdfTable.addCell(pdfCell) }
 
-        for (regis in registros){
+        for (regis in reportes){
             for(item in regis){
-                pdfTable.addCell(item)
+                context.toast(item)
+             pdfTable.addCell(item)
             }
         }
+
+
+            pdfTable.addCell("row 1; cell 1");
+            pdfTable.addCell("row 1; cell 2");
+            pdfTable.addCell("row 2; cell 1");
+            pdfTable.addCell("row 2; cell 2");
+            pdfTable.addCell("row 1; cell 1");
+            pdfTable.addCell("row 1; cell 2");
+            pdfTable.addCell("row 2; cell 1");
+            pdfTable.addCell("row 2; cell 2");
             paragraph.add(pdfTable)
             document.add(paragraph)
 
