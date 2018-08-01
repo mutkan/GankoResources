@@ -101,9 +101,8 @@ class SelectReportFragment : Fragment() , Injectable {
                             dis add  viewmodel.getHealth(idFinca).subscribeBy(
                                     onSuccess = {
                                         selector("Seleccione el formato que desea", options) { dialogInterface, i ->
-                                            if (i==0) {
-                                                pdf("reporte "+categoriesSpinner.selectedItem+" "+Calendar.MONTH ,1,header,obtenerReportes(spinnerMonth.selectedItemPosition, Date(), Date()))}
-                                            else templateExcel.saveExcelFile("reporte.xlsx",1,activity!!)}
+                                            if (i==0)
+                                                else templateExcel.saveExcelFile("reporte.xlsx",1,activity!!)}
                                     }
                             )
 
@@ -138,13 +137,7 @@ class SelectReportFragment : Fragment() , Injectable {
         if (dir==1) templatePdf.ViewPdf()
     }
 
-    private fun horr():List<List<String>>{
-        var listareportes :List<List<String>> = emptyList()
-        viewmodel.reportesPrueba().subscribeBy(
-                onSuccess = {listareportes = it }
-        )
-        return listareportes
-    }
+
      private fun checkCategoriesSpinnerChanges(selected: Int){
         when (selected) {
             REPORTE_REPRODUCTIVOS -> setEntries(resources.getStringArray(R.array.reproductive_type))
@@ -170,51 +163,54 @@ class SelectReportFragment : Fragment() , Injectable {
     }
 
 //region obtenerDatos
-    private fun obtenerReportes(month:Int,from:Date,to:Date):List<List<String>>{
+    private fun obtenerReportes(header: List<String>, month:Int, from:Date, to:Date):List<List<String>>{
     var listareportes:List<List<String>> = emptyList()
             when(selectedType){
                 "Partos"->if (monthlyRadioButton.isChecked) viewmodel.reportePreparacion(month,Calendar.YEAR).subscribeBy(
-                        onSuccess = {listareportes = it}
+                        onSuccess = { pdf("reporte "+categoriesSpinner.selectedItem+" "+Calendar.MONTH ,1,header,it)}
+
                 )
                           else viewmodel.reportePreparacion(from,to).subscribeBy(
-                        onSuccess = {listareportes = it }
+                        onSuccess = { pdf("reporte "+categoriesSpinner.selectedItem+" "+Calendar.MONTH ,1,header,it)}
+
                 )
                 "Secado"->if (monthlyRadioButton.isChecked) viewmodel.reporteSecado(month,Calendar.YEAR).subscribeBy(
-                        onSuccess = {listareportes = it}
+                        onSuccess = {  pdf("reporte "+categoriesSpinner.selectedItem+" "+Calendar.MONTH ,1,header,it)}
                 )
                           else  viewmodel.reporteSecado(from,to).subscribeBy(
-                        onSuccess = { listareportes = it }
+                        onSuccess = {  pdf("reporte "+categoriesSpinner.selectedItem+" "+Calendar.MONTH ,1,header,it)}
                 )
                 "Preparación"->if (monthlyRadioButton.isChecked) viewmodel.reportePreparacion(month,Calendar.YEAR).subscribeBy(
-                        onSuccess = {listareportes = it}
+                        onSuccess = { pdf("reporte "+categoriesSpinner.selectedItem+" "+Calendar.MONTH ,1,header,it)}
                 )
                         else viewmodel.reportePreparacion(from, to).subscribeBy(
-                        onSuccess = {listareportes = it}
+                        onSuccess = { pdf("reporte "+categoriesSpinner.selectedItem+" "+Calendar.MONTH ,1,header,it)}
                 )
 
                 "Días abiertos"-> viewmodel.reporteDiasVacios().subscribeBy(
-                        onSuccess = {listareportes = it}
+                        onSuccess = { pdf("reporte "+categoriesSpinner.selectedItem+" "+Calendar.MONTH ,1,header,it)}
                 )
 
                 "Partos atendidos"->if (monthlyRadioButton.isChecked) viewmodel.reportePartosAtendidos(month,Calendar.YEAR).subscribeBy(
-                        onSuccess = {listareportes = it}
+                        onSuccess = { pdf("reporte "+categoriesSpinner.selectedItem+" "+Calendar.MONTH ,1,header,it)}
                 )
                                     else viewmodel.reportePartosAtendidos(from,to).subscribeBy(
-                        onSuccess = {listareportes = it}
+                        onSuccess = { pdf("reporte "+categoriesSpinner.selectedItem+" "+Calendar.MONTH ,1,header,it)}
                 )
                 "Abortos"-> if (monthlyRadioButton.isChecked) viewmodel.reporteAbortos(month,Calendar.YEAR).subscribeBy(
-                        onSuccess = {listareportes = it}
+                        onSuccess = { pdf("reporte "+categoriesSpinner.selectedItem+" "+Calendar.MONTH ,1,header,it)}
                 )
                             else viewmodel.reporteAbortos(from, to).subscribeBy(
-                        onSuccess = {listareportes = it}
+                        onSuccess = { pdf("reporte "+categoriesSpinner.selectedItem+" "+Calendar.MONTH ,1,header,it)}
                 )
                 "Tres servicios"-> viewmodel.reporteTresServicios().subscribeBy(
-                        onSuccess = {listareportes = it}
+                        onSuccess = { pdf("reporte "+categoriesSpinner.selectedItem+" "+Calendar.MONTH ,1,header,it)}
                 )
                 "Celos"-> viewmodel.reporteCelos().subscribeBy(
-                        onSuccess = {listareportes = it}
+                        onSuccess = {pdf("reporte "+categoriesSpinner.selectedItem+" "+Calendar.MONTH ,1,header,it)}
                 )
                 //"Resumen reproductivo"->
+
             //LECHE
                 //"Consolidado de leche"-> listOf(listOf())
                 "Reporte de leche"->{
@@ -224,22 +220,24 @@ class SelectReportFragment : Fragment() , Injectable {
                             for (bovino in it){
                                 viewmodel.reportesLeche(bovino,month,Calendar.YEAR).subscribeBy(
                                         onSuccess = {
-                                            leche = leche.plus(it)
-                                            listareportes = leche
-                                        })     }} )
+                                            leche = leche.plus(it) })}
+                            pdf("reporte "+categoriesSpinner.selectedItem+" "+Calendar.MONTH ,1,header,leche)} )
+
                             else viewmodel.getBovine(idFinca).subscribeBy {
                         for (bovino in it){
                             viewmodel.reportesLeche(bovino,from, to).subscribeBy(
                                     onSuccess = {
                                         leche = leche.plus(it)
-                                        listareportes = leche
-                                    })     }}
+                                     })     }
+
+                            pdf("reporte "+categoriesSpinner.selectedItem+" "+Calendar.MONTH ,1,header,leche)
+                    }
                 }
             //CEBA
                 "Destetos"-> if (monthlyRadioButton.isChecked) viewmodel.reportesDestete(month,Calendar.YEAR).subscribeBy(
-                        onSuccess = {listareportes = it} )
+                        onSuccess = { pdf("reporte "+categoriesSpinner.selectedItem+" "+Calendar.MONTH ,1,header,it)} )
                             else viewmodel.reportesDestete(from,to).subscribeBy(
-                        onSuccess = {listareportes = it}
+                        onSuccess = { pdf("reporte "+categoriesSpinner.selectedItem+" "+Calendar.MONTH ,1,header,it)}
                 )
                 "Ganancia diaria de peso"-> {
                     var gdp:List<List<String>> = emptyList()
@@ -250,6 +248,7 @@ class SelectReportFragment : Fragment() , Injectable {
                                             onSuccess = {
                                                 gdp = gdp.plus(it)
                                                 listareportes = gdp
+                                                pdf("reporte "+categoriesSpinner.selectedItem+" "+Calendar.MONTH ,1,header,listareportes)
                                             })     }} )
                     else viewmodel.getBovine(idFinca).subscribeBy {
                         for (bovino in it){
@@ -257,6 +256,7 @@ class SelectReportFragment : Fragment() , Injectable {
                                     onSuccess = {
                                         gdp = gdp.plus(it)
                                         listareportes = gdp
+                                        pdf("reporte "+categoriesSpinner.selectedItem+" "+Calendar.MONTH ,1,header,listareportes)
                                     })     }}
                 }
             //PRADERAS
@@ -270,15 +270,15 @@ class SelectReportFragment : Fragment() , Injectable {
                                 for (bovino in it){
                                     viewmodel.reporteAlimentacion(bovino,month,Calendar.YEAR).subscribeBy(
                                             onSuccess = {
-                                                alimentacion = alimentacion.plus(it)
-                                                listareportes = alimentacion
-                                            })     }} )
+                                                alimentacion = alimentacion.plus(it)})}
+                                pdf("reporte "+categoriesSpinner.selectedItem+" "+Calendar.MONTH ,1,header,alimentacion)} )
+
                     else viewmodel.getBovine(idFinca).subscribeBy {
                         for (bovino in it){
                             viewmodel.reporteGananciaPeso(bovino,from, to).subscribeBy(
                                     onSuccess = {
                                         alimentacion = alimentacion.plus(it)
-                                        listareportes = alimentacion
+                                        pdf("reporte "+categoriesSpinner.selectedItem+" "+Calendar.MONTH ,1,header,alimentacion)
                                     })     }}
                 }
                 //"Suplementos usados"-> listOf(listOf())
@@ -286,38 +286,38 @@ class SelectReportFragment : Fragment() , Injectable {
                 //"Animales en pradera"-> listOf(listOf())
             //ENTRADAS
                 "Inventario"->  if (monthlyRadioButton.isChecked) viewmodel.reporteInventario(month,Calendar.YEAR).subscribeBy(
-                        onSuccess = {listareportes=it}
+                        onSuccess = {  pdf("reporte "+categoriesSpinner.selectedItem+" "+Calendar.MONTH ,1,header,it)}
                 )
                                 else viewmodel.reporteInventario(from, to).subscribeBy(
-                        onSuccess = {listareportes=it}
+                        onSuccess = {pdf("reporte "+categoriesSpinner.selectedItem+" "+Calendar.MONTH ,1,header,it)}
                 )
                 "Terneras en estaca"-> if (monthlyRadioButton.isChecked) viewmodel.reporteTernerasEnEstaca(month,Calendar.YEAR).subscribeBy(
-                        onSuccess = {listareportes=it}
+                        onSuccess = {pdf("reporte "+categoriesSpinner.selectedItem+" "+Calendar.MONTH ,1,header,it)}
                 )
                 else viewmodel.reporteTernerasEnEstaca(from, to).subscribeBy(
-                        onSuccess = {listareportes=it}
+                        onSuccess = {pdf("reporte "+categoriesSpinner.selectedItem+" "+Calendar.MONTH ,1,header,it)}
                 )
                 "Terneras destetas"-> if (monthlyRadioButton.isChecked) viewmodel.reporteTernerasDestetas(month,Calendar.YEAR).subscribeBy(
-                        onSuccess = {listareportes=it}
+                        onSuccess = {pdf("reporte "+categoriesSpinner.selectedItem+" "+Calendar.MONTH ,1,header,it)}
                 )
                 else viewmodel.reporteTernerasDestetas(from, to).subscribeBy(
-                        onSuccess = {listareportes=it}
+                        onSuccess = {pdf("reporte "+categoriesSpinner.selectedItem+" "+Calendar.MONTH ,1,header,it)}
                 )
                 "Novillas de levante"-> if (monthlyRadioButton.isChecked) viewmodel.reporteTerneraslevante(month,Calendar.YEAR).subscribeBy(
-                        onSuccess = {listareportes=it}
+                        onSuccess = {pdf("reporte "+categoriesSpinner.selectedItem+" "+Calendar.MONTH ,1,header,it)}
                 )
                 else viewmodel.reporteTerneraslevante(from, to).subscribeBy(
-                        onSuccess = {listareportes=it}
+                        onSuccess = {pdf("reporte "+categoriesSpinner.selectedItem+" "+Calendar.MONTH ,1,header,it)}
                 )
                 "Novillas vientre"-> if (monthlyRadioButton.isChecked) viewmodel.reporteNovillasVientre(month,Calendar.YEAR).subscribeBy(
-                        onSuccess = {listareportes=it}
+                        onSuccess = {pdf("reporte "+categoriesSpinner.selectedItem+" "+Calendar.MONTH ,1,header,it)}
                 )
                 else viewmodel.reporteNovillasVientre(from, to).subscribeBy(
-                        onSuccess = {listareportes=it}
+                        onSuccess = {pdf("reporte "+categoriesSpinner.selectedItem+" "+Calendar.MONTH ,1,header,it)}
                 )
                 //"Horras"-> listOf("Codigo","Nombre","Nacimiento","Proposito","Raza")
                 "Vacas"-> viewmodel.reporteVacas().subscribeBy(
-                        onSuccess = { listareportes = it }
+                        onSuccess = { pdf("reporte "+categoriesSpinner.selectedItem+" "+Calendar.MONTH ,1,header,it)}
                 )
 
             //SALIDAS
@@ -325,24 +325,24 @@ class SelectReportFragment : Fragment() , Injectable {
 
             //VACUNAS
                 "Vacunas"-> if (monthlyRadioButton.isChecked) viewmodel.reporteVacunas(month,Calendar.YEAR).subscribeBy(
-                        onSuccess = {listareportes = it}
+                        onSuccess = {pdf("reporte "+categoriesSpinner.selectedItem+" "+Calendar.MONTH ,1,header,it)}
                 )           else viewmodel.reporteVacunas(from, to).subscribeBy(
-                        onSuccess = {listareportes = it}
+                        onSuccess = {pdf("reporte "+categoriesSpinner.selectedItem+" "+Calendar.MONTH ,1,header,it)}
                 )
             //SANIDAD
                 "Sanidad"-> viewmodel.reportesPrueba().subscribeBy(
-                        onSuccess = {listareportes = it }
+                        onSuccess = {pdf("reporte "+categoriesSpinner.selectedItem+" "+Calendar.MONTH ,1,header,it) }
                 )
 
             //MANEJO
                 "Manejo"->  if (monthlyRadioButton.isChecked) viewmodel.reporteManejo(month,Calendar.YEAR).subscribeBy(
-                        onSuccess = {listareportes=it}
+                        onSuccess = {pdf("reporte "+categoriesSpinner.selectedItem+" "+Calendar.MONTH ,1,header,it)}
             )               else viewmodel.reporteManejo(from, to).subscribeBy(
-                        onSuccess = {listareportes=it}
+                        onSuccess = {pdf("reporte "+categoriesSpinner.selectedItem+" "+Calendar.MONTH ,1,header,it)}
                 )
             //PAJILLAS
              //   "Pajillas"-> if (monthlyRadioButton.isChecked) viewmodel.re
-                else -> listareportes }
+                else -> emptyList<String>() }
                 return  listareportes}
 
 
