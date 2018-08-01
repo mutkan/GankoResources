@@ -149,6 +149,59 @@ class SelectReportFragment : Fragment() , Injectable {
 
     }
 
+//region obtenerDatos
+    private fun obtener(consulta: String,month:Int,from:Date,to:Date):List<List<String>> =
+            when(consulta){
+                "Partos"->if (monthlyRadioButton.isChecked) viewmodel.reportePreparacion(month,Calendar.YEAR)
+                          else viewmodel.reportePreparacion()
+                "Secado"->if (monthlyRadioButton.isChecked) viewmodel.reporteSecado()
+                          else  viewmodel.reporteSecado()
+                "Preparación"-> viewmodel.reportePreparacion()
+                "Días abiertos"-> viewmodel.reporteDiasVacios()
+                "Partos atendidos"-> viewmodel.reportePartosAtendidos()
+                "Abortos"-> viewmodel.reporteAbortos()
+                "Tres servicios"-> viewmodel.reporteTresServicios()
+                "Celos"-> viewmodel.reporteCelos()
+              /*  "Resumen reproductivo"-> listOf(listOf())
+            //LECHE
+                "Consolidado de leche"-> listOf(listOf())
+                "Reporte de leche"-> listOf(listOf())
+            //CEBA
+                "Destetos"-> listOf(listOf())
+                "Ganancia diaria de peso"-> listOf(listOf())
+            //PRADERAS
+                "Praderas"-> listOf(listOf())
+                "Ocupación de praderas"-> listOf(listOf())
+            //ALIMENTACION
+                "Alimentacion"-> listOf(listOf())
+                "Suplementos usados"-> listOf(listOf())
+            //MOVIMIENTOS
+                "Animales en pradera"-> listOf(listOf())
+            //ENTRADAS
+                "Inventario"-> listOf(listOf())
+                "Terneras en estaca"-> listOf(listOf())
+                "Terneras destetas"-> listOf(listOf())
+                "Novillas de levante"-> listOf(listOf())
+                "Novillas vientre"-> listOf(listOf())
+                "Horras"-> listOf("Codigo","Nombre","Nacimiento","Proposito","Raza")
+                "Vacas"-> listOf("Codigo","Nombre","Nacimiento","Proposito","Raza")
+
+            //SALIDAS
+                "Salida"-> listOf("Codigo","Nombre","Fecha salida","Tipo salida")
+            */
+            //VACUNAS
+                "Vacunas"-> viewmodel.reporteVacunas()
+            //SANIDAD
+                "Sanidad"-> viewmodel.reporteSanidad()
+            //MANEJO
+                "Manejo"-> viewmodel.reporteManejo()
+            //PAJILLAS
+                "Pajillas"-> listOf(listOf())
+                else -> listOf(listOf())
+
+            }
+
+// endregion
 
 
     companion object {
