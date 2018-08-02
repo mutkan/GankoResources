@@ -99,6 +99,8 @@ dependencies {
     implementation 'com.itextpdf:itextg:5.5.10'
     implementation 'com.github.barteksc:android-pdf-viewer:2.8.1'
 
+    implementation 'com.borax12.materialdaterangepicker:library:1.9'
+
     //Work Manager
     implementation "android.arch.work:work-runtime-ktx:$work_version"
     implementation "android.arch.work:work-firebase:$work_version"

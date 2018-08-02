@@ -413,7 +413,7 @@
     </string-array>
 
     <string-array name="reproductive_type">
-        <item>Partos</item>
+        <item>Partos futuros</item>
         <item>Secado</item>
         <item>Preparación</item>
         <item>Días abiertos</item>
@@ -421,7 +421,6 @@
         <item>Abortos</item>
         <item>Tres servicios</item>
         <item>Celos</item>
-        <item>Resumen reproductivo</item>
     </string-array>
 
     <string-array name="milk_type">
@@ -457,7 +456,6 @@
     </string-array>
 
     <string-array name="movements_type">
-        <item>Animales en pradera</item>
     </string-array>
 
     <string-array name="straw__reports_type">
@@ -471,7 +469,6 @@
         <item>Novillas de levante</item>
         <item>Novillas vientre</item>
         <item>Abortos</item>
-        <item>Horras</item>
         <item>Celos</item>
         <item>Vacas</item>
     </string-array>

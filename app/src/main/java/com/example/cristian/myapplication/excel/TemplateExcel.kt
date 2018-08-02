@@ -29,49 +29,56 @@ import kotlin.collections.ArrayList
 class TemplateExcel(var context: Context){
     lateinit var excelfile :File
 
-    fun saveExcelFile( fileName: String, opcion:Int,activity: Activity) {
+    fun saveExcelFile( fileName: String, opcion:Int,activity: Activity,header:List<String>,lista:List<List<String>>) {
         val wb = HSSFWorkbook()
         var c: Cell? = null
         var sheet1: Sheet? = null
-        sheet1 = wb.createSheet("myOrder")
+        sheet1 = wb.createSheet("GankoReports")
 
         // Generate column headings
         val row = sheet1!!.createRow(0)
+        for ((index,item) in header.withIndex()){
+            c = row.createCell(index)
+            c!!.setCellValue(item)
+            sheet1.setColumnWidth(index, 15 * 500) }
 
-        c = row.createCell(0)
-        c!!.setCellValue("Item Number")
 
-        c = row.createCell(1)
-        c!!.setCellValue("Quantity")
+        for ((index,item) in lista.withIndex()){
+        val fila = sheet1!!.createRow(index+1)
+            for ((index1,item1) in item.withIndex()){
+                c = fila.createCell(index1)
+                c!!.setCellValue(item1)
+                sheet1.setColumnWidth(index, 15 * 500)
+            }
+        }
 
-        c = row.createCell(2)
-        c!!.setCellValue("Price")
-
-        sheet1!!.setColumnWidth(0, 15 * 500)
-        sheet1!!.setColumnWidth(1, 15 * 500)
-        sheet1!!.setColumnWidth(2, 15 * 500)
-        val folder = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString())
-        if (!folder.exists())
-            folder.mkdir()
-
-        excelfile = if (opcion==1) File.createTempFile("reporte", null, context.getCacheDir())
-        else File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),fileName)
+        excelfile= if (opcion==2){
+            val folder : File = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString())
+            if (!folder.exists()) folder.mkdir()
+              File(folder,fileName+Date()+".xls")
+        }
+        else
+        {
+            File.createTempFile(fileName+Date()+".xls", null, context.cacheDir)
+        }
 
 
         var os = FileOutputStream(excelfile)
             wb.write(os)
-                os?.close()
+        os.close()
         if (opcion==1) viewExcel(activity)
 
     }
 
     fun viewExcel(activity: Activity){
-        val uri:Uri = Uri.fromFile(excelfile)
-        val intent = Intent(Intent.ACTION_VIEW)
-        intent.setDataAndType(uri,"application/xlsx")
-        activity.startActivity(Intent(Intent.ACTION_VIEW,Uri.parse("market://details?id=cn.wps.moffice_eng")))
-        activity.toast("Usted no cuenta con una aplicacion para abrir el documento")
+        if (excelfile.exists()) {
+            val uri: Uri = Uri.fromFile(excelfile)
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.setDataAndType(uri, "application/xls")
+            activity.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=cn.wps.moffice_eng")))
 
+        }else
+            activity.toast("No se encontro el documento")
     }
 
 }

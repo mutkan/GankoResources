@@ -7,8 +7,7 @@ import android.util.Log
 import com.couchbase.lite.ArrayExpression
 import com.couchbase.lite.ArrayFunction
 import com.couchbase.lite.Expression
-import com.example.cristian.myapplication.BR.ceba
-import com.example.cristian.myapplication.BR.item
+import com.example.cristian.myapplication.BR.*
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.db.CouchRx
 import com.example.cristian.myapplication.data.models.*
@@ -693,7 +692,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
             db.listByExp("idFinca" equalEx farmID!! andEx ("fecha".betweenDates(from, to)) , Produccion::class)
                     .flatMapObservable { it.toObservable() }
                    .map {
-                        listOf(bovino.codigo!!, bovino.nombre!!)
+                        listOf(bovino.codigo!!, bovino.nombre!!,it.litros!!.toString(),it.fecha!!.toStringFormat())
                     }.toList().applySchedulers()
 
 
@@ -745,13 +744,23 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     //endregion
 
     //region Reporte Praderas
-  /*  fun  reportePraderas():Single<List<List<String>>> =
-        db.listByExp("idFinca" equalEx farmID, Pradera::class)
+    fun  reporteGetPraderas():Single<List<List<String>>> =
+        db.listByExp("idFinca" equalEx farmID ,Pradera::class)
                 .flatMapObservable { it.toObservable() }
                 .map {
+                    var ultimo = it.mantenimiento!!.last()
+                    listOf(it.identificador!!.toString(),it.tipoGraminea!!,ultimo.fechaMantenimiento!!.toStringFormat(),ultimo.producto!!,ultimo.cantidad.toString()) }
+                .toList().applySchedulers()
+    fun reporteOcupacionPraderas():Single<List<List<String>>> =
+        db.listByExp("idFinca" equalEx farmID andEx ("available" equalEx false) ,Pradera::class)
+                .flatMapObservable { it.toObservable() }
+                .map {
+                    var ultimo = it.mantenimiento!!.last()
+                    listOf(it.identificador!!.toString(),it.tipoGraminea!!,ultimo.fechaMantenimiento!!.toStringFormat(),ultimo.producto!!,ultimo.cantidad.toString())}
+                .toList().applySchedulers()
 
-                }
-    */
+
+
     //endregion
 
     //region reporte sanidad

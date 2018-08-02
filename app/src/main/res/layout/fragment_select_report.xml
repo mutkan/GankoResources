@@ -113,55 +113,25 @@
             android:visibility='@{monthly == true ? View.GONE : View.VISIBLE}'
             app:layout_constraintStart_toStartOf="@+id/typeDateGroup"
             app:layout_constraintTop_toBottomOf="@+id/spinnerMonth"
-            tools:text="Desde:" />
-
-        <TextView
-            android:id="@+id/textView48"
-            style="@style/textview_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/to"
-            android:visibility='@{monthly == true ? View.GONE : View.VISIBLE}'
-            app:layout_constraintStart_toStartOf="@+id/toDateText"
-            app:layout_constraintTop_toTopOf="@+id/textView47"
-            tools:text="Hasta:" />
+            tools:text="Rango de fechas" />
 
         <TextView
             android:id="@+id/fromDateText"
             style="@style/edit_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="24dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
             android:clickable="true"
             android:focusable="false"
-            android:visibility='@{monthly == true ? View.GONE : View.VISIBLE}'
             android:hint="@string/date_value"
             android:inputType="date"
-            app:layout_constraintEnd_toStartOf="@+id/toDateText"
-            app:layout_constraintHorizontal_bias="0.5"
+            android:visibility='@{monthly == true ? View.GONE : View.VISIBLE}'
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView47"
             tools:text="19/06/2018" />
-
-        <TextView
-            android:id="@+id/toDateText"
-            style="@style/edit_text"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="24dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:clickable="true"
-            android:visibility='@{monthly == true ? View.GONE : View.VISIBLE}'
-            android:focusable="false"
-            android:inputType="date"
-            android:hint="@string/date_value"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/fromDateText"
-            app:layout_constraintTop_toBottomOf="@+id/textView48"
-            tools:text="22/06/2018" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fabDownload"
