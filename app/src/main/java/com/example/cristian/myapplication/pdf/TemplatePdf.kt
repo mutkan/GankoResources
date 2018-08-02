@@ -13,6 +13,7 @@ import com.itextpdf.text.pdf.PdfWriter
 import org.jetbrains.anko.toast
 import java.io.File
 import java.io.FileOutputStream
+import java.util.*
 
 
 class TemplatePdf(var context: Context) {
@@ -35,14 +36,17 @@ class TemplatePdf(var context: Context) {
         document.open()
     }
     fun  createFile(reportName:String,dir: Int){
-        if (dir==2){
-        val folder : File = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString())
-        if (!folder.exists())
-            folder.mkdir()
+        pdfFile = if (dir==2){
+            val folder : File = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString())
+            if (!folder.exists())
+                folder.mkdir()
 
-        pdfFile = File(folder,reportName+".pdf") }
+            File(folder,reportName+Date()+".pdf")
+        }
         else
-        {   pdfFile= File.createTempFile("reporte", null, context.getCacheDir()) }
+        {
+            File.createTempFile("reporte", null, context.cacheDir)
+        }
         }
 
     fun closeFile()= document.close()
@@ -52,10 +56,9 @@ class TemplatePdf(var context: Context) {
         document.addSubject(subject)
     }
 
-    fun  addTitle(title: String,subject: String,date:String){
+    fun  addTitle(title: String,date:String){
         paragraph = Paragraph()
         addChild(Paragraph(title,fontFile))
-        addChild(Paragraph(subject,fontSubtitle))
         addChild(Paragraph("Generado"+date,fontText))
         paragraph.spacingAfter=30f
         document.add(paragraph)
@@ -91,20 +94,9 @@ class TemplatePdf(var context: Context) {
 
         for (regis in reportes){
             for(item in regis){
-                context.toast(item)
              pdfTable.addCell(item)
             }
         }
-
-
-            pdfTable.addCell("row 1; cell 1");
-            pdfTable.addCell("row 1; cell 2");
-            pdfTable.addCell("row 2; cell 1");
-            pdfTable.addCell("row 2; cell 2");
-            pdfTable.addCell("row 1; cell 1");
-            pdfTable.addCell("row 1; cell 2");
-            pdfTable.addCell("row 2; cell 1");
-            pdfTable.addCell("row 2; cell 2");
             paragraph.add(pdfTable)
             document.add(paragraph)
 

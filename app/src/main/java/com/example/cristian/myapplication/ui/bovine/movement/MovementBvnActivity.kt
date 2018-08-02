@@ -50,7 +50,7 @@ class MovementBvnActivity : AppCompatActivity() , Injectable {
         dis add  viewModel.getMovementBovine(idBovino)
                 .subscribeBy(
                         onSuccess = {
-                            adapter.data = it
+                            adapter.data = it.asReversed()
                             isEmpty.set(it.isEmpty())
                         },
                         onError = {

@@ -165,6 +165,9 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     fun updateGroup(group: Group): Single<Unit> =
             db.update(group._id!!, group).applySchedulers()
 
+    fun insertMovement(movimiento: Movimiento): Single<String> =
+            db.insert(movimiento).applySchedulers()
+
 
     fun getUsedMeadows(idFinca: String): Observable<List<Pradera>> =
             db.listObsByExp("idFinca" equalEx idFinca andEx ("available" equalEx false), Pradera::class)
@@ -692,7 +695,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
             db.listByExp("idFinca" equalEx farmID!! andEx ("fecha".betweenDates(from, to)), Produccion::class)
                     .flatMapObservable { it.toObservable() }
                     .map {
-                        listOf(bovino.codigo!!, bovino.nombre!!)
+                        listOf(bovino.codigo!!, bovino.nombre!!, it.litros!!.toString(), it.fecha!!.toStringFormat())
                     }.toList().applySchedulers()
 
 
@@ -743,15 +746,26 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     //endregion
 
     //region Reporte Praderas
-    /*  fun  reportePraderas():Single<List<List<String>>> =
-          db.listByExp("idFinca" equalEx farmID, Pradera::class)
-                  .flatMapObservable { it.toObservable() }
-                  .map {
+    fun reporteGetPraderas(): Single<List<List<String>>> =
+            db.listByExp("idFinca" equalEx farmID, Pradera::class)
+                    .flatMapObservable { it.toObservable() }
+                    .map {
+                        var ultimo = it.mantenimiento!!.last()
+                        listOf(it.identificador!!.toString(), it.tipoGraminea!!, ultimo.fechaMantenimiento!!.toStringFormat(), ultimo.producto!!, ultimo.cantidad.toString())
+                    }
+                    .toList().applySchedulers()
 
-                  }
-      */
+    fun reporteOcupacionPraderas(): Single<List<List<String>>> =
+            db.listByExp("idFinca" equalEx farmID andEx ("available" equalEx false), Pradera::class)
+                    .flatMapObservable { it.toObservable() }
+                    .map {
+                        var ultimo = it.mantenimiento!!.last()
+                        listOf(it.identificador!!.toString(), it.tipoGraminea!!, ultimo.fechaMantenimiento!!.toStringFormat(), ultimo.producto!!, ultimo.cantidad.toString())
+                    }
+                    .toList().applySchedulers()
+
+
     //endregion
-
 
     //region reporte sanidad
     fun reporteSanidad(from: Date, to: Date): Single<List<List<String>>> =

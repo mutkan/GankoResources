@@ -72,10 +72,8 @@ data class ReporteConsolidadoLeche(
 data class ReporteLeche(
         val codigo: String,
         val nombre: String?,
-        val fechaUltimoParto: Date,
-        val diasEnProduccion: Int,
-        val promedioProduccion: Float,
-        val totalProduccion: Int
+        val litros: Int?,
+        val fecha_produccion: Date
 )
 
 data class  ReporteDestetos(
@@ -243,7 +241,7 @@ data class ReporteSalidas(
 fun getHeader(tipoReporte:String):List<String> =
 
     when(tipoReporte){
-         "Partos"-> listOf("Codigo","Nombre","Fecha","F. servicio","F. estimada de parto")
+         "Partos futuros"-> listOf("Codigo","Nombre","Fecha","F. servicio","F. estimada de parto")
          "Secado"-> listOf("Codigo","Nombre","Fecha servicio","Fecha secado")
          "Preparación"-> listOf("Codigo","Nombre","Fecha de parto","Fecha de preparación")
          "Días abiertos"-> listOf("Codigo","Nombre","Ultimo parto","Ultimo servicio","Dias vacios","En servicio")
@@ -254,7 +252,7 @@ fun getHeader(tipoReporte:String):List<String> =
          "Resumen reproductivo"-> listOf()
          //LECHE
          "Consolidado de leche"-> listOf("Codigo","Total produccion","Valor")
-         "Reporte de leche"-> listOf("Codigo","Nombre","Ultimo parto","En produccion","Promedio produccion","Total produccion")
+         "Reporte de leche"-> listOf("Codigo","Nombre","Numero de litros","Fecha de producción")
          //CEBA
          "Destetos"-> listOf("Codigo","Nombre","Fecha nacimiento","Fecha destete","Codigo madre","Nombre madre")
          "Ganancia diaria de peso"-> listOf("Codigo","Nombre","Fecha nacimiento","GDP","Proposito")
