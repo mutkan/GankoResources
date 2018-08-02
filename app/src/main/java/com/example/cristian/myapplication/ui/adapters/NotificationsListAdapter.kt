@@ -30,13 +30,13 @@ class NotificationsListAdapter @Inject constructor() : RecyclerView.Adapter<Noti
         val notification = data[position]
         when (notification.type){
             RegistroVacuna::class.java.simpleName ->{
-                holder.bind(notification.titulo!!,"Vacuna",notification.descripcion!!)
+                holder.bind(notification,"Vacuna")
             }
             RegistroManejo::class.java.simpleName ->{
-                holder.bind(notification.titulo!!,"Manejo",notification.descripcion!!)
+                holder.bind(notification,"Manejo")
             }
             Sanidad::class.java.simpleName ->{
-                holder.bind(notification.titulo!!,"Sanidad",notification.descripcion!!)
+                holder.bind(notification,"Sanidad")
             }
         }
 
@@ -51,10 +51,9 @@ class NotificationsListAdapter @Inject constructor() : RecyclerView.Adapter<Noti
 
 class NotificationViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
     val binding:TemplateItemNotificationBinding = DataBindingUtil.bind(itemView)!!
-    fun bind(titulo:String,tipo:String,descripcion:String) = binding.run {
-        this.titulo = titulo
+    fun bind(notification:Alarm,tipo:String) = binding.run {
+        this.notification = notification
         this.tipo = tipo
-        this.descripcion = descripcion
     }
 
 }
