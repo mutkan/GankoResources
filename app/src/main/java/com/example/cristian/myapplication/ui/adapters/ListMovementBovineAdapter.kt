@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.example.cristian.myapplication.R
+import com.example.cristian.myapplication.data.models.Movimiento
 import com.example.cristian.myapplication.data.models.Pradera
 import com.example.cristian.myapplication.databinding.TemplateListMovementBovineBinding
 import com.example.cristian.myapplication.util.inflate
@@ -12,7 +13,7 @@ import javax.inject.Inject
 
 class ListMovementBovineAdapter @Inject constructor(): RecyclerView.Adapter<ListMovementBovineAdapter.ListMovementBovineHolder>() {
 
-    var data:List<Pradera> = listOf()
+    var data:List<Movimiento> = listOf()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -28,8 +29,8 @@ class ListMovementBovineAdapter @Inject constructor(): RecyclerView.Adapter<List
 
     class ListMovementBovineHolder(itemList: View): RecyclerView.ViewHolder(itemList){
         val binding:TemplateListMovementBovineBinding = DataBindingUtil.bind(itemList)!!
-        fun bind(pradera: Pradera){
-            binding.pradera = pradera
+        fun bind(movimiento: Movimiento){
+            binding.movimiento = movimiento
         }
     }
 

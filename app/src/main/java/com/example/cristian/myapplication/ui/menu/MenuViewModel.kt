@@ -169,6 +169,9 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     fun updateGroup(group: Group): Single<Unit> =
             db.update(group._id!!, group).applySchedulers()
 
+    fun insertMovement(movimiento: Movimiento):Single<String> =
+            db.insert(movimiento).applySchedulers()
+
 
     fun getUsedMeadows(idFinca: String): Observable<List<Pradera>> =
             db.listObsByExp("idFinca" equalEx idFinca andEx ("available" equalEx false), Pradera::class)

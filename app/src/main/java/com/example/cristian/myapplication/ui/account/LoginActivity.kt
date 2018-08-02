@@ -48,7 +48,7 @@ class LoginActivity : AppCompatActivity(), Injectable {
                 .subscribeByAction(
                         onNext = {
                             Log.d("ID", it)
-                            // (application as App).startReplicator()
+                            (application as App).startReplicator()
                             startActivity<FarmActivity>()
                             finish()
                         },
