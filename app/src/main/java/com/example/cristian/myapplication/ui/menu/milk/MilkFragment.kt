@@ -52,7 +52,8 @@ class MilkFragment : Fragment(), Injectable {
                 .subscribeBy(
                         onSuccess = {
                             adapter.milk = it
-                            if (it.isEmpty()) toast(R.string.empty_list)
+                            if (it.isEmpty()) emptyListMilk.visibility = View.VISIBLE
+                            else emptyListMilk.visibility = View.GONE
                         },
                         onError = {
                             toast(it.message!!)

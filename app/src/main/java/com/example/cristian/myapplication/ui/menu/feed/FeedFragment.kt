@@ -49,7 +49,8 @@ class FeedFragment : Fragment(), Injectable {
                 .subscribeBy (
                     onNext= {
                         adapter.feed = it
-                        if (it.isEmpty()) toast(R.string.empty_list)
+                        if (it.isEmpty()) emptyListFeed.visibility = View.VISIBLE
+                        else emptyListFeed.visibility = View.GONE
                     },
                     onError = {
                         toast(it.message!!)}

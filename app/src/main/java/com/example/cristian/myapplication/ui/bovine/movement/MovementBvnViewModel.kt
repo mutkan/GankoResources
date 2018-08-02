@@ -16,6 +16,7 @@ import javax.inject.Inject
 
 
 class MovementBvnViewModel @Inject constructor(private val db: CouchRx, private val bd: Database):ViewModel(){
+
     fun getMovementBovine(idBovino: String): Single<List<Pradera>> =
             db.listByExp("bovinos" containsEx idBovino, Pradera::class)
 

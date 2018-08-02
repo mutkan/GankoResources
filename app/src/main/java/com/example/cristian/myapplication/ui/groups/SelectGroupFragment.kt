@@ -65,10 +65,17 @@ class SelectGroupFragment : Fragment(), Injectable {
 
         if (editable) {
             dis add viewModel.listObservable()
-                    .subscribe { adapter.data = it }
+                    .subscribe {
+                        if(it.isEmpty()) emptyListGroups.visibility = View.VISIBLE
+                        else emptyListGroups.visibility = View.GONE
+                        adapter.data = it
+                    }
         } else {
             dis add viewModel.list()
-                    .subscribe { groups -> adapter.data = groups }
+                    .subscribe { groups ->
+                        if(groups.isEmpty()) emptyListGroups.visibility = View.VISIBLE
+                        else emptyListGroups.visibility = View.GONE
+                        adapter.data = groups }
         }
     }
 

@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
-            android:text="No Hay Revacunaciones proximamente"
+            android:text="@string/empty_list"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:visibility='@{isEmpty ? View.VISIBLE : View.GONE}'
             app:layout_constraintBottom_toBottomOf="parent"

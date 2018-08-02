@@ -1,5 +1,8 @@
 package com.example.cristian.myapplication.data.models
 
+import android.arch.lifecycle.ViewModel
+import com.example.cristian.myapplication.ui.menu.MenuViewModel
+import kotlinx.android.synthetic.main.fragment_select_report.*
 import java.util.*
 
 data class ReporteFuturosPartos(
@@ -81,7 +84,7 @@ data class  ReporteDestetos(
         val fechaNacimiento: Date,
         val fechaDestete: Date,
         val codigoMadre: String,
-        val nombreMadre: String
+        val codigoPadre: String
 )
 
 data class ReporteGananciaPeso(
@@ -236,10 +239,11 @@ data class ReporteSalidas(
         val tipoSalida: String
 )
 
+//region heeader pdf and excel file
 fun getHeader(tipoReporte:String):List<String> =
 
     when(tipoReporte){
-         "Partos"-> listOf("")
+         "Partos"-> listOf("Codigo","Nombre","Fecha","F. servicio","F. estimada de parto")
          "Secado"-> listOf("Codigo","Nombre","Fecha servicio","Fecha secado")
          "Preparación"-> listOf("Codigo","Nombre","Fecha de parto","Fecha de preparación")
          "Días abiertos"-> listOf("Codigo","Nombre","Ultimo parto","Ultimo servicio","Dias vacios","En servicio")
@@ -281,7 +285,9 @@ fun getHeader(tipoReporte:String):List<String> =
          //PAJILLAS
          "Pajillas"-> listOf("Codigo","Canastilla","Proposito","Toro","Procedencia")
          else -> emptyList()
-
-
         }
+
+
+
+//endregion
 

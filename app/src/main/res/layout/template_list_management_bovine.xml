@@ -5,13 +5,17 @@
 
     <data>
         <variable
+            name="onClick"
+            type="io.reactivex.subjects.PublishSubject"/>
+        <variable
             name="manejo"
             type="com.example.cristian.myapplication.data.models.RegistroManejo"/>
     </data>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:onClick="@{()->onClick.onNext(manejo)}">
 
         <TextView
             android:id="@+id/event_name_bovine_movement"
