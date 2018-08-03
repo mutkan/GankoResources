@@ -9,12 +9,16 @@
         <variable
             name="tipo"
             type="String"/>
+        <variable
+            name="onClickNotification"
+            type="io.reactivex.subjects.PublishSubject"/>
         <import type="android.view.View"/>
     </data>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:onClick='@{()->onClickNotification.onNext(notification)}'>
 
         <ImageView
             android:id="@+id/icNotification"
@@ -65,12 +69,10 @@
             android:id="@+id/textView60"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text='@{notification.descripcion}'
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            app:layout_constraintBottom_toTopOf="@+id/div"
             app:layout_constraintStart_toStartOf="@+id/guideline17"
             app:layout_constraintTop_toBottomOf="@+id/notificationTitle"
             tools:text="Descripción" />
@@ -103,5 +105,19 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_begin="40dp" />
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/colorAccent"
+            app:dateFormat='@{notification.fechaProxima}'
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView60"
+            tools:text="22/02/2018" />
     </android.support.constraint.ConstraintLayout>
 </layout>

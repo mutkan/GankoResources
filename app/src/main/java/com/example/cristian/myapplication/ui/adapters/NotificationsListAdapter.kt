@@ -11,37 +11,37 @@ import com.example.cristian.myapplication.data.models.RegistroVacuna
 import com.example.cristian.myapplication.data.models.Sanidad
 import com.example.cristian.myapplication.databinding.TemplateItemNotificationBinding
 import com.example.cristian.myapplication.util.inflate
+import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
 class NotificationsListAdapter @Inject constructor() : RecyclerView.Adapter<NotificationViewHolder>() {
 
 
-    var data:List<Alarm> = emptyList()
+    var data: List<Alarm> = emptyList()
         set(value) {
             field = value
             notifyDataSetChanged()
         }
+    val onClickNotification: PublishSubject<Alarm> = PublishSubject.create()
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationViewHolder
-            = NotificationViewHolder(parent.inflate(R.layout.template_item_notification))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationViewHolder = NotificationViewHolder(parent.inflate(R.layout.template_item_notification))
 
     override fun onBindViewHolder(holder: NotificationViewHolder, position: Int) {
         val notification = data[position]
-        when (notification.type){
-            RegistroVacuna::class.java.simpleName ->{
-                holder.bind(notification,"Vacuna")
+        when (notification.type) {
+            RegistroVacuna::class.simpleName -> {
+                holder.bind(notification, "Vacuna", onClickNotification)
             }
-            RegistroManejo::class.java.simpleName ->{
-                holder.bind(notification,"Manejo")
+            RegistroManejo::class.simpleName -> {
+                holder.bind(notification, "Manejo", onClickNotification)
             }
-            Sanidad::class.java.simpleName ->{
-                holder.bind(notification,"Sanidad")
+            Sanidad::class.simpleName -> {
+                holder.bind(notification, "Sanidad", onClickNotification)
             }
         }
 
     }
-
 
 
     override fun getItemCount(): Int = data.size
@@ -49,11 +49,12 @@ class NotificationsListAdapter @Inject constructor() : RecyclerView.Adapter<Noti
 
 }
 
-class NotificationViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
-    val binding:TemplateItemNotificationBinding = DataBindingUtil.bind(itemView)!!
-    fun bind(notification:Alarm,tipo:String) = binding.run {
+class NotificationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    val binding: TemplateItemNotificationBinding = DataBindingUtil.bind(itemView)!!
+    fun bind(notification: Alarm, tipo: String, onClickNotification: PublishSubject<Alarm>) = binding.run {
         this.notification = notification
         this.tipo = tipo
+        this.onClickNotification = onClickNotification
     }
 
 }

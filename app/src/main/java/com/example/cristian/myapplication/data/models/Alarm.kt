@@ -7,6 +7,7 @@ class Alarm(
         val _sequence: Long? = null,
         val titulo: String? = null,
         val descripcion: String? = null,
+        val idAplicacionUno:String? = null,
         val type: String? = null,
         val numeroAplicaciones: Int? = null,
         val aplicacion: Int? = null,
