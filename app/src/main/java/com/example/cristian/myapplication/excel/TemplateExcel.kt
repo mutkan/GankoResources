@@ -50,7 +50,7 @@ class TemplateExcel(var context: Context) {
             if (!folder.exists()) folder.mkdir()
             File(folder, fileName + Date() + ".xls")
         } else {
-            File.createTempFile(fileName + Date(), "xls", context.cacheDir)
+            File.createTempFile(fileName + Date(), ".xls", context.filesDir)
         }
 
 
