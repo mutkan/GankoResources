@@ -350,6 +350,8 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     fun reporteDiasVacios(): Single<List<List<String>>> =
             db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra")
                     andEx (ArrayFunction.length(Expression.property("servicios")).greaterThanOrEqualTo(Expression.value(1)))
+                    andEx (ArrayExpression.any(VAR_SERV).`in`(Expression.property("servicios")))
+                    .satisfies(VAR_PARTO.notNullOrMissing())
                     , Bovino::class)
                     .flatMapObservable { it.toObservable() }
                     .flatMapMaybe { bovino ->
@@ -587,9 +589,11 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                         }
                     }.applySchedulers()
 
-    fun promedioDiasVacios(): Single<List<ReporteDiasVacios>> =
+    fun promedioDiasVacios(): Maybe<Float> =
             db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra")
                     andEx (ArrayFunction.length(Expression.property("servicios")).greaterThanOrEqualTo(Expression.value(1)))
+                    andEx (ArrayExpression.any(VAR_SERV).`in`(Expression.property("servicios")))
+                    .satisfies(VAR_PARTO.notNullOrMissing())
                     , Bovino::class)
                     .flatMapObservable { it.toObservable() }
                     .flatMapMaybe { bovino ->
@@ -598,11 +602,15 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                                     val ultimoServicio = bovino.servicios!![0]
                                     val ultimoParto = it
                                     val dif = if (ultimoServicio.diagnostico?.confirmacion!! && ultimoServicio.parto == null) ultimoServicio.fecha!!.time - ultimoParto.fecha!!.time else Date().time - ultimoParto.fecha!!.time
-                                    val enServicio = ultimoServicio.finalizado?.not() ?: false
-                                    val diasVacios = TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS)
-                                    ReporteDiasVacios(bovino.codigo!!, bovino.nombre, ultimoParto.fecha!!, ultimoServicio.fecha!!, diasVacios, enServicio)
+                                    return@map TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS)
                                 }
-                    }.toList().applySchedulers()
+                    }.toList()
+                    .flatMapMaybe {
+                        val tot = it.size
+                        it.toObservable().reduce { t1: Long, t2: Long -> t2 + t1 }.map {
+                            it.toFloat() / tot.toFloat()
+                        }
+                    }.applySchedulers()
 
     fun totalAbortos(): Single<Long> =
             db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra")
