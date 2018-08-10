@@ -2,6 +2,7 @@ package com.example.cristian.myapplication.ui.menu
 
 import android.arch.lifecycle.ViewModel
 import android.graphics.Color
+import android.util.Log
 import com.couchbase.lite.ArrayExpression
 import com.couchbase.lite.ArrayFunction
 import com.couchbase.lite.Expression
@@ -493,7 +494,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     }
                     .toList().applySchedulers()
 
-    fun totalServicios(): Single<Long> =
+    fun totalServicios(): Single<Promedio> =
             db.listByExp("finca" equalEx farmID
                     andEx (ArrayFunction.length(Expression.property("servicios")).greaterThanOrEqualTo(Expression.value(1)))
                     , Bovino::class)
@@ -502,9 +503,11 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     }.flatMap {
                         it.servicios?.toObservable()
                     }
-                    .count().applySchedulers()
+                    .count().map {
+                        Promedio("Total Servicios", it)
+                    }.applySchedulers()
 
-    fun totalServiciosEfectivos(): Single<Long> =
+    fun totalServiciosEfectivos(): Single<Promedio> =
             db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra")
                     andEx (ArrayFunction.length(Expression.property("servicios")).greaterThanOrEqualTo(Expression.value(1)))
                     , Bovino::class)
@@ -515,9 +518,11 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                             it.diagnostico?.confirmacion ?: false
                         }
                     }
-                    .count().applySchedulers()
+                    .count().map {
+                        Promedio("Total Servicios Efectivos", it)
+                    }.applySchedulers()
 
-    fun totalServiciosMontaNatural(): Single<Long> =
+    fun totalServiciosMontaNatural(): Single<Promedio> =
             db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra")
                     andEx (ArrayFunction.length(Expression.property("servicios")).greaterThanOrEqualTo(Expression.value(1)))
                     andEx (ArrayExpression.any(VAR_SERV).`in`(Expression.property("servicios")))
@@ -527,9 +532,11 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                         it.toObservable()
                     }.flatMap {
                         it.servicios?.toObservable()
-                    }.count().applySchedulers()
+                    }.count().map {
+                        Promedio("Total Servicios Monta Natural", it)
+                    }.applySchedulers()
 
-    fun totalServiciosMontaNaturalEfectivos(): Single<Long> =
+    fun totalServiciosMontaNaturalEfectivos(): Single<Promedio> =
             db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra")
                     andEx (ArrayFunction.length(Expression.property("servicios")).greaterThanOrEqualTo(Expression.value(1)))
                     andEx (ArrayExpression.any(VAR_SERV).`in`(Expression.property("servicios")))
@@ -541,9 +548,12 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                         it.servicios?.toObservable()?.filter {
                             it.diagnostico?.confirmacion ?: false
                         }
-                    }.count().applySchedulers()
+                    }.count()
+                    .map {
+                        Promedio("Total Servicios Monta Natural Efectivos", it)
+                    }.applySchedulers()
 
-    fun totalServiciosInseminacionArtificial(): Single<Long> =
+    fun totalServiciosInseminacionArtificial(): Single<Promedio> =
             db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra")
                     andEx (ArrayFunction.length(Expression.property("servicios")).greaterThanOrEqualTo(Expression.value(1)))
                     andEx (ArrayExpression.any(VAR_SERV).`in`(Expression.property("servicios")))
@@ -553,9 +563,11 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                         it.toObservable()
                     }.flatMap {
                         it.servicios?.toObservable()
-                    }.count().applySchedulers()
+                    }.count().map {
+                        Promedio("Total Servicios Inseminacion Artificial", it)
+                    }.applySchedulers()
 
-    fun totalServiciosInseminacionArtificialEfectivos(): Single<Long> =
+    fun totalServiciosInseminacionArtificialEfectivos(): Single<Promedio> =
             db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra")
                     andEx (ArrayFunction.length(Expression.property("servicios")).greaterThanOrEqualTo(Expression.value(1)))
                     andEx (ArrayExpression.any(VAR_SERV).`in`(Expression.property("servicios")))
@@ -567,7 +579,10 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                         it.servicios?.toObservable()?.filter {
                             it.diagnostico?.confirmacion ?: false
                         }
-                    }.count().applySchedulers()
+                    }.count()
+                    .map {
+                        Promedio("Total Servicios Inseminacion Artificial Efectivos", it)
+                    }.applySchedulers()
 
     fun promedioIntervaloPartos(): Maybe<Float> =
             db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra")
@@ -587,7 +602,16 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                         it.toObservable().reduce { t1: Int, t2: Int -> t2 + t1 }.map {
                             it.toFloat() / tot.toFloat()
                         }
-                    }.applySchedulers()
+                    }.defaultIfEmpty(0f).applySchedulers()
+
+    fun intervaloPartosBovino(idBovino: String): Maybe<Int> =
+            db.oneById(idBovino, Bovino::class)
+                    .flatMap { bovino ->
+                        bovino.servicios?.toObservable()?.filter { it.parto != null }?.firstElement()
+                                ?.map {
+                                    it.parto!!.intervalo
+                                }
+                    }.defaultIfEmpty(0).applySchedulers()
 
     fun promedioDiasVacios(): Maybe<Float> =
             db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra")
@@ -610,9 +634,21 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                         it.toObservable().reduce { t1: Long, t2: Long -> t2 + t1 }.map {
                             it.toFloat() / tot.toFloat()
                         }
-                    }.applySchedulers()
+                    }.defaultIfEmpty(0f).applySchedulers()
 
-    fun totalAbortos(): Single<Long> =
+    fun diasVaciosBovino(idBovino: String): Maybe<Long> =
+            db.oneById(idBovino, Bovino::class).flatMap { bovino ->
+                bovino.servicios?.toObservable()?.filter { it.parto != null }?.firstElement()
+                        ?.map {
+                            val ultimoServicio = bovino.servicios!![0]
+                            val ultimoParto = it
+                            val dif = if (ultimoServicio.diagnostico?.confirmacion!! && ultimoServicio.parto == null) ultimoServicio.fecha!!.time - ultimoParto.fecha!!.time else Date().time - ultimoParto.fecha!!.time
+                            return@map TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS)
+                        }
+            }.defaultIfEmpty(0)
+                    .applySchedulers()
+
+    fun totalAbortos(): Single<Promedio> =
             db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra")
                     andEx (ArrayFunction.length(Expression.property("servicios")).greaterThanOrEqualTo(Expression.value(1)))
                     andEx (ArrayExpression.any(VAR_SERV).`in`(Expression.property("servicios")))
@@ -622,9 +658,27 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                         it.toObservable()
                     }.flatMap {
                         it.servicios?.toObservable()?.filter { it.novedad?.novedad == "Aborto" }
-                    }.count().applySchedulers()
+                    }.count()
+                    .map {
+                        Promedio("Total Abortos", it)
+                    }.applySchedulers()
 
-    fun partosPorMes(mes: Int, anio: Int): Single<Long> =
+    fun totalPartos(): Single<Promedio> =
+            db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra")
+                    andEx (ArrayFunction.length(Expression.property("servicios")).greaterThanOrEqualTo(Expression.value(1)))
+                    andEx (ArrayExpression.any(VAR_SERV).`in`(Expression.property("servicios")))
+                    .satisfies(VAR_PARTO.notNullOrMissing())
+                    , Bovino::class)
+                    .flatMapObservable {
+                        it.toObservable()
+                    }.flatMap {
+                        it.servicios?.toObservable()?.filter { it.parto != null }
+                    }.count()
+                    .map {
+                        Promedio("Total Partos", it)
+                    }.applySchedulers()
+
+    fun partosPorMes(mes: Int, anio: Int): Single<Promedio> =
             db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra")
                     andEx (ArrayFunction.length(Expression.property("servicios")).greaterThanOrEqualTo(Expression.value(1)))
                     andEx (ArrayExpression.any(VAR_SERV).`in`(Expression.property("servicios")))
@@ -647,7 +701,9 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                                     }
                                     serv.finalizado == true && mesCorrecto
                                 }
-                    }.count().applySchedulers()
+                    }.count().map {
+                        Promedio("Partos por mes", it, mes = mes, anio = anio)
+                    }.applySchedulers()
 
     //region Reporte Vacunas
     fun reporteVacunas(from: Date, to: Date): Single<List<List<String>>> =
@@ -1044,7 +1100,206 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
 
     //endregion
 
+    fun promedioGananciaPeso(from: Date, to: Date) =
+            db.groupedListByExp("fecha".betweenDates(from, to) andEx ("finca" equalEx farmID), Ceba::class, Expression.property("bovino"))
+                    .flatMapObservable {
+                        it.toObservable().map { ceba ->
+                            Log.d("CEBA", ceba.toString())
+                            ceba.gananciaPeso ?: 0f
+                        }
+                    }
+                    .toList()
+                    .flatMapMaybe { lista ->
+                        val tot = lista.size
+                        lista.toObservable().reduce { t1: Float, t2: Float -> t1 + t2 }
+                                .map {
+                                    it / tot.toFloat()
+                                }
+                    }.defaultIfEmpty(0f)
+                    .applySchedulers()
 
+    fun promedioGananciaPesoBovino(bovino: String, from: Date, to: Date) =
+            db.groupedListByExp("fecha".betweenDates(from, to) andEx ("finca" equalEx farmID) andEx ("bovino" equalEx bovino), Ceba::class, Expression.property("bovino"))
+                    .flatMapObservable {
+                        it.toObservable().map { ceba ->
+                            Log.d("CEBA", ceba.toString())
+                            ceba.gananciaPeso ?: 0f
+                        }
+                    }
+                    .toList()
+                    .flatMapMaybe { lista ->
+                        val tot = lista.size
+                        lista.toObservable().reduce { t1: Float, t2: Float -> t1 + t2 }
+                                .map {
+                                    it / tot.toFloat()
+                                }
+                    }.defaultIfEmpty(0f)
+                    .applySchedulers()
+
+    fun promedioGananciaPeso(mes: Int, anio: Int): Maybe<Float> {
+        val calendar: Calendar = Calendar.getInstance()
+        val from: Date = calendar.apply { set(anio, mes, 1) }.time
+        val to: Date = calendar.apply { set(anio, mes + 1, 1) }.time
+        return db.groupedListByExp("fecha".betweenDates(from, to) andEx ("finca" equalEx farmID), Ceba::class, Expression.property("bovino"))
+                .flatMapObservable { it.toObservable() }
+                .map { ceba ->
+                    Log.d("CEBA", ceba.toString())
+                    ceba.gananciaPeso ?: 0f
+                }.toList().flatMapMaybe { lista ->
+                    val tot = lista.size
+                    lista.toObservable().reduce { t1: Float, t2: Float -> t1 + t2 }
+                            .map {
+                                it / tot.toFloat()
+                            }
+                }.defaultIfEmpty(0f).applySchedulers()
+    }
+
+
+    fun promedioGananciaPesoBovino(bovino: String, mes: Int, anio: Int): Maybe<Float> {
+        val calendar: Calendar = Calendar.getInstance()
+        val from: Date = calendar.apply { set(anio, mes, 1) }.time
+        val to: Date = calendar.apply { set(anio, mes + 1, 1) }.time
+        return db.groupedListByExp("fecha".betweenDates(from, to) andEx ("finca" equalEx farmID) andEx ("bovino" equalEx bovino), Ceba::class, Expression.property("bovino"))
+                .flatMapObservable { it.toObservable() }
+                .map { ceba ->
+                    Log.d("CEBA", ceba.toString())
+                    ceba.gananciaPeso ?: 0f
+                }.toList().flatMapMaybe { lista ->
+                    val tot = lista.size
+                    lista.toObservable().reduce { t1: Float, t2: Float -> t1 + t2 }
+                            .map {
+                                it / tot.toFloat()
+                            }
+                }.defaultIfEmpty(0f).applySchedulers()
+    }
+
+    fun promedioLeche(from: Date, to: Date): Maybe<Int> =
+            db.listByExp("idFinca" equalEx farmID!! andEx ("fecha".betweenDates(from, to)), Produccion::class)
+                    .flatMapObservable {
+                        it.toObservable().map {
+                            it.litros!!.toInt()
+                        }
+                    }
+                    .toList()
+                    .flatMapMaybe {
+                        val tot = it.size
+                        it.toObservable().reduce { t1: Int, t2: Int -> t1 + t2 }.map { sum ->
+                            sum / tot
+                        }
+                    }.defaultIfEmpty(0).applySchedulers()
+
+    fun promedioLecheBovino(bovino: String, from: Date, to: Date): Maybe<Int> =
+            db.listByExp("idFinca" equalEx farmID!! andEx ("fecha".betweenDates(from, to)) andEx ("bovino" equalEx bovino), Produccion::class)
+                    .flatMapObservable {
+                        it.toObservable().map {
+                            it.litros!!.toInt()
+                        }
+                    }
+                    .toList()
+                    .flatMapMaybe {
+                        val tot = it.size
+                        it.toObservable().reduce { t1: Int, t2: Int -> t1 + t2 }.map { sum ->
+                            sum / tot
+                        }
+                    }.defaultIfEmpty(0).applySchedulers()
+
+    fun promedioLeche(mes: Int, anio: Int): Maybe<Float> {
+        val calendar: Calendar = Calendar.getInstance()
+        val from: Date = calendar.apply { set(anio, mes, 1) }.time
+        val to: Date = calendar.apply { set(anio, mes + 1, 1) }.time
+        return db.listByExp("idFinca" equalEx farmID!! andEx ("fecha".betweenDates(from, to)), Produccion::class)
+                .flatMapObservable {
+                    it.toObservable().map {
+                        it.litros!!.toInt()
+                    }
+                }
+                .toList()
+                .flatMapMaybe {
+                    val tot = it.size
+                    it.toObservable().reduce { t1: Int, t2: Int -> t1 + t2 }.map { sum ->
+                        sum.toFloat() / tot.toFloat()
+                    }
+                }.defaultIfEmpty(0f).applySchedulers()
+    }
+
+    fun promedioLecheBovino(bovino: String, mes: Int, anio: Int): Maybe<Float> {
+        val calendar: Calendar = Calendar.getInstance()
+        val from: Date = calendar.apply { set(anio, mes, 1) }.time
+        val to: Date = calendar.apply { set(anio, mes + 1, 1) }.time
+        return db.listByExp("idFinca" equalEx farmID!! andEx ("fecha".betweenDates(from, to)) andEx ("bovino" equalEx bovino), Produccion::class)
+                .flatMapObservable {
+                    it.toObservable().map {
+                        it.litros!!.toInt()
+                    }
+                }
+                .toList()
+                .flatMapMaybe {
+                    val tot = it.size
+                    it.toObservable().reduce { t1: Int, t2: Int -> t1 + t2 }.map { sum ->
+                        sum.toFloat() / tot.toFloat()
+                    }
+                }.defaultIfEmpty(0f).applySchedulers()
+    }
+
+    fun getPromedioLeche(mes: Int, anio: Int) = promedioLeche(mes, anio).map {
+        Promedio("Producción de Leche", it, mes = mes, anio = anio)
+    }
+
+    fun getPromedioLeche(from: Date, to: Date) = promedioLeche(from, to).map {
+        Promedio("Producción de Leche", it, desde = from, hasta = to)
+    }
+
+    fun getPromedioGDP(mes: Int, anio: Int) = promedioGananciaPeso(mes, anio).map {
+        Promedio("Ganancia de Peso", it, mes = mes, anio = anio)
+    }
+
+    fun getPromedioGDP(from: Date, to: Date) = promedioGananciaPeso(from, to).map {
+        Promedio("Ganancia de Peso", it, desde = from, hasta = to)
+    }
+
+    fun getPromedioDiasVacios() = promedioDiasVacios().map {
+        Promedio("Dias Vacios", it)
+    }
+
+    fun getPromedioIntervaloPartos() = promedioIntervaloPartos().map {
+        Promedio("Intervalo partos", it)
+    }
+
+    fun promedioLecheTotalYBovino(bovino: String, mes: Int, anio: Int) = promedioLeche(mes, anio).zipWith(promedioLecheBovino(bovino, mes, anio))
+            .map {
+                Promedio("Producción de Leche", it.first, bovino, it.second, mes = mes, anio = anio)
+            }
+
+    fun promedioLecheTotalYBovino(bovino: String, from: Date, to: Date) = promedioLeche(from, to).zipWith(promedioLecheBovino(bovino, from, to))
+            .map {
+                Promedio("Producción de Leche", it.first, bovino, it.second, desde = from, hasta = to)
+            }
+
+    fun promedioGananciaPesoTotalYBovino(bovino: String, mes: Int, anio: Int) = promedioGananciaPeso(mes, anio).zipWith(promedioGananciaPesoBovino(bovino, mes, anio))
+            .map {
+                Promedio("Ganancia de peso", it.first, bovino, it.second, mes = mes, anio = anio)
+            }
+
+    fun promedioGananciaPesoTotalYBovino(bovino: String, from: Date, to: Date) = promedioGananciaPeso(from, to).zipWith(promedioGananciaPesoBovino(bovino, from, to))
+            .map {
+                Promedio("Ganancia de peso", it.first, bovino, it.second, desde = from, hasta = to)
+            }
+
+    fun promedioDiasVaciosTotalYBovino(bovino: String) = promedioDiasVacios().zipWith(diasVaciosBovino(bovino))
+            .map {
+                Promedio("Días Vacios", it.first, bovino, it.second)
+            }
+
+    fun promedioIntervaloPartosTotalYBovino(bovino: String) = promedioIntervaloPartos().zipWith(intervaloPartosBovino(bovino))
+            .map {
+                Promedio("Intervalo entre Partos", it.first, bovino, it.second)
+            }
+
+
+    fun getAllCows(): Single<List<Bovino>> = db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra"), Bovino::class)
+            .applySchedulers()
+
+    fun getBovineById(idBovino: String) = db.oneById(idBovino,Bovino::class).applySchedulers()
     //region REPORTES MANEJO
 
 /* lateinit var registro: RegistroManejo

@@ -8,6 +8,7 @@ import java.util.*
 class Produccion(var _id: String? = null,
                  var _sequence: Long? = null,
                  var type: String? = null,
+                 var idFinca:String? = null,
                  var bovino: String? = null,
                  var jornada: String? = null,
                  var litros: String? = null,

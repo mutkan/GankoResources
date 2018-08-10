@@ -1,7 +1,6 @@
 <resources>
 
 
-
     <string name="app_name">Ganko Bovinos</string>
     <string name="email">Email</string>
     <string name="password">Contraseña</string>
@@ -374,6 +373,9 @@
     <string name="report_of_month">Reporte del mes</string>
     <string name="time_value">Tiempo</string>
     <string name="no_reg">No existen registros</string>
+    <string name="show_average">Visualizar promedio</string>
+    <string name="average_of_month">Promedio del mes</string>
+    <string name="average_type" >Seleccionar promedio</string>
 
     <string-array name="milk_production">
         <item>Litros vendidos</item>
@@ -455,8 +457,7 @@
         <item>Suplementos usados</item>
     </string-array>
 
-    <string-array name="movements_type">
-    </string-array>
+    <string-array name="movements_type"></string-array>
 
     <string-array name="straw__reports_type">
         <item>Pajillas</item>
@@ -490,6 +491,18 @@
         <item>Octubre</item>
         <item>Noviembre</item>
         <item>Diciembre</item>
+    </string-array>
+
+    <string-array name="average_types">
+        <item>Producción de leche</item>
+        <item>Ganancia diaria de peso</item>
+        <item>Días Abiertos</item>
+        <item>Intervalo entre partos</item>
+        <item>Partos por Mes</item>
+        <item>Total Abortos</item>
+        <item>Total Partos</item>
+        <item>Total Servicios</item>
+        <item>Total Servicios Efectivos</item>
     </string-array>
 
 

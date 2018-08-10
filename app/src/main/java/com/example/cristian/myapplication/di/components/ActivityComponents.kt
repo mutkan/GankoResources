@@ -23,11 +23,11 @@ import com.example.cristian.myapplication.ui.bovine.vaccination.VaccinationBvnAc
 import com.example.cristian.myapplication.ui.farms.AddFarmActivity
 import com.example.cristian.myapplication.ui.farms.FarmActivity
 import com.example.cristian.myapplication.ui.groups.*
-import com.example.cristian.myapplication.ui.menu.feed.AddFeedActivity
-import com.example.cristian.myapplication.ui.menu.management.AddManageActivity
 import com.example.cristian.myapplication.ui.menu.MenuActivity
+import com.example.cristian.myapplication.ui.menu.feed.AddFeedActivity
 import com.example.cristian.myapplication.ui.menu.health.AddHealthActivity
 import com.example.cristian.myapplication.ui.menu.health.detail.HealthDetailActivity
+import com.example.cristian.myapplication.ui.menu.management.AddManageActivity
 import com.example.cristian.myapplication.ui.menu.management.detail.ManageDetailActivity
 import com.example.cristian.myapplication.ui.menu.meadow.AddMeadowAlertActivity
 import com.example.cristian.myapplication.ui.menu.meadow.ManageMeadowActivity
@@ -35,6 +35,7 @@ import com.example.cristian.myapplication.ui.menu.meadow.ManageMeadowAlertActivi
 import com.example.cristian.myapplication.ui.menu.meadow.aforo.AddAforoActivity
 import com.example.cristian.myapplication.ui.menu.meadow.mantenimiento.AddMantenimientoActivity
 import com.example.cristian.myapplication.ui.menu.milk.AddMilkActivity
+import com.example.cristian.myapplication.ui.menu.reports.AverageActivity
 import com.example.cristian.myapplication.ui.menu.straw.StrawAddActivity
 import com.example.cristian.myapplication.ui.menu.vaccines.AddVaccineActivity
 import com.example.cristian.myapplication.ui.menu.vaccines.detail.VaccineDetailActivity
@@ -209,5 +210,9 @@ abstract class ActivityComponents {
     @ActivityScope
     @ContributesAndroidInjector
     abstract fun bindSearchActivity(): SearchActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector
+    abstract fun bindAverageActivity(): AverageActivity
 
 }
