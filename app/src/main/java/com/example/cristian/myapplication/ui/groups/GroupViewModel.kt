@@ -6,6 +6,7 @@ import com.example.cristian.myapplication.data.models.Alarm
 import com.example.cristian.myapplication.data.models.Bovino
 import com.example.cristian.myapplication.data.models.Group
 import com.example.cristian.myapplication.data.preferences.UserSession
+import com.example.cristian.myapplication.ui.common.SearchBarActivity
 import com.example.cristian.myapplication.ui.menu.Filter
 import com.example.cristian.myapplication.util.*
 import io.reactivex.Maybe
@@ -21,13 +22,20 @@ class GroupViewModel @Inject constructor(private val db: CouchRx,
 
     fun farmId(): String = session.farmID
 
-    fun list(): Single<List<Group>> =
-            db.listByExp("finca" equalEx session.farmID, Group::class)
+    fun list(): Single<List<Group>> = db.listByExp("finca" equalEx session.farmID, Group::class)
+            .applySchedulers()
+
+
+    fun listObservable(): Observable<List<Group>> = SearchBarActivity.query
+                    .startWith("")
+                    .flatMap {
+                        var exp = "finca" equalEx session.farmID
+                        if (it != "") exp = exp andEx ("nombre" likeEx "$it%")
+                        db.listObsByExp(exp, Group::class)
+
+                    }
                     .applySchedulers()
 
-    fun listObservable(): Observable<List<Group>> =
-            db.listObsByExp("finca" equalEx session.farmID, Group::class)
-                    .applySchedulers()
 
     fun add(group: Group): Single<Unit> = db.insert(group)
             .map { Unit }
@@ -39,11 +47,11 @@ class GroupViewModel @Inject constructor(private val db: CouchRx,
     fun remove(id: String): Single<Unit> = db.remove(id)
             .applySchedulers()
 
-    fun listBovines(page: Int, filter: Filter, query:String? = null ): Single<List<Bovino>> {
+    fun listBovines(page: Int, filter: Filter, query: String? = null): Single<List<Bovino>> {
         val skip = page * pageSize
 
         var exp = "finca" equalEx session.farmID andEx ("retirado" equalEx false)
-        if(query != null && query != "") exp = exp andEx (("nombre" likeEx  "$query%") orEx ("codigo" likeEx "$query%"))
+        if (query != null && query != "") exp = exp andEx (("nombre" likeEx "$query%") orEx ("codigo" likeEx "$query%"))
 
         return db.listByExp(filter.makeExp(exp), Bovino::class, pageSize, skip)
                 .applySchedulers()
@@ -59,9 +67,10 @@ class GroupViewModel @Inject constructor(private val db: CouchRx,
                     .flatMapSingle { db.listByExp("_id" inEx it.bovinos andEx ("retirado" equalEx false), Bovino::class) }
                     .applySchedulers()
 
-    fun listAllBovinesByDocId(id:String):Single<Pair<List<Bovino>, List<Bovino>>> = db.oneById(id, Alarm::class)
-            .flatMapSingle { db.listByExp("_id" inEx it.bovinos andEx ("retirado" equalEx false), Bovino::class)
-                    .zipWith(db.listByExp("_id" inEx it.noBovinos andEx ("retirado" equalEx false), Bovino::class))
+    fun listAllBovinesByDocId(id: String): Single<Pair<List<Bovino>, List<Bovino>>> = db.oneById(id, Alarm::class)
+            .flatMapSingle {
+                db.listByExp("_id" inEx it.bovinos andEx ("retirado" equalEx false), Bovino::class)
+                        .zipWith(db.listByExp("_id" inEx it.noBovinos andEx ("retirado" equalEx false), Bovino::class))
             }
             .applySchedulers()
 

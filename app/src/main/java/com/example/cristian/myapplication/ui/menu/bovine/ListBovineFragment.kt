@@ -77,9 +77,9 @@ class ListBovineFragment : Fragment(), Injectable {
     override fun onResume() {
         super.onResume()
 
-        dis add viewModel.getBovine(idFinca)
+        dis add viewModel.getBovineByFilter(idFinca)
                 .subscribeBy(
-                        onSuccess = {
+                        onNext = {
                             isEmpty.set(it.isEmpty())
                             adapter.bovines = it
 

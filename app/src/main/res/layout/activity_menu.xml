@@ -41,9 +41,10 @@
         android:layout_gravity="start"
         tools:listitem="@layout/template_menu" />
 
-    <include
-        layout="@layout/fragment_filter"
-        android:layout_width="@dimen/filter_width"
+    <fragment
+        android:id="@+id/filterMenu"
+        android:name="com.example.cristian.myapplication.ui.menu.FilterFragment"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="end" />
 

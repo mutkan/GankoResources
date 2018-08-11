@@ -50,7 +50,7 @@ class MilkFragment : Fragment(), Injectable {
 
         dis add viewModel.getMilk(idFinca)
                 .subscribeBy(
-                        onSuccess = {
+                        onNext = {
                             adapter.milk = it
                             if (it.isEmpty()) emptyListMilk.visibility = View.VISIBLE
                             else emptyListMilk.visibility = View.GONE

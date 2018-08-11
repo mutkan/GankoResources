@@ -57,7 +57,7 @@ class RecentHealthFragment : Fragment(), Injectable {
 
         dis add viewModel.getHealth(idFinca)
                 .subscribeBy(
-                        onSuccess = {
+                        onNext = {
                             if (it.isEmpty()) emptyHealthText.visibility = View.VISIBLE else emptyHealthText.visibility = View.GONE
                             adapterRecent.health = it
                         },
