@@ -1,33 +1,24 @@
 package com.example.cristian.myapplication.ui.groups
 
 import android.app.Activity
-import android.app.SearchManager
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.SearchView
-import android.text.InputType
 import android.view.Gravity
-import android.view.Menu
 import android.view.MenuItem
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.ui.common.SearchBarActivity
 import com.example.cristian.myapplication.ui.menu.FilterFragment
 import com.example.cristian.myapplication.util.fixColor
-import com.jakewharton.rxbinding2.support.v7.widget.queryTextChanges
-import com.jakewharton.rxbinding2.view.clicks
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import io.reactivex.disposables.Disposable
-import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.activity_add_group.*
-import org.jetbrains.anko.toast
 import javax.inject.Inject
 
 
-class AddGroupActivity : SearchBarActivity(true), HasSupportFragmentInjector {
+class AddGroupActivity : SearchBarActivity(MENU_SEARCH_FILTER), HasSupportFragmentInjector {
 
     @Inject
     lateinit var injector:DispatchingAndroidInjector<Fragment>

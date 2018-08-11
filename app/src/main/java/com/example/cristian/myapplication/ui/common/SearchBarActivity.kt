@@ -11,15 +11,34 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.PublishSubject
 
 @SuppressLint("Registered")
-open class SearchBarActivity(private val withFilter:Boolean): AppCompatActivity(){
+open class SearchBarActivity(private var menuType:Int): AppCompatActivity(){
 
     private var searchView:SearchView? = null
-    private lateinit var queryDis:Disposable
+    private var queryDis:Disposable? = null
+    private lateinit var searchMenu:Menu
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        if(withFilter) menuInflater.inflate(R.menu.toolbar_menu_2, menu)
-        else menuInflater.inflate(R.menu.toolbar_menu_3, menu)
+        searchMenu = menu
+        return super.onCreateOptionsMenu(menu)
+    }
 
+    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
+        menu.clear()
+        setupClearBar()
+        when(menuType){
+            MENU_SEARCH -> {
+                menuInflater.inflate(R.menu.toolbar_menu_3, menu)
+                setupSearchBar(menu)
+            }
+            MENU_SEARCH_FILTER -> {
+                menuInflater.inflate(R.menu.toolbar_menu_2, menu)
+                setupSearchBar(menu)
+            }
+        }
+        return super.onPrepareOptionsMenu(menu)
+    }
+
+    private fun setupSearchBar(menu:Menu){
         val searchManager = getSystemService(SEARCH_SERVICE) as SearchManager
         searchView = menu.findItem(R.id.search_toolbar).actionView as SearchView
         searchView?.setSearchableInfo(searchManager.getSearchableInfo(componentName))
@@ -33,12 +52,35 @@ open class SearchBarActivity(private val withFilter:Boolean): AppCompatActivity(
 
         queryDis = searchView!!.queryTextChanges()
                 .subscribe { query.onNext(it.toString()) }
-        return true
+    }
+
+    fun setClearMenu(){
+        menuType = MENU_CLEAR
+        onPrepareOptionsMenu(searchMenu)
+    }
+
+    fun setSearchMenu(){
+        menuType = MENU_SEARCH
+        onPrepareOptionsMenu(searchMenu)
+    }
+
+    fun setSearchFilterMenu(){
+        menuType = MENU_SEARCH_FILTER
+        onPrepareOptionsMenu(searchMenu)
+    }
+
+
+
+    private fun setupClearBar(){
+        searchView?.setOnSearchClickListener(null)
+        searchView?.setOnCloseListener(null)
+        queryDis?.dispose()
+        queryDis = null
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        queryDis.dispose()
+        queryDis?.dispose()
     }
 
     override fun onBackPressed() {
@@ -47,6 +89,9 @@ open class SearchBarActivity(private val withFilter:Boolean): AppCompatActivity(
     }
 
     companion object {
+        const val MENU_CLEAR = 0
+        const val MENU_SEARCH = 1
+        const val MENU_SEARCH_FILTER = 2
         val query: PublishSubject<String> = PublishSubject.create()
     }
 
