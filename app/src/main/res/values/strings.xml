@@ -162,7 +162,7 @@
     <string name="filter_purpose">Propósito</string>
     <string name="filter_production">En producción</string>
     <string name="filter_reproductive">Reproductivo</string>
-    <string name="filter_state_meat">En ceba</string>
+    <string name="filter_state_zeal">En celo</string>
     <string name="filter_service">En servicio</string>
     <string name="filter_diagnosis">En diagnóstico</string>
     <string name="filter_weaning">Destete</string>
@@ -374,6 +374,7 @@
     <string name="report_of_month">Reporte del mes</string>
     <string name="time_value">Tiempo</string>
     <string name="no_reg">No existen registros</string>
+    <string name="filter_no_weaning">No Destete</string>
 
     <string-array name="milk_production">
         <item>Litros vendidos</item>

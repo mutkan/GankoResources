@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModelProvider
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.MenuItem
 import android.widget.DatePicker
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.Group
@@ -71,14 +72,14 @@ class AddFeedActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDate
         supportActionBar?.setTitle("Agregar Alimentacion")
 
         startActivityForResult<SelectActivity>(SelectActivity.REQUEST_SELECT,
-                SelectActivity.EXTRA_COLOR to 9)
+                SelectActivity.EXTRA_COLOR to 4)
 
     }
 
     fun setupGroupFragment() {
         if ((group != null || bovines != null) && groupFragment == null) {
-            groupFragment = if (group != null) GroupFragment.instance(12, group!!)
-            else GroupFragment.instance(12, bovines!!)
+            groupFragment = if (group != null) GroupFragment.instance(4, group!!)
+            else GroupFragment.instance(4, bovines!!)
 
             supportFragmentManager.beginTransaction()
                     .replace(R.id.feedContainer, groupFragment)
@@ -90,6 +91,11 @@ class AddFeedActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDate
         }
     }
 
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        finish()
+        return super.onOptionsItemSelected(item)
+    }
 
     override fun onResume() {
         super.onResume()

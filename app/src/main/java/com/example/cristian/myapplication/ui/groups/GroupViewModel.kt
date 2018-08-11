@@ -6,10 +6,8 @@ import com.example.cristian.myapplication.data.models.Alarm
 import com.example.cristian.myapplication.data.models.Bovino
 import com.example.cristian.myapplication.data.models.Group
 import com.example.cristian.myapplication.data.preferences.UserSession
-import com.example.cristian.myapplication.util.andEx
-import com.example.cristian.myapplication.util.applySchedulers
-import com.example.cristian.myapplication.util.equalEx
-import com.example.cristian.myapplication.util.inEx
+import com.example.cristian.myapplication.ui.menu.Filter
+import com.example.cristian.myapplication.util.*
 import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -41,9 +39,13 @@ class GroupViewModel @Inject constructor(private val db: CouchRx,
     fun remove(id: String): Single<Unit> = db.remove(id)
             .applySchedulers()
 
-    fun listBovines(page: Int): Single<List<Bovino>> {
+    fun listBovines(page: Int, filter: Filter, query:String? = null ): Single<List<Bovino>> {
         val skip = page * pageSize
-        return db.listByExp("finca" equalEx session.farmID andEx ("retirado" equalEx false), Bovino::class, pageSize, skip)
+
+        var exp = "finca" equalEx session.farmID andEx ("retirado" equalEx false)
+        if(query != null && query != "") exp = exp andEx (("nombre" likeEx  "$query%") orEx ("codigo" likeEx "$query%"))
+
+        return db.listByExp(filter.makeExp(exp), Bovino::class, pageSize, skip)
                 .applySchedulers()
     }
 

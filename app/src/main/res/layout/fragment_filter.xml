@@ -39,7 +39,7 @@
                     android:textColor="@color/section_name_filter" />
 
                 <CheckBox
-                    android:id="@+id/check_milk"
+                    android:id="@+id/checkMilk"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/filter_margin"
@@ -48,7 +48,7 @@
                     android:textColor="@color/white" />
 
                 <CheckBox
-                    android:id="@+id/check_meat"
+                    android:id="@+id/checkMeat"
                     android:layout_width="match_parent"
 
 
@@ -59,7 +59,7 @@
                     android:textColor="@color/white" />
 
                 <CheckBox
-                    android:id="@+id/check_both"
+                    android:id="@+id/checkBoth"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/filter_margin"
@@ -67,7 +67,7 @@
                     android:text="@string/filter_both"
                     android:textColor="@color/white" />
 
-                <TextView
+                <!--<TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/filter_margin"
@@ -82,7 +82,7 @@
                     android:layout_marginLeft="@dimen/filter_margin"
                     android:buttonTint="@color/check_filter"
                     android:text="@string/filter_production"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white" />-->
 
                 <TextView
                     android:layout_width="match_parent"
@@ -93,16 +93,16 @@
                     android:textColor="@color/section_name_filter" />
 
                 <CheckBox
-                    android:id="@+id/check_state_meat"
+                    android:id="@+id/checkStateZeal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/filter_margin"
                     android:buttonTint="@color/check_filter"
-                    android:text="@string/filter_state_meat"
+                    android:text="@string/filter_state_zeal"
                     android:textColor="@color/white" />
 
                 <CheckBox
-                    android:id="@+id/check_service"
+                    android:id="@+id/checkService"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/filter_margin"
@@ -111,7 +111,7 @@
                     android:textColor="@color/white" />
 
                 <CheckBox
-                    android:id="@+id/check_diagnosis"
+                    android:id="@+id/checkDiagnosis"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/filter_margin"
@@ -126,14 +126,23 @@
                     android:layout_marginTop="@dimen/small"
                     android:text="@string/filter_meat"
                     android:textColor="@color/section_name_filter" />
-
                 <CheckBox
-                    android:id="@+id/check_weaning"
+                    android:id="@+id/checkWeaning"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/filter_margin"
                     android:buttonTint="@color/check_filter"
                     android:text="@string/filter_weaning"
+                    android:textColor="@color/white"
+                    />
+
+                <CheckBox
+                    android:id="@+id/checkNoWeaning"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/filter_margin"
+                    android:buttonTint="@color/check_filter"
+                    android:text="@string/filter_no_weaning"
                     android:textColor="@color/white"
                     android:layout_marginBottom="@dimen/small" />
 
@@ -144,7 +153,7 @@
                     android:background="@color/section_name_filter" />
 
                 <CheckBox
-                    android:id="@+id/check_retired"
+                    android:id="@+id/checkRetired"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/filter_margin"
@@ -158,6 +167,7 @@
         </android.support.v4.widget.NestedScrollView>
 
         <Button
+            android:id="@+id/btnClear"
             android:layout_width="@dimen/filter_width"
             android:layout_height="wrap_content"
             android:text="Limpiar filtros"

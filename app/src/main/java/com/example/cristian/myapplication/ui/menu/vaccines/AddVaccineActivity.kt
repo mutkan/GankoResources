@@ -97,7 +97,7 @@ class AddVaccineActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
     fun setupGroupFragment() {
         if ((group != null || bovines != null) && groupFragment == null) {
             groupFragment = if (group != null) GroupFragment.instance(7, group!!)
-            else GroupFragment.instance(12, bovines!!)
+            else GroupFragment.instance(7, bovines!!)
 
             supportFragmentManager.beginTransaction()
                     .replace(R.id.vaccinesContainer, groupFragment)

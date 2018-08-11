@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.example.cristian.myapplication.R
-import com.example.cristian.myapplication.R.id.check_milk
 import com.example.cristian.myapplication.data.models.Bovino
 import com.example.cristian.myapplication.databinding.TemplateBovineBinding
 import com.example.cristian.myapplication.util.inflate
