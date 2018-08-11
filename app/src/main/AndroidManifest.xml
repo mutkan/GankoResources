@@ -116,6 +116,7 @@
         <activity android:name=".ui.menu.meadow.AddMeadowAlertActivity" />
         <activity android:name=".ui.search.SearchActivity"
             android:windowSoftInputMode="adjustNothing"/>
+        <activity android:name=".ui.menu.reports.AverageActivity"/>
     </application>
 
 </manifest>

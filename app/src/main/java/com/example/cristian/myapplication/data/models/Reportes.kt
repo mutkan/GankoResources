@@ -1,7 +1,9 @@
 package com.example.cristian.myapplication.data.models
 
 import android.arch.lifecycle.ViewModel
+import android.os.Parcelable
 import com.example.cristian.myapplication.ui.menu.MenuViewModel
+import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.fragment_select_report.*
 import java.util.*
 
@@ -236,6 +238,17 @@ data class ReporteSalidas(
         val fechaSalida: Date,
         val tipoSalida: String
 )
+@Parcelize
+data class Promedio(
+        val tipo:String,
+        val total:Number,
+        val bovino:String? = null,
+        val individual:Number? = null,
+        val desde:Date? = null,
+        val hasta:Date? = null,
+        val mes:Int? = null,
+        val anio:Int? = null
+) : Parcelable
 
 //region heeader pdf and excel file
 fun getHeader(tipoReporte:String):List<String> =

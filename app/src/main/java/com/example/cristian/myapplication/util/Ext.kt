@@ -26,9 +26,11 @@ import java.util.*
 import com.squareup.picasso.Picasso
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
+import com.example.cristian.myapplication.data.models.Promedio
 import com.example.cristian.myapplication.data.models.RegistroManejo
 import com.example.cristian.myapplication.data.models.RegistroVacuna
 import com.example.cristian.myapplication.data.models.Sanidad
+import java.time.Month
 
 
 val format = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
@@ -219,4 +221,27 @@ fun setApplications(view: TextView?, bovinos: List<String>, noBovinos: List<Stri
         }
 
     }
+}
+
+@BindingAdapter("app:rankOrMonth")
+fun setRankOrMonth(textView: TextView, promedio: Promedio) {
+    when {
+        promedio.desde != null && promedio.hasta != null -> textView.text = "${promedio.desde.toStringFormat()} - ${promedio.hasta.toStringFormat()}"
+        promedio.mes != null && promedio.anio != null -> textView.text = "${getNameforMonth(promedio.mes)} de ${promedio.anio}"
+    }
+}
+
+fun getNameforMonth(month: Int): String = when (month) {
+    0 -> "Enero"
+    1 -> "Febrero"
+    2 -> "Marzo"
+    3 -> "Abril"
+    4 -> "Mayo"
+    5 -> "Junio"
+    6 -> "Julio"
+    7 -> "Agosto"
+    8 -> "Septiembre"
+    9 -> "Octubre"
+    10 -> "Noviembre"
+    else -> "Diciembre"
 }
