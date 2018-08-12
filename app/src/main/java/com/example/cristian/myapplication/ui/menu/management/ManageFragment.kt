@@ -9,18 +9,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.cristian.myapplication.R
-import com.example.cristian.myapplication.databinding.FragmentApplicationManageDetailBinding
 import com.example.cristian.myapplication.databinding.FragmentManageBinding
-import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.ManageAdapter
-
+import com.example.cristian.myapplication.ui.common.PageChangeListener
 import com.example.cristian.myapplication.util.LifeDisposable
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
-
 import kotlinx.android.synthetic.main.fragment_manage.*
-
 import javax.inject.Inject
 
 class ManageFragment : Fragment(), HasSupportFragmentInjector{
@@ -47,6 +43,7 @@ class ManageFragment : Fragment(), HasSupportFragmentInjector{
         super.onActivityCreated(savedInstanceState)
         pagerManage.adapter = adapter
         tabsManage.setupWithViewPager(pagerManage)
+        pagerManage.addOnPageChangeListener(PageChangeListener)
     }
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> = injector

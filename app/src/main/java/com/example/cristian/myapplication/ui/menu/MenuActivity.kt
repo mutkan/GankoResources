@@ -9,20 +9,16 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
-import android.util.Log
-import android.view.Menu
 import android.view.MenuItem
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.MenuAdapter
+import com.example.cristian.myapplication.ui.common.PageChangeListener
 import com.example.cristian.myapplication.ui.common.SearchBarActivity
-import com.example.cristian.myapplication.ui.menu.bovine.ListBovineFragment
 import com.example.cristian.myapplication.ui.menu.health.HealthFragment
 import com.example.cristian.myapplication.ui.menu.management.ManageFragment
 import com.example.cristian.myapplication.ui.menu.vaccines.VaccinesFragment
-import com.example.cristian.myapplication.ui.search.SearchActivity
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
 import com.example.cristian.myapplication.util.putFragment
@@ -30,7 +26,6 @@ import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import kotlinx.android.synthetic.main.activity_menu.*
-import org.jetbrains.anko.startActivity
 import javax.inject.Inject
 
 
@@ -89,7 +84,7 @@ class MenuActivity : SearchBarActivity(MENU_SEARCH_FILTER), Injectable, HasSuppo
             }
         } else {
             clickOnMenu(viewModel.content, true)
-            putFragment(R.id.content_frame, ListBovineFragment.instance())
+//            putFragment(R.id.content_frame, ListBovineFragment.instance())
         }
 
     }
@@ -107,7 +102,7 @@ class MenuActivity : SearchBarActivity(MENU_SEARCH_FILTER), Injectable, HasSuppo
             }
         } else {
             clickOnMenu(viewModel.content, true)
-            putFragment(R.id.content_frame, ListBovineFragment.instance())
+//            putFragment(R.id.content_frame, ListBovineFragment.instance())
         }
 
         dis add adapter.clickMenu
@@ -123,6 +118,12 @@ class MenuActivity : SearchBarActivity(MENU_SEARCH_FILTER), Injectable, HasSuppo
 
         dis add FilterFragment.filter
                 .subscribe { drawer.closeDrawers() }
+
+        dis add PageChangeListener.tabChanges
+                .subscribe{
+                    if (it != 0) setClearMenu()
+                    else setSearchMenu()
+                }
 
 
     }

@@ -34,6 +34,9 @@ open class SearchBarActivity(private var menuType:Int): AppCompatActivity(){
                 menuInflater.inflate(R.menu.toolbar_menu_2, menu)
                 setupSearchBar(menu)
             }
+            MENU_CLEAR ->{
+                supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            }
         }
         return super.onPrepareOptionsMenu(menu)
     }

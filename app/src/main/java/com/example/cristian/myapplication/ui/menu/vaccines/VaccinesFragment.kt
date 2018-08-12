@@ -11,17 +11,13 @@ import android.view.ViewGroup
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.databinding.FragmentVaccinesBinding
 import com.example.cristian.myapplication.ui.adapters.VaccinesPagerAdapter
+import com.example.cristian.myapplication.ui.common.PageChangeListener
 import com.example.cristian.myapplication.ui.menu.MenuViewModel
-import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
-import com.example.cristian.myapplication.util.putFragment
-import com.jakewharton.rxbinding2.support.design.widget.RxBottomNavigationView
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
-import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.fragment_vaccines.*
-import org.jetbrains.anko.support.v4.toast
 import javax.inject.Inject
 
 
@@ -47,7 +43,7 @@ class VaccinesFragment : Fragment(), HasSupportFragmentInjector {
         super.onActivityCreated(savedInstanceState)
         vaccinesPager.adapter = adapter
         tabsVaccines.setupWithViewPager(vaccinesPager)
-
+        vaccinesPager.addOnPageChangeListener(PageChangeListener)
     }
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> = injector
