@@ -10,18 +10,15 @@ import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.widget.GridLayoutManager
+import android.view.Menu
 import android.view.MenuItem
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.MenuAdapter
 import com.example.cristian.myapplication.ui.common.PageChangeListener
 import com.example.cristian.myapplication.ui.common.SearchBarActivity
-import com.example.cristian.myapplication.ui.menu.health.HealthFragment
-import com.example.cristian.myapplication.ui.menu.management.ManageFragment
-import com.example.cristian.myapplication.ui.menu.vaccines.VaccinesFragment
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
-import com.example.cristian.myapplication.util.putFragment
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
@@ -73,18 +70,15 @@ class MenuActivity : SearchBarActivity(MENU_SEARCH_FILTER), Injectable, HasSuppo
         }
         recycler.layoutManager = gridManager
 
-
         if (intent.extras != null) {
-            when (intent.extras.get("fragment")) {
-                0 -> {
-                    putFragment(R.id.content_frame, HealthFragment.instance())
-                }
-                1 -> putFragment(R.id.content_frame, ManageFragment.instance())
-                else -> putFragment(R.id.content_frame, VaccinesFragment.instance())
+            when (intent.extras.getInt("fragment", -1)) {
+                0 -> clickOnMenu(9, true)
+                1 -> clickOnMenu(6, true)
+                2 -> clickOnMenu(8, true)
+                4 -> clickOnMenu(11, true)
             }
         } else {
             clickOnMenu(viewModel.content, true)
-//            putFragment(R.id.content_frame, ListBovineFragment.instance())
         }
 
     }
@@ -92,18 +86,6 @@ class MenuActivity : SearchBarActivity(MENU_SEARCH_FILTER), Injectable, HasSuppo
 
     override fun onResume() {
         super.onResume()
-
-        if (intent.extras != null) {
-            when (intent.extras.get("fragment")) {
-                0 -> clickOnMenu(9)
-                1 -> clickOnMenu(6)
-                2 -> clickOnMenu(8)
-                else -> clickOnMenu(11)
-            }
-        } else {
-            clickOnMenu(viewModel.content, true)
-//            putFragment(R.id.content_frame, ListBovineFragment.instance())
-        }
 
         dis add adapter.clickMenu
                 .subscribe {
@@ -120,12 +102,25 @@ class MenuActivity : SearchBarActivity(MENU_SEARCH_FILTER), Injectable, HasSuppo
                 .subscribe { drawer.closeDrawers() }
 
         dis add PageChangeListener.tabChanges
-                .subscribe{
+                .subscribe {
                     if (it != 0) setClearMenu()
                     else setSearchMenu()
                 }
 
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        super.onCreateOptionsMenu(menu)
+        if (intent.extras != null) {
+            when (intent.extras.getInt("fragment", -1)) {
+                0 -> setMenuForContent(9)
+                1 -> setMenuForContent(6)
+                2 -> setMenuForContent(8)
+                4 -> setMenuForContent(11)
+            }
+        }
+        return true
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
@@ -164,13 +159,7 @@ class MenuActivity : SearchBarActivity(MENU_SEARCH_FILTER), Injectable, HasSuppo
         supportActionBar?.setBackgroundDrawable(ColorDrawable(color))
         adapter.selectItem(content, colorID)
 
-        if (!firsttime) when (content) {
-            2 -> setSearchFilterMenu()
-            in 3..6 -> setSearchMenu()
-            7 -> setClearMenu()
-            in 8..10 -> setSearchMenu()
-            11, 12, 13 -> setClearMenu()
-        }
+        if (!firsttime) setMenuForContent(content)
 
         when (content) {
             2 -> nav.navigateToBovines()
@@ -187,6 +176,16 @@ class MenuActivity : SearchBarActivity(MENU_SEARCH_FILTER), Injectable, HasSuppo
             13 -> nav.navigateToNotification()
         }
 
+    }
+
+    fun setMenuForContent(content: Int) {
+        when (content) {
+            2 -> setSearchFilterMenu()
+            in 3..6 -> setSearchMenu()
+            7 -> setClearMenu()
+            in 8..10 -> setSearchMenu()
+            11, 12, 13 -> setClearMenu()
+        }
     }
 
 
