@@ -3,6 +3,7 @@ package com.example.cristian.myapplication.util
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
+import android.bluetooth.BluetoothDevice
 import android.content.SharedPreferences
 import android.databinding.BindingAdapter
 import android.graphics.drawable.ColorDrawable
