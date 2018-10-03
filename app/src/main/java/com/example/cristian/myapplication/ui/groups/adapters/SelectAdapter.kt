@@ -8,6 +8,7 @@ import com.example.cristian.myapplication.data.models.Bovino
 import com.example.cristian.myapplication.databinding.TemplateSelectBinding
 import com.example.cristian.myapplication.di.FragmentScope
 import com.example.cristian.myapplication.util.inflate
+import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
@@ -15,15 +16,21 @@ import javax.inject.Inject
 class SelectAdapter @Inject constructor() : RecyclerView.Adapter<SelectAdapter.SelectHolder>() {
 
     val onSelectBovine: PublishSubject<Bovino> = PublishSubject.create()
-    var data: List<Bovino> = emptyList()
+    var data: MutableList<Bovino> = mutableListOf()
         set(value) {
             field = value
+            page = 0
             notifyDataSetChanged()
         }
     var selecteds:HashMap<String, Boolean> = HashMap()
+    var page = 0
+    val nextPage:PublishSubject<Int> = PublishSubject.create()
 
     override fun onBindViewHolder(holder: SelectHolder, position: Int) {
         holder.bind(data[position], this, selecteds[data[position]._id] ?: false)
+        if(position  == data.lastIndex && data.size % 30 == 0){
+            nextPage.onNext((data.size / 30) + 1)
+        }
     }
 
     override fun getItemCount(): Int = data.size
@@ -36,6 +43,15 @@ class SelectAdapter @Inject constructor() : RecyclerView.Adapter<SelectAdapter.S
         else selecteds[bovine._id!!] = true
         notifyDataSetChanged()
         onSelectBovine.onNext(bovine)
+    }
+
+    fun addData(data:List<Bovino>){
+        if(this.data.isEmpty()){
+            this.data = data.toMutableList()
+        }else{
+            this.data.addAll(data)
+            notifyDataSetChanged()
+        }
     }
 
     class SelectHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

@@ -46,7 +46,7 @@ class StrawFragment :Fragment(), Injectable {
 
         dis add viewModel.getStraw(idFinca)
                 .subscribeBy (
-                        onSuccess = {
+                        onNext = {
                             adapter.straw = it
                             if (it.isEmpty()) emptyListStraw.visibility = View.VISIBLE
                             else emptyListStraw.visibility = View.GONE

@@ -12,13 +12,16 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.di.Injectable
+import com.example.cristian.myapplication.ui.common.SearchBarActivity
 import com.example.cristian.myapplication.ui.groups.adapters.SelectAdapter
+import com.example.cristian.myapplication.ui.menu.Filter
+import com.example.cristian.myapplication.ui.menu.FilterFragment
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
 import com.example.cristian.myapplication.util.dialog
 import com.jakewharton.rxbinding2.view.clicks
+import io.reactivex.Observable
 import kotlinx.android.synthetic.main.fragment_select_bovine.*
-import org.jetbrains.anko.support.v4.startActivity
 import org.jetbrains.anko.support.v4.startActivityForResult
 import javax.inject.Inject
 
@@ -32,7 +35,10 @@ class SelectBovineFragment : Fragment(), Injectable {
     var selecteds: HashMap<String, Boolean> = HashMap()
     val adapter: SelectAdapter = SelectAdapter()
 
-    val dis:LifeDisposable = LifeDisposable(this)
+    var filter: Filter = Filter()
+    var query: String? = null
+
+    val dis: LifeDisposable = LifeDisposable(this)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -44,15 +50,31 @@ class SelectBovineFragment : Fragment(), Injectable {
         adapter.selecteds = selecteds
         list.adapter = adapter
 
-        dis add viewModel.listBovines(0)
+        dis add FilterFragment.filter
+                .doOnNext { filter = it }
+                .flatMapSingle { viewModel.listBovines(0, filter, query) }
                 .subscribe {
-                    bovines -> adapter.data = bovines }
+                    adapter.data = it.toMutableList()
+
+                }
+
+        dis add SearchBarActivity.query
+                .doOnNext { query = it }
+                .flatMapSingle { viewModel.listBovines(0, filter, query) }
+                .subscribe {
+                    adapter.data = it.toMutableList()
+                }
+
+        dis add Observable.just(0)
+                .mergeWith(adapter.nextPage)
+                .flatMapSingle { viewModel.listBovines(it, filter, query) }
+                .subscribe { bovines -> adapter.addData(bovines)}
 
         dis add btnNext.clicks()
                 .subscribe {
                     val keys = selecteds.keys.toTypedArray()
                     if (createGroup) {
-                        startActivityForResult<SaveGroupActivity>(REQUEST_SAVE,SaveGroupActivity.EXTRAS_BOVINES to keys)
+                        startActivityForResult<SaveGroupActivity>(REQUEST_SAVE, SaveGroupActivity.EXTRAS_BOVINES to keys)
                     } else {
                         val data = Intent()
                         data.putExtra(SelectActivity.DATA_BOVINES, keys)
@@ -72,7 +94,7 @@ class SelectBovineFragment : Fragment(), Injectable {
 
         dis add btnList.clicks()
                 .subscribe {
-                    startActivityForResult<BovineSelectedActivity>(7895,BovineSelectedActivity.EXTRA_SELECTED to selecteds.keys.toTypedArray())
+                    startActivityForResult<BovineSelectedActivity>(7895, BovineSelectedActivity.EXTRA_SELECTED to selecteds.keys.toTypedArray())
                 }
 
         dis add adapter.onSelectBovine
@@ -89,7 +111,7 @@ class SelectBovineFragment : Fragment(), Injectable {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == 7895 && resultCode == Activity.RESULT_OK) {
-            selecteds = HashMap(data!!.getStringArrayExtra(BovineSelectedActivity.DATA_ITEMS).associateBy({it},{true}))
+            selecteds = HashMap(data!!.getStringArrayExtra(BovineSelectedActivity.DATA_ITEMS).associateBy({ it }, { true }))
             val size = selecteds.size
             number.text = "$size"
             if (size == 0) hideBar()

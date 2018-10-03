@@ -1,8 +1,6 @@
 package com.example.cristian.myapplication.ui.menu
 
-import android.app.SearchManager
 import android.arch.lifecycle.ViewModelProvider
-import android.content.Context
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
@@ -11,37 +9,24 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.SearchView
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.di.Injectable
 import com.example.cristian.myapplication.ui.adapters.MenuAdapter
-import com.example.cristian.myapplication.ui.menu.bovine.ListBovineFragment
-import com.example.cristian.myapplication.ui.menu.health.HealthFragment
-import com.example.cristian.myapplication.ui.menu.management.ManageFragment
-import com.example.cristian.myapplication.ui.menu.meadow.MeadowFragment
-import com.example.cristian.myapplication.ui.menu.vaccines.VaccinesFragment
-import com.example.cristian.myapplication.ui.search.SearchActivity
+import com.example.cristian.myapplication.ui.common.PageChangeListener
+import com.example.cristian.myapplication.ui.common.SearchBarActivity
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
-import com.example.cristian.myapplication.util.fixColor
-import com.example.cristian.myapplication.util.putFragment
-import com.jakewharton.rxbinding2.view.clicks
-import com.jakewharton.rxbinding2.widget.RxSearchView
-import com.jakewharton.rxbinding2.widget.queryTextChanges
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import kotlinx.android.synthetic.main.activity_menu.*
-import org.jetbrains.anko.startActivity
 import javax.inject.Inject
 
 
-class MenuActivity : AppCompatActivity(), Injectable, HasSupportFragmentInjector {
+class MenuActivity : SearchBarActivity(MENU_SEARCH_FILTER), Injectable, HasSupportFragmentInjector {
 
     @Inject
     lateinit var injector: DispatchingAndroidInjector<Fragment>
@@ -58,8 +43,6 @@ class MenuActivity : AppCompatActivity(), Injectable, HasSupportFragmentInjector
     @Inject
     lateinit var nav: MenuNavigation
     var phone: Boolean = true
-    var state: Int = 1
-    lateinit var menu: Menu
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,7 +61,7 @@ class MenuActivity : AppCompatActivity(), Injectable, HasSupportFragmentInjector
 
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, GravityCompat.END)
 
-        val gridManager: GridLayoutManager = GridLayoutManager(this, 2)
+        val gridManager = GridLayoutManager(this, 2)
         gridManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int = when (viewModel.data[position].type) {
                 MenuViewModel.MenuItem.TYPE_MENU -> 1
@@ -87,16 +70,15 @@ class MenuActivity : AppCompatActivity(), Injectable, HasSupportFragmentInjector
         }
         recycler.layoutManager = gridManager
 
-
-        if (intent.extras!= null) {
-            when (intent.extras.get("fragment")){
-                0->{ putFragment(R.id.content_frame, HealthFragment.instance())}
-                1-> putFragment(R.id.content_frame, ManageFragment.instance())
-                else -> putFragment(R.id.content_frame, VaccinesFragment.instance())
-            }}
-        else {
+        if (intent.extras != null) {
+            when (intent.extras.getInt("fragment", -1)) {
+                0 -> clickOnMenu(9, true)
+                1 -> clickOnMenu(6, true)
+                2 -> clickOnMenu(8, true)
+                4 -> clickOnMenu(11, true)
+            }
+        } else {
             clickOnMenu(viewModel.content, true)
-            putFragment(R.id.content_frame, ListBovineFragment.instance())
         }
 
     }
@@ -107,58 +89,42 @@ class MenuActivity : AppCompatActivity(), Injectable, HasSupportFragmentInjector
 
         dis add adapter.clickMenu
                 .subscribe {
-                    if (phone) {
-                        drawer.closeDrawers()
-                        when (it) {
-                            1 -> nav.navigateToFarm()
-                            in 2..13 -> clickOnMenu(it)
-                            14 -> nav.navigateToLogout()
-                        }
-                    } else {
-                        when (it) {
-                            1 -> nav.navigateToFarm()
-                            in 2..13 -> clickOnMenu(it)
-                            14 -> nav.navigateToLogout()
-                        }
+                    if (phone) drawer.closeDrawers()
+                    when (it) {
+                        1 -> nav.navigateToFarm()
+                        in 2..13 -> clickOnMenu(it)
+                        14 -> nav.navigateToLogout()
                     }
+
                 }
 
+        dis add FilterFragment.filter
+                .subscribe { drawer.closeDrawers() }
+
+        dis add PageChangeListener.tabChanges
+                .subscribe {
+                    if (it != 0) setClearMenu()
+                    else setSearchMenu()
+                }
 
 
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        this.menu = menu
-        menuInflater.inflate(R.menu.toolbar_menu, menu)
-//        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
-//        val searchView = menu.findItem(R.id.search_toolbar)
-//        searchView.setSearchableInfo(
-//                searchManager.getSearchableInfo(componentName))
-
-
-
-//        dis add searchView.queryTextChanges()
-//                .doOnNext { viewModel.querySubject.onNext(it.toString()) }
-//                .subscribe()
-
+        super.onCreateOptionsMenu(menu)
         if (intent.extras != null) {
-            Log.d("pending", "pendiente")
-            when (intent.extras.get("fragment")) {
-                0 -> clickOnMenu(9)
-                1 -> clickOnMenu(6)
-                2 -> clickOnMenu(8)
-                else -> clickOnMenu(11)
+            when (intent.extras.getInt("fragment", -1)) {
+                0 -> setMenuForContent(9)
+                1 -> setMenuForContent(6)
+                2 -> setMenuForContent(8)
+                4 -> setMenuForContent(11)
             }
-        } else {
-            clickOnMenu(viewModel.content, true)
-            putFragment(R.id.content_frame, ListBovineFragment.instance())
         }
-        return super.onCreateOptionsMenu(menu)
+        return true
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
-
         toggle.syncState()
     }
 
@@ -167,47 +133,18 @@ class MenuActivity : AppCompatActivity(), Injectable, HasSupportFragmentInjector
             return true
         }
         when (item!!.itemId) {
-            R.id.filter_toolbar -> drawer.openDrawer(GravityCompat.END)
-            R.id.search_toolbar -> startActivity<SearchActivity>(SELECTED_FRAGMENT to viewModel.content)
+            R.id.filter_toolbar ->
+                if (!drawer.isDrawerOpen(GravityCompat.END)) drawer.openDrawer(GravityCompat.END)
+                else drawer.closeDrawers()
         }
 
         return super.onOptionsItemSelected(item)
     }
 
     companion object {
-        val MENU1 = 1
-        val MENU2 = 2
-        val NOMENU = 3
         const val SELECTED_FRAGMENT = "selectedFragment"
     }
 
-    fun noMenu() {
-        state = NOMENU
-        onPrepareOptionsMenu(menu)
-    }
-
-    fun showMenu1() {
-        state = MENU1
-        onPrepareOptionsMenu(menu)
-    }
-
-    fun showMenu2() {
-        state = MENU2
-        onPrepareOptionsMenu(menu)
-    }
-
-    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-        menu?.clear()
-        if (state == MENU1) {
-            menuInflater.inflate(R.menu.toolbar_menu, menu)
-        } else if (state == MENU2) {
-            menuInflater.inflate(R.menu.toolbar_search, menu)
-        } else {
-            menu?.clear()
-        }
-
-        return super.onPrepareOptionsMenu(menu)
-    }
 
     fun clickOnMenu(content: Int, firsttime: Boolean = false) {
 
@@ -222,14 +159,7 @@ class MenuActivity : AppCompatActivity(), Injectable, HasSupportFragmentInjector
         supportActionBar?.setBackgroundDrawable(ColorDrawable(color))
         adapter.selectItem(content, colorID)
 
-        if (!firsttime) when (content) {
-            2 -> showMenu1()
-            in 3..6 -> showMenu2()
-            7 -> noMenu()
-            in 8..10 -> showMenu2()
-            11 -> noMenu()
-            12, 13 -> showMenu2()
-        }
+        if (!firsttime) setMenuForContent(content)
 
         when (content) {
             2 -> nav.navigateToBovines()
@@ -246,6 +176,16 @@ class MenuActivity : AppCompatActivity(), Injectable, HasSupportFragmentInjector
             13 -> nav.navigateToNotification()
         }
 
+    }
+
+    fun setMenuForContent(content: Int) {
+        when (content) {
+            2 -> setSearchFilterMenu()
+            in 3..6 -> setSearchMenu()
+            7 -> setClearMenu()
+            in 8..10 -> setSearchMenu()
+            11, 12, 13 -> setClearMenu()
+        }
     }
 
 

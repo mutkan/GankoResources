@@ -98,9 +98,7 @@ class CebaBvnActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDate
 
         dis add editDestete.clicks()
                 .subscribe {
-                    if (bovino.destete!!) datePicker.show()
-                    else toast("Este bovino no fue destetado, verifique la informacion")
-
+                    datePicker.show()
                 }
 
 
@@ -131,6 +129,7 @@ class CebaBvnActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDate
         desteteListCebaBovine.text = "$dayOfMonth/${month + 1}/$year"
         if (!first) {
             bovino.fechaDestete = "$dayOfMonth/${month + 1}/$year".toDate()
+            bovino.destete = true
             dis add viewModel.updateBovine(idBovino, bovino)
                     .subscribeBy(
                             onSuccess = {

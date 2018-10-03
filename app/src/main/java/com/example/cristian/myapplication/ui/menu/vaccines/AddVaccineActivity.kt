@@ -94,10 +94,10 @@ class AddVaccineActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
         return true
     }
 
-    fun setupGroupFragment() {
+    private fun setupGroupFragment() {
         if ((group != null || bovines != null) && groupFragment == null) {
             groupFragment = if (group != null) GroupFragment.instance(7, group!!)
-            else GroupFragment.instance(12, bovines!!)
+            else GroupFragment.instance(7, bovines!!)
 
             supportFragmentManager.beginTransaction()
                     .replace(R.id.vaccinesContainer, groupFragment)
@@ -277,15 +277,10 @@ class AddVaccineActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
             2 -> R.id.twoMl
             else -> R.id.otherDoseRadio
         }
-        vaccineDose.apply {
-            check(idRadioDose)
-            isEnabled = false
-        }
+        vaccineDose.check(idRadioDose)
         val unidadTiempo = unidades.indexOf(previousVaccine.unidadFrecuencia)
-        timeUnitsSpinner.apply {
-            setSelection(unidadTiempo)
-            isEnabled = false
-        }
+        timeUnitsSpinner.setSelection(unidadTiempo)
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

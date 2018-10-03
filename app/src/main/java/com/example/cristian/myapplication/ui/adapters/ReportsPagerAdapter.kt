@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentStatePagerAdapter
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.ui.menu.reports.ReportsFragment
+import com.example.cristian.myapplication.ui.menu.reports.SelectAverageFragment
 import com.example.cristian.myapplication.ui.menu.reports.SelectReportFragment
 import javax.inject.Inject
 
@@ -11,7 +12,7 @@ class ReportsPagerAdapter @Inject constructor(val fragment: ReportsFragment): Fr
 
     override fun getItem(position: Int): Fragment = when (position) {
         0 -> SelectReportFragment.instance()
-        else -> SelectReportFragment.instance()
+        else -> SelectAverageFragment.instance()
     }
 
     override fun getCount(): Int =  2

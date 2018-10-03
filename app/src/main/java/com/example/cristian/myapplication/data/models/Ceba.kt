@@ -5,7 +5,7 @@ import kotlinx.android.parcel.Parcelize
 import java.util.*
 
 @Parcelize
-class Ceba(var _id: String? = null,
+data class Ceba(var _id: String? = null,
            var _sequence:Long?=null,
            var type:String?=null,
            var finca: String? = null,

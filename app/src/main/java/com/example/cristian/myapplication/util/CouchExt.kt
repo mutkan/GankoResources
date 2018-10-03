@@ -2,6 +2,7 @@ package com.example.cristian.myapplication.util
 
 import com.couchbase.lite.ArrayFunction
 import com.couchbase.lite.Expression
+import com.couchbase.lite.Function
 import com.couchbase.lite.Ordering
 import java.util.*
 
@@ -31,8 +32,8 @@ infix fun String.lte(value: Any): Expression = Expression.property(this)
         .lessThanOrEqualTo(makeExpressionValue(value))
 
 // LIKE
-infix fun String.likeEx(value: String): Expression = Expression.property(this)
-        .like(Expression.string(value))
+infix fun String.likeEx(value: String): Expression = Function.lower(Expression.property(this))
+        .like(Expression.string(value.toLowerCase()))
 
 // LOGICAL
 infix fun Expression.andEx(expression: Expression): Expression = this.and(expression)

@@ -1,6 +1,8 @@
 package com.example.cristian.myapplication.data.db
 
 import com.couchbase.lite.*
+import com.couchbase.lite.Function
+import com.example.cristian.myapplication.data.models.Alarm
 import com.example.cristian.myapplication.data.preferences.UserSession
 import com.example.cristian.myapplication.util.andEx
 import com.example.cristian.myapplication.util.equalEx
@@ -125,6 +127,36 @@ class CouchRx @Inject constructor(private val db: Database
             }
             .map { dictionaryToObject(it.first, it.second, it.third, kClass) }
             .toList()
+
+
+    fun <T : Any> groupedListByExp(expression: Expression, kClass: KClass<T>, groupBy: Expression,limit: Int? = null, skip: Int? = null, orderBy:Array<Ordering> = emptyArray()): Single<List<T>> = Single.create<ResultSet> {
+        val query = QueryBuilder
+                .select(SelectResult.all(), SelectResult.expression(Meta.id), SelectResult.expression(Meta.sequence))
+                .from(DataSource.database(db))
+                .where(expression andEx ("type" equalEx kClass.simpleName.toString()))
+                .groupBy(groupBy)
+                .orderBy(*orderBy)
+
+
+
+        val result: ResultSet = if (limit != null && skip != null)
+            query.limit(Expression.intValue(limit), Expression.intValue(skip)).execute()
+        else if(limit!=null)
+            query.limit(Expression.intValue(limit)).execute()
+        else query.execute()
+
+        it.onSuccess(result)
+    }
+            .flatMapObservable { it.toObservable() }
+            .map {
+                val id = it.getString("id")
+                val sequence = it.getLong("sequence")
+                val content = it.getDictionary(dbName)
+                Triple(id, sequence, content)
+            }
+            .map { dictionaryToObject(it.first, it.second, it.third, kClass) }
+            .toList()
+
 
 
     fun <T : Any> listByExpNoType(expression: Expression, kClass: KClass<T>, limit: Int? = null, skip: Int? = null, orderBy:Array<Ordering> = emptyArray()): Single<List<T>> = Single.create<ResultSet> {

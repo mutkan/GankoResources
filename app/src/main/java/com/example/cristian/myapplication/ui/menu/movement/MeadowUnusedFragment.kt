@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.Group
+import com.example.cristian.myapplication.data.models.Movimiento
 import com.example.cristian.myapplication.data.models.Pradera
 import com.example.cristian.myapplication.databinding.TemplateSpinnerGroupBinding
 import com.example.cristian.myapplication.di.Injectable
@@ -66,6 +67,7 @@ class MeadowUnusedFragment : Fragment(), Injectable {
         dis add clickAddGroup.flatMapSingle {
             val pradera = it.first
             val grupo = it.second
+            val mov = Movimiento(null,null,null,pradera.identificador!!.toString(),grupo.bovines,Date(),viewmodel.getFarmId())
             pradera.apply {
                 fechaOcupacion = Date()
                 available = false
@@ -73,7 +75,12 @@ class MeadowUnusedFragment : Fragment(), Injectable {
                 bovinos = grupo.bovines
             }
             viewmodel.updateMeadow(pradera._id!!, pradera)
-                    .flatMap { viewmodel.updateGroup(grupo.apply { this.pradera = pradera.identificador!!.toString() }) }
+                    .flatMap {
+                        viewmodel.updateGroup(grupo.apply { this.pradera = pradera.identificador!!.toString() })
+                    }
+                    .flatMap {
+                        viewmodel.insertMovement(mov)
+                    }
         }.subscribeBy(
                 onNext = {
                     toast("Datos guardados correctamente")

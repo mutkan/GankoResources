@@ -39,7 +39,7 @@ class AddMilkBvnActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListen
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
 
         onDateSet(null,Calendar.getInstance().get(Calendar.YEAR),
-                Calendar.getInstance().get(Calendar.MONTH)+1,
+                Calendar.getInstance().get(Calendar.MONTH),
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
     }
 
@@ -54,7 +54,7 @@ class AddMilkBvnActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListen
                     val jornada = if (timeOfDayAddMilkBovine.checkedRadioButtonId == R.id.morningAddMilkBovine) "Manana"
                     else "Tarde"
                     viewModel.addMilkProduction(
-                            Produccion(null, null, null, idBovino, jornada, it[1], it[0].toDate())
+                            Produccion(null, null, null,null, idBovino, jornada, it[1], it[0].toDate())
                     )
                 }.subscribeBy(
                         onComplete = {
