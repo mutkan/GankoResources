@@ -34,7 +34,7 @@ class AddServiceActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
     lateinit var factory: ViewModelProvider.Factory
     val viewModel: ReproductiveBvnViewModel by lazy { buildViewModel<ReproductiveBvnViewModel>(factory) }
     private val idBovino: String by lazy { intent.getStringExtra(ARG_ID) ?: "" }
-    private val celo: Date by lazy { intent.getStringExtra(ARG_ZEAL).toDate() }
+    private val celo: String by lazy { intent.getStringExtra(ARG_ZEAL) ?: ""}
     private val dis: LifeDisposable = LifeDisposable(this)
     private val calendar: Calendar by lazy { Calendar.getInstance() }
     private val strawAdapter: ArrayAdapter<Straw> by lazy { ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, mutableListOf<Straw>()) }
@@ -154,7 +154,8 @@ class AddServiceActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
         val empadre = if (serviceType.checkedRadioButtonId == R.id.naturalMating) montaN else inseminacion
         val codigoToro = if (empadre == montaN) bullCodeOrStrawSpinner.selectedItem.toString() else null
         val pajilla = if (empadre == inseminacion) bullCodeOrStrawSpinner.selectedItem.toString() else null
-        return Servicio(fecha, celo, condicion, empadre, codigoToro, pajilla, null, null, null, null, false)
+        val fechaCelo: Date? = if (celo != "") celo.toDate() else null
+        return Servicio(fecha, fechaCelo, condicion, empadre, codigoToro, pajilla, null, null, null, null, false)
     }
 
     private fun validateFields(): Observable<List<String>> {

@@ -19,11 +19,7 @@ class ListZealAdapter @Inject constructor() : RecyclerView.Adapter<ZealViewHolde
             field = value
             notifyDataSetChanged()
         }
-    var activeService: Boolean = true
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
+
     private val now: Date = Date()
     val clickAddService: PublishSubject<Date> = PublishSubject.create()
 
@@ -34,9 +30,7 @@ class ListZealAdapter @Inject constructor() : RecyclerView.Adapter<ZealViewHolde
     override fun onBindViewHolder(holder: ZealViewHolder, position: Int) {
         holder.binding.zeal = zeals[position]
         holder.binding.clickAddService = clickAddService
-        val dif = now.time - zeals[position].time
-        val hours = TimeUnit.HOURS.convert(dif, TimeUnit.MILLISECONDS)
-        holder.binding.btnAddService.visibility = if (position == 0 && !activeService && hours <= 30) View.VISIBLE else View.GONE
+        holder.binding.btnAddService.visibility = if (position == 0) View.VISIBLE else View.GONE
     }
 }
 

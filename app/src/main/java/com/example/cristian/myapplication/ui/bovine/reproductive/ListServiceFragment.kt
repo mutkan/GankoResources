@@ -17,6 +17,7 @@ import com.example.cristian.myapplication.ui.bovine.reproductive.add.AddDiagnosi
 import com.example.cristian.myapplication.ui.bovine.reproductive.add.AddServiceActivity
 import com.example.cristian.myapplication.util.LifeDisposable
 import com.example.cristian.myapplication.util.buildViewModel
+import com.example.cristian.myapplication.util.toStringFormat
 import com.jakewharton.rxbinding2.view.clicks
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.fragment_list_service.*
@@ -30,14 +31,15 @@ class ListServiceFragment : Fragment(), Injectable {
     lateinit var factory: ViewModelProvider.Factory
     val viewModel: ReproductiveBvnViewModel by lazy { buildViewModel<ReproductiveBvnViewModel>(factory) }
     private val idBovino: String by lazy { arguments!!.getString(ARG_ID, "") }
-    private val tipo:Int by lazy { arguments!!.getInt(FRAGMENT_TYPE, TYPE_SERVICES) }
+    private val tipo: Int by lazy { arguments!!.getInt(FRAGMENT_TYPE, TYPE_SERVICES) }
     private val dis: LifeDisposable = LifeDisposable(this)
-    private val isEmpty:ObservableBoolean = ObservableBoolean(false)
+    private val isEmpty: ObservableBoolean = ObservableBoolean(false)
     @Inject
     lateinit var adapter: ListServiceBovineAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_list_service, container, false)
+        binding.fabAddService.visibility = if (tipo == TYPE_SERVICES) View.VISIBLE else View.GONE
         binding.isEmpty = isEmpty
         return binding.root
     }
@@ -51,7 +53,7 @@ class ListServiceFragment : Fragment(), Injectable {
     override fun onResume() {
         super.onResume()
 
-        if (tipo == TYPE_ON_SERVICE){
+        if (tipo == TYPE_ON_SERVICE) {
             dis add viewModel.getOnServiceForBovine(idBovino)
                     .subscribeBy(
                             onSuccess = {
@@ -85,12 +87,19 @@ class ListServiceFragment : Fragment(), Injectable {
                                 startActivity<AddBirthActivity>(ARG_ID to idBovino, ARG_SERVICE to servicio, ARG_POSITION to position)
                             }
                     )
-        }else{
+        } else {
             dis add viewModel.getServicesHistoryForBovine(idBovino)
                     .subscribeBy(
                             onSuccess = {
                                 adapter.services = it
                                 isEmpty.set(it.isEmpty())
+                            }
+                    )
+
+            dis add fabAddService.clicks()
+                    .subscribeBy(
+                            onNext = {
+                                startActivity<AddServiceActivity>(ARG_ID to idBovino)
                             }
                     )
         }

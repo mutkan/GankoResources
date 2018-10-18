@@ -85,6 +85,7 @@ class ListBovineFragment : Fragment(), Injectable {
 
                         },
                         onError = {
+                            Log.e("ERROR", it.message, it)
                             toast(it.message!!)
                         }
                 )

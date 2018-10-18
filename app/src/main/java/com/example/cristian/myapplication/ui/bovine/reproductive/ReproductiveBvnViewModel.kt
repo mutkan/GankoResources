@@ -40,19 +40,19 @@ class ReproductiveBvnViewModel @Inject constructor(private val db: CouchRx, priv
             }
             .applySchedulers()
 
-    fun updateServicio(idBovino: String, servicio: Servicio) = db.oneById(idBovino, Bovino::class)
+    fun updateServicio(idBovino: String, servicio: Servicio,position:Int) = db.oneById(idBovino, Bovino::class)
             .flatMapSingleElement { b ->
                 val servicios = b.servicios!!.toMutableList()
-                servicios[0] = servicio
+                servicios[position] = servicio
                 b.servicios = servicios.toList()
                 db.update(idBovino, b).map { b }
             }.applySchedulers()
 
-    fun addParto(idBovino: String, servicio: Servicio) = db.oneById(idBovino, Bovino::class)
+    fun addParto(idBovino: String, servicio: Servicio,position: Int) = db.oneById(idBovino, Bovino::class)
             .flatMapSingleElement { b ->
                 b.partos = b.partos?.plus(1) ?: 1
                 val servicios = b.servicios!!.toMutableList()
-                servicios[0] = servicio
+                servicios[position] = servicio
                 b.servicios = servicios.toList()
                 db.update(idBovino, b).map { b }
             }.applySchedulers()

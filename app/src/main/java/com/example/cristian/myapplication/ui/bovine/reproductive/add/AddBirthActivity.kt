@@ -99,8 +99,8 @@ class AddBirthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDat
                 .flatMap { validateFields() }
                 .flatMapMaybe {
                     val servicio = setParto(it)
-                    viewModel.addParto(idBovino, servicio)
-                }.flatMapSingle {bovino ->
+                    viewModel.addParto(idBovino, servicio, position)
+                }.flatMapSingle { bovino ->
                     Single.just({
                         NotificationWork.notify(NotificationWork.TYPE_REPRODUCTIVE, "Recordatorio Días vacios", "El bovino ${bovino.nombre} cumplirá 45 días vacios mañana", idBovino,
                                 44, TimeUnit.DAYS)
