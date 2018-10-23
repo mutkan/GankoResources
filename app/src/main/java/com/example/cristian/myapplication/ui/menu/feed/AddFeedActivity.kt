@@ -43,11 +43,11 @@ class AddFeedActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDate
     var groupFragment: GroupFragment? = null
     val calendar: Calendar by lazy { Calendar.getInstance() }
     val tipo_alimento: Array<String> by lazy { resources.getStringArray(R.array.feed_types) }
-    val datePicker: DatePickerDialog by lazy {
-        DatePickerDialog(this, this,
-                calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH))
-    }
+    lateinit var datePicker: DatePickerDialog
+
+
+
+
     var precioTotal: Int = 0
         set(value) {
             field = value
@@ -69,10 +69,18 @@ class AddFeedActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDate
         setContentView(R.layout.acitivity_add_feed)
         fixColor(9)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setTitle("Agregar Alimentacion")
+        supportActionBar?.title = getString(R.string.addFeed)
 
         startActivityForResult<SelectActivity>(SelectActivity.REQUEST_SELECT,
                 SelectActivity.EXTRA_COLOR to 4)
+
+        datePicker= DatePickerDialog(this, AddFeedActivity@ this,
+                calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH))
+
+        onDateSet(null, Calendar.getInstance().get(Calendar.YEAR),
+                Calendar.getInstance().get(Calendar.MONTH) + 1,
+                Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
 
     }
 
@@ -131,12 +139,7 @@ class AddFeedActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDate
         dis add date_feed.clicks()
                 .subscribeBy(
                         onNext = {
-                            datePicker.apply {
-                                updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
-                                        calendar.get(Calendar.DAY_OF_MONTH))
-                                datePicker.tag = "date_feed"
-                                show()
-                            }
+                            datePicker.show()
                         })
 
         dis add price_feed.textChanges()
@@ -173,13 +176,7 @@ class AddFeedActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDate
 
     override fun onDateSet(p0: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         val sDate = "$dayOfMonth/${month + 1}/$year"
-        p0?.let {
-            when (it.tag) {
-                "date_feed" -> {
-                    date_feed.setText(sDate)
-                }
-            }
-        }
+        date_feed.setText(sDate)
 
     }
 

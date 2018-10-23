@@ -36,7 +36,7 @@ class AddMilkActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDate
         setContentView(R.layout.activity_add_milk)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setTitle("Agregar Produccion de leche")
+        supportActionBar?.title = "Agregar Produccion de leche"
         datePicker = DatePickerDialog(this, AddMilkBvnActivity@ this,
                 Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH),
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
