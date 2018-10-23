@@ -182,7 +182,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                 if (it != "") exp = exp andEx ("grupo" likeEx "$it%" orEx ("tipoAlimento" likeEx "$it%"))
                 db.listObsByExp(exp, RegistroAlimentacion::class)
             }
-            .applySchedulers()
+            .applySchedulers() 
 
     fun getMeadows(idFinca: String): Single<Pair<List<Pradera>, Long>> =
             db.listByExp("idFinca" equalEx idFinca, Pradera::class)

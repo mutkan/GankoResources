@@ -27,7 +27,7 @@ android {
     dataBinding {
         enabled = true
     }
-
+    buildToolsVersion '28.0.3'
 }
 
 def support_version = "27.1.1"
@@ -99,7 +99,6 @@ dependencies {
     //pdfFile
     implementation 'com.itextpdf:itextg:5.5.10'
     implementation 'com.github.barteksc:android-pdf-viewer:2.8.1'
-
     implementation 'com.borax12.materialdaterangepicker:library:1.9'
 
     //Work Manager

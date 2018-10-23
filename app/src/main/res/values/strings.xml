@@ -378,6 +378,7 @@
     <string name="show_average">Visualizar promedio</string>
     <string name="average_of_month">Promedio del mes</string>
     <string name="average_type" >Seleccionar promedio</string>
+    <string name="addFeed">Agregar Alimentacion</string>
 
     <string-array name="milk_production">
         <item>Litros vendidos</item>
