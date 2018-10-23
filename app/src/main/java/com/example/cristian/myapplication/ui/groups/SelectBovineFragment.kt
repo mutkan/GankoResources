@@ -67,6 +67,7 @@ class SelectBovineFragment : Fragment(), Injectable {
 
         dis add Observable.just(0)
                 .mergeWith(adapter.nextPage)
+                .distinctUntilChanged()
                 .flatMapSingle { viewModel.listBovines(it, filter, query) }
                 .subscribe { bovines -> adapter.addData(bovines)}
 

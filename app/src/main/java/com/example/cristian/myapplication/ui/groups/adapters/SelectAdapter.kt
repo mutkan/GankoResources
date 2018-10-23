@@ -29,7 +29,7 @@ class SelectAdapter @Inject constructor() : RecyclerView.Adapter<SelectAdapter.S
     override fun onBindViewHolder(holder: SelectHolder, position: Int) {
         holder.bind(data[position], this, selecteds[data[position]._id] ?: false)
         if(position  == data.lastIndex && data.size % 30 == 0){
-            nextPage.onNext((data.size / 30) + 1)
+            nextPage.onNext(data.size / 30)
         }
     }
 
