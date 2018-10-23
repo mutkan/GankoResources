@@ -151,7 +151,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
             .flatMapSingle {
                 var exp = "idFinca" equalEx farmID
                 if (it != "") exp = exp andEx ("tipo" likeEx "$it%" orEx ("nombre" likeEx "$it%"))
-                db.listByExp(exp, Sanidad::class, orderBy = arrayOf("fecha" orderEx DESCENDING))
+                db.listByExp(exp, Sanidad::class, orderBy = arrayOf("fecha" orderEx DESCENDING)).applySchedulers()
             }
             .applySchedulers()
 
