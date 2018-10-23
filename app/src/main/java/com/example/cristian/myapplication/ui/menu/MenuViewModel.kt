@@ -136,7 +136,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
             .flatMapSingle {
                 var exp = "idFarm" equalEx idFinca
                 if (it != "") exp = exp andEx ("idStraw" likeEx "$it%" orEx ("breed" likeEx "$it%") orEx ("layette" likeEx "$it%"))
-                db.listByExp(exp, Straw::class)
+                db.listByExp(exp, Straw::class, orderBy = arrayOf("fecha" orderEx DESCENDING))
             }
             .applySchedulers()
 

@@ -379,6 +379,8 @@
     <string name="average_of_month">Promedio del mes</string>
     <string name="average_type" >Seleccionar promedio</string>
     <string name="addFeed">Agregar Alimentacion</string>
+    <string name="no_observations">Sin observaciones</string>
+    <string name="straw_exist">Id de Pajilla ya existe</string>
 
     <string-array name="milk_production">
         <item>Litros vendidos</item>

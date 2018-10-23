@@ -16,9 +16,10 @@ import com.jakewharton.rxbinding2.view.clicks
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_add_straw.*
 import org.jetbrains.anko.toast
+import java.util.*
 import javax.inject.Inject
 
-class StrawAddActivity : AppCompatActivity(), Injectable{
+class StrawAddActivity : AppCompatActivity(), Injectable {
 
 
     @Inject
@@ -49,31 +50,26 @@ class StrawAddActivity : AppCompatActivity(), Injectable{
         dis add btnAdd.clicks()
                 .flatMap {
                     validateForm(R.string.empty_fields, strawId.text.toString(), layette.text.toString(),
-                           bull.text.toString(), origin.text.toString(), value.text.toString(), breed.text.toString())
+                            bull.text.toString(), origin.text.toString(), value.text.toString(), breed.text.toString())
                 }
                 .flatMapSingle {
                     viewModel.addStraw(
-                            Straw(null, null, null, farmId, it[0], it[1], it[5], spinner.selectedItem.toString(), it[2], it[3], it[4], Straw.UNUSED_STRAW))
-                }.subscribeBy(
-                        onComplete = {
-                            toast("Completo")
-                        },
-                        onNext = {
-                            toast("Entrada agregada exitosamente $it")
-                            finish()
+                            Straw(null, null, null, farmId, Date(), it[0], it[1], it[5], spinner.selectedItem.toString(), it[2], it[3], it[4], Straw.UNUSED_STRAW))
+                }
+                .doOnError { toast(R.string.straw_exist) }
+                .retry()
+                .subscribe {
+                    toast("Pajilla agregada exitosamente")
+                    finish()
+                }
 
-                        },
-                        onError = {
-                            toast(it.message!!)
-                        }
-                )
-
-        dis add  btnCancelFeed.clicks()
-                .subscribe{
+        dis add btnCancelFeed.clicks()
+                .subscribe {
                     finish()
                 }
 
     }
+
     companion object {
         val EXTRA_ID: String = "idBovino"
     }
