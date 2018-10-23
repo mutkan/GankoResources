@@ -816,6 +816,31 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                         listOf(bovino.codigo!!, bovino.nombre!!, it.litros!!.toString(), it.fecha!!.toStringFormat())
                     }.toList().applySchedulers()
 
+    fun reporteConsolidado(mes:Int,anio:Int):Single<List<List<String>>> =
+            db.listByExp("idFarm" equalEx  farmID!! ,SalidaLeche::class)
+                    .flatMapObservable { it.toObservable() }
+                    .filter {
+                        val cal = Calendar.getInstance()
+                        cal.timeInMillis = it.fecha!!.time
+                        val month = cal.get(Calendar.MONTH)
+                        val year = cal.get(Calendar.YEAR)
+                        month == mes && year == anio
+                    }.map {
+                        listOf(it.type!!,it.fecha!!.toStringFormat(),it.operacion!!,it.valorLitro.toString()!!,it.numeroLitros!!.toString(),it.totalLitros.toString())
+                    }.toList().applySchedulers()
+
+
+    /* Observable<List<SalidaLeche>> = SearchBarActivity.query
+            .startWith("")
+            .flatMapSingle {
+                var exp = "idFarm" equalEx idFinca
+                if (it != "") exp = exp andEx ("operacion" likeEx "it%")
+                db.listByExp(exp, SalidaLeche::class)
+            }
+            .applySchedulers()*/
+
+
+    //Reportes reproductivo
 
     fun getUltimoParto(idBovino: String): Single<List<Parto>> =
             db.listByExp("bovino" equalEx idBovino, Parto::class)
@@ -899,8 +924,9 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                                 }
                     }.toList().applySchedulers()
 
+
     fun reporteSanidad(mes: Int, anio: Int): Single<List<List<String>>> =
-            db.listByExp("finca" equalEx farmID, Sanidad::class
+            db.listByExp("idFinca" equalEx farmID, Sanidad::class
                     , orderBy = arrayOf("fecha" orderEx DESCENDING))
                     .flatMapObservable {
                         it.toObservable().filter {
