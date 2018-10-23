@@ -11,6 +11,7 @@ import android.util.Log
 import android.widget.DatePicker
 import android.widget.Toast
 import com.example.cristian.myapplication.R
+import com.example.cristian.myapplication.R.id.dateAddHealth
 import com.example.cristian.myapplication.data.models.Group
 import com.example.cristian.myapplication.data.models.ProxStates
 import com.example.cristian.myapplication.data.models.ProxStates.Companion.APPLIED
@@ -187,8 +188,7 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                     .flatMap {
 
                         validateForm(R.string.empty_fields, dosis.text.toString(), frequency.text(),
-                                product_value.text.toString(), attention_value.text.toString(), applicacion_number.text.toString(),
-                                observations_health.text.toString())
+                                product_value.text.toString(), attention_value.text.toString(), applicacion_number.text.toString())
                     }
 
                     .flatMapSingle {
@@ -212,7 +212,7 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                                         if (binding.otherSelect) other.text() else null, diagnosis.text(), treatment_health.text(),
                                         product_health.text(), dosis.text(), null, applicacion_number.text().toInt(),
                                         previousHealth.aplicacion!!.plus(1),
-                                        observations_health.text(), product_value.text().toInt(), attention_value.text().toInt(),
+                                        if(observations_health.text()!= "") observations_health.text() else getString(R.string.no_observations), product_value.text().toInt(), attention_value.text().toInt(),
                                         group?.toGrupo(), bovines!!, unidadTiempo, noBovines!!, ProxStates.NOT_APPLIED, previousHealth.idAplicacionUno))
                                 .map { it to notifyTime }
 
@@ -241,8 +241,7 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                     .flatMap {
 
                         validateForm(R.string.empty_fields, dosis.text.toString(), frequency.text(),
-                                product_value.text.toString(), attention_value.text.toString(), applicacion_number.text.toString(),
-                                observations_health.text.toString())
+                                product_value.text.toString(), attention_value.text.toString(), applicacion_number.text.toString())
                     }
 
                     .flatMapSingle {
@@ -265,7 +264,7 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                                         frequency.text().toInt(), spinnerEvent.selectedItem.toString(),
                                         if (binding.otherSelect) other.text() else null, diagnosis.text(), treatment_health.text(),
                                         product_health.text(), dosis.text(), null, applicacion_number.text().toInt(), 1,
-                                        observations_health.text(), product_value.text().toInt(), attention_value.text().toInt(),
+                                        if(observations_health.text()!= "") observations_health.text() else getString(R.string.no_observations), product_value.text().toInt(), attention_value.text().toInt(),
                                         group?.toGrupo(), bovines!!, unidadTiempo, emptyList())
                         ).map { it to notifyTime }
 

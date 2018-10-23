@@ -17,29 +17,79 @@
 
 
         <TextView
-            android:id="@+id/raceText"
+            android:id="@+id/raceLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
-            android:text="@{straw.breed}"
+            android:text="@string/race"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="@string/race" />
 
         <TextView
-            android:id="@+id/layetteText"
+            android:id="@+id/raceText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:text="@{straw.breed}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/menu_button_light"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/raceLabel"
+            tools:text="Holstein" />
+
+        <TextView
+            android:id="@+id/layetteLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="16dp"
+            android:text="@string/layette"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/raceText"
+            tools:text="@string/layette" />
+
+
+        <TextView
+            android:id="@+id/layetteText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
             android:text="@{straw.layette}"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@color/menu_button_light"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/raceText"
+            app:layout_constraintTop_toBottomOf="@+id/layetteLabel"
             tools:text="Canastilla" />
+
+        <TextView
+            android:id="@+id/idLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ID"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="@color/menu_button_light"
+            app:layout_constraintBottom_toBottomOf="@+id/layetteLabel"
+            app:layout_constraintStart_toStartOf="@+id/textView33"
+            tools:text="ID" />
+
+        <TextView
+            android:id="@+id/idText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@{straw.idStraw}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/menu_button_light"
+            app:layout_constraintStart_toStartOf="@+id/textView33"
+            app:layout_constraintTop_toBottomOf="@+id/idLabel"
+            tools:text="Id" />
+
 
         <TextView
             android:id="@+id/text3477"
