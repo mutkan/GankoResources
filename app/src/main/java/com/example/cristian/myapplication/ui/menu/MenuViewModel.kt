@@ -300,6 +300,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     fun reporteFuturosPartos(mes: Int, anio: Int): Single<List<List<String>>> =
             db.listByExp("finca" equalEx farmID
                     andEx ("servicios[0].finalizado" equalEx false)
+                    andEx (Expression.property("servicios[0].posFechaParto").notNullOrMissing())
                     , Bovino::class)
                     .flatMapObservable { it.toObservable() }
                     .filter {
@@ -333,6 +334,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     fun reporteSecado(mes: Int, anio: Int): Single<List<List<String>>> =
             db.listByExp("finca" equalEx farmID
                     andEx ("servicios[0].finalizado" equalEx false)
+                    andEx (Expression.property("servicios[0].posFechaParto").notNullOrMissing())
                     , Bovino::class)
                     .flatMapObservable { it.toObservable() }
                     .filter {
@@ -369,6 +371,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     fun reportePreparacion(mes: Int, anio: Int): Single<List<List<String>>> =
             db.listByExp("finca" equalEx farmID
                     andEx ("servicios[0].finalizado" equalEx false)
+                    andEx (Expression.property("servicios[0].posFechaParto").notNullOrMissing())
                     , Bovino::class)
                     .flatMapObservable { it.toObservable() }
                     .filter {
