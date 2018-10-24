@@ -50,7 +50,7 @@ class MeadowFragment : Fragment(), Injectable {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        activity!!.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
+        activity!!.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
         gridMeadow.adapter = adapter
         val layout = GridLayoutManager(context, 10)
         gridMeadow.layoutManager = layout

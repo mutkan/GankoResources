@@ -382,6 +382,8 @@
     <string name="no_observations">Sin observaciones</string>
     <string name="straw_exist">Id de Pajilla ya existe</string>
     <string name="id_bovine_exist">Id de bovino ya existe</string>
+    <string name="empty_meadow_text">Pradera vacia</string>
+    <string name="full_meadow_text">Pradera ocupada</string>
 
     <string-array name="milk_production">
         <item>Litros vendidos</item>
