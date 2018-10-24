@@ -291,7 +291,7 @@ class SelectReportFragment : Fragment(), Injectable, com.borax12.materialdateran
                     onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
             )
             //ALIMENTACION
-            "Alimentacion" -> {
+            "Alimentación" -> {
                 var alimentacion: List<List<String>> = emptyList()
                 if (monthlyRadioButton.isChecked) viewmodel.reporteAlimentacion( month, year).subscribeBy(
                         onSuccess = {
