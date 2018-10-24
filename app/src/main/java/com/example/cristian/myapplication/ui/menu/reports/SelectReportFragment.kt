@@ -10,6 +10,7 @@ import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -234,33 +235,23 @@ class SelectReportFragment : Fragment(), Injectable, com.borax12.materialdateran
             )
 
             //LECHE
-            "Consolidado de leche"-> viewmodel.reporteConsolidado(month,year).subscribeBy(
-                    onSuccess = {pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it)}
-            )
+            "Consolidado de leche"-> {
 
+                if (monthlyRadioButton.isChecked) viewmodel.reporteConsolidado(month, year).subscribeBy(
+                        onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                )
+                else viewmodel.reporteConsolidado(from,to).subscribeBy(
+                        onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                )
+            }
 
             "Reporte de leche" -> {
                 var leche: List<List<String>> = emptyList()
-                if (monthlyRadioButton.isChecked) viewmodel.getBovine(idFinca).subscribeBy(
-                        onSuccess = {
-                            for (bovino in it) {
-                                viewmodel.reportesLeche(bovino, month, year).subscribeBy(
-                                        onSuccess = {
-                                            leche = leche.plus(it)
-                                        })
-                            }
-                            pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, leche)
-                        })
-                else viewmodel.getBovine(idFinca).subscribeBy {
-                    for (bovino in it) {
-                        viewmodel.reportesLeche(bovino, from, to).subscribeBy(
-                                onSuccess = {
-                                    leche = leche.plus(it)
-                                })
-                    }
-
-                    pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, leche)
-                }
+                if (monthlyRadioButton.isChecked) viewmodel.reportesLeche(month,year).subscribeBy(
+                    onSuccess = {pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it)})
+                else viewmodel.reportesLeche(from,to).subscribeBy(
+                    onSuccess = {pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it)}
+                )
             }
             //CEBA
             "Destetos" -> if (monthlyRadioButton.isChecked) viewmodel.reportesDestete(month, year).subscribeBy(
@@ -302,25 +293,19 @@ class SelectReportFragment : Fragment(), Injectable, com.borax12.materialdateran
             //ALIMENTACION
             "Alimentacion" -> {
                 var alimentacion: List<List<String>> = emptyList()
-                if (monthlyRadioButton.isChecked) viewmodel.getBovine(idFinca).subscribeBy(
+                if (monthlyRadioButton.isChecked) viewmodel.reporteAlimentacion( month, year).subscribeBy(
                         onSuccess = {
-                            for (bovino in it) {
-                                viewmodel.reporteAlimentacion(bovino, month, year).subscribeBy(
-                                        onSuccess = {
-                                            alimentacion = alimentacion.plus(it)
-                                        })
-                            }
-                            pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, alimentacion)
+                            pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it)
+
                         })
-                else viewmodel.getBovine(idFinca).subscribeBy {
-                    for (bovino in it) {
-                        viewmodel.reporteGananciaPeso(bovino, from, to).subscribeBy(
-                                onSuccess = {
-                                    alimentacion = alimentacion.plus(it)
-                                    pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, alimentacion)
-                                })
-                    }
-                }
+
+
+
+                else viewmodel.reporteAlimentacion( from, to).subscribeBy(
+                        onSuccess = {
+                            pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it)
+
+                        })
             }
 
             //ENTRADAS
@@ -436,30 +421,27 @@ class SelectReportFragment : Fragment(), Injectable, com.borax12.materialdateran
             )
 
             //LECHE
-            //"Consolidado de leche"-> listOf(listOf())
+            "Consolidado de leche"-> {
+                if (monthlyRadioButton.isChecked) viewmodel.reporteConsolidado(month, year).subscribeBy(
+                        onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                )
+                else viewmodel.reporteConsolidado(from,to).subscribeBy(
+                        onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                )
+            }
+
             "Reporte de leche" -> {
                 var leche: List<List<String>> = emptyList()
-                if (monthlyRadioButton.isChecked) viewmodel.getBovine(idFinca).subscribeBy(
+                if (monthlyRadioButton.isChecked) viewmodel.reportesLeche(month,year).subscribeBy(
                         onSuccess = {
-                            for (bovino in it) {
-                                viewmodel.reportesLeche(bovino, month, year).subscribeBy(
-                                        onSuccess = {
-                                            leche = leche.plus(it)
-                                        })
-                            }
-                            excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, leche)
-                        })
-                else viewmodel.getBovine(idFinca).subscribeBy {
-                    for (bovino in it) {
-                        viewmodel.reportesLeche(bovino, from, to).subscribeBy(
-                                onSuccess = {
-                                    leche = leche.plus(it)
-                                })
-                    }
+                            excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it)})
+                else viewmodel.reportesLeche(from,to).subscribeBy(
+                        onSuccess = {excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it)}
+                )
 
-                    excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, leche)
-                }
-            }
+                        }
+
+
             //CEBA
             "Destetos" -> if (monthlyRadioButton.isChecked) viewmodel.reportesDestete(month, year).subscribeBy(
                     onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) })
@@ -504,24 +486,19 @@ class SelectReportFragment : Fragment(), Injectable, com.borax12.materialdateran
             //ALIMENTACION
             "Alimentación" -> {
                 var alimentacion: List<List<String>> = emptyList()
-                if (monthlyRadioButton.isChecked) viewmodel.getBovine(idFinca).subscribeBy {
-                    for (bovino in it) {
-                        viewmodel.reporteAlimentacion(bovino, month, year).subscribeBy(
+                if (monthlyRadioButton.isChecked) viewmodel.reporteAlimentacion( month, year).subscribeBy(
                                 onSuccess = {
-                                    alimentacion = alimentacion.plus(it)
+                                    excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it)
+
                                 })
-                    }
-                    excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, alimentacion)
-                }
-                else viewmodel.getBovine(idFinca).subscribeBy {
-                    for (bovino in it) {
-                        viewmodel.reporteGananciaPeso(bovino, from, to).subscribeBy(
-                                onSuccess = {
-                                    alimentacion = alimentacion.plus(it)
-                                    excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, alimentacion)
-                                })
-                    }
-                }
+
+
+
+                else viewmodel.reporteAlimentacion( from, to).subscribeBy(
+                        onSuccess = {
+                            excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it)
+
+                        })
             }
 
             //ENTRADAS
