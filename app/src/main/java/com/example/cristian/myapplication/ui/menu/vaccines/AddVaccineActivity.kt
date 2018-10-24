@@ -62,10 +62,10 @@ class AddVaccineActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
                 calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH))
     }
-    var dosisVacuna: Int = 0
+    var dosisVacuna: Double = 0.0
         set(value) {
             field = value
-            otherDose.visibility = if (value == -1) View.VISIBLE else View.GONE
+            otherDose.visibility = if (value == -1.0) View.VISIBLE else View.GONE
         }
 
 
@@ -124,7 +124,7 @@ class AddVaccineActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
                 }
                 .flatMapSingle { docId ->
                     setNotification(docId)
-                }
+                }.retry()
                 .subscribeBy(
                         onNext = {
                             finish()
@@ -145,9 +145,9 @@ class AddVaccineActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
                 .subscribeBy(
                         onNext = {
                             dosisVacuna = when (it) {
-                                R.id.fiveMl -> 5
-                                R.id.twoMl -> 2
-                                else -> -1
+                                R.id.fiveMl -> 5.0
+                                R.id.twoMl -> 2.0
+                                else -> -1.0
                             }
                         }
                 )
@@ -194,9 +194,8 @@ class AddVaccineActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
             }
             val nombreVacuna = otherVaccine.text()
             val dosis = when {
-                dosisVacuna != -1 -> dosisVacuna
-                otherDose.text() != "" -> otherDose.text().toInt()
-                else -> null
+                dosisVacuna != -1.0 -> dosisVacuna
+                else -> otherDose.text().toDouble()
             }
             e.onSuccess(NotificationWork.notify(TYPE_VACCINES, "Recordatorio Vacunas", "Aplicación de vacuna contra $nombreVacuna, $dosis ml", docId,
                     notifyTime, TimeUnit.HOURS))
@@ -239,7 +238,13 @@ class AddVaccineActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
         val valor = vaccineValue.text()
         val nombreVacuna = otherVaccine.text()
         val proximaAplicacion = nextApplicationVaccine.text()
-        return if (revaccinationRequired.isChecked) validateForm(R.string.empty_fields, fecha, valor, nombreVacuna, proximaAplicacion) else validateForm(R.string.empty_fields, fecha, valor, nombreVacuna)
+        val otraDosis = otherDose.text()
+        return when {
+            revaccinationRequired.isChecked && dosisVacuna != -1.0 -> validateForm(R.string.empty_fields, fecha, valor, nombreVacuna, proximaAplicacion)
+            revaccinationRequired.isChecked && dosisVacuna == -1.0 -> validateForm(R.string.empty_fields, fecha, valor, nombreVacuna, proximaAplicacion, otraDosis)
+            !revaccinationRequired.isChecked && dosisVacuna == -1.0 -> validateForm(R.string.empty_fields, fecha, valor, nombreVacuna,otraDosis)
+            else -> validateForm(R.string.empty_fields, fecha, valor, nombreVacuna)
+        }
     }
 
     private fun createVaccine(fields: List<String>): RegistroVacuna {
@@ -248,9 +253,8 @@ class AddVaccineActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
         val idFinca = viewModel.getFarmId()
         val nombreVacuna = fields[2]
         val dosis = when {
-            dosisVacuna != -1 -> dosisVacuna
-            otherDose.text() != "" -> otherDose.text().toInt()
-            else -> null
+            dosisVacuna != -1.0 -> dosisVacuna
+            else -> fields.last().toDouble()
         }
         val proximaAplicacion = if (revaccinationRequired.isChecked) fields[3].toInt() else null
         val unidadTiempo = timeUnitsSpinner.selectedItem.toString()
@@ -271,10 +275,10 @@ class AddVaccineActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
         otherVaccine.setText(previousVaccine.nombre)
         nextApplicationVaccine.setText(previousVaccine.frecuencia.toString())
         revaccinationRequired.isChecked = previousVaccine.fechaProxima != null
-        if (previousVaccine.dosisMl != null && previousVaccine.dosisMl != 5 && previousVaccine.dosisMl != 2) otherDose.setText(previousVaccine.dosisMl.toString())
+        if (previousVaccine.dosisMl != null && previousVaccine.dosisMl != 5.0 && previousVaccine.dosisMl != 2.0) otherDose.setText(previousVaccine.dosisMl.toString())
         val idRadioDose = when (previousVaccine.dosisMl) {
-            5 -> R.id.fiveMl
-            2 -> R.id.twoMl
+            5.0 -> R.id.fiveMl
+            2.0 -> R.id.twoMl
             else -> R.id.otherDoseRadio
         }
         vaccineDose.check(idRadioDose)
