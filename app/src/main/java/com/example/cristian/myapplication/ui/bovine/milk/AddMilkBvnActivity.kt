@@ -41,6 +41,8 @@ class AddMilkBvnActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListen
         onDateSet(null,Calendar.getInstance().get(Calendar.YEAR),
                 Calendar.getInstance().get(Calendar.MONTH),
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
+
+        datePicker.datePicker.maxDate = System.currentTimeMillis()
     }
 
     override fun onResume() {
