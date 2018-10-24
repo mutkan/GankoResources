@@ -138,7 +138,10 @@ class AddBovineActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
                                 bovineWeanedDate.text.toString().toDate()
                             } else null,
                             null, null, null,listOf(), listOf(), listOf()))
-                }.subscribeBy(
+                }
+                .doOnError { toast(R.string.id_bovine_exist) }
+                .retry()
+                .subscribeBy(
                         onNext = {
                             toast("Bovino agregado exitosamente")
                             finish()

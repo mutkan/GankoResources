@@ -234,7 +234,11 @@ class SelectReportFragment : Fragment(), Injectable, com.borax12.materialdateran
             )
 
             //LECHE
-            //"Consolidado de leche"-> listOf(listOf())
+            "Consolidado de leche"-> viewmodel.reporteConsolidado(month,year).subscribeBy(
+                    onSuccess = {pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it)}
+            )
+
+
             "Reporte de leche" -> {
                 var leche: List<List<String>> = emptyList()
                 if (monthlyRadioButton.isChecked) viewmodel.getBovine(idFinca).subscribeBy(
@@ -471,20 +475,24 @@ class SelectReportFragment : Fragment(), Injectable, com.borax12.materialdateran
                                         onSuccess = {
                                             gdp = gdp.plus(it)
                                             listareportes = gdp
-                                            excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, listareportes)
                                         })
                             }
-                        })
-                else viewmodel.getBovine(idFinca).subscribeBy {
-                    for (bovino in it) {
-                        viewmodel.reporteGananciaPeso(bovino, from, to).subscribeBy(
-                                onSuccess = {
-                                    gdp = gdp.plus(it)
-                                    listareportes = gdp
-                                    excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, listareportes)
-                                })
-                    }
-                }
+                            excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, listareportes)
+
+                        }
+                )
+                else viewmodel.getBovine(idFinca).subscribeBy(
+                        onSuccess = {
+                            for (bovino in it) {
+                                viewmodel.reporteGananciaPeso(bovino, from, to).subscribeBy(
+                                        onSuccess = {
+                                            gdp = gdp.plus(it)
+                                            listareportes = gdp
+                                        })
+                            }
+                            excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, listareportes)
+                        }
+                )
             }
             //PRADERAS
             "Praderas" -> viewmodel.reporteGetPraderas().subscribeBy(
@@ -494,18 +502,17 @@ class SelectReportFragment : Fragment(), Injectable, com.borax12.materialdateran
                     onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
             )
             //ALIMENTACION
-            "Alimentacion" -> {
+            "Alimentación" -> {
                 var alimentacion: List<List<String>> = emptyList()
-                if (monthlyRadioButton.isChecked) viewmodel.getBovine(idFinca).subscribeBy(
-                        onSuccess = {
-                            for (bovino in it) {
-                                viewmodel.reporteAlimentacion(bovino, month, year).subscribeBy(
-                                        onSuccess = {
-                                            alimentacion = alimentacion.plus(it)
-                                        })
-                            }
-                            excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, alimentacion)
-                        })
+                if (monthlyRadioButton.isChecked) viewmodel.getBovine(idFinca).subscribeBy {
+                    for (bovino in it) {
+                        viewmodel.reporteAlimentacion(bovino, month, year).subscribeBy(
+                                onSuccess = {
+                                    alimentacion = alimentacion.plus(it)
+                                })
+                    }
+                    excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, alimentacion)
+                }
                 else viewmodel.getBovine(idFinca).subscribeBy {
                     for (bovino in it) {
                         viewmodel.reporteGananciaPeso(bovino, from, to).subscribeBy(

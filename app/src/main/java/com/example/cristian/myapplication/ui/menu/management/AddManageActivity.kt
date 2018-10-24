@@ -86,7 +86,7 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
             dis add btnSaveManage.clicks()
                     .flatMap {
                         validateForm(R.string.empty_fields, product.text.toString(), frecuency.text.toString(), productPrice.text.toString(),
-                                observations.text.toString(), assistancePrice.text.toString())
+                                assistancePrice.text.toString())
                     }
                     .flatMapSingle {
                         val manage = createManage(it)
@@ -107,7 +107,7 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
             dis add btnSaveManage.clicks()
                     .flatMap {
                         validateForm(R.string.empty_fields, product.text.toString(), frecuency.text.toString(), productPrice.text.toString(),
-                                observations.text.toString(), assistancePrice.text.toString())
+                                assistancePrice.text.toString())
                     }
                     .flatMapSingle {
                         val manage = createManage(it)
@@ -180,8 +180,8 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
         val frecuencia = fields[1].toInt()
         val unidadTiempo = spinnerFrecuency.selectedItem.toString()
         val precioProducto = fields[2].toInt()
-        val observaciones = fields[3]
-        val precioAsistencia = fields[4].toInt()
+        val observaciones: String? = observations.text.toString()
+        val precioAsistencia = fields[3].toInt()
         val fechaEvento = eventDate.text.toString().toDate()
         val evento = spinnerEventType.selectedItem.toString()
         var otro: String? = null
