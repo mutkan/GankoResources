@@ -24,7 +24,7 @@
     <string name="farm_name">Nombre de la Finca</string>
     <string name="change_farm">Cambiar Finca</string>
     <string name="bovines">BOVINOS</string>
-    <string name="milk">VENTA DE LECHE</string>
+    <string name="milk">PRODUCCION DE LECHE</string>
     <string name="reproductive_uppercase">REPRODUCTIVO</string>
     <string name="meat_uppercase">CEBA</string>
     <string name="feeding">ALIMENTACIÓN</string>
@@ -382,6 +382,8 @@
     <string name="no_observations">Sin observaciones</string>
     <string name="straw_exist">Id de Pajilla ya existe</string>
     <string name="id_bovine_exist">Id de bovino ya existe</string>
+    <string name="empty_meadow_text">Pradera vacia</string>
+    <string name="full_meadow_text">Pradera ocupada</string>
 
     <string-array name="milk_production">
         <item>Litros vendidos</item>

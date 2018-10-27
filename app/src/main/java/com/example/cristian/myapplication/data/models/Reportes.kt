@@ -73,8 +73,8 @@ data class ReporteConsolidadoLeche(
 
 data class ReporteLeche(
         val codigo: String,
-        val nombre: String?,
-        val litros: Int?,
+        val nombre: String,
+        val litros: Int,
         val fecha_produccion: Date
 )
 
@@ -265,7 +265,7 @@ fun getHeader(tipoReporte:String):List<String> =
          "Resumen reproductivo"-> listOf()
          //LECHE
          "Consolidado de leche"-> listOf("Tipo","Fecha","Operacion","Valor litros","Numero Litros","Total Litros")
-         "Reporte de leche"-> listOf("Codigo","Nombre","Numero de litros","Fecha de producción")
+         "Reporte de leche"-> listOf("Codigo del bovino","Numero de litros","Fecha de producción","Jornada")
          //CEBA
          "Destetos"-> listOf("Codigo","Nombre","Fecha nacimiento","Fecha destete","Codigo madre","Nombre madre")
          "Ganancia diaria de peso"-> listOf("Codigo","Nombre","Fecha nacimiento","GDP","Proposito")
@@ -273,7 +273,7 @@ fun getHeader(tipoReporte:String):List<String> =
          "Praderas"-> listOf("Numero","Tipo gaminea","Fecha fertilizacion","Producto","Cantidad")
          "Ocupación de praderas"-> listOf("Numero","Fecha ocupacion","Fecha descanso","Fecha fertilización")
          //ALIMENTACION
-         "Alimentacion"-> listOf("Codigo","Nombre","Racion","Producto","Valor total")
+         "Alimentación"-> listOf("Codigos","Tipo de alimento","Ración","Precio total")
          "Suplementos usados"-> listOf("Nombre","Total usado","Valor total")
          //MOVIMIENTOS
          "Animales en pradera"-> listOf("Lote","Codigo","Nombre","Fecha ingreso","Fecha salida")
