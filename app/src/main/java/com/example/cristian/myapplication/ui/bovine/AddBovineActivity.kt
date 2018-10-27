@@ -124,7 +124,7 @@ class AddBovineActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
                         purpose.checkedRadioButtonId == R.id.meat -> "Ceba"
                         else -> "Ambos"
                     }
-                    viewModel.addBovine(Bovino(null, null, null, "", bovineIdentificationNumber.text(), foto,
+                    val bovino = Bovino(null, null, null, "", bovineIdentificationNumber.text(), foto?.name,
                             bovineName.text(), bovineBirthDate.text.toString().toDate(),
                             if (spinnerOrigin.selectedItem.toString() == "Compra") purchaseDate.text.toString().toDate() else null
                             , sex, purpose,
@@ -137,7 +137,8 @@ class AddBovineActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
                             if (check_weaned.isChecked) {
                                 bovineWeanedDate.text.toString().toDate()
                             } else null,
-                            null, null, null,listOf(), listOf(), listOf()))
+                            null, null, null, listOf(), listOf(), listOf())
+                    if (foto != null) viewModel.addBovineWithImage(bovino, foto!!.name, foto!!) else viewModel.addBovine(bovino)
                 }
                 .doOnError { toast(R.string.id_bovine_exist) }
                 .retry()

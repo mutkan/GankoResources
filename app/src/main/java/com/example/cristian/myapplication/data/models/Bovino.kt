@@ -12,7 +12,7 @@ class Bovino(
         var type: String? = null,
         var tipo: String? = null,
         var codigo: String? = null,
-        var imagen: File? = null,
+        var imagen: String? = null,
         var nombre: String? = null,
         var fechaNacimiento: Date? = null,
         var fechaIngreso: Date? = null,
