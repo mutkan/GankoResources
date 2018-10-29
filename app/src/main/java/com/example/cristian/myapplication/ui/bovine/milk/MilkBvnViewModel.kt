@@ -2,6 +2,7 @@ package com.example.cristian.myapplication.ui.bovine.milk
 
 import android.arch.lifecycle.ViewModel
 import com.example.cristian.myapplication.data.db.CouchRx
+import com.example.cristian.myapplication.data.models.Bovino
 import com.example.cristian.myapplication.data.models.Produccion
 import com.example.cristian.myapplication.data.preferences.UserSession
 import com.example.cristian.myapplication.util.applySchedulers
@@ -26,9 +27,9 @@ class MilkBvnViewModel @Inject constructor(private val db: CouchRx, private val 
         produccion.idFinca = idFinca
         return db.insert(produccion)
                 .applySchedulers()
-
     }
 
+    fun getBovineById(idBovino: String) = db.oneById(idBovino, Bovino::class).applySchedulers()
 
 }
 

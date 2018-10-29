@@ -7,6 +7,8 @@
     android:layout_height="match_parent"
     tools:context=".ui.menu.meadow.MeadowFragment">
 
+
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/gridMeadow"
         android:layout_width="wrap_content"
@@ -16,6 +18,50 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/template_meadow" />
+
+    <FrameLayout
+        android:id="@+id/frameLayout9"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/empty_meadow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/textView63"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/empty_meadow_text"
+        app:layout_constraintBottom_toBottomOf="@+id/frameLayout9"
+        app:layout_constraintStart_toEndOf="@+id/frameLayout9"
+        app:layout_constraintTop_toTopOf="@+id/frameLayout9" />
+
+    <FrameLayout
+        android:id="@+id/frameLayout10"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="16dp"
+        android:background="@color/full_meadow"
+        app:layout_constraintBottom_toBottomOf="@+id/frameLayout9"
+        app:layout_constraintStart_toEndOf="@+id/textView63"
+        app:layout_constraintTop_toTopOf="@+id/frameLayout9">
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/textView130"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/full_meadow_text"
+        app:layout_constraintBottom_toBottomOf="@+id/frameLayout10"
+        app:layout_constraintStart_toEndOf="@+id/frameLayout10"
+        app:layout_constraintTop_toTopOf="@+id/frameLayout10" />
 
 
 </android.support.constraint.ConstraintLayout>

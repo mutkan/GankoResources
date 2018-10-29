@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModelProvider
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.widget.Toolbar
 import com.example.cristian.myapplication.R
 import com.example.cristian.myapplication.data.models.Bovino
@@ -46,14 +47,19 @@ class DetailBovineActivity : AppCompatActivity(), Injectable {
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back_white)
         binding.bovine = bovine
         binding.sex = bovine.genero == "Hembra"
-        if (bovine.imagen != null) {
-            Picasso.get().load(bovine.imagen!!)
-                    .into(banner)
-        }
+        Log.d("BOVINO", bovine.imagen)
+
     }
 
     override fun onResume() {
         super.onResume()
+
+        bovine.imagen?.let { imageName ->
+            dis add viewModel.getImage(bovine._id!!, imageName).subscribe { file ->
+                Picasso.get().load(file)
+                        .into(banner)
+            }
+        }
 
         dis add btnAddMilkProfileBovine.clicks()
                 .subscribe { startActivity<AddMilkBvnActivity>(EXTRA_ID to bovine._id) }

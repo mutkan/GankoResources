@@ -293,6 +293,36 @@ class CouchRx @Inject constructor(private val db: Database
                 }
             }
 
+    /*
+    private fun putBlobAny(id: String, name: String, contentType: String, data: Any): Single<Pair<String, String>> =
+            Single.create {
+                try {
+
+                    val document = db.getDocument(id).toMutable()
+                    val files: MutableDictionary = document.getDictionary("files")
+                            ?: MutableDictionary()
+                    val imagenes: MutableArray = document.getArray("imagenes") ?: MutableArray()
+                    val blob = when (data) {
+                        is InputStream -> Blob(contentType, data)
+                        is ByteArray -> Blob(contentType, data)
+                        is URL -> Blob(contentType, data)
+                        else -> null
+                    }
+                    files.setBlob(name, blob)
+                    imagenes.addString(name)
+                    document.setDictionary("files", files)
+                    document.setArray("imagenes", imagenes)
+
+                    db.save(document)
+                    (data as? InputStream)?.close()
+                    it.onSuccess(id to name)
+                } catch (e: Exception) {
+                    it.onError(e)
+                }
+            }
+
+     */
+
 
     private fun objectToDocument(obj: Any, id: String? = null): MutableDocument {
         val map = mapper.convertValue(obj, Map::class.java) as MutableMap<String, Any>

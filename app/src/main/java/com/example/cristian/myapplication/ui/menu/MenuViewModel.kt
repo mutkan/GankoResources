@@ -300,6 +300,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     fun reporteFuturosPartos(mes: Int, anio: Int): Single<List<List<String>>> =
             db.listByExp("finca" equalEx farmID
                     andEx ("servicios[0].finalizado" equalEx false)
+                    andEx (Expression.property("servicios[0].posFechaParto").notNullOrMissing())
                     , Bovino::class)
                     .flatMapObservable { it.toObservable() }
                     .filter {
@@ -333,6 +334,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     fun reporteSecado(mes: Int, anio: Int): Single<List<List<String>>> =
             db.listByExp("finca" equalEx farmID
                     andEx ("servicios[0].finalizado" equalEx false)
+                    andEx (Expression.property("servicios[0].posFechaParto").notNullOrMissing())
                     , Bovino::class)
                     .flatMapObservable { it.toObservable() }
                     .filter {
@@ -369,6 +371,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     fun reportePreparacion(mes: Int, anio: Int): Single<List<List<String>>> =
             db.listByExp("finca" equalEx farmID
                     andEx ("servicios[0].finalizado" equalEx false)
+                    andEx (Expression.property("servicios[0].posFechaParto").notNullOrMissing())
                     , Bovino::class)
                     .flatMapObservable { it.toObservable() }
                     .filter {
@@ -796,25 +799,28 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     //endregion
 
     // region Reportes Leche
-    fun reportesLeche(bovino: Bovino, mes: Int, anio: Int): Single<List<List<String>>> =
-            db.listByExp("bovino" equalEx bovino.codigo!!, Produccion::class)
+
+    fun reportesLeche( mes: Int, anio: Int): Single<List<List<String>>> =
+            db.listByExp("idFinca" equalEx farmID, Produccion::class)
                     .flatMapObservable { it.toObservable() }
                     .filter {
                         val cal = Calendar.getInstance()
                         cal.timeInMillis = it.fecha!!.time
                         val month = cal.get(Calendar.MONTH)
                         val year = cal.get(Calendar.YEAR)
-                        month == mes && year == anio && 1 <= bovino.partos!!
+                        month == mes && year == anio
                     }.map {
-                        listOf(bovino.codigo!!, bovino.nombre!!)
+                        listOf( it.bovino!!, it.litros!!.toString(), it.fecha!!.toStringFormat(),it.jornada!!)
                     }.toList().applySchedulers()
 
-    fun reportesLeche(bovino: Bovino, from: Date, to: Date): Single<List<List<String>>> =
+
+    fun reportesLeche(from: Date, to: Date): Single<List<List<String>>> =
             db.listByExp("idFinca" equalEx farmID!! andEx ("fecha".betweenDates(from, to)), Produccion::class)
                     .flatMapObservable { it.toObservable() }
                     .map {
-                        listOf(bovino.codigo!!, bovino.nombre!!, it.litros!!.toString(), it.fecha!!.toStringFormat())
+                        listOf( it.bovino!!, it.litros!!.toString(), it.fecha!!.toStringFormat(),it.jornada!!)
                     }.toList().applySchedulers()
+
 
     fun reporteConsolidado(mes:Int,anio:Int):Single<List<List<String>>> =
             db.listByExp("idFarm" equalEx  farmID!! ,SalidaLeche::class)
@@ -826,6 +832,13 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                         val year = cal.get(Calendar.YEAR)
                         month == mes && year == anio
                     }.map {
+                        listOf(it.type!!,it.fecha!!.toStringFormat(),it.operacion!!,it.valorLitro.toString()!!,it.numeroLitros!!.toString(),it.totalLitros.toString())
+                    }.toList().applySchedulers()
+
+    fun reporteConsolidado(from:Date,to: Date):Single<List<List<String>>> =
+            db.listByExp("idFarm" equalEx  farmID!! andEx ("fecha".betweenDates(from, to)),SalidaLeche::class)
+                    .flatMapObservable { it.toObservable() }
+                    .map {
                         listOf(it.type!!,it.fecha!!.toStringFormat(),it.operacion!!,it.valorLitro.toString()!!,it.numeroLitros!!.toString(),it.totalLitros.toString())
                     }.toList().applySchedulers()
 
@@ -983,14 +996,19 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     //endregion
 
     //region reporte Alimentacion
-    fun reporteAlimentacion(bovino: Bovino, from: Date, to: Date): Single<List<List<String>>> =
+    fun reporteAlimentacion(from: Date, to: Date): Single<List<List<String>>> =
             db.listByExp("idFinca" equalEx farmID andEx ("fecha".betweenDates(from, to)), RegistroAlimentacion::class)
                     .flatMapObservable { it.toObservable() }
                     .map {
-                        listOf(bovino.codigo!!, bovino.nombre!!, it.valorkg!!.toString(), it.tipoAlimento!!, it.valorTotal!!.toString())
+                        var stringBovines=""
+                        for (bovino in it.bovinos!! ){
+                            stringBovines+= " $bovino"
+                        }
+                        listOf( stringBovines,it.valorkg!!.toString(), it.tipoAlimento!!, it.valorTotal!!.toString())
                     }.toList().applySchedulers()
 
-    fun reporteAlimentacion(bovino: Bovino, mes: Int, anio: Int): Single<List<List<String>>> =
+
+    fun reporteAlimentacion( mes: Int, anio: Int): Single<List<List<String>>> =
             db.listByExp("idFinca" equalEx farmID, RegistroAlimentacion::class)
                     .flatMapObservable { it.toObservable() }
                     .filter {
@@ -1001,7 +1019,11 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                         month == mes && year == anio
                     }
                     .map {
-                        listOf(bovino.codigo!!, bovino.nombre!!, it.valorkg!!.toString(), it.tipoAlimento!!, it.valorTotal!!.toString())
+                        var stringBovines=""
+                        for (bovino in it.bovinos!! ){
+                            stringBovines+= " $bovino"
+                        }
+                        listOf( stringBovines, it.tipoAlimento!!,it.peso!!.toString(), it.valorTotal!!.toString())
                     }.toList().applySchedulers()
     //endregion
 
