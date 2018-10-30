@@ -47,7 +47,7 @@ class DetailBovineActivity : AppCompatActivity(), Injectable {
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back_white)
         binding.bovine = bovine
         binding.sex = bovine.genero == "Hembra"
-        Log.d("BOVINO", bovine.imagen)
+
 
     }
 
