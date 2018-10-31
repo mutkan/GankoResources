@@ -50,7 +50,7 @@ class AddBirthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDat
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_add_birth)
-        title = "Agregar Pato"
+        title = "Agregar Parto"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back_white)
     }
