@@ -7,7 +7,7 @@
     <data>
         <variable
             name="health"
-            type="com.example.cristian.myapplication.data.models.Sanidad"/>
+            type="com.ceotic.ganko.data.models.Sanidad"/>
         <variable
             name="clicHealth"
             type="io.reactivex.subjects.PublishSubject"/>

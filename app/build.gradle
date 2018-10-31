@@ -6,7 +6,7 @@ apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion 27
     defaultConfig {
-        applicationId "com.example.cristian.myapplication"
+        applicationId "com.ceotic.ganko"
         minSdkVersion 21
         targetSdkVersion 27
         versionCode 1

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="aforo"
-            type="com.example.cristian.myapplication.data.models.Aforo"/>
+            type="com.ceotic.ganko.data.models.Aforo"/>
     </data>
 
     <android.support.constraint.ConstraintLayout

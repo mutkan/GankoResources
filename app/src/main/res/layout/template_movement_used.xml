@@ -5,7 +5,7 @@
     <data>
         <variable
             name="meadow"
-            type="com.example.cristian.myapplication.data.models.Pradera"/>
+            type="com.ceotic.ganko.data.models.Pradera"/>
         <variable
             name="onClickMeadow"
             type="io.reactivex.subjects.PublishSubject"/>

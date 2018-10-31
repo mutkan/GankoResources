@@ -8,7 +8,7 @@
 
         <variable
             name="vacuna"
-            type="com.example.cristian.myapplication.data.models.RegistroVacuna" />
+            type="com.ceotic.ganko.data.models.RegistroVacuna" />
         <variable
             name="clickRevaccination"
             type="io.reactivex.subjects.PublishSubject"/>

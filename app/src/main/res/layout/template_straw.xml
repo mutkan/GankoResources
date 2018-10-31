@@ -7,7 +7,7 @@
     <data>
         <variable
             name="straw"
-            type="com.example.cristian.myapplication.data.models.Straw" />
+            type="com.ceotic.ganko.data.models.Straw" />
     </data>
 
     <android.support.constraint.ConstraintLayout

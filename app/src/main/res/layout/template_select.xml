@@ -7,11 +7,11 @@
         <import type="android.view.View"/>
         <variable
             name="bovino"
-            type="com.example.cristian.myapplication.data.models.Bovino"/>
+            type="com.ceotic.ganko.data.models.Bovino"/>
 
         <variable
             name="handler"
-            type="com.example.cristian.myapplication.ui.groups.adapters.SelectAdapter"/>
+            type="com.ceotic.ganko.ui.groups.adapters.SelectAdapter"/>
 
         <variable
             name="selected"

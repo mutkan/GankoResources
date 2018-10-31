@@ -7,7 +7,7 @@
     android:id="@+id/drawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.cristian.myapplication.ui.menu.MenuActivity">
+    tools:context="com.ceotic.ganko.ui.menu.MenuActivity">
 
 
     <android.support.constraint.ConstraintLayout
@@ -43,7 +43,7 @@
 
     <fragment
         android:id="@+id/filterMenu"
-        android:name="com.example.cristian.myapplication.ui.menu.FilterFragment"
+        android:name="com.ceotic.ganko.ui.menu.FilterFragment"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="end" />

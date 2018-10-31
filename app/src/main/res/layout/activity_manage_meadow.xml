@@ -7,7 +7,7 @@
 
         <variable
             name="meadow"
-            type="com.example.cristian.myapplication.data.models.Pradera" />
+            type="com.ceotic.ganko.data.models.Pradera" />
     </data>
 
     <android.support.constraint.ConstraintLayout

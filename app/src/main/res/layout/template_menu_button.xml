@@ -6,7 +6,7 @@
     <data>
         <variable
             name="item"
-            type="com.example.cristian.myapplication.ui.menu.MenuViewModel.MenuItem"/>
+            type="com.ceotic.ganko.ui.menu.MenuViewModel.MenuItem"/>
         <variable
             name="clickMenuItem"
             type="io.reactivex.subjects.PublishSubject"/>
