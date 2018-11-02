@@ -11,8 +11,8 @@ class Pradera(
         var type: String? = null,
         var identificador: Int? = null,
         var idFinca:String? = null,
-        var isEmptyMeadow: Boolean? = null,
-        var isUsedMeadow: Boolean? = null,
+        var emptyMeadow: Boolean? = null,
+        var usedMeadow: Boolean? = null,
         var tamano: Float? = null,
         var tamanoEnHectareas: Boolean? = null,
         var tipoGraminea: String? = null,
@@ -22,7 +22,8 @@ class Pradera(
         var aforo: MutableList<Aforo>? = mutableListOf(),
         var group: String? = null,
         var available: Boolean? = null,
-        var bovinos:List<String>? =  listOf()
+        var bovinos:List<String>? =  listOf(),
+        var orderValue:Int? = null
 ) : Parcelable {
     init {
         type = javaClass.simpleName

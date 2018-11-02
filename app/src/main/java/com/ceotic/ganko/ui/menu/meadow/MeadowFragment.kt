@@ -71,7 +71,7 @@ class MeadowFragment : Fragment(), Injectable {
         dis add adapter.onClickMeadow
                 .subscribeBy {
                     val meadow = it
-                    if (meadow.isUsedMeadow == false) {
+                    if (meadow.usedMeadow == false) {
                         alert {
                             val viewbind = TemplateAddMeadowBinding.inflate(layoutInflater,null,false)
                             viewbind.spnMeadowUnit.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -90,8 +90,8 @@ class MeadowFragment : Fragment(), Injectable {
                             yesButton {
                                 if (viewbind.meadowSize.text() != "") {
                                     ipd.show()
-                                    meadow.isUsedMeadow = true
-                                    meadow.isEmptyMeadow = false
+                                    meadow.usedMeadow = true
+                                    meadow.emptyMeadow = false
                                     meadow.available = true
                                     meadow.fechaSalida = Date()
                                     identificador += 1
@@ -117,8 +117,8 @@ class MeadowFragment : Fragment(), Injectable {
                                 1 -> startActivity<ManageMeadowAlertActivity>(MEADOWID to meadow._id!!)
                                 else -> {
                                     ipd.show()
-                                    meadow.isUsedMeadow = false
-                                    meadow.isEmptyMeadow = true
+                                    meadow.usedMeadow = false
+                                    meadow.emptyMeadow = true
                                     meadow.available = null
                                     identificador -= 1
                                     meadow.identificador = null
@@ -142,10 +142,15 @@ class MeadowFragment : Fragment(), Injectable {
     }
 
     fun createMeadows() {
-        val pradera = Pradera(idFinca = viewModel.getFarmId(), isUsedMeadow = false, isEmptyMeadow = true)
-
-        dis add (0..99).toObservable()
-                .flatMapSingle { viewModel.saveMeadow(pradera) }
+        val listPraderas = mutableListOf<Pradera>()
+        for(i in 0..99){
+            val pradera = Pradera(idFinca = viewModel.getFarmId(), usedMeadow = false, emptyMeadow = true,orderValue = i)
+            listPraderas.add(pradera)
+        }
+        dis add listPraderas.toObservable()
+                .flatMapSingle {
+                    viewModel.saveMeadow(it)
+                }
                 .count()
                 .flatMap { viewModel.getMeadows(viewModel.getFarmId()) }
                 .subscribeBy {
