@@ -1008,7 +1008,9 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     }.toList().applySchedulers()
 
 
-    fun reporteAlimentacion( mes: Int, anio: Int): Single<List<List<String>>> =
+    //fun getBovinos()
+
+    fun reporteAlimentacion( mes: Int, anio: Int):Single<List<RegistroAlimentacion>> =
             db.listByExp("idFinca" equalEx farmID, RegistroAlimentacion::class)
                     .flatMapObservable { it.toObservable() }
                     .filter {
@@ -1017,14 +1019,11 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                         val month = cal.get(Calendar.MONTH)
                         val year = cal.get(Calendar.YEAR)
                         month == mes && year == anio
-                    }
-                    .map {
-                        var stringBovines=""
-                        for (bovino in it.bovinos!! ){
-                            stringBovines+= " $bovino"
-                        }
-                        listOf( stringBovines, it.tipoAlimento!!,it.peso!!.toString(), it.valorTotal!!.toString())
-                    }.toList().applySchedulers()
+                    }.map {
+                        RegistroAlimentacion(tipoAlimento = it.tipoAlimento, peso = it.peso,fecha = it.fecha,
+                                valorkg = it.valorkg,valorTotal = it.valorTotal,bovinos = it.bovinos)
+                    }.toList()
+                    .applySchedulers()
     //endregion
 
     //region Entradas
