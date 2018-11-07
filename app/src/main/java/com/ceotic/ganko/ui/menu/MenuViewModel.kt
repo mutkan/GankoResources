@@ -201,7 +201,6 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     fun saveMeadow(pradera: Pradera): Single<String> =
             db.insert(pradera).applySchedulers()
 
-
     fun updateMeadow(id: String, pradera: Pradera): Single<Unit> =
             db.update(id, pradera).applySchedulers()
 
@@ -1404,7 +1403,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     fun getAllCows(): Single<List<Bovino>> = db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra"), Bovino::class)
             .applySchedulers()
 
-    fun getBovineById(idBovino: String) = db.oneById(idBovino, Bovino::class).applySchedulers()
+    fun getBovineById(idBovino: String) = db.oneById(idBovino,Bovino::class).applySchedulers()
     //region REPORTES MANEJO
 
 /* lateinit var registro: RegistroManejo
