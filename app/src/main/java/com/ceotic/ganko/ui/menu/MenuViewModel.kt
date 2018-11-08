@@ -105,7 +105,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
         return Observables.combineLatest(filter, query)
                 .flatMapSingle {
                     var exp = "finca" equalEx idFinca andEx ("retirado" equalEx false)
-                    if (it.second != "") exp = exp andEx (("nombre" likeEx "${it.second}%") orEx ("codigo" likeEx "${it.second}%"))
+                    if (it.second != "") exp = exp andEx (("nombre" likeEx "%${it.second}%") orEx ("codigo" likeEx "%${it.second}%"))
                     db.listByExp(it.first.makeExp(exp), Bovino::class)
                 }
                 .applySchedulers()
@@ -133,7 +133,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
             .startWith("")
             .flatMapSingle {
                 var exp = "idFarm" equalEx idFinca
-                if (it != "") exp = exp andEx ("idStraw" likeEx "$it%" orEx ("breed" likeEx "$it%") orEx ("layette" likeEx "$it%"))
+                if (it != "") exp = exp andEx ("idStraw" likeEx "%$it%" orEx ("breed" likeEx "%$it%") orEx ("layette" likeEx "%$it%"))
                 db.listByExp(exp, Straw::class, orderBy = arrayOf("fecha" orderEx DESCENDING))
             }
             .applySchedulers()
@@ -148,7 +148,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
             .startWith("")
             .flatMapSingle {
                 var exp = "idFinca" equalEx farmID
-                if (it != "") exp = exp andEx ("tipo" likeEx "$it%" orEx ("nombre" likeEx "$it%"))
+                if (it != "") exp = exp andEx ("evento" likeEx "%$it%" orEx ("diagnostico" likeEx "%$it%"))
                 db.listByExp(exp, Sanidad::class, orderBy = arrayOf("fecha" orderEx DESCENDING)).applySchedulers()
             }
             .applySchedulers()
@@ -168,7 +168,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
             .startWith("")
             .flatMapSingle {
                 var exp = "idFarm" equalEx idFinca
-                if (it != "") exp = exp andEx ("operacion" likeEx "it%")
+                if (it != "") exp = exp andEx ("operacion" likeEx "%$it%")
                 db.listByExp(exp, SalidaLeche::class)
             }
             .applySchedulers()
@@ -177,7 +177,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
             .startWith("")
             .flatMap {
                 var exp = "idFinca" equalEx farmID
-                if (it != "") exp = exp andEx ("grupo" likeEx "$it%" orEx ("tipoAlimento" likeEx "$it%"))
+                if (it != "") exp = exp andEx ("grupo" likeEx "%$it%" orEx ("tipoAlimento" likeEx "%$it%"))
                 db.listObsByExp(exp, RegistroAlimentacion::class)
             }
             .applySchedulers()
@@ -244,7 +244,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
             .startWith("")
             .flatMap {
                 var exp = "idFinca" equalEx farmID
-                if (it != "") exp = exp andEx ("tipo" likeEx "$it%" orEx ("nombre" likeEx "$it%"))
+                if (it != "") exp = exp andEx ("tipo" likeEx "%$it%" orEx ("nombre" likeEx "%$it%"))
                 db.listObsByExp(exp, RegistroVacuna::class, orderBy = arrayOf("fecha" orderEx DESCENDING)).applySchedulers()
             }
             .applySchedulers()
@@ -271,7 +271,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
             .startWith("")
             .flatMap {
                 var exp = "idFinca" equalEx farmID
-                if (it != "") exp = exp andEx ("tipo" likeEx "$it%" orEx ("tratamiento" likeEx "$it%") orEx ("otro" likeEx "$it%") orEx ("producto" likeEx "$it%"))
+                if (it != "") exp = exp andEx ("titulo" likeEx "%$it%" orEx ("tratamiento" likeEx "%$it%") orEx ("otro" likeEx "%$it%") orEx ("producto" likeEx "%$it%"))
                 db.listObsByExp(exp, RegistroManejo::class)
             }
             .applySchedulers()

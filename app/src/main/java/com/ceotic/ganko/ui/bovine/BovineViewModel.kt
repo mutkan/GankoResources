@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModel
 import com.ceotic.ganko.data.db.CouchRx
 import com.ceotic.ganko.data.models.Bovino
 import com.ceotic.ganko.data.preferences.UserSession
+import com.ceotic.ganko.util.andEx
 import com.ceotic.ganko.util.applySchedulers
 import com.ceotic.ganko.util.equalEx
 import io.reactivex.Single
@@ -28,7 +29,7 @@ class BovineViewModel @Inject constructor(private val db: CouchRx, private val u
     fun getImage(idBovine: String, imageName:String) = db.getFile(idBovine,imageName).applySchedulers()
 
     private fun checkId(id: String): Single<Boolean> =
-            db.oneByExp("codigo" equalEx id, Bovino::class)
+            db.oneByExp(("codigo" equalEx id)andEx("finca" equalEx userSession.farmID), Bovino::class)
                     .map { false }
                     .defaultIfEmpty(true)
                     .toSingle()

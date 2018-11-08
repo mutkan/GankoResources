@@ -31,7 +31,8 @@
         <activity android:name="com.ceotic.ganko.ui.bovine.feed.FeedBvnActivity" />
         <activity android:name="com.ceotic.ganko.ui.bovine.manage.ManageBvnActivity" />
         <activity android:name="com.ceotic.ganko.ui.account.SigninActivity" />
-        <activity android:name="com.ceotic.ganko.ui.account.RestorePassActivity" />
+        <activity android:name="com.ceotic.ganko.ui.account.RestorePassActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name="com.ceotic.ganko.ui.bovine.DetailBovineActivity"
             android:theme="@style/AppTheme.NoActionBar">

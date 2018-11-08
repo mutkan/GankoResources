@@ -16,6 +16,7 @@ open class SearchBarActivity(private var menuType:Int): AppCompatActivity(){
     private var searchView:SearchView? = null
     private var queryDis:Disposable? = null
     private lateinit var searchMenu:Menu
+    private var selectedFragment = 2
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         searchMenu = menu
@@ -51,7 +52,17 @@ open class SearchBarActivity(private var menuType:Int): AppCompatActivity(){
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
             false
         }
-
+        when (selectedFragment) {
+            2 -> searchView?.queryHint = "Busque por identificador"
+            3 -> searchView?.queryHint = "Busque por nombre de grupo"
+            4 -> searchView?.queryHint = "Busque por tipo de operación"
+            5 -> searchView?.queryHint = "Busque por tipo de alimento"
+            6 -> searchView?.queryHint = "Busque por tipo,tratamiento o producto"
+            8 -> searchView?.queryHint = "Busque por nombre de vacuna"
+            9 -> searchView?.queryHint = "Busque por diagnostico o evento"
+            10 -> searchView?.queryHint = "Busque por raza,canastilla o identificador"
+            else -> searchView?.queryHint = "Buscar"
+        }
 
         queryDis = searchView!!.queryTextChanges()
                 .subscribe { query.onNext(it.toString()) }
@@ -62,12 +73,14 @@ open class SearchBarActivity(private var menuType:Int): AppCompatActivity(){
         onPrepareOptionsMenu(searchMenu)
     }
 
-    fun setSearchMenu(){
+    fun setSearchMenu(fragment:Int){
+        selectedFragment = fragment
         menuType = MENU_SEARCH
         onPrepareOptionsMenu(searchMenu)
     }
 
-    fun setSearchFilterMenu(){
+    fun setSearchFilterMenu(fragment:Int){
+        selectedFragment = fragment
         menuType = MENU_SEARCH_FILTER
         onPrepareOptionsMenu(searchMenu)
     }

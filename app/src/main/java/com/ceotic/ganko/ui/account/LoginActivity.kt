@@ -61,7 +61,10 @@ class LoginActivity : AppCompatActivity(), Injectable {
                 )
 
         dis add forgotPassword.clicks()
-                .subscribe { startActivity<RestorePassActivity>() }
+                .subscribe {
+                    startActivity<RestorePassActivity>()
+                    overridePendingTransition(0,0)
+                }
     }
 
 }
