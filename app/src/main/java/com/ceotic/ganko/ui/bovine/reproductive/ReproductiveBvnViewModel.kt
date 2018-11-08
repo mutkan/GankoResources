@@ -117,7 +117,7 @@ class ReproductiveBvnViewModel @Inject constructor(private val db: CouchRx, priv
                     val dif = Date().time - it.fechaNacimiento!!.time
                     val dias = TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS)
                     val meses = dias / 30
-                    meses >= 18
+                    meses >= 12
                 }.toList()
             }
 

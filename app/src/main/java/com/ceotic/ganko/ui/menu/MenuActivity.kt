@@ -43,6 +43,7 @@ class MenuActivity : SearchBarActivity(MENU_SEARCH_FILTER), Injectable, HasSuppo
     @Inject
     lateinit var nav: MenuNavigation
     var phone: Boolean = true
+    var contentValue = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -104,7 +105,7 @@ class MenuActivity : SearchBarActivity(MENU_SEARCH_FILTER), Injectable, HasSuppo
         dis add PageChangeListener.tabChanges
                 .subscribe {
                     if (it != 0) setClearMenu()
-                    else setSearchMenu()
+                    else setSearchMenu(contentValue)
                 }
 
 
@@ -179,11 +180,12 @@ class MenuActivity : SearchBarActivity(MENU_SEARCH_FILTER), Injectable, HasSuppo
     }
 
     fun setMenuForContent(content: Int) {
+        contentValue = content
         when (content) {
-            2 -> setSearchFilterMenu()
-            in 3..6 -> setSearchMenu()
+            2 -> setSearchFilterMenu(content)
+            in 3..6 -> setSearchMenu(content)
             7 -> setClearMenu()
-            in 8..10 -> setSearchMenu()
+            in 8..10 -> setSearchMenu(content)
             11, 12, 13 -> setClearMenu()
         }
     }

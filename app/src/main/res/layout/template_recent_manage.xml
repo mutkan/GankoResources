@@ -50,7 +50,7 @@
             android:layout_marginEnd="32dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="16dp"
-            android:text="@{manage.tipo}"
+            android:text="@{manage.titulo}"
             app:layout_constraintEnd_toStartOf="@+id/manage_date"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

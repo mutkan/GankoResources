@@ -53,7 +53,7 @@ class SelectActivity : SearchBarActivity(MENU_SEARCH_FILTER), HasSupportFragment
         dis add pager.pageSelections()
                 .skip(1)
                 .subscribe {
-                    if (it == 0) setSearchFilterMenu()
+                    if (it == 0) setSearchFilterMenu(0)
                     else setClearMenu()
                 }
 

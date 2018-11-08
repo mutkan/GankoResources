@@ -3,6 +3,7 @@ package com.ceotic.ganko.di.components
 import com.ceotic.ganko.di.ActivityScope
 import com.ceotic.ganko.di.modules.*
 import com.ceotic.ganko.ui.account.LoginActivity
+import com.ceotic.ganko.ui.account.RestorePassActivity
 import com.ceotic.ganko.ui.bovine.AddBovineActivity
 import com.ceotic.ganko.ui.bovine.DetailBovineActivity
 import com.ceotic.ganko.ui.bovine.RemoveBovineActivity
@@ -214,5 +215,10 @@ abstract class ActivityComponents {
     @ActivityScope
     @ContributesAndroidInjector
     abstract fun bindAverageActivity(): AverageActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector
+    abstract fun bindRestorePassActivity(): RestorePassActivity
+
 
 }
