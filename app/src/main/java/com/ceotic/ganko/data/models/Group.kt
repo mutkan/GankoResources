@@ -8,7 +8,7 @@ class Group(
         val _id: String? = null,
         var _sequence: Long? = null,
         var type: String? = null,
-        val finca: String,
+        val finca: String?,
         var nombre: String,
         var color: Int,
         var bovines: List<String> = emptyList(),
