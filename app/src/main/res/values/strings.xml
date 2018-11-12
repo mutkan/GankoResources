@@ -384,6 +384,7 @@
     <string name="full_meadow_text">Pradera ocupada</string>
     <string name="password_recovery_text">Por favor ingrese su correo electrónico, presione el botón siguiente y siga las instrucciones que se enviaran a su correo electrónico.</string>
     <string name="toro_birth_text_add_service">Monta Natural: El toro debe ser mayor a un año.</string>
+    <string name="plan_limit">Alcanzaste el numero maximo de bovinos</string>
 
     <string-array name="milk_production">
         <item>Litros vendidos</item>

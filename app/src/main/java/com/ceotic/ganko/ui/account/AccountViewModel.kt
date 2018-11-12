@@ -8,6 +8,7 @@ import com.ceotic.ganko.data.preferences.UserSession
 import com.ceotic.ganko.util.applySchedulers
 import com.ceotic.ganko.util.validateResponse
 import io.reactivex.Observable
+import java.util.*
 import javax.inject.Inject
 
 class AccountViewModel @Inject constructor(private val loginClient: LoginClient,
@@ -44,8 +45,10 @@ class AccountViewModel @Inject constructor(private val loginClient: LoginClient,
     fun saveSession(loginResponse: LoginResponse) = Observable.create<String> {
         session.logged = true
         session.token = loginResponse.token
-        session.userId = loginResponse.user
-        it.onNext(loginResponse.user)
+        session.userId = loginResponse.user.id
+        session.plan = loginResponse.user.doc.plan
+        session.planDate = loginResponse.user.doc.ultimoPago ?: Date()
+        it.onNext(loginResponse.user.id)
     }
 }
 

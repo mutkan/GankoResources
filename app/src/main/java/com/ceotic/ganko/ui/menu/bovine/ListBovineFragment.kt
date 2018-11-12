@@ -13,6 +13,7 @@ import com.couchbase.lite.internal.support.Log
 import com.ceotic.ganko.R
 import com.ceotic.ganko.data.models.Bovino
 import com.ceotic.ganko.data.models.Filter
+import com.ceotic.ganko.data.preferences.UserSession
 import com.ceotic.ganko.databinding.FragmentListBovineBinding
 import com.ceotic.ganko.di.Injectable
 import com.ceotic.ganko.ui.adapters.ListBovineAdapter
@@ -33,6 +34,9 @@ class ListBovineFragment : Fragment(), Injectable {
 
     @Inject
     lateinit var adapter: ListBovineAdapter
+    @Inject
+    lateinit var session: UserSession
+
     val dis: LifeDisposable = LifeDisposable(this)
 
     @Inject
@@ -98,6 +102,11 @@ class ListBovineFragment : Fragment(), Injectable {
                 )
 
         dis add btnAddBovine.clicks()
+                .filter {
+                    session.validatePlan(adapter.bovines.size).apply {
+                        if (this) toast(R.string.plan_limit)
+                    }
+                }
                 .subscribe {
                     goToAddBovine()
                 }
