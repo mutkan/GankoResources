@@ -52,7 +52,6 @@ class UserSession @Inject constructor(val prefs: SharedPreferences) {
     }
 
     fun validatePlan(size: Int): Pair<Boolean, Int> {
-
         val validTime = validatePlanDate()
         if(!validTime.first) return validTime
 
@@ -70,7 +69,8 @@ class UserSession @Inject constructor(val prefs: SharedPreferences) {
 
     fun validatePlanDate():Pair<Boolean, Int>{
         val now = Date().time
-        val nextPay = planDate.time + 31_356_000_000
+        val milis = if(plan == PLAN_FREE) FOUR_MONTH else YEAR
+        val nextPay = planDate.time + milis
         val valid = now <= nextPay
         planValid = valid
         return valid to PlAN_DATE
@@ -85,7 +85,6 @@ class UserSession @Inject constructor(val prefs: SharedPreferences) {
         private val KEY_PLAN = "plan"
         private val KEY_PLAN_DATE = "planDate"
         private val KEY_PLAN_VALID = "plan"
-        private val KEY_PLAN_CAUSE = "planDate"
 
         private val PLAN_FREE = "gratuito"
         private val PLAN_BASIC = "basico"
@@ -96,6 +95,9 @@ class UserSession @Inject constructor(val prefs: SharedPreferences) {
 
         val PLAN_LIMIT = 0
         val PlAN_DATE = 1
+
+        const val FOUR_MONTH = 10_368_000L
+        const val YEAR = 31_356_000_000L
     }
 
 
