@@ -8,6 +8,8 @@ import android.support.multidex.MultiDexApplication
 import com.couchbase.lite.*
 import com.ceotic.ganko.data.preferences.UserSession
 import com.ceotic.ganko.di.AppInjector
+import com.ceotic.ganko.util.andEx
+import com.ceotic.ganko.util.equalEx
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
@@ -55,9 +57,17 @@ class App: MultiDexApplication(),HasActivityInjector{
             config.replicatorType = ReplicatorConfiguration.ReplicatorType.PUSH_AND_PULL
             config.isContinuous = true
 
-            config.channels = mutableListOf(session.userId)
+            config.channels = mutableListOf(session.userId, "account_${session.userId}")
             replicator = Replicator(config)
             replicator?.start()
+
+
+            db.addDocumentChangeListener(session.userId){
+                val doc = db.getDocument(it.documentID)
+                session.plan = doc.getString("plan")
+                session.planDate = doc.getDate("ultimoPago")
+            }
+
         }
     }
 
