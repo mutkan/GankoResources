@@ -6,7 +6,7 @@
     <data>
         <variable
             name="pradera"
-            type="com.example.cristian.myapplication.data.models.Pradera" />
+            type="com.ceotic.ganko.data.models.Pradera" />
         <variable
             name="onClickMeadow"
             type="io.reactivex.subjects.PublishSubject" />
@@ -24,7 +24,7 @@
             android:id="@+id/textView25"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:background="@{pradera.isEmptyMeadow? @drawable/meadow_empty : @drawable/meadow_full}"
+            android:background="@{pradera.emptyMeadow? @drawable/meadow_empty : @drawable/meadow_full}"
             android:gravity="center"
             android:text='@{pradera.identificador != null? ""+pradera.identificador : ""}'
             android:textColor="@color/white"

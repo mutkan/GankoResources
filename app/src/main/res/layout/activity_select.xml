@@ -45,7 +45,7 @@
 
         <fragment
             android:id="@+id/filterMenu"
-            android:name="com.example.cristian.myapplication.ui.menu.FilterFragment"
+            android:name="com.ceotic.ganko.ui.menu.FilterFragment"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="end"

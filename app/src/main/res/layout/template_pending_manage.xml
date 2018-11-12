@@ -6,7 +6,7 @@
     <data>
         <variable
             name="manage"
-            type="com.example.cristian.myapplication.data.models.RegistroManejo"/>
+            type="com.ceotic.ganko.data.models.RegistroManejo"/>
         <variable
             name="isGroup"
             type="Boolean"/>

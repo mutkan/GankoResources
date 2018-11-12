@@ -7,7 +7,7 @@
 
         <variable
             name="bovine"
-            type="com.example.cristian.myapplication.data.models.Feed" />
+            type="com.ceotic.ganko.data.models.Feed" />
     </data>
 
     <android.support.constraint.ConstraintLayout

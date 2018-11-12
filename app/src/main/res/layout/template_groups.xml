@@ -8,7 +8,7 @@
 
         <variable
             name="grupo"
-            type="com.example.cristian.myapplication.data.models.Group"/>
+            type="com.ceotic.ganko.data.models.Group"/>
 
         <variable
             name="editable"

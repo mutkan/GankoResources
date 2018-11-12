@@ -5,7 +5,7 @@
     <data>
         <variable
             name="notification"
-            type="com.example.cristian.myapplication.data.models.Alarm"/>
+            type="com.ceotic.ganko.data.models.Alarm"/>
         <variable
             name="tipo"
             type="String"/>

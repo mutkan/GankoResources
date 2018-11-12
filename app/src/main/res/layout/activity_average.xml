@@ -6,10 +6,10 @@
     <data>
         <variable
             name="promedio"
-            type="com.example.cristian.myapplication.data.models.Promedio"/>
+            type="com.ceotic.ganko.data.models.Promedio"/>
         <variable
             name="bovino"
-            type="com.example.cristian.myapplication.data.models.Bovino"/>
+            type="com.ceotic.ganko.data.models.Bovino"/>
         <import type="android.view.View"/>
     </data>
 

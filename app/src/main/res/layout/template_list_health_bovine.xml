@@ -9,7 +9,7 @@
             type="io.reactivex.subjects.PublishSubject"/>
         <variable
             name="sanidad"
-            type="com.example.cristian.myapplication.data.models.Sanidad"/>
+            type="com.ceotic.ganko.data.models.Sanidad"/>
     </data>
 
     <android.support.constraint.ConstraintLayout

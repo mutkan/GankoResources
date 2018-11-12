@@ -143,6 +143,26 @@
             app:layout_constraintStart_toEndOf="@+id/btnCancelService"
             app:layout_constraintTop_toTopOf="@+id/btnCancelService" />
 
+        <TextView
+            android:id="@+id/textView134"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/toro_birth_text_add_service"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            app:layout_constraintStart_toEndOf="@+id/imageView17"
+            app:layout_constraintTop_toBottomOf="@+id/bullCodeOrStrawSpinner" />
+
+        <ImageView
+            android:id="@+id/imageView17"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:tint="#888"
+            app:layout_constraintBottom_toBottomOf="@+id/textView134"
+            app:layout_constraintStart_toStartOf="@+id/bullCodeOrStrawSpinner"
+            app:layout_constraintTop_toTopOf="@+id/textView134"
+            app:srcCompat="@android:drawable/ic_dialog_info" />
+
 
     </android.support.constraint.ConstraintLayout>
 

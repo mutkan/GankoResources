@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.cristian.myapplication">
+    package="com.ceotic.ganko">
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:name=".App"
+        android:name="com.ceotic.ganko.App"
         android:allowBackup="true"
         android:icon="@drawable/gankobovinos"
         android:label="@string/app_name"
@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ui.account.LoginActivity"
+            android:name="com.ceotic.ganko.ui.account.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,20 +24,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.menu.feed.AddFeedActivity" />
-        <activity android:name=".ui.bovine.milk.MilkBvnActivity" />
-        <activity android:name=".ui.bovine.health.HealthBvnActivity" />
-        <activity android:name=".PrincipalActivity" />
-        <activity android:name=".ui.bovine.feed.FeedBvnActivity" />
-        <activity android:name=".ui.bovine.manage.ManageBvnActivity" />
-        <activity android:name=".ui.account.SigninActivity" />
-        <activity android:name=".ui.account.RestorePassActivity" />
+        <activity android:name="com.ceotic.ganko.ui.menu.feed.AddFeedActivity" />
+        <activity android:name="com.ceotic.ganko.ui.bovine.milk.MilkBvnActivity" />
+        <activity android:name="com.ceotic.ganko.ui.bovine.health.HealthBvnActivity" />
+        <activity android:name="com.ceotic.ganko.PrincipalActivity" />
+        <activity android:name="com.ceotic.ganko.ui.bovine.feed.FeedBvnActivity" />
+        <activity android:name="com.ceotic.ganko.ui.bovine.manage.ManageBvnActivity" />
+        <activity android:name="com.ceotic.ganko.ui.account.SigninActivity" />
+        <activity android:name="com.ceotic.ganko.ui.account.RestorePassActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".ui.bovine.DetailBovineActivity"
+            android:name="com.ceotic.ganko.ui.bovine.DetailBovineActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.menu.MenuActivity" />
+                android:value="com.ceotic.ganko.ui.menu.MenuActivity" />
 
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
@@ -47,30 +48,30 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/search" />
         </activity>
-        <activity android:name=".ui.farms.AddFarmActivity" />
-        <activity android:name=".ui.menu.health.AddHealthActivity" />
-        <activity android:name=".ui.bovine.RemoveBovineActivity" />
-        <activity android:name=".ui.bovine.AddBovineActivity" />
+        <activity android:name="com.ceotic.ganko.ui.farms.AddFarmActivity" />
+        <activity android:name="com.ceotic.ganko.ui.menu.health.AddHealthActivity" />
+        <activity android:name="com.ceotic.ganko.ui.bovine.RemoveBovineActivity" />
+        <activity android:name="com.ceotic.ganko.ui.bovine.AddBovineActivity" />
         <activity
-            android:name=".ui.menu.MenuActivity"
+            android:name="com.ceotic.ganko.ui.menu.MenuActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ui.bovine.milk.AddMilkBvnActivity" />
-        <activity android:name=".ui.farms.FarmActivity" />
-        <activity android:name=".ui.bovine.movement.MovementBvnActivity" />
-        <activity android:name=".ui.bovine.vaccination.VaccinationBvnActivity" />
+        <activity android:name="com.ceotic.ganko.ui.bovine.milk.AddMilkBvnActivity" />
+        <activity android:name="com.ceotic.ganko.ui.farms.FarmActivity" />
+        <activity android:name="com.ceotic.ganko.ui.bovine.movement.MovementBvnActivity" />
+        <activity android:name="com.ceotic.ganko.ui.bovine.vaccination.VaccinationBvnActivity" />
 
         <!-- <activity android:name=".ui.bovine.ceba.CebaBvnActivity" /> -->
 
-        <activity android:name=".ui.bovine.ceba.CebaBvnActivity" />
-        <activity android:name=".ui.bovine.ceba.AddCebaBvnActivity" />
+        <activity android:name="com.ceotic.ganko.ui.bovine.ceba.CebaBvnActivity" />
+        <activity android:name="com.ceotic.ganko.ui.bovine.ceba.AddCebaBvnActivity" />
         <activity
-            android:name=".ui.bovine.reproductive.ReproductiveBvnActivity"
+            android:name="com.ceotic.ganko.ui.bovine.reproductive.ReproductiveBvnActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ui.bovine.reproductive.add.AddZealActivity" />
-        <activity android:name=".ui.bovine.reproductive.add.AddServiceActivity" />
-        <activity android:name=".ui.bovine.reproductive.add.AddDiagnosisActivity" />
-        <activity android:name=".ui.bovine.reproductive.add.AddBirthActivity" />
-        <activity android:name=".ui.menu.straw.StrawAddActivity" />
+        <activity android:name="com.ceotic.ganko.ui.bovine.reproductive.add.AddZealActivity" />
+        <activity android:name="com.ceotic.ganko.ui.bovine.reproductive.add.AddServiceActivity" />
+        <activity android:name="com.ceotic.ganko.ui.bovine.reproductive.add.AddDiagnosisActivity" />
+        <activity android:name="com.ceotic.ganko.ui.bovine.reproductive.add.AddBirthActivity" />
+        <activity android:name="com.ceotic.ganko.ui.menu.straw.StrawAddActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -82,14 +83,14 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".ui.menu.meadow.ManageMeadowActivity" />
-        <activity android:name=".ui.menu.meadow.aforo.AddAforoActivity" />
-        <activity android:name=".ui.menu.meadow.mantenimiento.AddMantenimientoActivity" />
-        <activity android:name=".ui.groups.SaveGroupActivity" />
+        <activity android:name="com.ceotic.ganko.ui.menu.meadow.ManageMeadowActivity" />
+        <activity android:name="com.ceotic.ganko.ui.menu.meadow.aforo.AddAforoActivity" />
+        <activity android:name="com.ceotic.ganko.ui.menu.meadow.mantenimiento.AddMantenimientoActivity" />
+        <activity android:name="com.ceotic.ganko.ui.groups.SaveGroupActivity" />
         <activity
-            android:name=".ui.groups.SelectActivity"
+            android:name="com.ceotic.ganko.ui.groups.SelectActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ui.groups.AddGroupActivity" >
+        <activity android:name="com.ceotic.ganko.ui.groups.AddGroupActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -97,26 +98,26 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/search" />
         </activity>
-        <activity android:name=".ui.groups.BovineSelectedActivity" />
-        <activity android:name=".ui.menu.milk.AddMilkActivity" />
-        <activity android:name=".ui.menu.vaccines.AddVaccineActivity" />
-        <activity android:name=".ui.menu.management.AddManageActivity" />
-        <activity android:name=".ui.groups.ReApplyActivity" />
+        <activity android:name="com.ceotic.ganko.ui.groups.BovineSelectedActivity" />
+        <activity android:name="com.ceotic.ganko.ui.menu.milk.AddMilkActivity" />
+        <activity android:name="com.ceotic.ganko.ui.menu.vaccines.AddVaccineActivity" />
+        <activity android:name="com.ceotic.ganko.ui.menu.management.AddManageActivity" />
+        <activity android:name="com.ceotic.ganko.ui.groups.ReApplyActivity" />
         <activity
-            android:name=".ui.menu.vaccines.detail.VaccineDetailActivity"
+            android:name="com.ceotic.ganko.ui.menu.vaccines.detail.VaccineDetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.menu.health.detail.HealthDetailActivity"
+            android:name="com.ceotic.ganko.ui.menu.health.detail.HealthDetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.menu.management.detail.ManageDetailActivity"
+            android:name="com.ceotic.ganko.ui.menu.management.detail.ManageDetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".pdf.ViewPdfActivity" />
-        <activity android:name=".ui.menu.meadow.ManageMeadowAlertActivity" />
-        <activity android:name=".ui.menu.meadow.AddMeadowAlertActivity" />
-        <activity android:name=".ui.search.SearchActivity"
+        <activity android:name="com.ceotic.ganko.pdf.ViewPdfActivity" />
+        <activity android:name="com.ceotic.ganko.ui.menu.meadow.ManageMeadowAlertActivity" />
+        <activity android:name="com.ceotic.ganko.ui.menu.meadow.AddMeadowAlertActivity" />
+        <activity android:name="com.ceotic.ganko.ui.search.SearchActivity"
             android:windowSoftInputMode="adjustNothing"/>
-        <activity android:name=".ui.menu.reports.AverageActivity"/>
+        <activity android:name="com.ceotic.ganko.ui.menu.reports.AverageActivity"/>
     </application>
 
 </manifest>
