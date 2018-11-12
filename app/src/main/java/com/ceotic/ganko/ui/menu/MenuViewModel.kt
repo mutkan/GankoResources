@@ -1437,4 +1437,6 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     }.toList().applySchedulers()
     * */
 
+    fun validatePlan():Boolean = userSession.validatePlanDate().first
+
 }

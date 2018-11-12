@@ -104,8 +104,11 @@ class ListBovineFragment : Fragment(), Injectable {
         dis add btnAddBovine.clicks()
                 .filter {
                     session.validatePlan(adapter.bovines.size).apply {
-                        if (this) toast(R.string.plan_limit)
-                    }
+                        if (!first){
+                            toast(if(second== UserSession.PLAN_LIMIT) R.string.plan_limit
+                            else R.string.plan_date_limit)
+                        }
+                    }.first
                 }
                 .subscribe {
                     goToAddBovine()

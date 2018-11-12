@@ -34,8 +34,12 @@ class UserSession @Inject constructor(val prefs: SharedPreferences) {
         set(value) = prefs.save(KEY_PLAN to value)
 
     var planDate: Date
-        get() = Date(prefs.getLong(KEY_PLAN_DATE, 0))
+        get() = Date(prefs.getLong(KEY_PLAN_DATE, Date().time))
         set(value) = prefs.save(KEY_PLAN_DATE to value.time)
+
+    var planValid:Boolean
+        get() = prefs.getBoolean(KEY_PLAN_VALID, false)
+        set(value) = prefs.save(KEY_PLAN_VALID to value)
 
 
     fun destroysession() {
@@ -47,22 +51,29 @@ class UserSession @Inject constructor(val prefs: SharedPreferences) {
         plan = ""
     }
 
-    fun validatePlan(size: Int): Boolean {
-        val pln = plan
-        if (pln == PLAN_FREE) return true
+    fun validatePlan(size: Int): Pair<Boolean, Int> {
 
-        val now = Date().time
-        val nextPay = planDate.time + 31_356_000_000
+        val validTime = validatePlanDate()
+        if(!validTime.first) return validTime
 
-        if (now > nextPay) return false
-
-        return when (plan) {
+        val valid:Boolean = when (plan) {
+            PLAN_FREE -> size < 10
             PLAN_BASIC -> size < 35
             PLAN_BASIC_2 -> size < 60
             PLAN_BASIC_3 -> size < 100
             PLAN_PREMIUM -> size < 500
             else -> true
         }
+
+        return valid to PLAN_LIMIT
+    }
+
+    fun validatePlanDate():Pair<Boolean, Int>{
+        val now = Date().time
+        val nextPay = planDate.time + 31_356_000_000
+        val valid = now <= nextPay
+        planValid = valid
+        return valid to PlAN_DATE
     }
 
     companion object {
@@ -73,6 +84,8 @@ class UserSession @Inject constructor(val prefs: SharedPreferences) {
         private val KEY_FARM_ID = "farmID"
         private val KEY_PLAN = "plan"
         private val KEY_PLAN_DATE = "planDate"
+        private val KEY_PLAN_VALID = "plan"
+        private val KEY_PLAN_CAUSE = "planDate"
 
         private val PLAN_FREE = "gratuito"
         private val PLAN_BASIC = "basico"
@@ -80,6 +93,9 @@ class UserSession @Inject constructor(val prefs: SharedPreferences) {
         private val PLAN_BASIC_3 = "basico2"
         private val PLAN_PREMIUM = "premium"
         private val PLAN_PREMIUM_2 = "premium2"
+
+        val PLAN_LIMIT = 0
+        val PlAN_DATE = 1
     }
 
 

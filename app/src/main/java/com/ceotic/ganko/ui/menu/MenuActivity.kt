@@ -12,6 +12,7 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.widget.GridLayoutManager
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import com.ceotic.ganko.R
 import com.ceotic.ganko.di.Injectable
 import com.ceotic.ganko.ui.adapters.MenuAdapter
@@ -87,6 +88,9 @@ class MenuActivity : SearchBarActivity(MENU_SEARCH_FILTER), Injectable, HasSuppo
 
     override fun onResume() {
         super.onResume()
+
+        if(!viewModel.validatePlan())
+            planMsg.visibility = View.VISIBLE
 
         dis add adapter.clickMenu
                 .subscribe {
