@@ -52,7 +52,7 @@ class ReproductiveBvnViewModel @Inject constructor(private val db: CouchRx, priv
                 val servicios = b.servicios!!.toMutableList()
                 servicios[position] = servicio
                 b.servicios = servicios.toList()
-                db.update(idBovino, b).map { b }
+                db.update(idBovino, b).map { b to servicio }
             }.applySchedulers()
 
     fun getOnServiceForBovine(idBovino: String): Single<List<Servicio>> = db.oneById(idBovino, Bovino::class).flatMapObservable { it.servicios?.toObservable() }

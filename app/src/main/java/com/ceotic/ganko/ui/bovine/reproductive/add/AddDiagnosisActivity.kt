@@ -105,29 +105,27 @@ class AddDiagnosisActivity : AppCompatActivity(), Injectable, DatePickerDialog.O
                     val servicio = if (type == TYPE_DIAGNOSIS) setDiagnosis(it) else setNovedad(it)
                     viewModel.updateServicio(idBovino, servicio, position)
                 }
-                .flatMapSingle { bovino ->
-                    val servicioActual = bovino.servicios!![position]
-                    val fechaServicioActual = servicioActual.fecha!!.toStringFormat()
-                    return@flatMapSingle if (type == TYPE_DIAGNOSIS && servicioActual.diagnostico?.confirmacion == true) {
-                        val posibleParto = servicioActual.posFechaParto!!
-                        val dif = posibleParto.time - Date().time
-                        val notifyTimeSecado = TimeUnit.DAYS.convert((dif - 60), TimeUnit.MILLISECONDS)
-                        val notifyTimePreparacion = TimeUnit.DAYS.convert((dif - 30), TimeUnit.MILLISECONDS)
-                        val notifyTimeParto = TimeUnit.DAYS.convert((dif - 1), TimeUnit.MILLISECONDS)
-                        Single.just({
-                            NotificationWork.notify(NotificationWork.TYPE_REPRODUCTIVE, "Recordatorio Secado", "Comenzar secado del bovino: ${bovino.nombre}, fecha del servicio: $fechaServicioActual, posible parto: ${posibleParto.toStringFormat()}", idBovino,
-                                    notifyTimeSecado, TimeUnit.DAYS)
-                            NotificationWork.notify(NotificationWork.TYPE_REPRODUCTIVE, "Recordatorio Preparación", "Comenzar preparación para el parto del bovino: ${bovino.nombre}, fecha del servicio: $fechaServicioActual, posible parto: ${posibleParto.toStringFormat()}", idBovino,
-                                    notifyTimePreparacion, TimeUnit.DAYS)
-                            NotificationWork.notify(NotificationWork.TYPE_REPRODUCTIVE, "Recordatorio Parto", "Es probable que el parto del bovino: ${bovino.nombre} sea mañana, fecha del servicio: $fechaServicioActual, posible parto: ${posibleParto.toStringFormat()}", idBovino,
-                                    notifyTimeParto, TimeUnit.DAYS)
-                        })
-                    } else {
-                        Single.just(Unit)
-                    }
-                }
                 .subscribeBy(
-                        onNext = {
+                        onNext = { bovino ->
+                            val servicioActual = bovino.servicios!![position]
+                            val fechaServicioActual = servicioActual.fecha!!.toStringFormat()
+                            if (type == TYPE_DIAGNOSIS && servicioActual.diagnostico?.confirmacion == true) {
+                                val posibleParto = servicioActual.posFechaParto!!
+                                val dif = posibleParto.time - Date().time
+                                val daysToBirth = TimeUnit.DAYS.convert((dif), TimeUnit.MILLISECONDS)
+                                val notifyTimeSecado = daysToBirth - 60
+                                val notifyTimePreparacion = daysToBirth - 30
+                                val notifyTimeParto = daysToBirth - 1
+
+                                NotificationWork.cancelNotify("$idBovino-DV")
+                                NotificationWork.notify(NotificationWork.TYPE_REPRODUCTIVE, "Recordatorio Secado", "Comenzar secado del bovino: ${bovino.nombre}, fecha del servicio: $fechaServicioActual, posible parto: ${posibleParto.toStringFormat()}", idBovino,
+                                        notifyTimeSecado, TimeUnit.DAYS)
+                                NotificationWork.notify(NotificationWork.TYPE_REPRODUCTIVE, "Recordatorio Preparación", "Comenzar preparación para el parto del bovino: ${bovino.nombre}, fecha del servicio: $fechaServicioActual, posible parto: ${posibleParto.toStringFormat()}", idBovino,
+                                        notifyTimePreparacion, TimeUnit.DAYS)
+                                NotificationWork.notify(NotificationWork.TYPE_REPRODUCTIVE, "Recordatorio Parto", "Es probable que el parto del bovino: ${bovino.nombre} sea mañana, fecha del servicio: $fechaServicioActual, posible parto: ${posibleParto.toStringFormat()}", idBovino,
+                                        notifyTimeParto, TimeUnit.DAYS)
+
+                            }
                             finish()
                         }
                 )

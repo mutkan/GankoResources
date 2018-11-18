@@ -70,7 +70,7 @@ class NotificationWork : Worker() {
         const val TYPE_MEADOW = 4
 
 
-        fun notify(type: Int, title: String, msg: String, docId: String, time: Long, timeUnit: TimeUnit) {
+        fun notify(type: Int, title: String, msg: String, docId: String, time: Long, timeUnit: TimeUnit, tag:String? = null) {
 
             val data: Data = mapOf(ARG_ID to docId ,
                     ARG_TITLE to title,
@@ -78,12 +78,22 @@ class NotificationWork : Worker() {
                     ARG_TYPE to type)
                     .toWorkData()
 
-            val notificationWork = OneTimeWorkRequestBuilder<NotificationWork>()
+            val notificationWorkBuilder = OneTimeWorkRequestBuilder<NotificationWork>()
                     .setInitialDelay(time, timeUnit)
                     .setInputData(data)
-                    .build()
+
+            tag?.let {
+                notificationWorkBuilder.addTag(it)
+            }
+
+            val notificationWork = notificationWorkBuilder.build()
+
 
             WorkManager.getInstance().enqueue(notificationWork)
+        }
+
+        fun cancelNotify(tag: String){
+            WorkManager.getInstance().cancelAllWorkByTag(tag)
         }
 
 

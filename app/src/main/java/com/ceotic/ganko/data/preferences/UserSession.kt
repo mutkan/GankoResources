@@ -84,7 +84,7 @@ class UserSession @Inject constructor(val prefs: SharedPreferences) {
         private val KEY_FARM_ID = "farmID"
         private val KEY_PLAN = "plan"
         private val KEY_PLAN_DATE = "planDate"
-        private val KEY_PLAN_VALID = "plan"
+        private val KEY_PLAN_VALID = "planValid"
 
         private val PLAN_FREE = "gratuito"
         private val PLAN_BASIC = "basico"

@@ -100,14 +100,26 @@ class AddBirthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDat
                 .flatMapMaybe {
                     val servicio = setParto(it)
                     viewModel.addParto(idBovino, servicio, position)
-                }.flatMapSingle { bovino ->
-                    Single.just({
-                        NotificationWork.notify(NotificationWork.TYPE_REPRODUCTIVE, "Recordatorio Días vacios", "El bovino ${bovino.nombre} cumplirá 45 días vacios mañana", idBovino,
-                                44, TimeUnit.DAYS)
-                    })
                 }
                 .subscribeBy(
-                        onNext = {
+                        onNext = {pair ->
+                            val bovino = pair.first
+                            val servicio = pair.second
+                            val dif = if( servicio.parto!!.fecha.time > Date().time)  servicio.parto!!.fecha.time - Date().time else  Date().time - servicio.parto!!.fecha.time
+                            val daysSinceBirth = TimeUnit.DAYS.convert((dif), TimeUnit.MILLISECONDS)
+                            val notify45 = 44 - daysSinceBirth
+                            val notify60 =  59 - daysSinceBirth
+                            val notify90 = 89 - daysSinceBirth
+                            val notify120 =  119 - daysSinceBirth
+
+                            NotificationWork.notify(NotificationWork.TYPE_REPRODUCTIVE, "Recordatorio Días vacios", "El bovino ${bovino.nombre} cumplirá 45 días vacios mañana", idBovino,
+                                    notify45, TimeUnit.DAYS,"$idBovino-DV")
+                            NotificationWork.notify(NotificationWork.TYPE_REPRODUCTIVE, "Recordatorio Días vacios", "El bovino ${bovino.nombre} cumplirá 60 días vacios mañana", idBovino,
+                                    notify60, TimeUnit.DAYS,"$idBovino-DV")
+                            NotificationWork.notify(NotificationWork.TYPE_REPRODUCTIVE, "Recordatorio Días vacios", "El bovino ${bovino.nombre} cumplirá 90 días vacios mañana", idBovino,
+                                    notify90, TimeUnit.DAYS,"$idBovino-DV")
+                            NotificationWork.notify(NotificationWork.TYPE_REPRODUCTIVE, "Recordatorio Días vacios", "El bovino ${bovino.nombre} cumplirá 120 días vacios mañana", idBovino,
+                                    notify120, TimeUnit.DAYS,"$idBovino-DV")
                             finish()
                         }
                 )
