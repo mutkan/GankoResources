@@ -62,8 +62,9 @@ class AddZealActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
                     val ultimoCelo = bovino.celos!![0].toStringFormat()
                     val dif = nextZealDate.time - Date().time
                     val notifyTime = TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS) - 1
+                    Log.d("Days to zeal", notifyTime.toString())
                     Single.just(NotificationWork.notify(TYPE_REPRODUCTIVE, "Recordatorio Celo", "Es probable que el bovino ${bovino.nombre} entre en celo mañana, fecha de ultimo celo $ultimoCelo", idBovino,
-                            notifyTime, TimeUnit.DAYS))
+                            notifyTime, TimeUnit.DAYS, "${bovino._id}-Zeal"))
 
                 }
                 .subscribeBy(

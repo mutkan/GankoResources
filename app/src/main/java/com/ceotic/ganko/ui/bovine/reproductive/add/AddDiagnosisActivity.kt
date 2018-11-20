@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProvider
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.View
 import android.widget.DatePicker
 import com.ceotic.ganko.R
@@ -18,6 +19,7 @@ import com.ceotic.ganko.ui.bovine.reproductive.ListServiceFragment.Companion.ARG
 import com.ceotic.ganko.ui.bovine.reproductive.ListServiceFragment.Companion.ARG_SERVICE
 import com.ceotic.ganko.ui.bovine.reproductive.ListServiceFragment.Companion.ARG_TYPE
 import com.ceotic.ganko.ui.bovine.reproductive.ListServiceFragment.Companion.TYPE_DIAGNOSIS
+import com.ceotic.ganko.ui.bovine.reproductive.ListServiceFragment.Companion.TYPE_NOVELTY
 import com.ceotic.ganko.ui.bovine.reproductive.ReproductiveBvnViewModel
 import com.ceotic.ganko.util.*
 import com.ceotic.ganko.work.NotificationWork
@@ -103,7 +105,9 @@ class AddDiagnosisActivity : AppCompatActivity(), Injectable, DatePickerDialog.O
                 .flatMap { validateFields() }
                 .flatMapMaybe {
                     val servicio = if (type == TYPE_DIAGNOSIS) setDiagnosis(it) else setNovedad(it)
-                    viewModel.updateServicio(idBovino, servicio, position)
+                    val failed = !servicio.diagnostico!!.confirmacion && servicio.finalizado!!
+                    Log.d("failed", failed.toString())
+                    viewModel.updateServicio(idBovino, servicio, position, failed)
                 }
                 .subscribeBy(
                         onNext = { bovino ->
@@ -113,19 +117,27 @@ class AddDiagnosisActivity : AppCompatActivity(), Injectable, DatePickerDialog.O
                                 val posibleParto = servicioActual.posFechaParto!!
                                 val dif = posibleParto.time - Date().time
                                 val daysToBirth = TimeUnit.DAYS.convert((dif), TimeUnit.MILLISECONDS)
+                                Log.d("dias para el parto", daysToBirth.toString())
                                 val notifyTimeSecado = daysToBirth - 60
                                 val notifyTimePreparacion = daysToBirth - 30
                                 val notifyTimeParto = daysToBirth - 1
 
-                                NotificationWork.cancelNotify("$idBovino-DV")
+                                NotificationWork.cancelNotify("$idBovino-EmptyDays")
                                 NotificationWork.notify(NotificationWork.TYPE_REPRODUCTIVE, "Recordatorio Secado", "Comenzar secado del bovino: ${bovino.nombre}, fecha del servicio: $fechaServicioActual, posible parto: ${posibleParto.toStringFormat()}", idBovino,
-                                        notifyTimeSecado, TimeUnit.DAYS)
+                                        notifyTimeSecado, TimeUnit.DAYS, "$idBovino-Birth")
                                 NotificationWork.notify(NotificationWork.TYPE_REPRODUCTIVE, "Recordatorio Preparación", "Comenzar preparación para el parto del bovino: ${bovino.nombre}, fecha del servicio: $fechaServicioActual, posible parto: ${posibleParto.toStringFormat()}", idBovino,
-                                        notifyTimePreparacion, TimeUnit.DAYS)
+                                        notifyTimePreparacion, TimeUnit.DAYS, "$idBovino-Birth")
                                 NotificationWork.notify(NotificationWork.TYPE_REPRODUCTIVE, "Recordatorio Parto", "Es probable que el parto del bovino: ${bovino.nombre} sea mañana, fecha del servicio: $fechaServicioActual, posible parto: ${posibleParto.toStringFormat()}", idBovino,
-                                        notifyTimeParto, TimeUnit.DAYS)
+                                        notifyTimeParto, TimeUnit.DAYS, "$idBovino-Birth")
 
                             }
+                            if (type == TYPE_NOVELTY && servicioActual.finalizado!!) NotificationWork.cancelNotify("$idBovino-Birth")
+                            if(bovino.serviciosFallidos!! == 3){
+                                Log.d("servicios fallidos", bovino.serviciosFallidos.toString())
+                                NotificationWork.notify(NotificationWork.TYPE_REPRODUCTIVE, "Tres Servicios Fallidos", "El bovino: ${bovino.nombre}, lleva 3 servicios fallidos de manera consecutiva}", idBovino,
+                                        10, TimeUnit.SECONDS, "$idBovino-FailedServices")
+                            }
+
                             finish()
                         }
                 )

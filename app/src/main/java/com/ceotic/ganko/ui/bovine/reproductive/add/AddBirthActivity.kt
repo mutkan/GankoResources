@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProvider
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.widget.DatePicker
 import com.ceotic.ganko.R
 import com.ceotic.ganko.data.models.Bovino
@@ -105,21 +106,24 @@ class AddBirthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDat
                         onNext = {pair ->
                             val bovino = pair.first
                             val servicio = pair.second
-                            val dif = if( servicio.parto!!.fecha.time > Date().time)  servicio.parto!!.fecha.time - Date().time else  Date().time - servicio.parto!!.fecha.time
+                            val dif = Date().time - servicio.parto!!.fecha.time
                             val daysSinceBirth = TimeUnit.DAYS.convert((dif), TimeUnit.MILLISECONDS)
+                            Log.d("Dias desde parto", daysSinceBirth.toString())
                             val notify45 = 44 - daysSinceBirth
                             val notify60 =  59 - daysSinceBirth
                             val notify90 = 89 - daysSinceBirth
                             val notify120 =  119 - daysSinceBirth
 
+                            NotificationWork.cancelNotify("$idBovino-Birth")
+
                             NotificationWork.notify(NotificationWork.TYPE_REPRODUCTIVE, "Recordatorio Días vacios", "El bovino ${bovino.nombre} cumplirá 45 días vacios mañana", idBovino,
-                                    notify45, TimeUnit.DAYS,"$idBovino-DV")
+                                    notify45, TimeUnit.DAYS,"$idBovino-EmptyDays")
                             NotificationWork.notify(NotificationWork.TYPE_REPRODUCTIVE, "Recordatorio Días vacios", "El bovino ${bovino.nombre} cumplirá 60 días vacios mañana", idBovino,
-                                    notify60, TimeUnit.DAYS,"$idBovino-DV")
+                                    notify60, TimeUnit.DAYS,"$idBovino-EmptyDays")
                             NotificationWork.notify(NotificationWork.TYPE_REPRODUCTIVE, "Recordatorio Días vacios", "El bovino ${bovino.nombre} cumplirá 90 días vacios mañana", idBovino,
-                                    notify90, TimeUnit.DAYS,"$idBovino-DV")
+                                    notify90, TimeUnit.DAYS,"$idBovino-EmptyDays")
                             NotificationWork.notify(NotificationWork.TYPE_REPRODUCTIVE, "Recordatorio Días vacios", "El bovino ${bovino.nombre} cumplirá 120 días vacios mañana", idBovino,
-                                    notify120, TimeUnit.DAYS,"$idBovino-DV")
+                                    notify120, TimeUnit.DAYS,"$idBovino-EmptyDays")
                             finish()
                         }
                 )

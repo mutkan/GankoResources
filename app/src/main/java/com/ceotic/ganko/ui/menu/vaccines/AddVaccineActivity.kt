@@ -188,9 +188,10 @@ class AddVaccineActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
                 "Meses" -> proximaAplicacion * 24 * 30
                 else -> proximaAplicacion * 24 * 30 * 12
             }
-            val notifyTime: Long = when (proxTime) {
-                in 3..24 -> proxTime - 1
-                else -> proxTime - 24
+            val notifyTime: Long = when {
+                proxTime in 3..24 -> proxTime - 1
+                proxTime > 24 -> proxTime - 24
+                else -> proxTime
             }
             val nombreVacuna = otherVaccine.text()
             val dosis = when {
