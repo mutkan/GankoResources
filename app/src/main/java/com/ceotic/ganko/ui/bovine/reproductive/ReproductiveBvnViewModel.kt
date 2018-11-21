@@ -38,11 +38,13 @@ class ReproductiveBvnViewModel @Inject constructor(private val db: CouchRx, priv
             }
             .applySchedulers()
 
-    fun updateServicio(idBovino: String, servicio: Servicio,position:Int) = db.oneById(idBovino, Bovino::class)
+    fun updateServicio(idBovino: String, servicio: Servicio,position:Int, failed:Boolean = false) = db.oneById(idBovino, Bovino::class)
             .flatMapSingleElement { b ->
                 val servicios = b.servicios!!.toMutableList()
                 servicios[position] = servicio
                 b.servicios = servicios.toList()
+                b.serviciosFallidos = if (failed) b.serviciosFallidos?.plus(1) ?: 1 else 0
+
                 db.update(idBovino, b).map { b }
             }.applySchedulers()
 

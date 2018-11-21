@@ -38,9 +38,10 @@ class Bovino(
         var fechaDestete: Date? = null,
         var celos: List<Date>? = null,
 
-        var fechaProximoCelo:Date? = null,
+        var fechaProximoCelo: Date? = null,
 
-        var seleccionado:Boolean? = false,
+        var seleccionado: Boolean? = false,
+        var serviciosFallidos: Int? = null,
 
         var servicios: List<Servicio>? = listOf(),
         var vacunas: List<Vacuna>? = listOf(),
@@ -51,6 +52,7 @@ class Bovino(
     init {
         type = javaClass.simpleName
     }
+
     override fun toString(): String {
         return this.codigo!!
     }

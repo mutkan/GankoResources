@@ -137,7 +137,7 @@ class AddBovineActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
                             if (check_weaned.isChecked) {
                                 bovineWeanedDate.text.toString().toDate()
                             } else null,
-                            null, null, null, listOf(), listOf(), listOf())
+                            null, null, null, null, listOf(), listOf(), listOf())
                     if (foto != null) viewModel.addBovineWithImage(bovino, foto!!.name, foto!!) else viewModel.addBovine(bovino)
                 }
                 .doOnError { toast(R.string.id_bovine_exist) }

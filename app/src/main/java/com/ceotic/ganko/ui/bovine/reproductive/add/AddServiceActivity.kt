@@ -124,8 +124,9 @@ class AddServiceActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
                 }
                 .flatMapSingle { bovino ->
                     val ultimoServicio = bovino.servicios!![0].fecha!!.toStringFormat()
-                    val dif = if (bovino.servicios!![0].fecha!!.time > Date().time) bovino.servicios!![0].fecha!!.time - Date().time else Date().time - bovino.servicios!![0].fecha!!.time
+                    val dif = Date().time - bovino.servicios!![0].fecha!!.time
                     val daysToDiagnosis =  34 - TimeUnit.DAYS.convert((dif), TimeUnit.MILLISECONDS)
+                    Log.d("Dias to diagnostico", daysToDiagnosis.toString())
                     Single.just(NotificationWork.notify(TYPE_REPRODUCTIVE, "Recordatorio Diagnostico de preñez", "Verificar preñez del bovino ${bovino.nombre}, fecha del servicio $ultimoServicio", idBovino,
                             daysToDiagnosis, TimeUnit.DAYS))
                 }
