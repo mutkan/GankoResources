@@ -49,6 +49,8 @@ class NotificationWork : Worker() {
                 .setLights(Color.GREEN, 3000, 3000)
                 .setContentIntent(pendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
+                .setStyle(NotificationCompat.BigTextStyle()
+                        .bigText(msg))
                 .setAutoCancel(true)
                 .build()
         NotificationManagerCompat.from(applicationContext)
@@ -70,7 +72,7 @@ class NotificationWork : Worker() {
         const val TYPE_MEADOW = 4
 
 
-        fun notify(type: Int, title: String, msg: String, docId: String, time: Long, timeUnit: TimeUnit, tag:String = "default") {
+        fun notify(type: Int, title: String, msg: String, docId: String, time: Long, timeUnit: TimeUnit):UUID {
 
             val data: Data = mapOf(ARG_ID to docId ,
                     ARG_TITLE to title,
@@ -81,14 +83,25 @@ class NotificationWork : Worker() {
             val notificationWork = OneTimeWorkRequestBuilder<NotificationWork>()
                     .setInitialDelay(time, timeUnit)
                     .setInputData(data)
-                    .addTag(tag)
                     .build()
 
             WorkManager.getInstance().enqueue(notificationWork)
+
+            return  notificationWork.id
         }
 
-        fun cancelNotify(tag: String){
+        fun cancelNotificationByTag(tag: String){
             WorkManager.getInstance().cancelAllWorkByTag(tag)
+        }
+
+        fun cancelNotificationById(id:UUID){
+            WorkManager.getInstance().cancelWorkById(id)
+        }
+
+        fun cancelNotificationsById(vararg ids:UUID?){
+            ids.forEach {id ->
+                id?.let { WorkManager.getInstance().cancelWorkById(it) }
+            }
         }
 
 

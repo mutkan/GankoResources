@@ -32,6 +32,7 @@ import com.ceotic.ganko.work.NotificationWork
 import com.ceotic.ganko.work.NotificationWork.Companion.TYPE_VACCINES
 import com.jakewharton.rxbinding2.view.clicks
 import com.jakewharton.rxbinding2.widget.checkedChanges
+import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.rxkotlin.subscribeBy
@@ -122,7 +123,7 @@ class AddVaccineActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
                     }
                     else viewModel.inserFirstVaccine(vaccine)
                 }
-                .flatMapSingle { docId ->
+                .flatMapMaybe { docId ->
                     setNotification(docId)
                 }.retry()
                 .subscribeBy(
@@ -178,7 +179,7 @@ class AddVaccineActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
 
     }
 
-    private fun setNotification(docId: String): Single<Unit>? = Single.create<Unit> { e ->
+    private fun setNotification(docId: String): Maybe<UUID>? = Maybe.create<UUID> { e ->
         if (revaccinationRequired.isChecked) {
             val proximaAplicacion = nextApplicationVaccine.text().toLong()
             val unidadTiempo = timeUnitsSpinner.selectedItem.toString()
@@ -201,7 +202,7 @@ class AddVaccineActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
             e.onSuccess(NotificationWork.notify(TYPE_VACCINES, "Recordatorio Vacunas", "Aplicación de vacuna contra $nombreVacuna, $dosis ml", docId,
                     notifyTime, TimeUnit.HOURS))
         } else {
-            e.onSuccess(Unit)
+            e.onComplete()
         }
     }
 

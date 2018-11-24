@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.View
 import android.widget.DatePicker
 import com.ceotic.ganko.R
+import com.ceotic.ganko.data.models.Bovino.Companion.ALERT_ZEAL
 import com.ceotic.ganko.di.Injectable
 import com.ceotic.ganko.ui.bovine.reproductive.ListZealFragment.Companion.ID_BOVINO
 import com.ceotic.ganko.ui.bovine.reproductive.ReproductiveBvnViewModel
@@ -15,7 +16,6 @@ import com.ceotic.ganko.util.*
 import com.ceotic.ganko.work.NotificationWork
 import com.ceotic.ganko.work.NotificationWork.Companion.TYPE_REPRODUCTIVE
 import com.jakewharton.rxbinding2.view.clicks
-import io.reactivex.Single
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_add_zeal.*
 import java.util.*
@@ -63,8 +63,12 @@ class AddZealActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
                     val dif = nextZealDate.time - Date().time
                     val notifyTime = TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS) - 1
                     Log.d("Days to zeal", notifyTime.toString())
-                    Single.just(NotificationWork.notify(TYPE_REPRODUCTIVE, "Recordatorio Celo", "Es probable que el bovino ${bovino.nombre} entre en celo mañana, fecha de ultimo celo $ultimoCelo", idBovino,
-                            notifyTime, TimeUnit.DAYS, "${bovino._id}-Zeal"))
+                    if (notifyTime >= 0) {
+                        val uuidCelo = NotificationWork.notify(TYPE_REPRODUCTIVE, "Recordatorio Celo", "Es probable que el bovino ${bovino.nombre} entre en celo mañana, fecha de ultimo celo $ultimoCelo", idBovino,
+                                notifyTime, TimeUnit.DAYS)
+                        bovino.notificacionesReproductivo!![ALERT_ZEAL] = uuidCelo
+                    }
+                    viewModel.updateBovino(idBovino, bovino)
 
                 }
                 .subscribeBy(
