@@ -251,7 +251,7 @@ data class Promedio(
 fun getHeader(tipoReporte:String):List<String> =
 
     when(tipoReporte){
-         "Partos futuros"-> listOf("Codigo","Nombre","Fecha","F. servicio","F. estimada de parto")
+         "Partos futuros"-> listOf("Codigo","Nombre","F. servicio","F. estimada de parto")
          "Secado"-> listOf("Codigo","Nombre","Fecha servicio","Fecha secado")
          "Preparación"-> listOf("Codigo","Nombre","Fecha de parto","Fecha de preparación")
          "Días abiertos"-> listOf("Codigo","Nombre","Ultimo parto","Ultimo servicio","Dias vacios","En servicio")
@@ -261,7 +261,7 @@ fun getHeader(tipoReporte:String):List<String> =
          "Celos"-> listOf("Codigo","Nombre","Fecha celo")
          "Resumen reproductivo"-> listOf()
          //LECHE
-         "Consolidado de leche"-> listOf("Tipo","Fecha","Operacion","Valor litros","Numero Litros","Total Litros")
+         "Consolidado de leche"-> listOf("Tipo","Fecha","Operacion","Numero Litros","Total Litros","Valor litros")
          "Reporte de leche"-> listOf("Codigo del bovino","Numero de litros","Fecha de producción","Jornada")
          //CEBA
          "Destetos"-> listOf("Codigo","Nombre","Fecha nacimiento","Fecha destete","Codigo madre","Nombre madre")

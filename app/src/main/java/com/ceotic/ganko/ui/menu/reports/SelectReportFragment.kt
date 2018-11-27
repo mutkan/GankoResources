@@ -253,7 +253,7 @@ class SelectReportFragment : Fragment(), Injectable, com.borax12.materialdateran
                 )
             }
             //CEBA
-            "Destetos" -> if (monthlyRadioButton.isChecked) viewmodel.reportesDestete(month, year).subscribeBy(
+            "Destetos" -> if (monthlyRadioButton.isChecked) viewmodel.reportesDestete(from,to).subscribeBy(
                     onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) })
             else viewmodel.reportesDestete(from, to).subscribeBy(
                     onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
@@ -366,6 +366,12 @@ class SelectReportFragment : Fragment(), Injectable, com.borax12.materialdateran
                     onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
             )
             //PAJILLAS
+
+            "Pajillas" -> if (monthlyRadioButton.isChecked) viewmodel.reportePajillas(month, year).subscribeBy(
+                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+            ) else viewmodel.reportePajillas(from, to).subscribeBy(
+                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+            )
             //   "Pajillas"-> if (monthlyRadioButton.isChecked) viewmodel.re
             else -> emptyList<String>()
         }

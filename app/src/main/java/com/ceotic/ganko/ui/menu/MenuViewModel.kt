@@ -604,6 +604,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     }.toList().applySchedulers()
 
 
+
     fun reporteConsolidado(mes: Int, anio: Int): Single<List<List<String>>> =
             db.listByExp("idFarm" equalEx farmID!!, SalidaLeche::class)
                     .flatMapObservable { it.toObservable() }
@@ -614,7 +615,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                         val year = cal.get(Calendar.YEAR)
                         month == mes && year == anio
                     }.map {
-                        listOf(it.type!!, it.fecha!!.toStringFormat(), it.operacion!!, it.valorLitro.toString()!!, it.numeroLitros!!.toString(), it.totalLitros.toString())
+                        listOf(it.type!!, it.fecha!!.toStringFormat(), it.operacion!!, it.numeroLitros!!.toString(), it.totalLitros.toString(), it.valorLitro.toString()!!)
                     }.toList().applySchedulers()
 
     fun reporteConsolidado(from: Date, to: Date): Single<List<List<String>>> =
@@ -674,14 +675,14 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
 
 
     fun reportesDestete(from: Date, to: Date): Single<List<List<String>>> =
-            db.listByExp("idFinca" equalEx farmID!! andEx ("fechaDestete".betweenDates(from, to)), Bovino::class)
+            db.listByExp("finca" equalEx farmID!!  andEx ("fechaDestete".betweenDates(from, to)), Bovino::class)
                     .flatMapObservable { it.toObservable() }
                     .map {
                         listOf(it.codigo!!, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), it.fechaDestete!!.toStringFormat(), it.codigoMadre!!, it.codigoPadre!!)
                     }.toList().applySchedulers()
 
     fun reportesDestete(mes: Int, anio: Int): Single<List<List<String>>> =
-            db.listByExp("idFinca" equalEx farmID!!, Bovino::class)
+            db.listByExp("finca" equalEx farmID!!, Bovino::class)
                     .flatMapObservable { it.toObservable() }
                     .filter {
                         val cal = Calendar.getInstance()
@@ -1068,6 +1069,32 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                                 }
                     }.toList().applySchedulers()
     //endregion
+
+    //region reporte pajillas
+
+    fun reportePajillas(from:Date,to:Date): Single<List<List<String>>> =
+            db.listByExp("idFarm" equalEx farmID andEx ("fecha".betweenDates(from, to)), Straw::class)
+                    .flatMapObservable { it.toObservable()}
+                    .map {
+                        listOf(it.idStraw!!,it.layette!!,it.breed!!,it.purpose!!,it.bull!!,it.origin!!)
+                    }.toList().applySchedulers()
+
+
+    fun reportePajillas(mes:Int, anio:Int): Single<List<List<String>>> =
+            db.listByExp("idFarm" equalEx farmID, Straw::class)
+                    .flatMapObservable { it.toObservable() }
+                    .filter {
+                        val fecha = it.fecha!!
+                        val cal = Calendar.getInstance()
+                        cal.timeInMillis = fecha.time
+                        val month = cal.get(Calendar.MONTH)
+                        val year = cal.get(Calendar.YEAR)
+                        month == mes && year == anio}
+                    .map {
+                        listOf(it.idStraw!!,it.layette!!,it.breed!!,it.purpose!!,it.bull!!,it.origin!!)
+                    }.toList().applySchedulers()
+
+    //endregion reporte
 
     //region partos atendidos
     fun reportePartosAtendidos(from: Date, to: Date): Single<List<List<String>>> =
