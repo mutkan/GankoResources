@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import com.ceotic.ganko.R
 import com.ceotic.ganko.data.models.Bovino
+import com.ceotic.ganko.data.models.Bovino.Companion.ALERT_DIAGNOSIS
 import com.ceotic.ganko.data.models.Servicio
 import com.ceotic.ganko.data.models.Straw
 import com.ceotic.ganko.di.Injectable
@@ -21,7 +22,6 @@ import com.ceotic.ganko.work.NotificationWork.Companion.TYPE_REPRODUCTIVE
 import com.jakewharton.rxbinding2.view.clicks
 import com.jakewharton.rxbinding2.widget.checkedChanges
 import io.reactivex.Observable
-import io.reactivex.Single
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_add_service.*
 import java.util.*
@@ -127,8 +127,12 @@ class AddServiceActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
                     val dif = Date().time - bovino.servicios!![0].fecha!!.time
                     val daysToDiagnosis =  34 - TimeUnit.DAYS.convert((dif), TimeUnit.MILLISECONDS)
                     Log.d("Dias to diagnostico", daysToDiagnosis.toString())
-                    Single.just(NotificationWork.notify(TYPE_REPRODUCTIVE, "Recordatorio Diagnostico de preñez", "Verificar preñez del bovino ${bovino.nombre}, fecha del servicio $ultimoServicio", idBovino,
-                            daysToDiagnosis, TimeUnit.DAYS))
+                    if(daysToDiagnosis >= 0){
+                        val uuidDiagnosis = NotificationWork.notify(TYPE_REPRODUCTIVE, "Recordatorio Diagnostico de preñez", "Verificar preñez del bovino ${bovino.nombre}, fecha del servicio $ultimoServicio", idBovino,
+                                daysToDiagnosis, TimeUnit.DAYS)
+                        bovino.notificacionesReproductivo!![ALERT_DIAGNOSIS] = uuidDiagnosis
+                    }
+                    viewModel.updateBovino(idBovino, bovino)
                 }
                 .subscribeBy(
                         onNext = {

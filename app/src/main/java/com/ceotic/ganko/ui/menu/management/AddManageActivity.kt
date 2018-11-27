@@ -23,13 +23,17 @@ import com.ceotic.ganko.ui.groups.ReApplyActivity.Companion.REQUEST_CODE
 import com.ceotic.ganko.ui.groups.SelectActivity
 import com.ceotic.ganko.ui.menu.MenuViewModel
 import com.ceotic.ganko.util.*
+import com.ceotic.ganko.work.NotificationWork
+import com.ceotic.ganko.work.NotificationWork.Companion.TYPE_MANAGEMENT
 import com.jakewharton.rxbinding2.view.clicks
 import com.jakewharton.rxbinding2.widget.itemSelections
+import io.reactivex.Single
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_add_manage.*
 import org.jetbrains.anko.startActivityForResult
 import org.jetbrains.anko.toast
 import java.util.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDateSetListener {
@@ -82,48 +86,30 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
         super.onResume()
         setupGroupFragment()
 
-        if (edit) {
-            dis add btnSaveManage.clicks()
-                    .flatMap {
-                        validateForm(R.string.empty_fields, product.text.toString(), frecuency.text.toString(), productPrice.text.toString(),
-                                assistancePrice.text.toString())
+        dis add btnSaveManage.clicks()
+                .flatMap {
+                    validateForm(R.string.empty_fields, product.text.toString(), frecuency.text.toString(), productPrice.text.toString(),
+                            assistancePrice.text.toString())
+                }
+                .flatMapSingle {
+                    val manage = createManage(it)
+                    if (edit) viewModel.insertManage(manage).flatMap { id ->
+                        viewModel.updateManage(previousManage.apply { estadoProximo = APPLIED }).map { id }
                     }
-                    .flatMapSingle {
-                        val manage = createManage(it)
-                        viewModel.insertManage(manage)
-                    }
-                    .flatMapSingle {
-                        viewModel.updateManage(previousManage.apply { estadoProximo = APPLIED })
-                    }
-                    .subscribeBy(
+                    else  viewModel.insertManage(manage)
+                }
+                .flatMapSingle { docId ->
+                    setNotification(docId)
+                }.retry()
+                .subscribeBy(
                             onNext = {
+                                if (!edit) toast("Evento registrado")
                                 finish()
                             },
                             onError = {
                                 Log.e("ERROR", it.message, it)
                             }
                     )
-        } else {
-            dis add btnSaveManage.clicks()
-                    .flatMap {
-                        validateForm(R.string.empty_fields, product.text.toString(), frecuency.text.toString(), productPrice.text.toString(),
-                                assistancePrice.text.toString())
-                    }
-                    .flatMapSingle {
-                        val manage = createManage(it)
-                        viewModel.insertManage(manage)
-                    }
-                    .subscribeBy(
-                            onNext = {
-                                toast("Evento registrado")
-                                finish()
-                            },
-                            onError = {
-                                toast(it.message!!)
-                            }
-
-                    )
-        }
 
         dis add spinnerEventType.itemSelections()
                 .subscribeBy(
@@ -173,6 +159,30 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
 
         dis add eventDate.clicks()
                 .subscribe { datePicker.show() }
+    }
+
+    private fun setNotification(docId: String): Single<Unit>? = Single.create<Unit> { e ->
+        var aplicaciones = numberAplications.text().toInt()
+        if (aplicaciones > 1) {
+            val proximaAplicacion = frecuency.text().toLong()
+            val unidadTiempo = spinnerFrecuency.selectedItem.toString()
+            val proxTime = when (unidadTiempo) {
+                "Horas" -> proximaAplicacion
+                "Días" -> proximaAplicacion * 24
+                "Meses" -> proximaAplicacion * 24 * 30
+                else -> proximaAplicacion * 24 * 30 * 12
+            }
+            val notifyTime: Long = when (proxTime) {
+                in 3..24 -> proxTime - 1
+                else -> proxTime - 24
+            }
+            val evento = spinnerEventType.selectedItem.toString()
+
+            e.onSuccess(NotificationWork.notify(TYPE_MANAGEMENT, "Recordatorio Manejo", "Evento pendiente: $evento", docId,
+                    notifyTime, TimeUnit.HOURS))
+        } else {
+            e.onSuccess(Unit)
+        }
     }
 
     private fun createManage(fields: List<String>): RegistroManejo {
@@ -226,7 +236,7 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
 
     }
 
-    fun setupGroupFragment() {
+    private fun setupGroupFragment() {
         if ((group != null || bovines != null) && groupFragment == null) {
             groupFragment = if (group != null) GroupFragment.instance(5, group!!)
             else GroupFragment.instance(5, bovines!!)
