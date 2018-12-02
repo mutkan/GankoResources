@@ -25,7 +25,7 @@
             android:layout_marginEnd="32dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="24dp"
-            android:text="@{sanidad.evento}"
+            android:text='@{sanidad.evento.equals("Otra") ? sanidad.otra : sanidad.evento}'
             app:layout_constraintEnd_toStartOf="@+id/disease_date"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
