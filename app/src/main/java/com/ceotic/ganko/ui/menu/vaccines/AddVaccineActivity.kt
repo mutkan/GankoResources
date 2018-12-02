@@ -35,6 +35,7 @@ import com.jakewharton.rxbinding2.widget.checkedChanges
 import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
+import io.reactivex.internal.operators.single.SingleFromCallable
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_add_vaccine.*
 import org.jetbrains.anko.contentView
@@ -123,7 +124,7 @@ class AddVaccineActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
                     }
                     else viewModel.inserFirstVaccine(vaccine)
                 }
-                .flatMapMaybe { docId ->
+                .flatMapSingle { docId ->
                     setNotification(docId)
                 }.retry()
                 .subscribeBy(
@@ -179,7 +180,7 @@ class AddVaccineActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
 
     }
 
-    private fun setNotification(docId: String): Maybe<UUID>? = Maybe.create<UUID> { e ->
+    private fun setNotification(docId: String):Single<Unit> = SingleFromCallable{
         if (revaccinationRequired.isChecked) {
             val proximaAplicacion = nextApplicationVaccine.text().toLong()
             val unidadTiempo = timeUnitsSpinner.selectedItem.toString()
@@ -199,11 +200,10 @@ class AddVaccineActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
                 dosisVacuna != -1.0 -> dosisVacuna
                 else -> otherDose.text().toDouble()
             }
-            e.onSuccess(NotificationWork.notify(TYPE_VACCINES, "Recordatorio Vacunas", "Aplicación de vacuna contra $nombreVacuna, $dosis ml", docId,
-                    notifyTime, TimeUnit.HOURS))
-        } else {
-            e.onComplete()
+            NotificationWork.notify(TYPE_VACCINES, "Recordatorio Vacunas", "Aplicación de vacuna contra $nombreVacuna, $dosis ml", docId,
+                    notifyTime, TimeUnit.HOURS)
         }
+
     }
 
 

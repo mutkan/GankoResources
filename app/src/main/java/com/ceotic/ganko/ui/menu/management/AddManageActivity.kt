@@ -28,6 +28,7 @@ import com.ceotic.ganko.work.NotificationWork.Companion.TYPE_MANAGEMENT
 import com.jakewharton.rxbinding2.view.clicks
 import com.jakewharton.rxbinding2.widget.itemSelections
 import io.reactivex.Single
+import io.reactivex.internal.operators.single.SingleFromCallable
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_add_manage.*
 import org.jetbrains.anko.startActivityForResult
@@ -161,7 +162,7 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                 .subscribe { datePicker.show() }
     }
 
-    private fun setNotification(docId: String): Single<Unit>? = Single.create<Unit> { e ->
+    private fun setNotification(docId: String): Single<Unit>? = SingleFromCallable {
         var aplicaciones = numberAplications.text().toInt()
         if (aplicaciones > 1) {
             val proximaAplicacion = frecuency.text().toLong()
@@ -178,10 +179,8 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
             }
             val evento = spinnerEventType.selectedItem.toString()
 
-            e.onSuccess(NotificationWork.notify(TYPE_MANAGEMENT, "Recordatorio Manejo", "Evento pendiente: $evento", docId,
-                    notifyTime, TimeUnit.HOURS))
-        } else {
-            e.onSuccess(Unit)
+            NotificationWork.notify(TYPE_MANAGEMENT, "Recordatorio Manejo", "Evento pendiente: $evento", docId,
+                    notifyTime, TimeUnit.HOURS)
         }
     }
 
