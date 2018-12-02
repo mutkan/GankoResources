@@ -53,6 +53,7 @@ class ListZealFragment : Fragment(), Injectable {
                             nextZeal.text = it.second?.toStringFormat() ?: "No hay celos registrados"
                             val zeals = it.first
                             listZealAdapter.zeals = zeals ?: emptyList()
+                            listZealAdapter.zealsServed = it.third
                             val empty = zeals?.isEmpty() ?: true
                             isEmpty.set(empty)
                         }

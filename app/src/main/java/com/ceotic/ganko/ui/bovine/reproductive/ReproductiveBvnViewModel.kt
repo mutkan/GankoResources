@@ -14,6 +14,7 @@ import io.reactivex.rxkotlin.toObservable
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import kotlin.collections.HashMap
 
 class ReproductiveBvnViewModel @Inject constructor(private val db: CouchRx, private val userSession: UserSession) : ViewModel() {
 
@@ -24,7 +25,10 @@ class ReproductiveBvnViewModel @Inject constructor(private val db: CouchRx, priv
     fun getBovino(idBovino: String) = db.oneById(idBovino, Bovino::class).applySchedulers()
 
     fun getZeals(idBovino: String) = db.oneById(idBovino, Bovino::class)
-            .map { Pair(it.celos, it.fechaProximoCelo) }
+            .map {bovino ->
+                val zealsServedList = bovino.servicios?.filter { it.fechaUltimoCelo != null } ?: emptyList()
+                val zealsServed = HashMap(zealsServedList.associateBy({it.fechaUltimoCelo!!},{true}))
+                Triple(bovino.celos, bovino.fechaProximoCelo, zealsServed) }
             .applySchedulers()
 
     fun insertZeal(idBovino: String, zeal: Date, nextZeal: Date): Maybe<Bovino> = db.oneById(idBovino, Bovino::class)
@@ -116,7 +120,7 @@ class ReproductiveBvnViewModel @Inject constructor(private val db: CouchRx, priv
     fun markStrawAsUsed(strawID: String): Single<Unit>
     = db.oneById(strawID,Straw::class).flatMapSingle { db.update(it._id!!,it.apply { state = Straw.USED_STRAW }) }.applySchedulers()
 
-    fun getAllBulls(): Single<List<Bovino>> = db.listByExp("finca" equalEx farmId andEx ("genero" equalEx "Macho"), Bovino::class)
+    fun getAllBulls(): Single<List<Bovino>> = db.listByExp("finca" equalEx farmId andEx ("genero" equalEx "Macho") andEx ("retirado" equalEx false), Bovino::class)
             .flatMap {
                 it.toObservable().filter {
                     val dif = Date().time - it.fechaNacimiento!!.time
