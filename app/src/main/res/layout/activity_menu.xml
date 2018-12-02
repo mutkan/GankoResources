@@ -1,18 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.cristian.myapplication.ui.menu.MenuActivity">
+    tools:context="com.ceotic.ganko.ui.menu.MenuActivity">
 
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/planMsg"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/plan_msg"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:gravity="center"
+            android:padding="@dimen/xsmall"
+            android:background="@color/plan"
+            android:textColor="#fff"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
@@ -20,6 +32,10 @@
             android:layout_height="wrap_content"
             android:background="@color/bovine_primary"
             android:minHeight="?attr/actionBarSize"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/planMsg"
             app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
         <FrameLayout
@@ -43,7 +59,7 @@
 
     <fragment
         android:id="@+id/filterMenu"
-        android:name="com.example.cristian.myapplication.ui.menu.FilterFragment"
+        android:name="com.ceotic.ganko.ui.menu.FilterFragment"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="end" />

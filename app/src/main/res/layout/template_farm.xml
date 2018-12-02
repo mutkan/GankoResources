@@ -5,7 +5,7 @@
     <data>
         <variable
             name="farm"
-            type="com.example.cristian.myapplication.data.models.Finca"/>
+            type="com.ceotic.ganko.data.models.Finca"/>
         <variable
             name="clickDeleteFarm"
             type="io.reactivex.subjects.PublishSubject"/>

@@ -1,7 +1,5 @@
 <resources>
 
-
-
     <string name="app_name">Ganko Bovinos</string>
     <string name="email">Email</string>
     <string name="password">Contraseña</string>
@@ -24,7 +22,7 @@
     <string name="farm_name">Nombre de la Finca</string>
     <string name="change_farm">Cambiar Finca</string>
     <string name="bovines">BOVINOS</string>
-    <string name="milk">VENTA DE LECHE</string>
+    <string name="milk">PRODUCCION DE LECHE</string>
     <string name="reproductive_uppercase">REPRODUCTIVO</string>
     <string name="meat_uppercase">CEBA</string>
     <string name="feeding">ALIMENTACIÓN</string>
@@ -66,12 +64,12 @@
     <string name="btn_next">Siguiente</string>
     <string name="add_bovine">Agregar Bovino</string>
     <string name="number">Numero</string>
-    <string name="number_of_identification">Numero de Identificación</string>
+    <string name="number_of_identification">Número de Identificación</string>
     <string name="name">Nombre</string>
     <string name="name_placeholder">Nombre del Bovino</string>
     <string name="bovine_breed">Raza del Bovino</string>
-    <string name="number_of_births">Numero de Partos</string>
-    <string name="previous_number_of_births">Numero de Partos Previos</string>
+    <string name="number_of_births">Número de Partos</string>
+    <string name="previous_number_of_births">Número de Partos Previos</string>
     <string name="weight">Peso</string>
     <string name="weight_in_kg">Peso en Kilogramos</string>
     <string name="kilogram">Kg</string>
@@ -79,11 +77,11 @@
     <string name="bovine_color">Color del Bovino</string>
     <string name="weaned">Destetado</string>
     <string name="weaned_date">Fecha de Destete</string>
-    <string name="btn_back">Atras</string>
+    <string name="btn_back">Atrás</string>
     <string name="father_id">ID Padre</string>
     <string name="mother_id">ID Madre</string>
-    <string name="father_id_text">Identificacion del Padre</string>
-    <string name="mother_id_text">Identificacion de la Madre</string>
+    <string name="father_id_text">Identificación del Padre</string>
+    <string name="mother_id_text">Identificación de la Madre</string>
     <string name="btn_add_photo">Agregar Foto</string>
     <string name="reproductive">Reproductivo</string>
     <string name="milk_production">Producción de Leche</string>
@@ -91,24 +89,24 @@
     <string name="total_kg">Total Kilogramos</string>
     <string name="morning">Mañana</string>
     <string name="afternoon">Tarde</string>
-    <string name="add_milk_production">Agregar Produccion de Leche</string>
+    <string name="add_milk_production">Agregar Producción de Leche</string>
     <string name="date">Fecha</string>
     <string name="production">Producción</string>
     <string name="liters_text">Litros</string>
     <string name="time">Jornada</string>
     <string name="zeal">Celo</string>
     <string name="service">Servicio</string>
-    <string name="next_estimated_zeal">Proximo Celo Estimado</string>
+    <string name="next_estimated_zeal">Próximo Celo Estimado</string>
     <string name="historical">Historico</string>
     <string name="add_zeal">Agregar Celo</string>
-    <string name="possible_zeal_date">Fecha Pisible Celo</string>
+    <string name="possible_zeal_date">Fecha Posible Celo</string>
     <string name="zeal_date">Fecha de Celo</string>
     <string name="riding_date">fecha de Monta</string>
     <string name="palpation_date">Fecha de Palpación</string>
     <string name="weight_gain">Ganancia de Peso</string>
     <string name="kg">Kg</string>
     <string name="add_weight_gain">Agregar Ganancia de Peso</string>
-    <string name="measure_date">Fecha de Medicion</string>
+    <string name="measure_date">Fecha de Medición</string>
     <string name="food_name">Nombre del Alimento</string>
     <string name="price_per_kilo">Precio por Kilo</string>
     <string name="total_price">Valor Total</string>
@@ -124,7 +122,7 @@
     <string name="price">Valor</string>
     <string name="dicease_name">Nombre de la Enfermedad</string>
     <string name="dosis">Dosis</string>
-    <string name="atention_prince">Valor de la Atencion</string>
+    <string name="atention_prince">Valor de la Atención</string>
     <string name="milk_sell">Venta de Leche</string>
     <string name="liters_sold">Litros Vendidos</string>
     <string name="price_per_liter">Precio por Litro</string>
@@ -148,8 +146,8 @@
     <string name="origin_name">Nombre de la procedencia</string>
     <string name="date_value">dd / mm / yyyy</string>
     <string name="button_plus">+</string>
-    <string name="menu_open">Menu abierto</string>
-    <string name="menu_close">Menu cerrado</string>
+    <string name="menu_open">Menú abierto</string>
+    <string name="menu_close">Menú cerrado</string>
 
     <string name="operation_type">Tipo de Operación</string>
 
@@ -174,8 +172,8 @@
     <string name="feed_date">Fecha del alimento</string>
     <string name="feed_kile_value">Valor por kilo</string>
     <string name="feed_total_value">Valor Total</string>
-    <string name="last_feed">Ultima Alimentacion</string>
-    <string name="monthly_feed">Valor de alimentacion mensual</string>
+    <string name="last_feed">Ultima Alimentación</string>
+    <string name="monthly_feed">Valor de alimentación mensual</string>
     <string name="monthlyFeed">27000 COP</string>
     <string name="feedNumberBovine">1</string>
     <string name="manage_treatment">Tratamiento</string>
@@ -195,7 +193,7 @@
 
     //Validate Form
 
-    <string name="empty_fields">No Debe Haber Campos Vacios</string>
+    <string name="empty_fields">No Debe Haber Campos Vacíos</string>
     <string name="food_type">Tipo de alimento</string>
     <string name="feed_kg_value">Valor por kilogramo</string>
     <string name="finalize">Finalizar</string>
@@ -227,7 +225,7 @@
     <string name="onService">En Servicio</string>
     <string name="services">Servicios</string>
     <string name="meadow_size_text">Tamaño de la pradera</string>
-    <string name="graminea_type">Tipo de Graminea</string>
+    <string name="graminea_type">Tipo de Gramínea</string>
     <string name="manteinance">Mantenimiento</string>
     <string name="aforo">Aforo</string>
     <string name="aforo_average">Promedio</string>
@@ -290,18 +288,18 @@
 
     <string-array name="feed_types">
         <item>Forraje</item>
-        <item>Maiz</item>
+        <item>Maíz</item>
         <item>Concentrado</item>
     </string-array>
 
     <string-array name="meadow_alarm_type">
-        <item>Ocupacion</item>
+        <item>Ocupación</item>
         <item>Descanso</item>
-        <item>Fertilizacion</item>
+        <item>Fertilización</item>
     </string-array>
     <string-array name="meadow_alarm_time">
         <item>Hora(s)</item>
-        <item>Dia(s)</item>
+        <item>Día(s)</item>
         <item>Mes(es)</item>
         <item>Año(s)</item>
     </string-array>
@@ -314,13 +312,13 @@
     <string name="event_type">Tipo de evento</string>
     <string name="other_which">¿Otro?¿Cuál?</string>
     <string name="which_other_event_type">¿Cuál otro tipo de evento?</string>
-    <string name="write_the_other_event_type">Escríba el otro tipo de evento</string>
+    <string name="write_the_other_event_type">Escriba el otro tipo de evento</string>
     <string name="event_date">Fecha del evento</string>
-    <string name="treatment_or_strategy">Tramiento o estrategia</string>
+    <string name="treatment_or_strategy">Tratamiento o estrategia</string>
     <string name="treatment_or_strategy_applied">Tratamiento o estrategia aplicado</string>
     <string name="product_applied">Producto aplicado</string>
     <string name="frecuency_in_days">Frecuencia en días</string>
-    <string name="write_your_observations">Escríba sus observaciones</string>
+    <string name="write_your_observations">Escriba sus observaciones</string>
     <string name="add_group_title">Selecciona los Bovinos</string>
     <string name="group_selected">Bovinos Seleccionados</string>
     <string name="group_one_selected">Grupo Seleccionado</string>
@@ -341,10 +339,10 @@
     <string name="attention_value">Valor de la atención</string>
     <string name="other">Otra</string>
     <string name="event">Evento</string>
-    <string name="times_a_day">veces al dia</string>
+    <string name="times_a_day">veces al día</string>
     <string name="applications_number">Número de aplicaciones</string>
     <string name="channel_name">Ganko Alertas</string>
-    <string name="channel_description">Alertas de proximos eventos</string>
+    <string name="channel_description">Alertas de próximos eventos</string>
     <string name="frequency_in_days">Frecuencia en días</string>
     <string name="bovine_number">Número de bovinos</string>
     <string name="recents">Recientes</string>
@@ -363,7 +361,7 @@
     <string name="no_feed_register">No hay registros de alimentación</string>
     <string name="aplications">Aplicaciones</string>
     <string name="health_name">Nombre de la sanidad</string>
-    <string name="ground_type">Tipo de Graminea</string>
+    <string name="ground_type">Tipo de Gramínea</string>
     <string name="category_select">Seleccione una categoría</string>
     <string name="report_type">Tipo de reporte</string>
     <string name="create_report">Generar reporte</string>
@@ -378,9 +376,17 @@
     <string name="show_average">Visualizar promedio</string>
     <string name="average_of_month">Promedio del mes</string>
     <string name="average_type" >Seleccionar promedio</string>
-    <string name="addFeed">Agregar Alimentacion</string>
+    <string name="addFeed">Agregar Alimentación</string>
     <string name="no_observations">Sin observaciones</string>
     <string name="straw_exist">Id de Pajilla ya existe</string>
+    <string name="id_bovine_exist">Id de bovino ya existe</string>
+    <string name="empty_meadow_text">Pradera vacía</string>
+    <string name="full_meadow_text">Pradera ocupada</string>
+    <string name="password_recovery_text">Por favor ingrese su correo electrónico, presione el botón siguiente y siga las instrucciones que se enviaran a su correo electrónico.</string>
+    <string name="toro_birth_text_add_service">Monta Natural: El toro debe ser mayor a un año.</string>
+    <string name="plan_limit">Alcanzaste el numero maximo de bovinos</string>
+    <string name="plan_date_limit">Comunicate con nostros para renovar tu licencia :D</string>
+    <string name="plan_msg">Sincronización desactivada, renueva tu licencia</string>
 
     <string-array name="milk_production">
         <item>Litros vendidos</item>
@@ -416,7 +422,7 @@
         <item>Vacunas</item>
         <item>Sanidad</item>
         <item>Manejo</item>
-        <item>Pajilas</item>
+        <item>Pajillas</item>
     </string-array>
 
     <string-array name="reproductive_type">

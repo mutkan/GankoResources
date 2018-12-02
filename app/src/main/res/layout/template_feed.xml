@@ -8,7 +8,7 @@
     <data>
         <variable
             name="feeding"
-            type="com.example.cristian.myapplication.data.models.RegistroAlimentacion"/>
+            type="com.ceotic.ganko.data.models.RegistroAlimentacion"/>
         <import type="android.view.View"/>
     </data>
 

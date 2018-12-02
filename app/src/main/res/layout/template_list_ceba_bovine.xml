@@ -6,7 +6,7 @@
     <data>
         <variable
             name="ceba"
-            type="com.example.cristian.myapplication.data.models.Ceba"/>
+            type="com.ceotic.ganko.data.models.Ceba"/>
         <variable
             name="onClickDeleteCeba"
             type="io.reactivex.subjects.PublishSubject"/>

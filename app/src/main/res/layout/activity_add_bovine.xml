@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.cristian.myapplication.ui.bovine.AddBovineActivity">
+    tools:context="com.ceotic.ganko.ui.bovine.AddBovineActivity">
 
     <data>
         <variable
@@ -94,184 +94,6 @@
                 android:id="@+id/pages"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
-                <android.support.constraint.ConstraintLayout
-                    android:id="@+id/page1"
-                    android:layout_width="0dp"
-                    android:layout_height="470dp"
-                    android:visibility='@{page == 1 ? View.VISIBLE : View.GONE}'
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <EditText
-                        android:id="@+id/previousBovineBirths"
-                        style="@style/edit_text"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        android:layout_marginTop="8dp"
-                        android:ems="10"
-                        android:hint="@string/previous_number_of_births"
-                        android:inputType="number"
-                        android:visibility='@{stateSex == true ? View.GONE : View.VISIBLE}'
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="@+id/textView67"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="@+id/textView67"
-                        app:layout_constraintTop_toBottomOf="@+id/textView67"
-                        app:layout_constraintVertical_bias="1.0" />
-
-                    <TextView
-                        android:id="@+id/textView64"
-                        style="@style/textview_label"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:text="@string/name"
-                        app:layout_constraintEnd_toEndOf="@+id/bovineIdentificationNumber"
-                        app:layout_constraintStart_toStartOf="@+id/bovineIdentificationNumber"
-                        app:layout_constraintTop_toBottomOf="@+id/bovineIdentificationNumber" />
-
-                    <RadioGroup
-                        android:id="@+id/sexBovine"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:checkedButton="@+id/male"
-                        android:orientation="horizontal"
-                        app:layout_constraintEnd_toEndOf="@+id/textView66"
-                        app:layout_constraintStart_toStartOf="@+id/textView66"
-                        app:layout_constraintTop_toBottomOf="@+id/textView66">
-
-                        <RadioButton
-                            android:id="@+id/male"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/male" />
-
-                        <RadioButton
-                            android:id="@+id/female"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/female" />
-                    </RadioGroup>
-
-                    <TextView
-                        android:id="@+id/textView65"
-                        style="@style/textview_label"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:text="@string/breed"
-                        app:layout_constraintEnd_toEndOf="@+id/bovineName"
-                        app:layout_constraintStart_toStartOf="@+id/bovineName"
-                        app:layout_constraintTop_toBottomOf="@+id/bovineName" />
-
-                    <TextView
-                        android:id="@+id/textView66"
-                        style="@style/textview_label"
-                        android:layout_width="0dp"
-                        android:layout_height="13dp"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/sex"
-                        app:layout_constraintEnd_toEndOf="@+id/bovineRace"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="@+id/bovineRace"
-                        app:layout_constraintTop_toBottomOf="@+id/spinnerOrigin" />
-
-                    <TextView
-                        android:id="@+id/textView51"
-                        style="@style/textview_label"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="24dp"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginTop="16dp"
-                        android:text="@string/number"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <EditText
-                        android:id="@+id/bovineRace"
-                        style="@style/edit_text"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:ems="10"
-                        android:hint="@string/bovine_breed"
-                        android:inputType="text"
-                        app:layout_constraintEnd_toEndOf="@+id/textView65"
-                        app:layout_constraintStart_toStartOf="@+id/textView65"
-                        app:layout_constraintTop_toBottomOf="@+id/textView65" />
-
-                    <TextView
-                        android:id="@+id/textView67"
-                        style="@style/textview_label"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/number_of_births"
-                        android:visibility='@{stateSex == true ? View.GONE : View.VISIBLE}'
-                        app:layout_constraintEnd_toEndOf="@+id/sexBovine"
-                        app:layout_constraintStart_toStartOf="@+id/sexBovine"
-                        app:layout_constraintTop_toBottomOf="@+id/sexBovine" />
-
-                    <EditText
-                        android:id="@+id/bovineIdentificationNumber"
-                        style="@style/edit_text"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="24dp"
-                        android:ems="10"
-                        android:hint="@string/number_of_identification"
-                        android:inputType="text"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="@+id/textView51"
-                        app:layout_constraintTop_toBottomOf="@+id/textView51" />
-
-                    <EditText
-                        android:id="@+id/bovineName"
-                        style="@style/edit_text"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="24dp"
-                        android:layout_marginTop="8dp"
-                        android:ems="10"
-                        android:hint="@string/name_placeholder"
-                        android:inputType="text"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="@+id/textView64"
-                        app:layout_constraintTop_toBottomOf="@+id/textView64" />
-
-                    <TextView
-                        android:id="@+id/textView25"
-                        style="@style/textview_label"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:text="@string/origin"
-                        app:layout_constraintEnd_toEndOf="@+id/bovineRace"
-                        app:layout_constraintStart_toStartOf="@+id/bovineRace"
-                        app:layout_constraintTop_toBottomOf="@+id/bovineRace" />
-
-                    <Spinner
-                        android:id="@+id/spinnerOrigin"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:entries="@array/origin"
-                        android:spinnerMode="dialog"
-                        app:layout_constraintEnd_toEndOf="@+id/textView25"
-                        app:layout_constraintStart_toStartOf="@+id/textView25"
-                        app:layout_constraintTop_toBottomOf="@+id/textView25" />
-
-                </android.support.constraint.ConstraintLayout>
 
                 <android.support.constraint.ConstraintLayout
                     android:id="@+id/page2"
@@ -446,6 +268,239 @@
                 </android.support.constraint.ConstraintLayout>
 
                 <android.support.constraint.ConstraintLayout
+                    android:id="@+id/page1"
+                    android:layout_width="0dp"
+                    android:layout_height="470dp"
+                    android:visibility='@{page == 1 ? View.VISIBLE : View.GONE}'
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <EditText
+                        android:id="@+id/previousBovineBirths"
+                        style="@style/edit_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginTop="8dp"
+                        android:ems="10"
+                        android:hint="@string/previous_number_of_births"
+                        android:inputType="number"
+                        android:visibility='@{stateSex == true ? View.GONE : View.VISIBLE}'
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/textView67"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="@+id/textView67"
+                        app:layout_constraintTop_toBottomOf="@+id/textView67" />
+
+                    <TextView
+                        android:id="@+id/textView64"
+                        style="@style/textview_label"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/name"
+                        app:layout_constraintEnd_toEndOf="@+id/bovineIdentificationNumber"
+                        app:layout_constraintStart_toStartOf="@+id/bovineIdentificationNumber"
+                        app:layout_constraintTop_toBottomOf="@+id/bovineIdentificationNumber" />
+
+                    <RadioGroup
+                        android:id="@+id/sexBovine"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:checkedButton="@+id/male"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="@+id/textView66"
+                        app:layout_constraintStart_toStartOf="@+id/textView66"
+                        app:layout_constraintTop_toBottomOf="@+id/textView66">
+
+                        <RadioButton
+                            android:id="@+id/male"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/male" />
+
+                        <RadioButton
+                            android:id="@+id/female"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/female" />
+                    </RadioGroup>
+
+                    <TextView
+                        android:id="@+id/textView65"
+                        style="@style/textview_label"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/breed"
+                        app:layout_constraintEnd_toEndOf="@+id/bovineName"
+                        app:layout_constraintStart_toStartOf="@+id/bovineName"
+                        app:layout_constraintTop_toBottomOf="@+id/bovineName" />
+
+                    <TextView
+                        android:id="@+id/textView66"
+                        style="@style/textview_label"
+                        android:layout_width="0dp"
+                        android:layout_height="13dp"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/sex"
+                        app:layout_constraintEnd_toEndOf="@+id/bovineRace"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="@+id/bovineRace"
+                        app:layout_constraintTop_toBottomOf="@+id/spinnerOrigin" />
+
+                    <TextView
+                        android:id="@+id/textView51"
+                        style="@style/textview_label"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/number"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <EditText
+                        android:id="@+id/bovineRace"
+                        style="@style/edit_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:ems="10"
+                        android:hint="@string/bovine_breed"
+                        android:inputType="text"
+                        app:layout_constraintEnd_toEndOf="@+id/textView65"
+                        app:layout_constraintStart_toStartOf="@+id/textView65"
+                        app:layout_constraintTop_toBottomOf="@+id/textView65" />
+
+                    <TextView
+                        android:id="@+id/textView67"
+                        style="@style/textview_label"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/number_of_births"
+                        android:visibility='@{stateSex == true ? View.GONE : View.VISIBLE}'
+                        app:layout_constraintEnd_toEndOf="@+id/sexBovine"
+                        app:layout_constraintStart_toStartOf="@+id/sexBovine"
+                        app:layout_constraintTop_toBottomOf="@+id/sexBovine" />
+
+                    <EditText
+                        android:id="@+id/bovineIdentificationNumber"
+                        style="@style/edit_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginTop="8dp"
+                        android:ems="10"
+                        android:hint="@string/number_of_identification"
+                        android:inputType="text"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/textView51"
+                        app:layout_constraintTop_toBottomOf="@+id/textView51" />
+
+                    <EditText
+                        android:id="@+id/bovineName"
+                        style="@style/edit_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginTop="8dp"
+                        android:ems="10"
+                        android:hint="@string/name_placeholder"
+                        android:inputType="text"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/textView64"
+                        app:layout_constraintTop_toBottomOf="@+id/textView64" />
+
+                    <TextView
+                        android:id="@+id/textView25"
+                        style="@style/textview_label"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/origin"
+                        app:layout_constraintEnd_toEndOf="@+id/bovineRace"
+                        app:layout_constraintStart_toStartOf="@+id/bovineRace"
+                        app:layout_constraintTop_toBottomOf="@+id/bovineRace" />
+
+                    <Spinner
+                        android:id="@+id/spinnerOrigin"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:entries="@array/origin"
+                        android:spinnerMode="dialog"
+                        app:layout_constraintEnd_toEndOf="@+id/textView25"
+                        app:layout_constraintStart_toStartOf="@+id/textView25"
+                        app:layout_constraintTop_toBottomOf="@+id/textView25" />
+
+                </android.support.constraint.ConstraintLayout>
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/page4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:visibility='@{page == 4 ? View.VISIBLE : View.GONE}'
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/page3">
+
+                    <android.support.constraint.ConstraintLayout
+                        android:id="@+id/addBovinePhoto"
+                        android:layout_width="0dp"
+                        android:layout_height="250dp"
+                        android:background="@color/img"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <ImageView
+                            android:id="@+id/iconAddPhoto"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.35"
+                            app:srcCompat="@drawable/ic_camera" />
+
+                        <TextView
+                            android:id="@+id/textView76"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/btn_add_photo"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                            android:textColor="@color/white"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/iconAddPhoto" />
+
+                        <ImageView
+                            android:id="@+id/imgBovino"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:scaleType="centerCrop"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </android.support.constraint.ConstraintLayout>
+                </android.support.constraint.ConstraintLayout>
+
+                <android.support.constraint.ConstraintLayout
                     android:id="@+id/page3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -464,7 +519,7 @@
                         android:layout_marginTop="8dp"
                         android:ems="10"
                         android:hint="@string/mother_id_text"
-                        android:inputType="number"
+                        android:inputType="text"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@+id/textView75"
                         app:layout_constraintStart_toStartOf="@+id/textView75"
@@ -478,7 +533,7 @@
                         android:layout_marginTop="8dp"
                         android:ems="10"
                         android:hint="@string/father_id_text"
-                        android:inputType="number"
+                        android:inputType="text"
                         app:layout_constraintEnd_toEndOf="@+id/textView74"
                         app:layout_constraintStart_toStartOf="@+id/textView74"
                         app:layout_constraintTop_toBottomOf="@+id/textView74" />
@@ -563,63 +618,9 @@
 
                 </android.support.constraint.ConstraintLayout>
 
-                <android.support.constraint.ConstraintLayout
-                    android:id="@+id/page4"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:visibility='@{page == 4 ? View.VISIBLE : View.GONE}'
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/page3">
-
-                    <android.support.constraint.ConstraintLayout
-                        android:id="@+id/addBovinePhoto"
-                        android:layout_width="0dp"
-                        android:layout_height="250dp"
-                        android:background="@color/img"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <ImageView
-                            android:id="@+id/iconAddPhoto"
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.35"
-                            app:srcCompat="@drawable/ic_camera" />
-
-                        <TextView
-                            android:id="@+id/textView76"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="@string/btn_add_photo"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                            android:textColor="@color/white"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/iconAddPhoto" />
-
-                        <ImageView
-                            android:id="@+id/imgBovino"
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:scaleType="centerCrop"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                    </android.support.constraint.ConstraintLayout>
-                </android.support.constraint.ConstraintLayout>
 
             </android.support.constraint.ConstraintLayout>
+
         </android.support.v4.widget.NestedScrollView>
 
         <android.support.constraint.Guideline

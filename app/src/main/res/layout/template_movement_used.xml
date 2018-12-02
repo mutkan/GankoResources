@@ -5,7 +5,7 @@
     <data>
         <variable
             name="meadow"
-            type="com.example.cristian.myapplication.data.models.Pradera"/>
+            type="com.ceotic.ganko.data.models.Pradera"/>
         <variable
             name="onClickMeadow"
             type="io.reactivex.subjects.PublishSubject"/>
@@ -20,10 +20,10 @@
             android:id="@+id/textView106"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
             android:text='@{"Pradera "+meadow.identificador}'
             app:layout_constraintBottom_toTopOf="@+id/frameLayout7"
             app:layout_constraintEnd_toStartOf="@+id/guideline10"
@@ -72,14 +72,16 @@
 
         <TextView
             android:id="@+id/textView82"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            tools:text="@string/group"
+            android:layout_marginEnd="8dp"
+            android:gravity="center"
+            android:maxEms="3"
             android:text="@{meadow.group}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guideline13"
-            app:layout_constraintTop_toTopOf="@+id/textView107" />
+            app:layout_constraintTop_toTopOf="@+id/textView107"
+            tools:text="@string/group" />
     </android.support.constraint.ConstraintLayout>
 </layout>

@@ -5,7 +5,7 @@
 <data>
     <variable
         name="handler"
-        type="com.example.cristian.myapplication.ui.adapters.ListFeedSelectBovinesAdapter"/>
+        type="com.ceotic.ganko.ui.adapters.ListFeedSelectBovinesAdapter"/>
 </data>
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"

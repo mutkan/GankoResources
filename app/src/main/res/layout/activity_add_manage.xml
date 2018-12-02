@@ -80,10 +80,10 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
+                        android:clickable='@{!edit}'
                         android:entries="@array/event_type"
                         app:layout_constraintEnd_toEndOf="@+id/eventType"
                         app:layout_constraintStart_toStartOf="@+id/eventType"
-                        android:clickable='@{!edit}'
                         app:layout_constraintTop_toBottomOf="@+id/eventType" />
 
                     <TextView
@@ -105,8 +105,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:ems="10"
-                        android:hint="@string/write_the_other_event_type"
                         android:enabled='@{!edit}'
+                        android:hint="@string/write_the_other_event_type"
                         android:inputType="textAutoCorrect"
                         android:visibility='@{other == true ? View.VISIBLE : View.GONE}'
                         app:layout_constraintEnd_toEndOf="@+id/whichLabel"
@@ -172,8 +172,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:enabled='@{!edit}'
                         android:ems="10"
+                        android:enabled='@{!edit}'
                         android:hint="@string/number_of_aplications"
                         android:inputType="number"
                         app:layout_constraintEnd_toEndOf="@+id/numberAplicationsText"
@@ -216,8 +216,8 @@
                         style="@style/Widget.AppCompat.Spinner.Underlined"
                         android:layout_width="110dp"
                         android:layout_height="wrap_content"
-                        android:entries="@array/time_units"
                         android:clickable='@{!edit}'
+                        android:entries="@array/time_units"
                         app:layout_constraintBottom_toBottomOf="@+id/frecuency"
                         app:layout_constraintEnd_toEndOf="@+id/frecuencyLabel"
                         app:layout_constraintTop_toTopOf="@+id/frecuency" />

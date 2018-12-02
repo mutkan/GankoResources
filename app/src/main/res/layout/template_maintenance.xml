@@ -6,7 +6,7 @@
     <data>
         <variable
             name="maintenance"
-            type="com.example.cristian.myapplication.data.models.Mantenimiento"/>
+            type="com.ceotic.ganko.data.models.Mantenimiento"/>
     </data>
 
     <android.support.constraint.ConstraintLayout

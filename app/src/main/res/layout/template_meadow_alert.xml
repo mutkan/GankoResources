@@ -6,7 +6,7 @@
     <data>
         <variable
             name="alert"
-            type="com.example.cristian.myapplication.data.models.MeadowAlarm"/>
+            type="com.ceotic.ganko.data.models.MeadowAlarm"/>
         <variable
             name="onClickDelete"
             type="io.reactivex.subjects.PublishSubject"/>

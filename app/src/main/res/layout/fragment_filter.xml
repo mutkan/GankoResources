@@ -3,7 +3,7 @@
     <data>
          <variable
           name="handler"
-             type="com.example.cristian.myapplication.ui.menu.bovine.ListBovineFragment"/>
+             type="com.ceotic.ganko.ui.menu.bovine.ListBovineFragment"/>
     </data>
 
     <LinearLayout android:id="@+id/filter_menu"
