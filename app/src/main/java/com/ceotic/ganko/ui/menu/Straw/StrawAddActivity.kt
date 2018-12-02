@@ -55,10 +55,13 @@ class StrawAddActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDat
     override fun onResume() {
         super.onResume()
 
+        dis add strawDate.clicks()
+                .subscribe { datePicker.show() }
+
         dis add btnAdd.clicks()
                 .flatMap {
-                    validateForm(R.string.empty_fields, strawId.text.toString(), strawDate.text.toString(), layette.text.toString(),
-                            bull.text.toString(), origin.text.toString(), value.text.toString(), breed.text.toString())
+                    validateForm(R.string.empty_fields, strawId.text.toString(), layette.text.toString(),
+                            bull.text.toString(), origin.text.toString(), value.text.toString(), breed.text.toString(), strawDate.text.toString())
                 }
                 .flatMapSingle {
                     viewModel.addStraw(

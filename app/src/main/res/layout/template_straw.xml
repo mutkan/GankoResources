@@ -42,6 +42,28 @@
             tools:text="Holstein" />
 
         <TextView
+            android:id="@+id/dateLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/date"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            app:layout_constraintBottom_toBottomOf="@+id/raceLabel"
+            app:layout_constraintStart_toStartOf="@+id/idLabel"
+            tools:text="@string/race" />
+
+        <TextView
+            android:id="@+id/dateText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:dateFormat="@{straw.fecha}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/menu_button_light"
+            app:layout_constraintStart_toStartOf="@+id/dateLabel"
+            app:layout_constraintTop_toBottomOf="@+id/dateLabel"
+            tools:text="Holstein" />
+
+        <TextView
             android:id="@+id/layetteLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -189,7 +211,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="@{straw.value}"
+            android:text='@{"$ "+straw.value}'
             app:layout_constraintStart_toStartOf="@+id/textView22"
             app:layout_constraintTop_toBottomOf="@+id/textView22"
             tools:text="@string/straw_value" />

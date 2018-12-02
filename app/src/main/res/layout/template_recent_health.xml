@@ -50,7 +50,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
             android:inputType="text"
-            android:text="@{health.evento}"
+            android:text='@{health.evento.equals("Otra") ? health.otra: health.evento}'
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@color/menu_button_light"
             app:layout_constraintStart_toStartOf="parent"
