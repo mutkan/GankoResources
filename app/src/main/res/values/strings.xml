@@ -466,7 +466,7 @@
 
     <string-array name="feed_type">
         <item>Alimentación</item>
-        <item>Suplementos usados</item>
+      <!--  <item>Suplementos usados</item>c-->
     </string-array>
 
     <string-array name="movements_type"></string-array>
