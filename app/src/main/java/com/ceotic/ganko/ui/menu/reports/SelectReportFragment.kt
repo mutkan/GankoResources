@@ -229,7 +229,7 @@ class SelectReportFragment : Fragment(), Injectable, com.borax12.materialdateran
             "Tres servicios" -> viewmodel.reporteTresServicios().subscribeBy(
                     onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
             )
-            "Celos" -> viewmodel.reporteCelos().subscribeBy(
+            "Celos" -> viewmodel.reporteCelos(month,year).subscribeBy(
                     onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
             )
 
@@ -244,14 +244,12 @@ class SelectReportFragment : Fragment(), Injectable, com.borax12.materialdateran
                 )
             }
 
-            "Reporte de leche" -> {
-                var leche: List<List<String>> = emptyList()
-                if (monthlyRadioButton.isChecked) viewmodel.reportesLeche(month,year).subscribeBy(
+            "Reporte de leche" -> if (monthlyRadioButton.isChecked) viewmodel.reportesLeche(month,year).subscribeBy(
                     onSuccess = {pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it)})
                 else viewmodel.reportesLeche(from,to).subscribeBy(
                     onSuccess = {pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it)}
                 )
-            }
+
             //CEBA
             "Destetos" -> if (monthlyRadioButton.isChecked) viewmodel.reportesDestete(from,to).subscribeBy(
                     onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) })
@@ -286,9 +284,9 @@ class SelectReportFragment : Fragment(), Injectable, com.borax12.materialdateran
             "Praderas" -> viewmodel.reporteGetPraderas().subscribeBy(
                     onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
             )
-            "Ocupación de praderas" -> viewmodel.reporteOcupacionPraderas().subscribeBy(
+           /* "Ocupación de praderas" -> viewmodel.reporteOcupacionPraderas().subscribeBy(
                     onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
-            )
+            )*/
             //ALIMENTACION
             "Alimentación" -> {
                 var alimentacion: List<List<String>> = emptyList()
@@ -421,7 +419,7 @@ class SelectReportFragment : Fragment(), Injectable, com.borax12.materialdateran
             "Tres servicios" -> viewmodel.reporteTresServicios().subscribeBy(
                     onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
             )
-            "Celos" -> viewmodel.reporteCelos().subscribeBy(
+            "Celos" -> viewmodel.reporteCelos(month,year).subscribeBy(
                     onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
             )
 
@@ -485,9 +483,9 @@ class SelectReportFragment : Fragment(), Injectable, com.borax12.materialdateran
             "Praderas" -> viewmodel.reporteGetPraderas().subscribeBy(
                     onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
             )
-            "Ocupación de praderas" -> viewmodel.reporteOcupacionPraderas().subscribeBy(
+           /* "Ocupación de praderas" -> viewmodel.reporteOcupacionPraderas().subscribeBy(
                     onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
-            )
+            )*/
             //ALIMENTACION
             "Alimentación" -> {
                 var alimentacion: List<List<String>> = emptyList()

@@ -178,8 +178,8 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
             }
             val evento = spinnerEventType.selectedItem.toString()
 
-            e.onSuccess(NotificationWork.notify(TYPE_MANAGEMENT, "Recordatorio Manejo", "Evento pendiente: $evento", docId,
-                    notifyTime, TimeUnit.HOURS))
+          /*  e.onSuccess(NotificationWork.notify(TYPE_MANAGEMENT, "Recordatorio Manejo", "Evento pendiente: $evento", docId,
+                    notifyTime, TimeUnit.HOURS))*/
         } else {
             e.onSuccess(Unit)
         }
