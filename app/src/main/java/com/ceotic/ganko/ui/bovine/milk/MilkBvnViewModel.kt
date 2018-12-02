@@ -19,17 +19,17 @@ class MilkBvnViewModel @Inject constructor(private val db: CouchRx, private val 
             db.listByExp("bovino" equalEx idBovino, Produccion::class)
                     .applySchedulers()
 
-    fun getOne(idBovino: String): Maybe<Produccion> =
-            db.oneById(idBovino, Produccion::class)
-                    .applySchedulers()
 
-    fun addMilkProduction(produccion: Produccion): Single<String> {
-        produccion.idFinca = idFinca
-        return db.insert(produccion)
+fun getOne(idBovino: String): Maybe<Produccion> =
+        db.oneById(idBovino, Produccion::class)
                 .applySchedulers()
-    }
 
-    fun getBovineById(idBovino: String) = db.oneById(idBovino, Bovino::class).applySchedulers()
-
+fun addMilkProduction(produccion: Produccion): Single<String> {
+    produccion.idFinca = idFinca
+    return db.insert(produccion)
+            .applySchedulers()
 }
 
+fun getBovineById(idBovino: String) = db.oneById(idBovino, Bovino::class).applySchedulers()
+
+}

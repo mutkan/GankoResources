@@ -77,7 +77,7 @@ class TemplateExcel(var context: Context) {
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             try {
                 activity.startActivity(intent)
-            } catch (e: ActivityNotFoundException) {
+            } catch (e:ActivityNotFoundException) {
                 Log.e("ERROR ABRIENDO XLS", e.message, e)
                 activity.toast("No hay una aplicacion para abrir el archivo")
             }

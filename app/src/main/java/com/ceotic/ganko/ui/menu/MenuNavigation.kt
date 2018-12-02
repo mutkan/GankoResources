@@ -91,7 +91,7 @@ class MenuNavigation @Inject constructor(val activity: MenuActivity, val sesion:
     }
 
     fun navigateToReports() {
-//        activity.putFragment(R.id.content_frame, ReportsFragment.instance())
+        activity.putFragment(R.id.content_frame, ReportsFragment.instance())
     }
 
 }

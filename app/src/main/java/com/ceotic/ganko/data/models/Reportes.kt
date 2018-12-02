@@ -251,9 +251,9 @@ data class Promedio(
 fun getHeader(tipoReporte:String):List<String> =
 
     when(tipoReporte){
-         "Partos futuros"-> listOf("Codigo","Nombre","Fecha","F. servicio","F. estimada de parto")
+         "Partos futuros"-> listOf("Codigo","Nombre","F. servicio","F. estimada de parto")
          "Secado"-> listOf("Codigo","Nombre","Fecha servicio","Fecha secado")
-         "Preparación"-> listOf("Codigo","Nombre","Fecha de parto","Fecha de preparación")
+         "Preparación"-> listOf("Codigo","Nombre","Fecha de parto","Fecha de monta","Fecha de preparación")
          "Días abiertos"-> listOf("Codigo","Nombre","Ultimo parto","Ultimo servicio","Dias vacios","En servicio")
          "Partos atendidos"-> listOf("Codigo","Nombre","Fecha parto","Sexo cria", "Estado cria")
          "Abortos"-> listOf("Codigo","Nombre","Fecha servicio","Fecha confirmacion aborto")
@@ -261,14 +261,14 @@ fun getHeader(tipoReporte:String):List<String> =
          "Celos"-> listOf("Codigo","Nombre","Fecha celo")
          "Resumen reproductivo"-> listOf()
          //LECHE
-         "Consolidado de leche"-> listOf("Tipo","Fecha","Operacion","Valor litros","Numero Litros","Total Litros")
+         "Consolidado de leche"-> listOf("Tipo","Fecha","Operacion","Numero Litros","Valor litros","Total Litros")
          "Reporte de leche"-> listOf("Codigo del bovino","Numero de litros","Fecha de producción","Jornada")
          //CEBA
          "Destetos"-> listOf("Codigo","Nombre","Fecha nacimiento","Fecha destete","Codigo madre","Nombre madre")
          "Ganancia diaria de peso"-> listOf("Codigo","Nombre","Fecha nacimiento","GDP","Proposito")
          //PRADERAS
          "Praderas"-> listOf("Numero","Tipo gaminea","Fecha fertilizacion","Producto","Cantidad")
-         "Ocupación de praderas"-> listOf("Numero","Fecha ocupacion","Fecha descanso","Fecha fertilización")
+         "Ocupación de praderas"-> listOf("Numero","Graminea","Fecha de manetenimiento","Fecha ocupacion","Fecha descanso","Fecha fertilización")
          //ALIMENTACION
          "Alimentación"-> listOf("Codigos","Tipo de alimento","Ración","Precio total")
          "Suplementos usados"-> listOf("Nombre","Total usado","Valor total")
@@ -291,7 +291,7 @@ fun getHeader(tipoReporte:String):List<String> =
          //MANEJO
          "Manejo"-> listOf("Codigo","Nombre","Fecha evento","Evento","Tratamiento","Producto")
          //PAJILLAS
-         "Pajillas"-> listOf("Codigo","Canastilla","Proposito","Toro","Procedencia")
+         "Pajillas"-> listOf("Codigo","Canastilla","Raza","Proposito","Toro","Procedencia")
          else -> emptyList()
         }
 

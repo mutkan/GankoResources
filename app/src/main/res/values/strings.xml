@@ -387,6 +387,7 @@
     <string name="plan_limit">Alcanzaste el numero maximo de bovinos</string>
     <string name="plan_date_limit">Comunicate con nostros para renovar tu licencia :D</string>
     <string name="plan_msg">Sincronización desactivada, renueva tu licencia</string>
+    <string name="add_frecuency_of_prox_application">Agregue la frecuencia para la proxima aplicación </string>
 
     <string-array name="milk_production">
         <item>Litros vendidos</item>
@@ -465,7 +466,7 @@
 
     <string-array name="feed_type">
         <item>Alimentación</item>
-        <item>Suplementos usados</item>
+      <!--  <item>Suplementos usados</item>c-->
     </string-array>
 
     <string-array name="movements_type"></string-array>
