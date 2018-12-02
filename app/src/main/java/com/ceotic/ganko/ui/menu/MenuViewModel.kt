@@ -272,20 +272,19 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
             .flatMap {
                 var exp = "idFinca" equalEx farmID
                 if (it != "") exp = exp andEx ("titulo" likeEx "%$it%" orEx ("tratamiento" likeEx "%$it%") orEx ("otro" likeEx "%$it%") orEx ("producto" likeEx "%$it%"))
-                db.listObsByExp(exp, RegistroManejo::class)
-            }
-            .applySchedulers()
+                db.listObsByExp(exp, RegistroManejo::class, orderBy = arrayOf("fecha" orderEx DESCENDING))
+            }.applySchedulers()
 
     fun updateManage(registroManejo: RegistroManejo): Single<Unit> = db.update(registroManejo._id!!, registroManejo).applySchedulers()
 
     fun getNextManages(from: Date, to: Date): Observable<List<RegistroManejo>> =
-            db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProxima".betweenDates(from, to)) andEx ("estadoProximo" equalEx NOT_APPLIED), RegistroManejo::class).applySchedulers()
+            db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProxima".betweenDates(from, to)) andEx ("estadoProximo" equalEx NOT_APPLIED), RegistroManejo::class, orderBy = arrayOf("fecha" orderEx DESCENDING)).applySchedulers()
 
     fun getPendingManages(from: Date): Observable<List<RegistroManejo>> =
-            db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProxima".lte(from)) andEx ("estadoProximo" equalEx NOT_APPLIED), RegistroManejo::class).applySchedulers()
+            db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProxima".lte(from)) andEx ("estadoProximo" equalEx NOT_APPLIED), RegistroManejo::class, orderBy = arrayOf("fecha" orderEx DESCENDING)).applySchedulers()
 
     fun getManagesByDosisUno(idDosisUno: String): Single<List<RegistroManejo>> =
-            db.listByExp("idFinca" equalEx farmID andEx ("idAplicacionUno" equalEx idDosisUno), RegistroManejo::class).applySchedulers()
+            db.listByExp("idFinca" equalEx farmID andEx ("idAplicacionUno" equalEx idDosisUno), RegistroManejo::class, orderBy = arrayOf("fecha" orderEx DESCENDING)).applySchedulers()
 
     //endregion
 

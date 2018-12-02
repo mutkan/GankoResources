@@ -27,6 +27,7 @@ import com.ceotic.ganko.work.NotificationWork
 import com.ceotic.ganko.work.NotificationWork.Companion.TYPE_MANAGEMENT
 import com.jakewharton.rxbinding2.view.clicks
 import com.jakewharton.rxbinding2.widget.itemSelections
+import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.internal.operators.single.SingleFromCallable
 import io.reactivex.rxkotlin.subscribeBy
@@ -89,28 +90,28 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
 
         dis add btnSaveManage.clicks()
                 .flatMap {
-                    validateForm(R.string.empty_fields, product.text.toString(), frecuency.text.toString(), productPrice.text.toString(),
-                            assistancePrice.text.toString())
+                    if (numberAplications.text().toInt() > 1) validateForm(R.string.add_frecuency_of_prox_application, frecuency.text())
+                    else Observable.just("")
                 }
                 .flatMapSingle {
-                    val manage = createManage(it)
+                    val manage = createManage()
                     if (edit) viewModel.insertManage(manage).flatMap { id ->
                         viewModel.updateManage(previousManage.apply { estadoProximo = APPLIED }).map { id }
                     }
-                    else  viewModel.insertManage(manage)
+                    else viewModel.insertManage(manage)
                 }
                 .flatMapSingle { docId ->
                     setNotification(docId)
                 }.retry()
                 .subscribeBy(
-                            onNext = {
-                                if (!edit) toast("Evento registrado")
-                                finish()
-                            },
-                            onError = {
-                                Log.e("ERROR", it.message, it)
-                            }
-                    )
+                        onNext = {
+                            if (!edit) toast("Evento registrado")
+                            finish()
+                        },
+                        onError = {
+                            Log.e("ERROR", it.message, it)
+                        }
+                )
 
         dis add spinnerEventType.itemSelections()
                 .subscribeBy(
@@ -184,54 +185,50 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
         }
     }
 
-    private fun createManage(fields: List<String>): RegistroManejo {
-        val producto = fields[0]
-        val frecuencia = fields[1].toInt()
+    private fun createManage(): RegistroManejo {
+        val producto = product.text()
+        val frecuencia = if (frecuency.text() == "") 0 else frecuency.text().toInt()
         val unidadTiempo = spinnerFrecuency.selectedItem.toString()
-        val precioProducto = fields[2].toInt()
+        val precioProducto = if (productPrice.text() == "") 0 else productPrice.text().toInt()
         val observaciones: String? = observations.text.toString()
-        val precioAsistencia = fields[3].toInt()
+        val precioAsistencia = if (assistancePrice.text() == "") 0 else assistancePrice.text().toInt()
         val fechaEvento = eventDate.text.toString().toDate()
         val evento = spinnerEventType.selectedItem.toString()
         var otro: String? = null
-        if (evento == "Otro") {
-            otro = otherWhich.text.toString()
-        }
+        if (evento == "Otro") otro = otherWhich.text.toString()
         val tratamiento = treatment.text.toString()
         val aplicaciones = numberAplications.text.toString().toInt()
-        var fechaProximo = if (aplicaciones > 1) {
+        val fechaProximo = if (aplicaciones > 1) {
             when (unidadTiempo) {
                 "Horas" -> fechaEvento.add(Calendar.HOUR, frecuencia)
                 "Días" -> fechaEvento.add(Calendar.DATE, frecuencia)
                 "Meses" -> fechaEvento.add(Calendar.MONTH, frecuencia)
                 else -> fechaEvento.add(Calendar.YEAR, frecuencia)
             }
-        } else {
-            null
-        }
+        } else null
 
-        var numAplicacion = if (edit) {
-            if (previousManage.numeroAplicaciones!! > previousManage.aplicacion!!){
+
+        val numAplicacion = if (edit) {
+            if (previousManage.numeroAplicaciones!! > previousManage.aplicacion!!) {
                 previousManage.aplicacion!!.plus(1)
             } else {
                 previousManage.aplicacion!!
             }
-        }
-        else{
-            1
-        }
-
+        } else 1
 
         return if (!edit) {
             RegistroManejo(idFinca = farmId, fecha = fechaEvento, fechaProxima = fechaProximo, frecuencia = frecuencia, unidadFrecuencia = unidadTiempo, numeroAplicaciones = aplicaciones,
                     aplicacion = 1, tipo = evento, titulo = evento, otro = otro, tratamiento = tratamiento, descripcion = tratamiento, producto = producto, observaciones = observaciones,
                     valorProducto = precioProducto, valorAsistencia = precioAsistencia, grupo = group, bovinos = bovines, estadoProximo = NOT_APPLIED)
         } else {
-            RegistroManejo(idAplicacionUno = previousManage.idAplicacionUno, idFinca = farmId, fecha = fechaEvento, fechaProxima = if (aplicaciones > numAplicacion){fechaProximo} else {null}, frecuencia = frecuencia, unidadFrecuencia = unidadTiempo, numeroAplicaciones = aplicaciones,
+            RegistroManejo(idAplicacionUno = previousManage.idAplicacionUno, idFinca = farmId, fecha = fechaEvento, fechaProxima = if (aplicaciones > numAplicacion) {
+                fechaProximo
+            } else {
+                null
+            }, frecuencia = frecuencia, unidadFrecuencia = unidadTiempo, numeroAplicaciones = aplicaciones,
                     aplicacion = numAplicacion, tipo = evento, titulo = evento, otro = otro, tratamiento = tratamiento, descripcion = tratamiento, producto = producto, observaciones = observaciones,
                     valorProducto = precioProducto, valorAsistencia = precioAsistencia, grupo = group, bovinos = bovines, estadoProximo = NOT_APPLIED, noBovinos = noBovines)
         }
-
 
     }
 
@@ -286,7 +283,6 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                 }
             }
         }
-
 
 
     }
