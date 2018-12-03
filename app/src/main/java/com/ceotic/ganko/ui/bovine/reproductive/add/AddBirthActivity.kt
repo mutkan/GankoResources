@@ -110,7 +110,7 @@ class AddBirthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDat
                 }.flatMapSingle { pair ->
                     val bovino = pair.first
                     val servicio = pair.second
-                    val dif = Date().time - servicio.parto!!.fecha.time
+                    val dif = Date().time - servicio.parto!!.fecha!!.time
                     val daysSinceBirth = TimeUnit.DAYS.convert((dif), TimeUnit.MILLISECONDS)
                     Log.d("Dias desde parto", daysSinceBirth.toString())
                     val notify45 = 44 - daysSinceBirth

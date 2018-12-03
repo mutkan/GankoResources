@@ -96,7 +96,7 @@ class ReproductiveBvnViewModel @Inject constructor(private val db: CouchRx, priv
                     .map {
                         if (it.isNotEmpty()) {
                             val ultimoParto = it.first().parto!!.fecha
-                            val dif = servicioActual.time - ultimoParto.time
+                            val dif = servicioActual.time - ultimoParto!!.time
                             val diasVacios = TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS)
                             return@map diasVacios to ultimoParto
                         } else {
