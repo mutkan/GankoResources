@@ -134,7 +134,6 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
         }
     }
 
-
     override fun onResume() {
         super.onResume()
         setupGroupFragment()
