@@ -24,7 +24,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginLeft="24dp"
             android:layout_marginTop="24dp"
-            android:text="@{manejo.tipo}"
+            android:text='@{manejo.titulo.equals("Otro") ? manejo.otro: manejo.titulo}'
             tools:text="@string/event_name"
             android:textColor="@color/textview_label"
             app:layout_constraintStart_toStartOf="parent"
