@@ -268,12 +268,12 @@ fun getHeader(tipoReporte:String):List<String> =
          "Ganancia diaria de peso"-> listOf("Codigo","Nombre","Fecha nacimiento","GDP","Proposito")
          //PRADERAS
          "Praderas"-> listOf("Numero","Tipo gaminea","Fecha fertilizacion","Producto","Cantidad")
-         "Ocupación de praderas"-> listOf("Numero","Graminea","Fecha de manetenimiento","Fecha ocupacion","Fecha descanso","Fecha fertilización")
+         "Ocupación de praderas"-> listOf("Numero","Graminea","Fecha de manetenimiento","Fecha ocupacion")
          //ALIMENTACION
          "Alimentación"-> listOf("Codigos","Tipo de alimento","Ración","Precio total")
          "Suplementos usados"-> listOf("Nombre","Total usado","Valor total")
          //MOVIMIENTOS
-         "Animales en pradera"-> listOf("Lote","Codigo","Nombre","Fecha ingreso","Fecha salida")
+         "Animales en pradera"-> listOf("Bovinos","Pradera","Fecha de transaccion")
          //ENTRADAS
          "Inventario"-> listOf("Codigo","Nombre","Nacimiento","Propósito","Color","Raza","Partos","C.Madre","C.Padre")
          "Terneras en estaca"-> listOf("Codigo","Nombre","Nacimiento","Proposito","Raza","C.Madre", "C.Padre")

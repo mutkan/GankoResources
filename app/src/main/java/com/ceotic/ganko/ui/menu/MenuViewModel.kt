@@ -606,7 +606,6 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     }.toList().applySchedulers()
 
 
-
     fun reporteConsolidado(mes: Int, anio: Int): Single<List<List<String>>> =
             db.listByExp("idFarm" equalEx farmID!!, SalidaLeche::class)
                     .flatMapObservable { it.toObservable() }
@@ -618,14 +617,14 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                         month == mes && year == anio
                     }.map {
 
-                        listOf(it.type!!, it.fecha!!.toStringFormat(), it.operacion!!, it.numeroLitros!!.toString(), it.valorLitro.toString(), (it.valorLitro!!*it.numeroLitros!!).toString()!!)
+                        listOf(it.type!!, it.fecha!!.toStringFormat(), it.operacion!!, it.numeroLitros!!.toString(), it.valorLitro.toString(), (it.valorLitro!! * it.numeroLitros!!).toString()!!)
                     }.toList().applySchedulers()
 
     fun reporteConsolidado(from: Date, to: Date): Single<List<List<String>>> =
             db.listByExp("idFarm" equalEx farmID!! andEx ("fecha".betweenDates(from, to)), SalidaLeche::class)
                     .flatMapObservable { it.toObservable() }
                     .map {
-                        listOf(it.type!!, it.fecha!!.toStringFormat(), it.operacion!!, it.numeroLitros!!.toString(), it.valorLitro.toString(), (it.valorLitro!!*it.numeroLitros!!).toString()!!)
+                        listOf(it.type!!, it.fecha!!.toStringFormat(), it.operacion!!, it.numeroLitros!!.toString(), it.valorLitro.toString(), (it.valorLitro!! * it.numeroLitros!!).toString()!!)
                     }.toList().applySchedulers()
 
     //endregion
@@ -675,7 +674,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
 
 
     fun reportesDestete(from: Date, to: Date): Single<List<List<String>>> =
-            db.listByExp("finca" equalEx farmID!!  andEx ("fechaDestete".betweenDates(from, to)), Bovino::class)
+            db.listByExp("finca" equalEx farmID!! andEx ("fechaDestete".betweenDates(from, to)), Bovino::class)
                     .flatMapObservable { it.toObservable() }
                     .map {
                         listOf(it.codigo!!, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), it.fechaDestete!!.toStringFormat(), it.codigoMadre!!, it.codigoPadre!!)
@@ -698,23 +697,34 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
 
     //region Reporte Praderas
     fun reporteGetPraderas(): Single<List<List<String>>> =
-            db.listByExp("idFinca" equalEx farmID  , Pradera::class)
+            db.listByExp("idFinca" equalEx farmID, Pradera::class)
                     .flatMapObservable { it.toObservable() }
+                    .filter {
+
+                        it.mantenimiento!!.size != 0
+                    }
                     .map {
-                        var ultimo = it.mantenimiento!!.last()
-                        listOf(it.identificador!!.toString(), it.tipoGraminea!!, ultimo.fechaMantenimiento!!.toStringFormat(), ultimo.producto!!, ultimo.cantidad.toString())
+                        var graminea: String = ""
+
+                        if (it.tipoGraminea == null) {
+                            graminea = "No aplicada"
+                        } else {
+                            graminea = it.tipoGraminea!!
+                        }
+                        var ultimo = it.mantenimiento!![0]
+                        listOf(it.identificador!!.toString(), graminea, ultimo.fechaMantenimiento!!.toStringFormat(), ultimo.producto!!, ultimo.cantidad.toString())
                     }
                     .toList().applySchedulers()
 
-  /*  fun reporteOcupacionPraderas(): Single<List<List<String>>> =
+    fun reporteOcupacionPraderas(): Single<List<List<String>>> =
             db.listByExp("idFinca" equalEx farmID andEx ("available" equalEx false), Pradera::class)
                     .flatMapObservable { it.toObservable() }
                     .map {
                         var ultimo = it.mantenimiento!!.last()
-                        listOf(it.identificador!!.toString(), it.tipoGraminea!!, ultimo.fechaMantenimiento!!.toStringFormat(), it.fechaOcupacion!!, ultimo.producto!!, ultimo.cantidad.toString())
+                        listOf(it.identificador!!.toString(), it.tipoGraminea!!, ultimo.fechaMantenimiento!!.toStringFormat(), it.fechaOcupacion!!.toStringFormat())
                     }
                     .toList().applySchedulers()
-*/
+
 
     //endregion
 
@@ -759,8 +769,8 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     .flatMapObservable { it.toObservable() }
                     .map { listOf(it.bovino!!, bovino.nombre!!, bovino.fechaNacimiento!!.toStringFormat(), it.gananciaPeso!!.toString(), bovino.proposito!!) }.toList().applySchedulers()
 
-    fun reporteGananciaPeso(bovino: Bovino, mes: Int, anio: Int): Single<List<List<String>>> =
-            db.listByExp(("bovino" equalEx bovino.codigo!!), Ceba::class)
+   /* fun reporteGananciaPeso(bovino: Bovino, mes: Int, anio: Int): Observable<Pair<Bovino,gdp:Float>> =
+            db.listByExp(("bovino" equalEx bovino.codigo!!), orderBy = arrayOf("fecha" orderEx DESCENDING), kClass = Ceba::class)
                     .flatMapObservable { it.toObservable() }
                     .filter {
                         val cal = Calendar.getInstance()
@@ -768,22 +778,29 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                         val month = cal.get(Calendar.MONTH)
                         val year = cal.get(Calendar.YEAR)
                         month == mes && year == anio
-                    }
-                    .map { listOf(it.bovino!!, bovino.nombre!!, bovino.fechaNacimiento!!.toStringFormat(), it.gananciaPeso!!.toString(), bovino.proposito!!) }.toList().applySchedulers()
+                    }.toList()
+                    .flatMap {
+                        var difdays = ((it[it.size - 1].fecha.time - it[0].fecha.time) / (1000 * 60 * 60 * 24))
+                        var gdp = (it[it.size - 1].gananciaPeso - it[0].gananciaPeso)
+                        bovino to gdp
+                    }.applySchedulers()
+*/
     //endregion
 
     //region Entradas
 
     //region Reporte Inventario
     fun reporteInventario(from: Date, to: Date): Single<List<List<String>>> =
-            db.listByExp("idFinca" equalEx farmID andEx ("fechaNacimiento".betweenDates(from, to)), Bovino::class)
+            db.listByExp("finca" equalEx farmID andEx ("fechaNacimiento".betweenDates(from, to)), Bovino::class)
                     .flatMapObservable { it.toObservable() }
                     .map {
-                        listOf(it.codigo!!, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), it.proposito!!, it.color!!, it.raza!!, it.partos!!.toString(), it.codigoMadre!!, it.codigoPadre!!)
+                        var partos: String=""
+                        if (it.partos == null) partos = "0" else partos = it.partos.toString()
+                        listOf(it.codigo!!, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), it.proposito!!, it.color!!, it.raza!!, partos, it.codigoMadre ?: "", it.codigoPadre ?:"")
                     }.toList().applySchedulers()
 
     fun reporteInventario(mes: Int, anio: Int): Single<List<List<String>>> =
-            db.listByExp("idFinca" equalEx farmID, Bovino::class)
+            db.listByExp("finca" equalEx farmID, Bovino::class)
                     .flatMapObservable { it.toObservable() }
                     .filter {
                         val cal = Calendar.getInstance()
@@ -793,14 +810,16 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                         month == mes && year == anio
                     }
                     .map {
-                        listOf(it.codigo!!, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), it.proposito!!, it.color!!, it.raza!!, it.partos!!.toString(), it.codigoMadre!!, it.codigoPadre!!)
+                        val partos: String=""
+                        if (it.partos == null) '0' else it.partos.toString()
+                        listOf(it.codigo!!, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), it.proposito!!, it.color!!, it.raza!!, partos,it.codigoMadre ?: "", it.codigoPadre ?:"")
                     }.toList().applySchedulers()
 
     //endregion
 
     //region Reporte Terneras en estaca
     fun reporteTernerasEnEstaca(from: Date, to: Date): Single<List<List<String>>> =
-            db.listByExp("idFinca" equalEx farmID andEx ("fechaNacimiento".betweenDates(from, to) andEx ("genero" equalEx "Hembra")), Bovino::class)
+            db.listByExp("finca" equalEx farmID andEx ("fechaNacimiento".betweenDates(from, to) andEx ("genero" equalEx "Hembra")), Bovino::class)
                     .flatMapObservable { it.toObservable() }
                     .filter {
                         val cal = Calendar.getInstance()
@@ -809,12 +828,12 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                         dias <= it.fechaNacimiento!!.time && meses <= it.fechaNacimiento!!.time
                     }
                     .map {
-                        listOf(it.codigo!!, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), it.proposito!!, it.raza!!, it.codigoMadre!!, it.codigoPadre!!)
+                        listOf(it.codigo!!, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), it.proposito!!, it.raza!!,it.codigoMadre ?: "", it.codigoPadre ?:"")
                     }.toList().applySchedulers()
 
 
     fun reporteTernerasEnEstaca(mes: Int, anio: Int): Single<List<List<String>>> =
-            db.listByExp("idFinca" equalEx farmID andEx ("genero" equalEx "Hembra"), Bovino::class)
+            db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra"), Bovino::class)
                     .flatMapObservable { it.toObservable() }
                     .filter {
                         val cal = Calendar.getInstance()
@@ -826,7 +845,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                         it.fechaNacimiento!!.time in dias..meses && month == mes && anio == year
                     }
                     .map {
-                        listOf(it.codigo!!, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), it.proposito!!, it.raza!!, it.codigoMadre!!, it.codigoPadre!!)
+                        listOf(it.codigo!!, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), it.proposito!!, it.raza!!, it.codigoMadre ?: "", it.codigoPadre ?:"")
                     }.toList().applySchedulers()
 
 
@@ -835,7 +854,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     //region terneras Destetas
 
     fun reporteTernerasDestetas(from: Date, to: Date): Single<List<List<String>>> =
-            db.listByExp("idFinca" equalEx farmID andEx ("fechaNacimiento".betweenDates(from, to) andEx ("genero" equalEx "Hembra")), Bovino::class)
+            db.listByExp("finca"  equalEx farmID andEx ("destete" equalEx true) andEx ("fechaNacimiento".betweenDates(from, to) andEx ("genero" equalEx "Hembra")), Bovino::class)
                     .flatMapObservable { it.toObservable() }
                     .filter {
                         val cal = Calendar.getInstance()
@@ -844,12 +863,12 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                         dias <= it.fechaNacimiento!!.time && meses <= it.fechaNacimiento!!.time
                     }
                     .map {
-                        listOf(it.codigo!!, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), it.proposito!!, it.raza!!, it.codigoMadre!!, it.codigoPadre!!)
+                        listOf(it.codigo!!, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), it.proposito!!, it.raza!!, it.codigoMadre ?: "", it.codigoPadre ?:"")
                     }.toList().applySchedulers()
 
 
     fun reporteTernerasDestetas(mes: Int, anio: Int): Single<List<List<String>>> =
-            db.listByExp("idFinca" equalEx farmID andEx ("genero" equalEx "Hembra"), Bovino::class)
+            db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra"), Bovino::class)
                     .flatMapObservable { it.toObservable() }
                     .filter {
                         val cal = Calendar.getInstance()
@@ -861,14 +880,14 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                         it.fechaNacimiento!!.time in dias..meses && month == mes && anio == year
                     }
                     .map {
-                        listOf(it.codigo!!, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), it.proposito!!, it.raza!!, it.codigoMadre!!, it.codigoPadre!!)
+                        listOf(it.codigo!!, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), it.proposito!!, it.raza!!, it.codigoMadre ?: "", it.codigoPadre ?:"")
                     }.toList().applySchedulers()
 
     //endregion
 
     //region novillas levante
     fun reporteTerneraslevante(from: Date, to: Date): Single<List<List<String>>> =
-            db.listByExp("idFinca" equalEx farmID andEx ("fechaNacimiento".betweenDates(from, to) andEx ("genero" equalEx "Hembra")), Bovino::class)
+            db.listByExp("finca" equalEx farmID andEx ("fechaNacimiento".betweenDates(from, to) andEx ("genero" equalEx "Hembra")), Bovino::class)
                     .flatMapObservable { it.toObservable() }
                     .filter {
                         val cal = Calendar.getInstance()
@@ -877,12 +896,12 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                         dias <= it.fechaNacimiento!!.time && meses <= it.fechaNacimiento!!.time
                     }
                     .map {
-                        listOf(it.codigo!!, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), it.proposito!!, it.raza!!, it.codigoMadre!!, it.codigoPadre!!)
+                        listOf(it.codigo!!, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), it.proposito!!, it.raza!!, it.codigoMadre ?: "", it.codigoPadre ?:"")
                     }.toList().applySchedulers()
 
 
     fun reporteTerneraslevante(mes: Int, anio: Int): Single<List<List<String>>> =
-            db.listByExp("idFinca" equalEx farmID andEx ("genero" equalEx "Hembra"), Bovino::class)
+            db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra"), Bovino::class)
                     .flatMapObservable { it.toObservable() }
                     .filter {
                         val cal = Calendar.getInstance()
@@ -894,13 +913,13 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                         it.fechaNacimiento!!.time in dias..meses && month == mes && anio == year
                     }
                     .map {
-                        listOf(it.codigo!!, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), it.proposito!!, it.raza!!, it.codigoMadre!!, it.codigoPadre!!)
+                        listOf(it.codigo!!, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), it.proposito!!, it.raza!!)
                     }.toList().applySchedulers()
     //endregion
 
     //region novillas vientre
     fun reporteNovillasVientre(from: Date, to: Date): Single<List<List<String>>> =
-            db.listByExp("idFinca" equalEx farmID andEx ("fechaNacimiento".betweenDates(from, to) andEx ("genero" equalEx "Hembra")), Bovino::class)
+            db.listByExp("finca" equalEx farmID andEx ("fechaNacimiento".betweenDates(from, to) andEx ("genero" equalEx "Hembra")), Bovino::class)
                     .flatMapObservable { it.toObservable() }
                     .filter {
                         val cal = Calendar.getInstance()
@@ -909,12 +928,12 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                         dias <= it.fechaNacimiento!!.time && meses <= it.fechaNacimiento!!.time
                     }
                     .map {
-                        listOf(it.codigo!!, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), it.proposito!!, it.raza!!, it.codigoMadre!!, it.codigoPadre!!)
+                        listOf(it.codigo!!, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), it.proposito!!, it.raza!!)
                     }.toList().applySchedulers()
 
 
     fun reporteNovillasVientre(mes: Int, anio: Int): Single<List<List<String>>> =
-            db.listByExp("idFinca" equalEx farmID andEx ("genero" equalEx "Hembra"), Bovino::class)
+            db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra"), Bovino::class)
                     .flatMapObservable { it.toObservable() }
                     .filter {
                         val cal = Calendar.getInstance()
@@ -926,9 +945,11 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                         it.fechaNacimiento!!.time in dias..meses && month == mes && anio == year
                     }
                     .map {
-                        listOf(it.codigo!!, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), it.proposito!!, it.raza!!, it.codigoMadre!!, it.codigoPadre!!)
+                        listOf(it.codigo!!, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), it.proposito!!, it.raza!!)
                     }.toList().applySchedulers()
     //endregion
+
+
 
     //region reporte futuros partos
 
@@ -1261,7 +1282,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
 
     //region Reporte vacas
     fun reporteVacas(): Single<List<List<String>>> =
-            db.listByExp("idFinca" equalEx farmID andEx ("genero" equalEx "Hembra"), Bovino::class)
+            db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra"), Bovino::class)
                     .flatMapObservable { it.toObservable() }
                     .filter {
                         val cal = Calendar.getInstance()
@@ -1269,10 +1290,65 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                         dias <= it.fechaNacimiento!!.time && 1 <= it.partos!!
                     }
                     .map {
-                        listOf(it.codigo!!, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), it.proposito!!, it.raza!!, it.codigoMadre!!, it.codigoPadre!!)
+                        listOf(it.codigo!!, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), it.proposito!!, it.raza!!, it.codigoMadre?:"", it.codigoPadre?:"")
                     }.toList().applySchedulers()
 
     //endregion
+
+
+    fun reporteSalida(from:Date, to:Date):Single<List<List<String>>> =
+            db.listByExp("finca" equalEx farmID andEx ("fechaSalida").betweenDates(from,to), Bovino::class)
+                    .flatMapObservable { it.toObservable() }
+                    .map {
+                        listOf(it.codigo!!, it.nombre!!, it.fechaSalida!!.toStringFormat(),it.motivoSalida!!)
+                    }.toList().applySchedulers()
+
+
+    fun reporteSalida(mes:Int, anio:Int): Single<List<List<String>>> =
+            db.listByExp("finca" equalEx farmID , Bovino::class)
+                    .flatMapObservable { it.toObservable() }
+                    .filter{
+                        val fechaSalida= it.fechaSalida
+                        val cal = Calendar.getInstance()
+                        cal.timeInMillis = fechaSalida!!.time
+                        val month = cal.get(Calendar.MONTH)
+                        val year = cal.get(Calendar.YEAR)
+                        month == mes && year == anio}
+                    .map{
+                            listOf(it.codigo!!, it.nombre!!, it.fechaSalida!!.toStringFormat(), it.motivoSalida!!)
+                        }.toList().applySchedulers()
+
+
+    fun reporteMovimientos(from:Date,to:Date): Single<List<List<String>>> =
+        db.listByExp("idFarm" equalEx farmID andEx ("transactionDate".betweenDates(from,to)), Movimiento::class)
+                .flatMapObservable { it.toObservable() }
+                .map {
+                   // Single.just(it)
+                    var bovinos:String= ""
+                     for (bovino in it.bovinos){ bovinos+= bovino
+                     }
+                    listOf(bovinos, it.idPradera!!, it.transactionDate!!.toStringFormat())
+                }.toList().applySchedulers()
+
+
+    fun reporteMovimientos(mes:Int,anio:Int): Single<List<List<String>>> =
+            db.listByExp("idFarm" equalEx farmID , Movimiento::class)
+                    .flatMapObservable { it.toObservable() }
+                    .filter{
+                        val fechaMovimiento= it.transactionDate
+                        val cal = Calendar.getInstance()
+                        cal.timeInMillis = fechaMovimiento!!.time
+                        val month = cal.get(Calendar.MONTH)
+                        val year = cal.get(Calendar.YEAR)
+                        month == mes && year == anio
+                    }
+                    .map {
+                        // Single.just(it)
+                        var bovinos:String= ""
+                        for (bovino in it.bovinos){ bovinos+= bovino
+                        }
+                        listOf(bovinos, it.idPradera!!, it.transactionDate!!.toStringFormat())
+                    }.toList().applySchedulers()
 
     //endregion
 
