@@ -822,10 +822,10 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
             db.listByExp("finca" equalEx farmID andEx ("fechaNacimiento".betweenDates(from, to) andEx ("genero" equalEx "Hembra")), Bovino::class)
                     .flatMapObservable { it.toObservable() }
                     .filter {
-                        val cal = Calendar.getInstance()
-                        val meses = cal.get(Calendar.MONTH) + 5
-                        val dias = cal.get(Calendar.DAY_OF_YEAR) + 3
-                        dias <= it.fechaNacimiento!!.time && meses <= it.fechaNacimiento!!.time
+                        val tresdias:Long = 3*24*60*60
+                        val cincomeses:Long = 5*30*24*60*60
+                        val dif = (Date().time-it.fechaNacimiento!!.time)/1000
+                            dif in tresdias..cincomeses
                     }
                     .map {
                         listOf(it.codigo!!, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), it.proposito!!, it.raza!!,it.codigoMadre ?: "", it.codigoPadre ?:"")
@@ -838,11 +838,12 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     .filter {
                         val cal = Calendar.getInstance()
                         cal.timeInMillis = it.fechaNacimiento!!.time
-                        val meses = cal.get(Calendar.MONTH) + 5
-                        val dias = cal.get(Calendar.DAY_OF_YEAR) + 3
                         val month = cal.get(Calendar.MONTH)
                         val year = cal.get(Calendar.YEAR)
-                        it.fechaNacimiento!!.time in dias..meses && month == mes && anio == year
+                        val tresdias:Long = 3*24*60*60
+                        val cincomeses:Long = 5*30*24*60*60
+                        val dif = (Date().time-it.fechaNacimiento!!.time)/1000
+                        dif in tresdias..cincomeses && month == mes && anio == year
                     }
                     .map {
                         listOf(it.codigo!!, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), it.proposito!!, it.raza!!, it.codigoMadre ?: "", it.codigoPadre ?:"")
@@ -857,10 +858,11 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
             db.listByExp("finca"  equalEx farmID andEx ("destete" equalEx true) andEx ("fechaNacimiento".betweenDates(from, to) andEx ("genero" equalEx "Hembra")), Bovino::class)
                     .flatMapObservable { it.toObservable() }
                     .filter {
-                        val cal = Calendar.getInstance()
-                        val meses = cal.get(Calendar.MONTH) + 12
-                        val dias = cal.get(Calendar.MONTH) + 6
-                        dias <= it.fechaNacimiento!!.time && meses <= it.fechaNacimiento!!.time
+                        val seismeses:Long = 6*30*24*60*60
+                        val docemeses:Long = 12*30*24*60*60
+                        val dif = (Date().time-it.fechaNacimiento!!.time)/1000
+                        dif in seismeses..docemeses
+
                     }
                     .map {
                         listOf(it.codigo!!, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), it.proposito!!, it.raza!!, it.codigoMadre ?: "", it.codigoPadre ?:"")
@@ -868,7 +870,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
 
 
     fun reporteTernerasDestetas(mes: Int, anio: Int): Single<List<List<String>>> =
-            db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra"), Bovino::class)
+            db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra") andEx ("destete" equalEx true), Bovino::class)
                     .flatMapObservable { it.toObservable() }
                     .filter {
                         val cal = Calendar.getInstance()
@@ -877,7 +879,10 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                         val dias = cal.get(Calendar.MONTH) + 6
                         val month = cal.get(Calendar.MONTH)
                         val year = cal.get(Calendar.YEAR)
-                        it.fechaNacimiento!!.time in dias..meses && month == mes && anio == year
+                        val seismeses:Long = 6*30*24*60*60
+                        val docemeses:Long = 12*30*24*60*60
+                        val dif = (Date().time-it.fechaNacimiento!!.time)/1000
+                        dif in seismeses..docemeses && month == mes && anio == year
                     }
                     .map {
                         listOf(it.codigo!!, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), it.proposito!!, it.raza!!, it.codigoMadre ?: "", it.codigoPadre ?:"")
@@ -890,10 +895,10 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
             db.listByExp("finca" equalEx farmID andEx ("fechaNacimiento".betweenDates(from, to) andEx ("genero" equalEx "Hembra")), Bovino::class)
                     .flatMapObservable { it.toObservable() }
                     .filter {
-                        val cal = Calendar.getInstance()
-                        val meses = cal.get(Calendar.MONTH) + 18
-                        val dias = cal.get(Calendar.MONTH) + 12
-                        dias <= it.fechaNacimiento!!.time && meses <= it.fechaNacimiento!!.time
+                        val docemese:Long = 12*30*24*60*60
+                        val diesiochomeses:Long = 18*30*24*60*60
+                        val dif = (Date().time-it.fechaNacimiento!!.time)/1000
+                        dif in docemese..diesiochomeses
                     }
                     .map {
                         listOf(it.codigo!!, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), it.proposito!!, it.raza!!, it.codigoMadre ?: "", it.codigoPadre ?:"")
@@ -906,11 +911,14 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     .filter {
                         val cal = Calendar.getInstance()
                         cal.timeInMillis = it.fechaNacimiento!!.time
-                        val meses = cal.get(Calendar.MONTH) + 18
-                        val dias = cal.get(Calendar.MONTH) + 12
                         val month = cal.get(Calendar.MONTH)
                         val year = cal.get(Calendar.YEAR)
-                        it.fechaNacimiento!!.time in dias..meses && month == mes && anio == year
+                        val cal1 = Calendar.getInstance()
+                        val docemese:Long = 12*30*24*60*60
+                        val diesiochomeses:Long = 18*30*24*60*60
+                        val dif = (Date().time-it.fechaNacimiento!!.time)/1000
+                        dif in docemese..diesiochomeses
+                        it.fechaNacimiento!!.time in docemese..diesiochomeses && month == mes && anio == year
                     }
                     .map {
                         listOf(it.codigo!!, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), it.proposito!!, it.raza!!)
@@ -922,10 +930,10 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
             db.listByExp("finca" equalEx farmID andEx ("fechaNacimiento".betweenDates(from, to) andEx ("genero" equalEx "Hembra")), Bovino::class)
                     .flatMapObservable { it.toObservable() }
                     .filter {
-                        val cal = Calendar.getInstance()
-                        val meses = cal.get(Calendar.MONTH) + 20
-                        val dias = cal.get(Calendar.MONTH) + 18
-                        dias <= it.fechaNacimiento!!.time && meses <= it.fechaNacimiento!!.time
+                        val veintemesesmese:Long = 20*30*24*60*60
+                        val diesiochomeses:Long = 18*30*24*60*60
+                        val dif = (Date().time-it.fechaNacimiento!!.time)/1000
+                        dif in diesiochomeses..veintemesesmese
                     }
                     .map {
                         listOf(it.codigo!!, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), it.proposito!!, it.raza!!)
@@ -938,11 +946,13 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     .filter {
                         val cal = Calendar.getInstance()
                         cal.timeInMillis = it.fechaNacimiento!!.time
-                        val meses = cal.get(Calendar.MONTH) + 20
-                        val dias = cal.get(Calendar.MONTH) + 18
                         val month = cal.get(Calendar.MONTH)
                         val year = cal.get(Calendar.YEAR)
-                        it.fechaNacimiento!!.time in dias..meses && month == mes && anio == year
+                        val cal1 = Calendar.getInstance()
+                        val veintemesesmese:Long = 20*30*24*60*60
+                        val diesiochomeses:Long = 18*30*24*60*60
+                        val dif = (Date().time-it.fechaNacimiento!!.time)/1000
+                         dif in diesiochomeses..veintemesesmese && month == mes && anio == year
                     }
                     .map {
                         listOf(it.codigo!!, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), it.proposito!!, it.raza!!)
@@ -1171,13 +1181,12 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
             db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra")
                     andEx (ArrayExpression.any(VAR_SERV).`in`(Expression.property("servicios")))
                     .satisfies(VAR_NOVEDAD.equalTo(Expression.string("Aborto")))
-                    andEx (ArrayExpression.any(VAR_SERV).`in`(Expression.property("servicios")))
-                    .satisfies(VAR_NOVEDAD.between(Expression.date(from), Expression.date(to)))
                     , Bovino::class)
                     .flatMapObservable { it.toObservable() }
                     .flatMap { bovino ->
                         bovino.servicios!!.toObservable()
-                                .filter { it.novedad?.novedad == "Aborto" /* && it.novedad?.fecha?.after(from) ?: false && it.novedad?.fecha?.before(to) ?: false*/ }
+                                .filter {
+                                    from.time<it.novedad?.fecha!!.time && it.novedad?.fecha!!.time < to.time /* && it.novedad?.fecha?.after(from) ?: false && it.novedad?.fecha?.before(to) ?: false*/ }
                                 .map { servicio ->
                                     val novedad = servicio.novedad!!
                                     //ReporteAbortos(bovino.codigo!!, bovino.nombre, servicio.fecha!!, novedad.fecha)
@@ -1270,7 +1279,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     .filter{
 
                         val fechacelos= it.celos!![0]
-                        fechacelos.after(from) && fechacelos.before(to) }
+                        from.time < fechacelos.time && fechacelos.time < to.time}
                     .map { bovino ->
                         // ReporteCelos(bovino.codigo!!, bovino.nombre, bovino.celos!![0])
                         listOf(bovino.codigo!!, bovino.nombre!!, bovino.celos!![0].toStringFormat())

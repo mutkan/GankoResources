@@ -229,9 +229,13 @@ class SelectReportFragment : Fragment(), Injectable, com.borax12.materialdateran
             "Tres servicios" -> viewmodel.reporteTresServicios().subscribeBy(
                     onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
             )
-            "Celos" -> viewmodel.reporteCelos(month,year).subscribeBy(
+            "Celos" ->  if (monthlyRadioButton.isChecked) viewmodel.reporteCelos(month,year).subscribeBy(
                     onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
             )
+            else viewmodel.reporteCelos(from, to).subscribeBy(
+                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                )
+
 
             //LECHE
             "Consolidado de leche"-> {
