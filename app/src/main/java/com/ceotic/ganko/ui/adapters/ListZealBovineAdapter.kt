@@ -10,10 +10,16 @@ import com.ceotic.ganko.util.inflate
 import io.reactivex.subjects.PublishSubject
 import java.util.*
 import javax.inject.Inject
+import kotlin.collections.HashMap
 
 class ListZealAdapter @Inject constructor() : RecyclerView.Adapter<ZealViewHolder>() {
 
     var zeals: List<Date> = emptyList()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+    var zealsServed:HashMap<Date,Boolean> = hashMapOf()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -27,9 +33,11 @@ class ListZealAdapter @Inject constructor() : RecyclerView.Adapter<ZealViewHolde
     override fun getItemCount(): Int = zeals.size
 
     override fun onBindViewHolder(holder: ZealViewHolder, position: Int) {
-        holder.binding.zeal = zeals[position]
+        val zeal = zeals[position]
+        holder.binding.zeal = zeal
         holder.binding.clickAddService = clickAddService
-        holder.binding.btnAddService.visibility = if (position == 0) View.VISIBLE else View.GONE
+        val isZealServed = zealsServed[zeal] ?: false
+        holder.binding.btnAddService.visibility = if (!isZealServed) View.VISIBLE else View.GONE
     }
 }
 

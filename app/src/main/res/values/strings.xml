@@ -469,7 +469,9 @@
       <!--  <item>Suplementos usados</item>c-->
     </string-array>
 
-    <string-array name="movements_type"></string-array>
+    <string-array name="movements_type">
+        <item>Animales en pradera</item>
+    </string-array>
 
     <string-array name="straw__reports_type">
         <item>Pajillas</item>
