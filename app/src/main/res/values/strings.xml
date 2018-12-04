@@ -287,9 +287,17 @@
     </string-array>
 
     <string-array name="feed_types">
+        <item>Fnsilajes</item>
+        <item>Bloques nutricionales</item>
+        <item>Sal mineralizada</item>
         <item>Forraje</item>
-        <item>Maíz</item>
         <item>Concentrado</item>
+        <item>Maiz</item>
+        <item>Sorgo</item>
+        <item>Heno</item>
+        <item>Alfalfa</item>
+        <item>Pasto de corte</item>
+        <item>Cebada</item>
     </string-array>
 
     <string-array name="meadow_alarm_type">
