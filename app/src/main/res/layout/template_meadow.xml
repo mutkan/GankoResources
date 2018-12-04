@@ -22,8 +22,8 @@
 
         <TextView
             android:id="@+id/textView25"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="@dimen/meadow_width"
+            android:layout_height="@dimen/meadow_width"
             android:background="@{pradera.emptyMeadow? @drawable/meadow_empty : @drawable/meadow_full}"
             android:gravity="center"
             android:text='@{pradera.identificador != null? ""+pradera.identificador : ""}'

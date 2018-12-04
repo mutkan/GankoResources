@@ -346,7 +346,7 @@
                         android:id="@+id/textView66"
                         style="@style/textview_label"
                         android:layout_width="0dp"
-                        android:layout_height="13dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="@string/sex"
                         app:layout_constraintEnd_toEndOf="@+id/bovineRace"
