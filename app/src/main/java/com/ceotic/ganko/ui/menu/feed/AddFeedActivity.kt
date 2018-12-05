@@ -208,6 +208,14 @@ class AddFeedActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDate
         return when (alimento) {
             "Forraje" -> RegistroAlimentacion(idFinca = idFinca, tipoAlimento = "Forraje", bovinos = bovines, fecha = fecha, peso = racion, valorkg = precio_kg, valorTotal = precio_total, grupo = group?.toGrupo())
             "Concentrado" -> RegistroAlimentacion(idFinca = idFinca, tipoAlimento = "Concentrado", bovinos = bovines, fecha = fecha, peso = racion, valorkg = precio_kg, valorTotal = precio_total, grupo = group?.toGrupo())
+            "Ensilajes"->RegistroAlimentacion(idFinca = idFinca, tipoAlimento = "Ensilajes", bovinos = bovines, fecha = fecha, peso = racion, valorkg = precio_kg, valorTotal = precio_total, grupo = group?.toGrupo())
+            "Bloques nutricionales"-> RegistroAlimentacion(idFinca = idFinca, tipoAlimento = "Bloques nutricionales", bovinos = bovines, fecha = fecha, peso = racion, valorkg = precio_kg, valorTotal = precio_total, grupo = group?.toGrupo())
+            "Sal mineralizada"->RegistroAlimentacion(idFinca = idFinca, tipoAlimento = "Sal mineralizada", bovinos = bovines, fecha = fecha, peso = racion, valorkg = precio_kg, valorTotal = precio_total, grupo = group?.toGrupo())
+            "Sorgo"->RegistroAlimentacion(idFinca = idFinca, tipoAlimento = "Sorgo", bovinos = bovines, fecha = fecha, peso = racion, valorkg = precio_kg, valorTotal = precio_total, grupo = group?.toGrupo())
+            "Heno"->RegistroAlimentacion(idFinca = idFinca, tipoAlimento = "Heno", bovinos = bovines, fecha = fecha, peso = racion, valorkg = precio_kg, valorTotal = precio_total, grupo = group?.toGrupo())
+            "Alfalfa"->RegistroAlimentacion(idFinca = idFinca, tipoAlimento = "Alfalfa", bovinos = bovines, fecha = fecha, peso = racion, valorkg = precio_kg, valorTotal = precio_total, grupo = group?.toGrupo())
+            "Pasto de corte"-> RegistroAlimentacion(idFinca = idFinca, tipoAlimento = "Pasto de corte", bovinos = bovines, fecha = fecha, peso = racion, valorkg = precio_kg, valorTotal = precio_total, grupo = group?.toGrupo())
+            "Cebada"-> RegistroAlimentacion(idFinca = idFinca, tipoAlimento = "Cebada", bovinos = bovines, fecha = fecha, peso = racion, valorkg = precio_kg, valorTotal = precio_total, grupo = group?.toGrupo())
             else -> RegistroAlimentacion(idFinca = idFinca, tipoAlimento = "Maiz", bovinos = bovines, fecha = fecha, peso = racion, valorkg = precio_kg, valorTotal = precio_total, grupo = group?.toGrupo())
 
         }
