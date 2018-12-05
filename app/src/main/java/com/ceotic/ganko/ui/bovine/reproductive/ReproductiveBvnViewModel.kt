@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModel
 import android.util.Log
 import com.ceotic.ganko.data.db.CouchRx
 import com.ceotic.ganko.data.models.*
+import com.ceotic.ganko.data.models.ProxStates.Companion.SKIPED
 import com.ceotic.ganko.data.preferences.UserSession
 import com.ceotic.ganko.util.andEx
 import com.ceotic.ganko.util.applySchedulers
@@ -134,6 +135,18 @@ class ReproductiveBvnViewModel @Inject constructor(private val db: CouchRx, priv
 
     fun getAllStraws(): Single<List<Straw>> = db.listByExp("idFarm" equalEx farmId andEx ("state" equalEx Straw.UNUSED_STRAW), Straw::class)
             .applySchedulers()
+
+    fun insertNotifications(notifications:List<ReproductiveNotification>): Single<List<String>> = notifications.toObservable().flatMapSingle { db.insert(it) }.toList()
+
+    fun markNotifcationsAsAppliedByTagAndBovineId(tag:String, bovineId:String): Single<List<Unit>> = db.listByExp("bovineId" equalEx bovineId andEx ("tag" equalEx tag),ReproductiveNotification::class)
+            .flatMap {
+                Log.d("NOTIFICATIONSS!!!!", it.size.toString())
+                it.toObservable().flatMapSingle {reproductiveNotification ->
+                    reproductiveNotification.estadoProximo = SKIPED
+                    Log.d("CANCELING", "CANCELING")
+                    db.update(reproductiveNotification._id!!, reproductiveNotification)
+                }.toList()
+            }
 
 
 }

@@ -10,9 +10,12 @@ import android.view.ViewGroup
 import com.ceotic.ganko.R
 import com.ceotic.ganko.data.models.RegistroManejo
 import com.ceotic.ganko.data.models.RegistroVacuna
+import com.ceotic.ganko.data.models.ReproductiveNotification
 import com.ceotic.ganko.data.models.Sanidad
 import com.ceotic.ganko.di.Injectable
 import com.ceotic.ganko.ui.adapters.NotificationsListAdapter
+import com.ceotic.ganko.ui.bovine.DetailBovineActivity
+import com.ceotic.ganko.ui.bovine.reproductive.ReproductiveBvnActivity
 import com.ceotic.ganko.ui.menu.MenuViewModel
 import com.ceotic.ganko.ui.menu.health.detail.HealthDetailActivity
 import com.ceotic.ganko.ui.menu.management.detail.ManageDetailActivity
@@ -45,8 +48,8 @@ class NotificationsFragment : Fragment(), Injectable {
             set(Calendar.MINUTE, 0)
         }
     }
-    val from: Date by lazy { Date(cal.timeInMillis) }
-    val to: Date by lazy { from.add(Calendar.DATE, 7)!! }
+    val from: Date by lazy { Date(cal.timeInMillis).add(Calendar.DATE,-7)!! }
+    val to: Date by lazy { from.add(Calendar.DATE, 14)!! }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {

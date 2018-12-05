@@ -1,8 +1,10 @@
 package com.ceotic.ganko.data.models
 
 import android.os.Parcelable
+import android.util.Log
 import kotlinx.android.parcel.Parcelize
 import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.collections.HashMap
 
 @Parcelize
@@ -49,7 +51,7 @@ class Bovino(
         var sanidad: List<Sanidad>? = listOf(),
         var manejo: List<Manage>? = listOf(),
 
-        var notificacionesReproductivo: HashMap<String,UUID>? = hashMapOf()
+        var notificacionesReproductivo: HashMap<String,UUID?>? = hashMapOf()
 
 ) : Parcelable {
     init {
@@ -63,6 +65,7 @@ class Bovino(
     companion object {
         const val ALERT_DIAGNOSIS = "diagnostico"
 
+        const val ALERT_EMPTY_DAYS = "diasVacios"
         const val ALERT_45_EMPTY_DAYS = "45DiasVacios"
         const val ALERT_60_EMPTY_DAYS = "60DiasVacios"
         const val ALERT_90_EMPTY_DAYS = "90DiasVacios"
@@ -73,5 +76,7 @@ class Bovino(
         const val ALERT_DRYING = "secado"
 
         const val ALERT_ZEAL = "celo"
+
+
     }
 }

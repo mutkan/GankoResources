@@ -2,13 +2,11 @@ package com.ceotic.ganko.ui.adapters
 
 import android.databinding.DataBindingUtil
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import com.ceotic.ganko.R
-import com.ceotic.ganko.data.models.Alarm
-import com.ceotic.ganko.data.models.RegistroManejo
-import com.ceotic.ganko.data.models.RegistroVacuna
-import com.ceotic.ganko.data.models.Sanidad
+import com.ceotic.ganko.data.models.*
 import com.ceotic.ganko.databinding.TemplateItemNotificationBinding
 import com.ceotic.ganko.util.inflate
 import io.reactivex.subjects.PublishSubject
@@ -38,6 +36,9 @@ class NotificationsListAdapter @Inject constructor() : RecyclerView.Adapter<Noti
             }
             Sanidad::class.simpleName -> {
                 holder.bind(notification, "Sanidad", onClickNotification)
+            }
+            ReproductiveNotification::class.simpleName ->{
+                holder.bind(notification, "Reproductivo", onClickNotification)
             }
         }
 

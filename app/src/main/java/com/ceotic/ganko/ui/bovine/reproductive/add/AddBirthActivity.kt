@@ -15,8 +15,11 @@ import com.ceotic.ganko.data.models.Bovino.Companion.ALERT_60_EMPTY_DAYS
 import com.ceotic.ganko.data.models.Bovino.Companion.ALERT_90_EMPTY_DAYS
 import com.ceotic.ganko.data.models.Bovino.Companion.ALERT_BIRTH
 import com.ceotic.ganko.data.models.Bovino.Companion.ALERT_DRYING
+import com.ceotic.ganko.data.models.Bovino.Companion.ALERT_EMPTY_DAYS
 import com.ceotic.ganko.data.models.Bovino.Companion.ALERT_PREPARATION
 import com.ceotic.ganko.data.models.Parto
+import com.ceotic.ganko.data.models.ProxStates.Companion.NOT_APPLIED
+import com.ceotic.ganko.data.models.ReproductiveNotification
 import com.ceotic.ganko.data.models.Servicio
 import com.ceotic.ganko.databinding.ActivityAddBirthBinding
 import com.ceotic.ganko.di.Injectable
@@ -108,47 +111,14 @@ class AddBirthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDat
                     val servicio = setParto(it)
                     viewModel.addParto(idBovino, servicio, position)
                 }.flatMapSingle { pair ->
-                    val bovino = pair.first
+                    val mBovino = pair.first
                     val servicio = pair.second
-                    val dif = Date().time - servicio.parto!!.fecha!!.time
-                    val daysSinceBirth = TimeUnit.DAYS.convert((dif), TimeUnit.MILLISECONDS)
-                    Log.d("Dias desde parto", daysSinceBirth.toString())
-                    val notify45 = 44 - daysSinceBirth
-                    val notify60 = 59 - daysSinceBirth
-                    val notify90 = 89 - daysSinceBirth
-                    val notify120 = 119 - daysSinceBirth
+                    val fechaParto = servicio.parto!!.fecha!!
+                    val reproductiveAlerts =  ReproductiveNotification.setEmptyDaysNotifications(mBovino,fechaParto)
 
-                    val uuidSecado = bovino.notificacionesReproductivo?.get(ALERT_DRYING)
-                    val uuidPreparacion = bovino.notificacionesReproductivo?.get(ALERT_PREPARATION)
-                    val uuidParto = bovino.notificacionesReproductivo?.get(ALERT_BIRTH)
-
-                    NotificationWork.cancelNotificationsById(uuidSecado, uuidPreparacion, uuidParto)
-
-
-                    if (notify45 >= 0) {
-                        val uuid45EmptyDays = NotificationWork.notify(NotificationWork.TYPE_REPRODUCTIVE, "Recordatorio Días vacios", "El bovino ${bovino.nombre} cumplirá 45 días vacios mañana", idBovino,
-                                notify45, TimeUnit.DAYS)
-                        bovino.notificacionesReproductivo!![ALERT_45_EMPTY_DAYS] = uuid45EmptyDays
+                    viewModel.insertNotifications(reproductiveAlerts).flatMap {
+                        viewModel.updateBovino(idBovino, mBovino)
                     }
-
-                    if (notify60 >= 0) {
-                        val uuid60EmptyDays = NotificationWork.notify(NotificationWork.TYPE_REPRODUCTIVE, "Recordatorio Días vacios", "El bovino ${bovino.nombre} cumplirá 60 días vacios mañana", idBovino,
-                                notify60, TimeUnit.DAYS)
-                        bovino.notificacionesReproductivo!![ALERT_60_EMPTY_DAYS] = uuid60EmptyDays
-                    }
-
-                    if (notify90 >= 0) {
-                        val uuid90EmptyDays = NotificationWork.notify(NotificationWork.TYPE_REPRODUCTIVE, "Recordatorio Días vacios", "El bovino ${bovino.nombre} cumplirá 90 días vacios mañana", idBovino,
-                                notify90, TimeUnit.DAYS)
-                        bovino.notificacionesReproductivo!![ALERT_90_EMPTY_DAYS] = uuid90EmptyDays
-                    }
-
-                    if (notify120 >= 0) {
-                        val uuid120EmptyDays = NotificationWork.notify(NotificationWork.TYPE_REPRODUCTIVE, "Recordatorio Días vacios", "El bovino ${bovino.nombre} cumplirá 120 días vacios mañana", idBovino,
-                                notify120, TimeUnit.DAYS)
-                        bovino.notificacionesReproductivo!![ALERT_120_EMPTY_DAYS] = uuid120EmptyDays
-                    }
-                    viewModel.updateBovino(idBovino, bovino)
                 }
                 .subscribeBy(
                         onNext = {
