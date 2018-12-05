@@ -15,9 +15,11 @@ import com.ceotic.ganko.data.models.Bovino.Companion.ALERT_60_EMPTY_DAYS
 import com.ceotic.ganko.data.models.Bovino.Companion.ALERT_90_EMPTY_DAYS
 import com.ceotic.ganko.data.models.Bovino.Companion.ALERT_BIRTH
 import com.ceotic.ganko.data.models.Bovino.Companion.ALERT_DRYING
+import com.ceotic.ganko.data.models.Bovino.Companion.ALERT_EMPTY_DAYS
 import com.ceotic.ganko.data.models.Bovino.Companion.ALERT_PREPARATION
 import com.ceotic.ganko.data.models.Diagnostico
 import com.ceotic.ganko.data.models.Novedad
+import com.ceotic.ganko.data.models.ReproductiveNotification
 import com.ceotic.ganko.data.models.Servicio
 import com.ceotic.ganko.databinding.ActivityAddDiagnosisBinding
 import com.ceotic.ganko.di.Injectable
@@ -117,53 +119,59 @@ class AddDiagnosisActivity : AppCompatActivity(), Injectable, DatePickerDialog.O
                 }.flatMapSingle { bovino ->
                     val servicioActual = bovino.servicios!![position]
                     val fechaServicioActual = servicioActual.fecha!!.toStringFormat()
-                    if (type == TYPE_DIAGNOSIS && servicioActual.diagnostico?.confirmacion == true) {
-                        val posibleParto = servicioActual.posFechaParto!!
-                        val dif = posibleParto.time - Date().time
-                        val daysToBirth = TimeUnit.DAYS.convert((dif), TimeUnit.MILLISECONDS)
-                        Log.d("dias para el parto", daysToBirth.toString())
-                        val notifyTimeSecado = daysToBirth - 60
-                        val notifyTimePreparacion = daysToBirth - 30
-                        val notifyTimeParto = daysToBirth - 1
+                    when {
+                        type == TYPE_DIAGNOSIS && servicioActual.diagnostico?.confirmacion == true -> {
+                            val posibleParto = servicioActual.posFechaParto!!
+                            val dif = posibleParto.time - Date().time
+                            val daysToBirth = TimeUnit.DAYS.convert((dif), TimeUnit.MILLISECONDS)
+                            Log.d("dias para el parto", daysToBirth.toString())
+                            val notifyTimeSecado = daysToBirth - 60
+                            val notifyTimePreparacion = daysToBirth - 30
+                            val notifyTimeParto = daysToBirth - 1
 
-                        val uuid45EmptyDays = bovino.notificacionesReproductivo?.get(ALERT_45_EMPTY_DAYS)
-                        val uuid60EmptyDays = bovino.notificacionesReproductivo?.get(ALERT_60_EMPTY_DAYS)
-                        val uuid90EmptyDays = bovino.notificacionesReproductivo?.get(ALERT_90_EMPTY_DAYS)
-                        val uuid120EmptyDays = bovino.notificacionesReproductivo?.get(ALERT_120_EMPTY_DAYS)
+                            val uuid45EmptyDays = bovino.notificacionesReproductivo?.get(ALERT_45_EMPTY_DAYS)
+                            val uuid60EmptyDays = bovino.notificacionesReproductivo?.get(ALERT_60_EMPTY_DAYS)
+                            val uuid90EmptyDays = bovino.notificacionesReproductivo?.get(ALERT_90_EMPTY_DAYS)
+                            val uuid120EmptyDays = bovino.notificacionesReproductivo?.get(ALERT_120_EMPTY_DAYS)
 
-                        NotificationWork.cancelNotificationsById(uuid45EmptyDays, uuid60EmptyDays, uuid90EmptyDays, uuid120EmptyDays)
+                            NotificationWork.cancelNotificationsById(uuid45EmptyDays, uuid60EmptyDays, uuid90EmptyDays, uuid120EmptyDays)
 
-                        if (notifyTimeSecado >= 0) {
-                            val uuidSecado = NotificationWork.notify(NotificationWork.TYPE_REPRODUCTIVE, "Recordatorio Secado", "Comenzar secado del bovino: ${bovino.nombre}, fecha del servicio: $fechaServicioActual, posible parto: ${posibleParto.toStringFormat()}", idBovino,
-                                    notifyTimeSecado, TimeUnit.DAYS)
-                            bovino.notificacionesReproductivo!![ALERT_DRYING] = uuidSecado
+                            if (notifyTimeSecado >= 0) {
+                                val uuidSecado = NotificationWork.notify(NotificationWork.TYPE_REPRODUCTIVE, "Recordatorio Secado", "Comenzar secado del bovino: ${bovino.nombre}, fecha del servicio: $fechaServicioActual, posible parto: ${posibleParto.toStringFormat()}", idBovino,
+                                        notifyTimeSecado, TimeUnit.DAYS)
+                                bovino.notificacionesReproductivo!![ALERT_DRYING] = uuidSecado
+                            }
+                            if (notifyTimePreparacion >= 0) {
+                                val uuidPreparacion = NotificationWork.notify(NotificationWork.TYPE_REPRODUCTIVE, "Recordatorio Preparación", "Comenzar preparación para el parto del bovino: ${bovino.nombre}, fecha del servicio: $fechaServicioActual, posible parto: ${posibleParto.toStringFormat()}", idBovino,
+                                        notifyTimePreparacion, TimeUnit.DAYS)
+                                bovino.notificacionesReproductivo!![ALERT_PREPARATION] = uuidPreparacion
+                            }
+                            if (notifyTimeParto >= 0) {
+                                val uuidParto = NotificationWork.notify(NotificationWork.TYPE_REPRODUCTIVE, "Recordatorio Parto", "Es probable que el parto del bovino: ${bovino.nombre} sea mañana, fecha del servicio: $fechaServicioActual, posible parto: ${posibleParto.toStringFormat()}", idBovino,
+                                        notifyTimeParto, TimeUnit.DAYS)
+                                bovino.notificacionesReproductivo!![ALERT_BIRTH] = uuidParto
+                            }
+                            viewModel.updateBovino(idBovino, bovino)
+                                    .flatMap { viewModel.markNotifcationsAsAppliedByTagAndBovineId(ALERT_EMPTY_DAYS, idBovino) }
+
                         }
-                        if (notifyTimePreparacion >= 0) {
-                            val uuidPreparacion = NotificationWork.notify(NotificationWork.TYPE_REPRODUCTIVE, "Recordatorio Preparación", "Comenzar preparación para el parto del bovino: ${bovino.nombre}, fecha del servicio: $fechaServicioActual, posible parto: ${posibleParto.toStringFormat()}", idBovino,
-                                    notifyTimePreparacion, TimeUnit.DAYS)
-                            bovino.notificacionesReproductivo!![ALERT_PREPARATION] = uuidPreparacion
+                        type == TYPE_NOVELTY && servicioActual.finalizado!! -> {
+                            val uuidSecado = bovino.notificacionesReproductivo!![ALERT_DRYING]
+                            val uuidPreparacion = bovino.notificacionesReproductivo!![ALERT_PREPARATION]
+                            val uuidParto = bovino.notificacionesReproductivo!![ALERT_BIRTH]
+                            NotificationWork.cancelNotificationsById(uuidSecado, uuidPreparacion, uuidParto)
+                            val emptyDaysNotifications = ReproductiveNotification.setEmptyDaysNotifications(bovino,servicioActual.novedad!!.fecha)
+                            if (bovino.serviciosFallidos!! == 3) {
+                                val uuidServiciosFallidos = NotificationWork.notify(NotificationWork.TYPE_REPRODUCTIVE, "Tres Servicios Fallidos", "El bovino: ${bovino.nombre}, lleva 3 servicios fallidos de manera consecutiva", idBovino,
+                                        10, TimeUnit.SECONDS)
+                                Log.d("SERVICIOS FALLIDOS", uuidServiciosFallidos.toString())
+                            }
+                            viewModel.insertNotifications(emptyDaysNotifications).flatMap {
+                                viewModel.updateBovino(idBovino, bovino)
+                            }
                         }
-                        if (notifyTimeParto >= 0) {
-                            val uuidParto = NotificationWork.notify(NotificationWork.TYPE_REPRODUCTIVE, "Recordatorio Parto", "Es probable que el parto del bovino: ${bovino.nombre} sea mañana, fecha del servicio: $fechaServicioActual, posible parto: ${posibleParto.toStringFormat()}", idBovino,
-                                    notifyTimeParto, TimeUnit.DAYS)
-                            bovino.notificacionesReproductivo!![ALERT_BIRTH] = uuidParto
-                        }
-
+                        else -> viewModel.updateBovino(idBovino, bovino)
                     }
-                    if (type == TYPE_NOVELTY && servicioActual.finalizado!!) {
-                        val uuidSecado = bovino.notificacionesReproductivo!![ALERT_DRYING]
-                        val uuidPreparacion = bovino.notificacionesReproductivo!![ALERT_PREPARATION]
-                        val uuidParto = bovino.notificacionesReproductivo!![ALERT_BIRTH]
-                        NotificationWork.cancelNotificationsById(uuidSecado, uuidPreparacion, uuidParto)
-                    }
-                    if (bovino.serviciosFallidos!! == 3) {
-                        val uuidServiciosFallidos = NotificationWork.notify(NotificationWork.TYPE_REPRODUCTIVE, "Tres Servicios Fallidos", "El bovino: ${bovino.nombre}, lleva 3 servicios fallidos de manera consecutiva", idBovino,
-                                10, TimeUnit.SECONDS)
-                        Log.d("SERVICIOS FALLIDOS", uuidServiciosFallidos.toString())
-                    }
-
-                    viewModel.updateBovino(idBovino, bovino)
-
                 }
                 .subscribeBy(
                         onNext = {

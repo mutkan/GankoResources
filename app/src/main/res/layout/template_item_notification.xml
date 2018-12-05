@@ -53,6 +53,17 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_management_gray" />
 
+        <ImageView
+            android:id="@+id/icNotification4"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:visibility='@{tipo == "Reproductivo" ? View.VISIBLE : View.GONE}'
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_bovine_grey" />
+
         <TextView
             android:id="@+id/notificationTitle"
             android:layout_width="wrap_content"
