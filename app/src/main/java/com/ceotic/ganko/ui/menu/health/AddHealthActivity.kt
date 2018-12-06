@@ -65,7 +65,7 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
         fixColor(8)
         title = getString(R.string.add_bovine)
         binding.page = 1
-        datePicker = DatePickerDialog(this, AddHealthActivity@ this,
+        datePicker = DatePickerDialog(this, this,
                 Calendar.getInstance().get(Calendar.YEAR),
                 Calendar.getInstance().get(Calendar.MONTH),
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
@@ -202,13 +202,15 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                             else -> proxTime - 24
                         }
 
+                        val healthAplication = previousHealth.aplicacion!!.plus(1)
                         viewModel.addHealth(
+
                                 Sanidad(null, null, null, farmId, spinnerEvent.selectedItem.toString(), frecuencyOptionsHealth.selectedItem.toString(),
-                                        dateAddHealth.text.toString().toDate(), fechaProxima1(dateAddHealth.text().toDate(), applicacion_number.text().toInt(), frequency.text().toInt()),
+                                        dateAddHealth.text.toString().toDate(), if(healthAplication < (previousHealth.numeroAplicaciones ?: 0)) fechaProxima1(dateAddHealth.text().toDate(), applicacion_number.text().toInt(), frequency.text().toInt()) else null,
                                         frequency.text().toInt(), spinnerEvent.selectedItem.toString(),
                                         if (binding.otherSelect) other.text() else null, diagnosis.text(), treatment_health.text(),
                                         product_health.text(), dosis.text(), null, applicacion_number.text().toInt(),
-                                        previousHealth.aplicacion!!.plus(1),
+                                        healthAplication,
                                         if(observations_health.text()!= "") observations_health.text() else getString(R.string.no_observations), product_value.text().toInt(), attention_value.text().toInt(),
                                         group?.toGrupo(), bovines!!, unidadTiempo, noBovines!!, ProxStates.NOT_APPLIED, previousHealth.idAplicacionUno))
                                 .map { it to notifyTime }
