@@ -452,7 +452,7 @@
 
     <string-array name="meat_type">
         <item>Destetos</item>
-        <item>Ganancia diaria de peso</item>
+      <!--  <item>Ganancia diaria de peso</item>-->
     </string-array>
 
     <string-array name="vaccine_type">

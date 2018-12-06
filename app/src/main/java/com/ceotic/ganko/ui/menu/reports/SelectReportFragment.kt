@@ -433,12 +433,17 @@ class SelectReportFragment : Fragment(), Injectable, com.borax12.materialdateran
             "Tres servicios" -> viewmodel.reporteTresServicios().subscribeBy(
                     onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
             )
-            "Celos" -> viewmodel.reporteCelos(month,year).subscribeBy(
+            "Celos" ->  if (monthlyRadioButton.isChecked) viewmodel.reporteCelos(month,year).subscribeBy(
+                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+            )
+            else viewmodel.reporteCelos(from, to).subscribeBy(
                     onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
             )
 
+
             //LECHE
             "Consolidado de leche"-> {
+
                 if (monthlyRadioButton.isChecked) viewmodel.reporteConsolidado(month, year).subscribeBy(
                         onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
                 )
@@ -447,52 +452,42 @@ class SelectReportFragment : Fragment(), Injectable, com.borax12.materialdateran
                 )
             }
 
-            "Reporte de leche" -> {
-                var leche: List<List<String>> = emptyList()
-                if (monthlyRadioButton.isChecked) viewmodel.reportesLeche(month,year).subscribeBy(
-                        onSuccess = {
-                            excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it)})
-                else viewmodel.reportesLeche(from,to).subscribeBy(
-                        onSuccess = {excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it)}
-                )
-
-                        }
-
+            "Reporte de leche" -> if (monthlyRadioButton.isChecked) viewmodel.reportesLeche(month,year).subscribeBy(
+                    onSuccess = {excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it)})
+            else viewmodel.reportesLeche(from,to).subscribeBy(
+                    onSuccess = {excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it)}
+            )
 
             //CEBA
-            "Destetos" -> if (monthlyRadioButton.isChecked) viewmodel.reportesDestete(month, year).subscribeBy(
+            "Destetos" -> if (monthlyRadioButton.isChecked) viewmodel.reportesDestete(from,to).subscribeBy(
                     onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) })
             else viewmodel.reportesDestete(from, to).subscribeBy(
                     onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
             )
-          /*  "Ganancia diaria de peso" -> {
-                var gdp: List<List<String>> = emptyList()
-                if (monthlyRadioButton.isChecked) viewmodel.getBovine(idFinca).subscribeBy(
-                        onSuccess = {
-                            for (bovino in it) {
-                                viewmodel.reporteGananciaPeso(bovino, month, year).subscribeBy(
-                                        onSuccess = {
-                                            gdp = gdp.plus(it)
-                                            listareportes = gdp
-                                        })
-                            }
-                            excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, listareportes)
-
-                        }
-                )
-                else viewmodel.getBovine(idFinca).subscribeBy(
-                        onSuccess = {
-                            for (bovino in it) {
-                                viewmodel.reporteGananciaPeso(bovino, from, to).subscribeBy(
-                                        onSuccess = {
-                                            gdp = gdp.plus(it)
-                                            listareportes = gdp
-                                        })
-                            }
-                            excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, listareportes)
-                        }
-                )
-            }*/
+            /*  "Ganancia diaria de peso" -> {
+                  var gdp: List<List<String>> = emptyList()
+                  if (monthlyRadioButton.isChecked) viewmodel.getBovine(idFinca).subscribeBy(
+                          onSuccess = {
+                              for (bovino in it) {
+                                  viewmodel.reporteGananciaPeso(bovino, month, year).subscribeBy(
+                                          onSuccess = {
+                                              gdp = gdp.plus(it)
+                                              listareportes = gdp
+                                              pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, listareportes)
+                                          })
+                              }
+                          })
+                  else viewmodel.getBovine(idFinca).subscribeBy {
+                      for (bovino in it) {
+                          viewmodel.reporteGananciaPeso(bovino, from, to).subscribeBy(
+                                  onSuccess = {
+                                      gdp = gdp.plus(it)
+                                      listareportes = gdp
+                                      pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, listareportes)
+                                  })
+                      }
+                  }
+              }*/
             //PRADERAS
             "Praderas" -> viewmodel.reporteGetPraderas().subscribeBy(
                     onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
@@ -500,16 +495,21 @@ class SelectReportFragment : Fragment(), Injectable, com.borax12.materialdateran
             "Ocupación de praderas" -> viewmodel.reporteOcupacionPraderas().subscribeBy(
                     onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
             )
+
+            "Animales en pradera"-> if (monthlyRadioButton.isChecked) viewmodel.reporteMovimientos(month, year).subscribeBy(
+                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+            )
+            else viewmodel.reporteMovimientos(from, to).subscribeBy(
+                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+            )
             //ALIMENTACION
             "Alimentación" -> {
                 var alimentacion: List<List<String>> = emptyList()
                 if (monthlyRadioButton.isChecked) viewmodel.reporteAlimentacion( month, year).subscribeBy(
-                                onSuccess = {
-                                    excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it)
+                        onSuccess = {
+                            excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it)
 
-                                })
-
-
+                        })
 
                 else viewmodel.reporteAlimentacion( from, to).subscribeBy(
                         onSuccess = {
@@ -517,12 +517,6 @@ class SelectReportFragment : Fragment(), Injectable, com.borax12.materialdateran
 
                         })
             }
-            "Animales en pradera"-> if (monthlyRadioButton.isChecked) viewmodel.reporteMovimientos(month, year).subscribeBy(
-                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
-            )
-            else viewmodel.reporteMovimientos(from, to).subscribeBy(
-                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
-            )
 
             //ENTRADAS
             "Inventario" -> if (monthlyRadioButton.isChecked) viewmodel.reporteInventario(month, year).subscribeBy(
@@ -562,6 +556,11 @@ class SelectReportFragment : Fragment(), Injectable, com.borax12.materialdateran
 
             //SALIDAS
             // "Salida"-> listOf("Codigo","Nombre","Fecha salida","Tipo salida")
+            "Salida" -> if (monthlyRadioButton.isChecked) viewmodel.reporteSalida(month, year).subscribeBy(
+                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+            ) else viewmodel.reporteSalida(from, to).subscribeBy(
+                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+            )
 
             //VACUNAS
             "Vacunas" -> if (monthlyRadioButton.isChecked) viewmodel.reporteVacunas(month, year).subscribeBy(
@@ -583,6 +582,12 @@ class SelectReportFragment : Fragment(), Injectable, com.borax12.materialdateran
                     onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
             )
             //PAJILLAS
+
+            "Pajillas" -> if (monthlyRadioButton.isChecked) viewmodel.reportePajillas(month, year).subscribeBy(
+                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+            ) else viewmodel.reportePajillas(from, to).subscribeBy(
+                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+            )
             //   "Pajillas"-> if (monthlyRadioButton.isChecked) viewmodel.re
             else -> emptyList<String>()
         }

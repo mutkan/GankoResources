@@ -267,8 +267,8 @@ fun getHeader(tipoReporte:String):List<String> =
          "Destetos"-> listOf("Codigo","Nombre","Fecha nacimiento","Fecha destete","Codigo madre","Nombre madre")
          "Ganancia diaria de peso"-> listOf("Codigo","Nombre","Fecha nacimiento","GDP","Proposito")
          //PRADERAS
-         "Praderas"-> listOf("Numero","Tipo gaminea","Fecha fertilizacion","Producto","Cantidad")
-         "Ocupación de praderas"-> listOf("Numero","Graminea","Fecha de manetenimiento","Fecha ocupacion")
+         "Praderas"-> listOf("Numero","Tipo Graminea","Fecha fertilizacion","Producto","Cantidad")
+         "Ocupación de praderas"-> listOf("Numero","Graminea","Fecha de mantenimiento","Fecha ocupacion")
          //ALIMENTACION
          "Alimentación"-> listOf("Codigos","Tipo de alimento","Ración","Precio total")
          "Suplementos usados"-> listOf("Nombre","Total usado","Valor total")

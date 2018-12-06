@@ -519,7 +519,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     .map {
                         var stringBovines = ""
                         for (bovino in it.bovinos!!) {
-                            stringBovines += " $bovino"
+                            stringBovines += bovino
                         }
                         listOf(stringBovines, it.valorkg!!.toString(), it.tipoAlimento!!, it.valorTotal!!.toString())
                     }.toList().applySchedulers()
@@ -537,9 +537,10 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     }
                     .map {
                         var stringBovines = ""
+                        if(it.bovinos!! != null){
                         for (bovino in it.bovinos!!) {
                             stringBovines += " $bovino"
-                        }
+                            }                        }
                         listOf(stringBovines, it.tipoAlimento!!, it.peso!!.toString(), it.valorTotal!!.toString())
                     }.toList().applySchedulers()
     //endregion
@@ -1033,7 +1034,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                 .map {
                     val serv = it.servicios!![0]
                     //ReporteFuturosPartos(it.codigo!!, it.nombre, serv.fecha!!, serv.posFechaParto!!.add(Calendar.DATE, -60)!!)
-                    listOf(it.codigo!!, it.nombre!!, serv.posFechaParto!!.toStringFormat(), serv.fecha!!.toStringFormat(), serv.posFechaParto!!.add(Calendar.DATE, -60)!!.toStringFormat())
+                    listOf(it.codigo!!, it.nombre!!,  serv.fecha!!.toStringFormat(), serv.posFechaParto!!.add(Calendar.DATE, -60)!!.toStringFormat())
                 }.toList().applySchedulers()
     }
 
@@ -1186,7 +1187,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     .flatMap { bovino ->
                         bovino.servicios!!.toObservable()
                                 .filter {
-                                    from.time<it.novedad?.fecha!!.time && it.novedad?.fecha!!.time < to.time /* && it.novedad?.fecha?.after(from) ?: false && it.novedad?.fecha?.before(to) ?: false*/ }
+                                    from.time <it.novedad?.fecha!!.time && it.novedad?.fecha!!.time < to.time /* && it.novedad?.fecha?.after(from) ?: false && it.novedad?.fecha?.before(to) ?: false*/ }
                                 .map { servicio ->
                                     val novedad = servicio.novedad!!
                                     //ReporteAbortos(bovino.codigo!!, bovino.nombre, servicio.fecha!!, novedad.fecha)
@@ -1237,7 +1238,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                                     val ultimoServicio = bovino.servicios!![0]
                                     val today = Date()
                                     val ultimoParto = bovino.servicios!!.find { it.parto != null }
-                                    val dif = if (ultimoParto != null) today.time - ultimoParto.fecha!!.time else 0
+                                    val dif = if (ultimoParto != null) today.time - ultimoParto.fecha!!.time else today.time-ultimoServicio.fecha!!.time
                                     val diasVacios = TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS)
                                     //ReporteTresServicios(bovino.codigo!!, bovino.nombre, ultimoServicio.fecha!!, diasVacios)
                                     listOf(bovino.codigo!!, bovino.nombre!!, ultimoServicio.fecha!!.toStringFormat(), diasVacios.toString())
