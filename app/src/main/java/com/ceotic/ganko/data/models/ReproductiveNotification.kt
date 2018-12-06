@@ -68,3 +68,10 @@ class ReproductiveNotification(val _id: String? = null,
 
 
 }
+
+data class EmptyDaysValidations(
+        var services: List<Servicio>,
+        var activeServices:List<Servicio>,
+        var confirmedFinishedServices:List<Servicio>,
+        var emptyDays:Long
+)

@@ -70,6 +70,11 @@ class ReproductiveBvnViewModel @Inject constructor(private val db: CouchRx, priv
                 it.finalizado!!.not()
             }.toList().applySchedulers()
 
+    fun getFinishedServicesForBovine(idBovino: String): Single<List<Servicio>> = db.oneById(idBovino, Bovino::class).flatMapObservable { it.servicios?.toObservable() }
+            .filter {
+                it.finalizado!! && it.diagnostico?.confirmacion == true
+            }.toList().applySchedulers()
+
     fun getServicesHistoryForBovine(idBovino: String): Single<List<Servicio>> = db.oneById(idBovino, Bovino::class).flatMapObservable { it.servicios?.toObservable() }
             .filter {
                 it.finalizado!!
@@ -120,7 +125,7 @@ class ReproductiveBvnViewModel @Inject constructor(private val db: CouchRx, priv
                             val ultimoServicio = servicios.first()
                             val ultimoEvento = ultimoServicio.parto?.fecha ?: ultimoServicio.novedad!!.fecha
                             val ultimoServicioConParto = servicios.find { it.parto != null }
-                            val fechaUltimoParto = ultimoServicioConParto?.parto!!.fecha
+                            val fechaUltimoParto = ultimoServicioConParto?.parto?.fecha
                             val dif = servicioActual.time - ultimoEvento.time
                             val diasVacios = TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS)
                             return@map diasVacios to fechaUltimoParto
