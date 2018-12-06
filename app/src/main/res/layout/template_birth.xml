@@ -6,6 +6,7 @@
         <variable
             name="parto"
             type="com.ceotic.ganko.data.models.Parto"/>
+        <import type="android.view.View"/>
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -63,6 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:text="Intervalo entre Partos"
+            android:visibility='@{parto.intervalo != 0 ? View.VISIBLE : View.GONE}'
             app:layout_constraintStart_toEndOf="@+id/numberOfBirthTxt"
             app:layout_constraintTop_toTopOf="@+id/numberOfBirthTxt" />
 
@@ -71,6 +73,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text='@{""+parto.intervalo}'
+            android:visibility='@{parto.intervalo != 0 ? View.VISIBLE : View.GONE}'
             app:layout_constraintStart_toStartOf="@+id/birthIntervalTxt"
             app:layout_constraintTop_toBottomOf="@+id/birthIntervalTxt"
             tools:text="150" />
@@ -82,6 +85,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
+            android:visibility='@{parto.diasVacios != 0 ? View.VISIBLE : View.GONE}'
             android:text="Días Vacios"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/numberOfBirth" />
@@ -94,6 +98,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/emptyDaysTxt"
             app:layout_constraintTop_toBottomOf="@+id/emptyDaysTxt"
+            android:visibility='@{parto.diasVacios != 0 ? View.VISIBLE : View.GONE}'
             android:text='@{""+parto.diasVacios}'
             tools:text="150" />
 

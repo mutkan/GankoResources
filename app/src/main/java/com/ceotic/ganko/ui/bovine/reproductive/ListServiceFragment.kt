@@ -9,6 +9,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.ceotic.ganko.R
+import com.ceotic.ganko.data.models.EmptyDaysValidations
+import com.ceotic.ganko.data.models.Servicio
 import com.ceotic.ganko.databinding.FragmentListServiceBinding
 import com.ceotic.ganko.di.Injectable
 import com.ceotic.ganko.ui.adapters.ListServiceBovineAdapter
@@ -18,7 +20,12 @@ import com.ceotic.ganko.ui.bovine.reproductive.add.AddServiceActivity
 import com.ceotic.ganko.util.LifeDisposable
 import com.ceotic.ganko.util.buildViewModel
 import com.jakewharton.rxbinding2.view.clicks
+import io.reactivex.Observable
+import io.reactivex.Single
+import io.reactivex.functions.Function3
+import io.reactivex.functions.Function4
 import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.rxkotlin.zipWith
 import kotlinx.android.synthetic.main.fragment_list_service.*
 import org.jetbrains.anko.support.v4.startActivity
 import javax.inject.Inject
@@ -39,6 +46,7 @@ class ListServiceFragment : Fragment(), Injectable {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_list_service, container, false)
         binding.fabAddService.visibility = if (tipo == TYPE_SERVICES) View.VISIBLE else View.GONE
+        binding.txtEmptyDays.visibility = if (tipo == TYPE_SERVICES) View.VISIBLE else View.GONE
         binding.isEmpty = isEmpty
         return binding.root
     }
@@ -87,13 +95,51 @@ class ListServiceFragment : Fragment(), Injectable {
                             }
                     )
         } else {
-            dis add viewModel.getServicesHistoryForBovine(idBovino)
-                    .subscribeBy(
-                            onSuccess = {
-                                adapter.services = it
-                                isEmpty.set(it.isEmpty())
+            dis add Single.zip(
+                    viewModel.getServicesHistoryForBovine(idBovino),
+                    viewModel.getOnServiceForBovine(idBovino),
+                    viewModel.getFinishedServicesForBovine(idBovino),
+                    viewModel.getEmptyDaysForBovine(idBovino),
+                    Function4<List<Servicio>,List<Servicio>, List<Servicio>,Long,EmptyDaysValidations>{ services, activeServices, finishedServices, emptyDays ->
+                        EmptyDaysValidations(
+                                services,
+                                activeServices,
+                                finishedServices,
+                                emptyDays
+                        )
+                    }
+            ).subscribeBy(
+                    onSuccess = {emptyDaysValidations ->
+                        val services = emptyDaysValidations.services
+                        val hasServices = services.isNotEmpty()
+                        val activeServices = emptyDaysValidations.activeServices
+                        val confirmedFinishedServices = emptyDaysValidations.confirmedFinishedServices
+                        val hasConfirmedFinishedServices = confirmedFinishedServices.isNotEmpty()
+                        val emptyDays = emptyDaysValidations.emptyDays
+                        val onService = activeServices.isNotEmpty()
+                        adapter.services = services
+                        isEmpty.set(services.isEmpty())
+                        when{
+                            onService  ->{
+                                binding.emptyDays = "Bovino actualmente en servicio"
+                                fabAddService.visibility = View.GONE
                             }
-                    )
+                            !hasConfirmedFinishedServices ->{
+                                binding.emptyDays = "Bovino sin servicios efectivos"
+                                fabAddService.visibility = View.VISIBLE
+                            }
+                            !hasServices -> {
+                                binding.emptyDays = "Bovino sin servicios"
+                                fabAddService.visibility = View.VISIBLE
+                            }
+                            else -> {
+                                binding.emptyDays = emptyDays.toString()
+                                fabAddService.visibility = View.VISIBLE
+                            }
+
+                        }
+                    }
+            )
 
             dis add fabAddService.clicks()
                     .subscribeBy(

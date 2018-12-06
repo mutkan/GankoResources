@@ -70,6 +70,11 @@ class ReproductiveBvnViewModel @Inject constructor(private val db: CouchRx, priv
                 it.finalizado!!.not()
             }.toList().applySchedulers()
 
+    fun getFinishedServicesForBovine(idBovino: String): Single<List<Servicio>> = db.oneById(idBovino, Bovino::class).flatMapObservable { it.servicios?.toObservable() }
+            .filter {
+                it.finalizado!! && it.diagnostico?.confirmacion == true
+            }.toList().applySchedulers()
+
     fun getServicesHistoryForBovine(idBovino: String): Single<List<Servicio>> = db.oneById(idBovino, Bovino::class).flatMapObservable { it.servicios?.toObservable() }
             .filter {
                 it.finalizado!!
@@ -79,12 +84,29 @@ class ReproductiveBvnViewModel @Inject constructor(private val db: CouchRx, priv
             .flatMapObservable {
                 it.servicios?.toObservable()
             }.filter {
-                it.parto != null
+                it.finalizado == true && it.diagnostico?.confirmacion == true
             }.toList()
-            .map {
-                if (it.isNotEmpty()) {
-                    val ultimoParto = it.first().fecha!!.time
-                    val dif = servicioActual.time - ultimoParto
+            .map {servicios ->
+                if (servicios.isNotEmpty()) {
+                    val ultimoServicio = servicios.first()
+                    val ultimoEvento = ultimoServicio.parto?.fecha ?: ultimoServicio.novedad!!.fecha
+                    val dif = servicioActual.time - ultimoEvento.time
+                    return@map TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS)
+                } else {
+                    0L
+                }
+            }
+    fun getEmptyDaysForBovine(idBovino: String): Single<Long> = db.oneById(idBovino, Bovino::class)
+            .flatMapObservable {
+                it.servicios?.toObservable()
+            }.filter {
+                it.finalizado == true && it.diagnostico?.confirmacion == true
+            }.toList()
+            .map {servicios ->
+                if (servicios.isNotEmpty()) {
+                    val ultimoServicio = servicios.first()
+                    val ultimoEvento = ultimoServicio.parto?.fecha ?: ultimoServicio.novedad!!.fecha
+                    val dif = Date().time - ultimoEvento.time
                     return@map TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS)
                 } else {
                     0L
@@ -96,14 +118,17 @@ class ReproductiveBvnViewModel @Inject constructor(private val db: CouchRx, priv
                     .flatMapObservable {
                         it.servicios?.toObservable()
                     }.filter {
-                        it.parto != null
+                        it.finalizado == true && it.diagnostico?.confirmacion == true
                     }.toList()
-                    .map {
-                        if (it.isNotEmpty()) {
-                            val ultimoParto = it.first().parto!!.fecha
-                            val dif = servicioActual.time - ultimoParto!!.time
+                    .map {servicios ->
+                        if (servicios.isNotEmpty()) {
+                            val ultimoServicio = servicios.first()
+                            val ultimoEvento = ultimoServicio.parto?.fecha ?: ultimoServicio.novedad!!.fecha
+                            val ultimoServicioConParto = servicios.find { it.parto != null }
+                            val fechaUltimoParto = ultimoServicioConParto?.parto?.fecha
+                            val dif = servicioActual.time - ultimoEvento.time
                             val diasVacios = TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS)
-                            return@map diasVacios to ultimoParto
+                            return@map diasVacios to fechaUltimoParto
                         } else {
                             0L to null
                         }

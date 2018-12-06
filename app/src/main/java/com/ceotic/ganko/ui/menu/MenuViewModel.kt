@@ -1088,18 +1088,34 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     .satisfies(VAR_PARTO.notNullOrMissing())
                     , Bovino::class)
                     .flatMapObservable { it.toObservable() }
-                    .flatMapMaybe { bovino ->
-                        bovino.servicios?.toObservable()?.filter { it.parto != null }?.firstElement()
-                                ?.map {
-                                    val ultimoServicio = bovino.servicios!![0]
-                                    val ultimoParto = it
-                                    val dif = if (ultimoServicio.diagnostico?.confirmacion!! && ultimoServicio.parto == null) ultimoServicio.fecha!!.time - ultimoParto.parto!!.fecha!!.time else Date().time - ultimoParto.parto!!.fecha!!.time
-                                    val enServicio = ultimoServicio.finalizado?.not() ?: false
-                                    val diasVacios = TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS)
-                                    var enSer = if(enServicio) "Si" else "No"
-                                    //ReporteDiasVacios(bovino.codigo!!, bovino.nombre, ultimoParto.fecha!!, ultimoServicio.fecha!!, diasVacios, enServicio)
-                                    listOf(bovino.codigo!!, bovino.nombre!!, ultimoServicio.parto!!.fecha!!.toStringFormat(), ultimoServicio.fecha!!.toStringFormat(), diasVacios.toString(), enSer)
+                    .map { bovino ->
+                        var fecha = bovino.servicios!![0].fecha
+                        var ultimoServicio = Servicio()
+                        var ultimoParto:Date? = bovino.servicios!![0].parto?.fecha
+                        for (servicio in bovino.servicios!!) {
+                            if (servicio.fecha!!.time >= fecha!!.time) ultimoServicio = servicio
+                            if (servicio.parto!= null){
+                                if (ultimoParto==null){
+                                    ultimoParto=servicio.parto!!.fecha
+                                }else{
+                                    if (servicio.parto!!.fecha!!> ultimoParto) ultimoParto= servicio.parto!!.fecha
                                 }
+                            }
+                        }
+                        val enServicio = ultimoServicio.finalizado?.not() ?: false
+                        val dif = if(enServicio){
+                            if (ultimoServicio.diagnostico!=null){
+                                if(!ultimoServicio.diagnostico?.confirmacion!!){
+                                    Date().time - ultimoParto!!.time
+                                }else ultimoServicio.fecha!!.time - ultimoParto!!.time
+                            }else Date().time - ultimoParto!!.time
+                        }else{
+                            Date().time - ultimoParto!!.time
+                        }
+                        val diasVacios = TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS)
+                        var enSer = if (enServicio) "Si" else "No"
+                        //ReporteDiasVacios(bovino.codigo!!, bovino.nombre, ultimoParto.fecha!!, ultimoServicio.fecha!!, diasVacios, enServicio)
+                        listOf(bovino.codigo!!, bovino.nombre!!, if (ultimoParto != null) ultimoParto.toStringFormat() else "Sin parto", ultimoServicio.fecha!!.toStringFormat(), diasVacios.toString(), enSer)
                     }.toList().applySchedulers()
     //endregion
 
