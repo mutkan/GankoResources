@@ -7,6 +7,9 @@
         <variable
             name="isEmpty"
             type="android.databinding.ObservableBoolean"/>
+        <variable
+            name="emptyDays"
+            type="String"/>
         <import type="android.view.View"/>
     </data>
 
@@ -18,23 +21,26 @@
             android:id="@+id/recycler"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="3dp"
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            android:paddingBottom="70dp"
             android:visibility='@{isEmpty ? View.GONE : View.VISIBLE}'
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-            android:orientation="vertical"
-            android:clipToPadding="false"
-            android:paddingBottom="70dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtEmptyDays"
             tools:listitem="@layout/template_list_service" />
+
         <TextView
             android:id="@+id/emptyMsg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility='@{isEmpty ? View.VISIBLE : View.GONE}'
             android:text="@string/no_reg"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:visibility='@{isEmpty ? View.VISIBLE : View.GONE}'
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -52,6 +58,21 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/ic_add" />
+
+        <TextView
+            android:id="@+id/txtEmptyDays"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text='@{"Días vacios hoy: "+emptyDays}'
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
     </android.support.constraint.ConstraintLayout>
 
 </layout>

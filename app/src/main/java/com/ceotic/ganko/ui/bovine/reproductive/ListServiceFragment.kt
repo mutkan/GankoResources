@@ -39,6 +39,7 @@ class ListServiceFragment : Fragment(), Injectable {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_list_service, container, false)
         binding.fabAddService.visibility = if (tipo == TYPE_SERVICES) View.VISIBLE else View.GONE
+        binding.txtEmptyDays.visibility = if (tipo == TYPE_SERVICES) View.VISIBLE else View.GONE
         binding.isEmpty = isEmpty
         return binding.root
     }
@@ -87,11 +88,26 @@ class ListServiceFragment : Fragment(), Injectable {
                             }
                     )
         } else {
-            dis add viewModel.getServicesHistoryForBovine(idBovino)
+            dis add viewModel.getOnServiceForBovine(idBovino)
+                    .flatMap {
+                        if (it.isEmpty()){
+                            fabAddService.visibility = View.VISIBLE
+                        } else {
+                            fabAddService.visibility = View.GONE
+                            binding.emptyDays = "Bovino actualmente en servicio"
+                        }
+                        viewModel.getServicesHistoryForBovine(idBovino)
+                    }
                     .subscribeBy(
                             onSuccess = {
                                 adapter.services = it
                                 isEmpty.set(it.isEmpty())
+                            }
+                    )
+            dis add viewModel.getEmptyDaysForBovine(idBovino)
+                    .subscribeBy(
+                            onSuccess = {
+                                binding.emptyDays = if (it != 0L) it.toString() else "El bovino no ha tenido partos"
                             }
                     )
 

@@ -53,6 +53,7 @@ class AddDiagnosisActivity : AppCompatActivity(), Injectable, DatePickerDialog.O
     private val dis: LifeDisposable = LifeDisposable(this)
     lateinit var binding: ActivityAddDiagnosisBinding
     var posibleParto: Date? = null
+    var diasVacios:Long? = null
     private val calendar: Calendar by lazy { Calendar.getInstance() }
     private val datePicker: DatePickerDialog by lazy {
         DatePickerDialog(this, this,
@@ -85,6 +86,15 @@ class AddDiagnosisActivity : AppCompatActivity(), Injectable, DatePickerDialog.O
 
     override fun onResume() {
         super.onResume()
+
+        if (type == TYPE_NOVELTY){
+            dis add viewModel.getEmptyDaysForBovine(idBovino,servicio.fecha!!)
+                    .subscribeBy(
+                            onSuccess = {
+                                diasVacios = it
+                            }
+                    )
+        }
 
 
         dis add notPregnant.checkedChanges()
@@ -201,7 +211,7 @@ class AddDiagnosisActivity : AppCompatActivity(), Injectable, DatePickerDialog.O
     private fun setNovedad(params: List<String>): Servicio {
         val fecha = params[0].toDate()
         val novedad = noveltySpinner.selectedItem.toString()
-        val mNovedad = Novedad(fecha, novedad)
+        val mNovedad = Novedad(fecha, novedad, diasVacios)
 
         return servicio.apply {
             this.novedad = mNovedad
