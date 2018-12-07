@@ -253,7 +253,7 @@ fun getHeader(tipoReporte:String):List<String> =
          "Partos futuros"-> listOf("Codigo","Nombre","F. servicio","F. estimada de parto")
          "Secado"-> listOf("Codigo","Nombre","Fecha servicio","Fecha secado")
          "Preparación"-> listOf("Codigo","Nombre","Fecha de parto","Fecha de monta","Fecha de preparación")
-         "Días abiertos"-> listOf("Codigo","Nombre","Ultimo parto","Ultimo servicio","Dias vacios","En servicio")
+         "Días abiertos"-> listOf("Codigo","Nombre","Ultimo parto o Novedad","Ultimo servicio","Dias vacios","En servicio")
          "Partos atendidos"-> listOf("Codigo","Nombre","Fecha parto","Sexo cria", "Estado cria")
          "Abortos"-> listOf("Codigo","Nombre","Fecha servicio","Fecha confirmacion aborto")
          "Tres servicios"-> listOf("Codigo","Nombre","Ultimo servicio","Dias vacios")

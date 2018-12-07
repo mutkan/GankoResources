@@ -1207,24 +1207,27 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                                     diasVacios = Date().time - ultimoPartoOAborto!!.time
                                 }
                             }else{
-                                for (servicio in bovino.servicios!!) {
-                                    if (servicio.finalizado == true) {
-                                        if (ultimoPartoOAborto == null) {
-                                            if (servicio.parto != null) {
-                                                ultimoPartoOAborto = servicio.parto!!.fecha
-                                            } else if (servicio.novedad != null) {
-                                                ultimoPartoOAborto = servicio.novedad!!.fecha
-                                            }
-                                        } else {
-                                            if (servicio.parto != null) {
-                                                if (ultimoPartoOAborto < servicio.parto!!.fecha) ultimoPartoOAborto = servicio.parto!!.fecha
-                                            } else if (servicio.novedad != null) {
-                                                if (ultimoPartoOAborto < servicio.novedad!!.fecha) ultimoPartoOAborto = servicio.novedad!!.fecha
+                                if (bovino.servicios!!.size == 1) diasVacios = 0
+                                else{
+                                    for (servicio in bovino.servicios!!) {
+                                        if (servicio.finalizado == true) {
+                                            if (ultimoPartoOAborto == null) {
+                                                if (servicio.parto != null) {
+                                                    ultimoPartoOAborto = servicio.parto!!.fecha
+                                                } else if (servicio.novedad != null) {
+                                                    ultimoPartoOAborto = servicio.novedad!!.fecha
+                                                }
+                                            } else {
+                                                if (servicio.parto != null) {
+                                                    if (ultimoPartoOAborto < servicio.parto!!.fecha) ultimoPartoOAborto = servicio.parto!!.fecha
+                                                } else if (servicio.novedad != null) {
+                                                    if (ultimoPartoOAborto < servicio.novedad!!.fecha) ultimoPartoOAborto = servicio.novedad!!.fecha
+                                                }
                                             }
                                         }
                                     }
+                                    diasVacios = ultimoServicio.fecha!!.time - ultimoPartoOAborto!!.time
                                 }
-                                diasVacios = ultimoServicio.fecha!!.time - ultimoPartoOAborto!!.time
                             }
                         }
 
