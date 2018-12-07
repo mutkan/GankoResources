@@ -1261,10 +1261,21 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                                     val servicios = bovino.servicios!!
                                     servicios[0].diagnostico?.confirmacion?.not() ?: false && servicios[1].diagnostico?.confirmacion?.not() ?: false && servicios[2].diagnostico?.confirmacion?.not() ?: false
                                 }.map { bovino ->
-                                    val ultimoServicio = bovino.servicios!![0]
+                                    var fecha = bovino.servicios!![0].fecha
+                                    var ultimoServicio = Servicio()
+                                    var ultimoParto: Date? = bovino.servicios!![0].parto?.fecha
+                                    for (servicio in bovino.servicios!!) {
+                                        if (servicio.fecha!!.time >= fecha!!.time) ultimoServicio = servicio
+                                        if (servicio.parto != null) {
+                                            if (ultimoParto == null) {
+                                                ultimoParto = servicio.parto!!.fecha
+                                            } else {
+                                                if (servicio.parto!!.fecha!! > ultimoParto) ultimoParto = servicio.parto!!.fecha
+                                            }
+                                        }
+                                    }
                                     val today = Date()
-                                    val ultimoParto = bovino.servicios!!.find { it.parto != null }
-                                    val dif = if (ultimoParto != null) today.time - ultimoParto.fecha!!.time else today.time - ultimoServicio.fecha!!.time
+                                    val dif = if (ultimoParto != null) today.time - ultimoParto.time else today.time - ultimoServicio.fecha!!.time
                                     val diasVacios = TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS)
                                     //ReporteTresServicios(bovino.codigo!!, bovino.nombre, ultimoServicio.fecha!!, diasVacios)
                                     listOf(bovino.codigo!!, bovino.nombre!!, ultimoServicio.fecha!!.toStringFormat(), diasVacios.toString())
