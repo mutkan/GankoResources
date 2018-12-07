@@ -69,9 +69,9 @@ class AddMeadowAlertActivity : AppCompatActivity(), Injectable {
                     }
                     val time: Long = when (meadowAlarmTime.selectedItem.toString()) {
                         "Hora(s)" -> actualDate
-                        "Dia(s)" -> actualDate * 24
+                        "Día(s)" -> actualDate * 24
                         "Mes(es)" -> actualDate * 24 * 30
-                        else -> actualDate * 24 * 30 * 12
+                        else -> actualDate * 24 * 365
                     }
 
                     val notifyTime: Long = when (time) {
