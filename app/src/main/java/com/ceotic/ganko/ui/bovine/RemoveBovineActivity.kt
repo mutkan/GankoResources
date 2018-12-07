@@ -53,7 +53,7 @@ class RemoveBovineActivity : AppCompatActivity() , Injectable, DatePickerDialog.
                 .flatMapSingle {
                     val bovino = bovine
                     bovino.retirado = true
-                    bovino.motivoSalida = when(reasonSpinnerRemoveBovine.selectedItem){
+                    bovino.motivoSalida = when(reasonSpinnerRemoveBovine.selectedItemPosition){
                         0 -> "Venta"
                         1 -> "Perdida"
                         else -> "Muerte"

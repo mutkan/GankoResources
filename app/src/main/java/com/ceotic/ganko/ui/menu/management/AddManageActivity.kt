@@ -207,7 +207,6 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
             }
         } else null
 
-
         val numAplicacion = if (edit) {
             if (previousManage.numeroAplicaciones!! > previousManage.aplicacion!!) {
                 previousManage.aplicacion!!.plus(1)
