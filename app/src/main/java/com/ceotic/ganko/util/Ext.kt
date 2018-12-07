@@ -26,6 +26,7 @@ import com.ceotic.ganko.data.models.Promedio
 
 
 val format = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+val format1 = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
 
 fun ViewGroup.inflate(layout: Int) = LayoutInflater.from(context).inflate(layout, this, false)
 
@@ -237,3 +238,5 @@ fun getNameforMonth(month: Int): String = when (month) {
     10 -> "Noviembre"
     else -> "Diciembre"
 }
+
+fun Date.toStringFormatGuion(): String = format1.format(this)

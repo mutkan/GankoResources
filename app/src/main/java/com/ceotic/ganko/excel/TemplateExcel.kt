@@ -10,6 +10,7 @@ import android.support.design.widget.Snackbar
 import android.support.v4.content.FileProvider
 import android.util.Log
 import android.view.View
+import com.ceotic.ganko.util.toStringFormatGuion
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import org.apache.poi.ss.usermodel.Cell
 import org.apache.poi.ss.usermodel.Sheet
@@ -48,9 +49,9 @@ class TemplateExcel(var context: Context) {
         val excelfile = if (opcion == 2) {
             val folder: File = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString())
             if (!folder.exists()) folder.mkdir()
-            File(folder, fileName + Date() + ".xls")
+            File(folder, fileName + Date().toStringFormatGuion() + ".xls")
         } else {
-            File.createTempFile(fileName + Date(), ".xls", context.filesDir)
+            File.createTempFile(fileName + Date().toStringFormatGuion(), ".xls", context.filesDir)
         }
 
 
