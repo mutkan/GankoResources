@@ -521,8 +521,8 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                         it.bovinos!!.toObservable()
                                 .flatMapMaybe { id ->
                                     db.oneById(id, Bovino::class)
-                                }.map{ bov ->
-                                    listOf(bov.codigo, it.tipoAlimento!!,it.valorkg!!.toString()+" Kg", it.valorTotal!!.toString())
+                                }.map { bov ->
+                                    listOf(bov.codigo, it.tipoAlimento!!, it.valorkg!!.toString() + " Kg", it.valorTotal!!.toString())
                                 }
                     }
                     .toList().applySchedulers()
@@ -542,8 +542,8 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                         it.bovinos!!.toObservable()
                                 .flatMapMaybe { id ->
                                     db.oneById(id, Bovino::class)
-                                }.map{ bov ->
-                                    listOf(bov.codigo, it.tipoAlimento!!,it.valorkg!!.toString()+" Kg", it.valorTotal!!.toString())
+                                }.map { bov ->
+                                    listOf(bov.codigo, it.tipoAlimento!!, it.valorkg!!.toString() + " Kg", it.valorTotal!!.toString())
                                 }
                     }.toList().applySchedulers()
     //endregion
@@ -767,27 +767,72 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     //endregion
 
     // region Reporte Ganancia de peso
-    fun reporteGananciaPeso(bovino: Bovino, from: Date, to: Date): Single<List<List<String>>> =
-            db.listByExp("fecha".betweenDates(from, to) andEx ("bovino" equalEx bovino.codigo!!), Ceba::class)
+    fun reporteGananciaPeso(from: Date, to: Date): Single<MutableList<List<String?>>> =
+            db.listByExp("finca" equalEx farmID, Bovino::class)
                     .flatMapObservable { it.toObservable() }
-                    .map { listOf(it.bovino!!, bovino.nombre!!, bovino.fechaNacimiento!!.toStringFormat(), it.gananciaPeso!!.toString(), bovino.proposito!!) }.toList().applySchedulers()
+                    .flatMapMaybe {
+                        db.listByExp("fecha".betweenDates(from, to) andEx ("bovino" equalEx it._id!!), Ceba::class, orderBy = arrayOf("fecha" orderEx DESCENDING))
+                                .filter { it.isNotEmpty() }
+                                .map { cebaList ->
+                                    var gananciaPeso = 1f
+                                    var cebaMayor = Ceba()
+                                    var cebaMenor= Ceba()
+                                    if (cebaList.size == 1) {
+                                        gananciaPeso = cebaList[0].gananciaPeso!!
+                                    } else {
+                                        for (v1 in 0 until cebaList.size) {
+                                            if (cebaList[v1].eliminado==null || cebaList[v1].eliminado == false) cebaMayor = cebaList[v1]
+                                        }
+                                        for (v2 in (cebaList.size - 1) downTo 0) {
+                                            if (cebaList[v2].eliminado==null || cebaList[v2].eliminado == false) cebaMenor = cebaList[v2]
+                                        }
+                                        var dif = cebaMayor.fecha!!.time - cebaMenor.fecha!!.time
+                                        var dias = TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS)
+                                        dias = if(dias==0.toLong()) 1 else dias
+                                        gananciaPeso = (cebaMayor.peso!! - cebaMenor.peso!!) / dias
+                                    }
+                                    listOf(it.codigo, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), gananciaPeso.toString(), it.proposito!!)
+                                }
+                    }.toList().applySchedulers()
 
-    /* fun reporteGananciaPeso(bovino: Bovino, mes: Int, anio: Int): Observable<Pair<Bovino,gdp:Float>> =
-             db.listByExp(("bovino" equalEx bovino.codigo!!), orderBy = arrayOf("fecha" orderEx DESCENDING), kClass = Ceba::class)
-                     .flatMapObservable { it.toObservable() }
-                     .filter {
-                         val cal = Calendar.getInstance()
-                         cal.timeInMillis = it.fecha!!.time
-                         val month = cal.get(Calendar.MONTH)
-                         val year = cal.get(Calendar.YEAR)
-                         month == mes && year == anio
-                     }.toList()
-                     .flatMap {
-                         var difdays = ((it[it.size - 1].fecha.time - it[0].fecha.time) / (1000 * 60 * 60 * 24))
-                         var gdp = (it[it.size - 1].gananciaPeso - it[0].gananciaPeso)
-                         bovino to gdp
-                     }.applySchedulers()
- */
+    fun reporteGananciaPeso(mes: Int, anio: Int): Single<MutableList<List<String?>>> =
+            db.listByExp("finca" equalEx farmID, Bovino::class)
+                    .flatMapObservable { it.toObservable() }
+                    .flatMapMaybe {
+                        db.listByExp(("bovino" equalEx it._id!!), Ceba::class, orderBy = arrayOf("fecha" orderEx DESCENDING))
+                                .filter { it.isNotEmpty() }
+                                .flatMapObservable { it.toObservable() }
+                                .filter {
+                                    val cal = Calendar.getInstance()
+                                    cal.timeInMillis = it.fecha!!.time
+                                    val month = cal.get(Calendar.MONTH)
+                                    val year = cal.get(Calendar.YEAR)
+                                    month == mes && year == anio
+                                }
+                                .toList()
+                                .filter { it.isNotEmpty() }
+                                .map { cebaList ->
+                                    var gananciaPeso = 1f
+                                    var cebaMayor = Ceba()
+                                    var cebaMenor= Ceba()
+                                    if (cebaList.size == 1) {
+                                        gananciaPeso = cebaList[0].gananciaPeso!!
+                                    } else {
+                                        for (v1 in 0 until cebaList.size) {
+                                            if (cebaList[v1].eliminado==null || cebaList[v1].eliminado == false) cebaMayor = cebaList[v1]
+                                        }
+                                        for (v2 in (cebaList.size - 1) downTo 0) {
+                                            if (cebaList[v2].eliminado==null || cebaList[v2].eliminado == false) cebaMenor = cebaList[v2]
+                                        }
+                                        var dif = cebaMayor.fecha!!.time - cebaMenor.fecha!!.time
+                                        var dias = TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS)
+                                        dias = if(dias==0.toLong()) 1 else dias
+                                        gananciaPeso = (cebaMayor.peso!! - cebaMenor.peso!!) / dias
+                                    }
+                                    listOf(it.codigo, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), gananciaPeso.toString(), it.proposito!!)
+                                }
+                    }.toList().applySchedulers()
+
     //endregion
 
     //region Entradas
@@ -1116,9 +1161,9 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                                 } else ultimoServicio.fecha!!.time - ultimoParto!!.time
                             } else Date().time - ultimoParto!!.time
                         } else {
-                            if(ultimoServicio.novedad?.novedad=="Aborto"){
+                            if (ultimoServicio.novedad?.novedad == "Aborto") {
                                 Date().time - ultimoServicio.novedad!!.fecha.time
-                            }else Date().time - ultimoParto!!.time
+                            } else Date().time - ultimoParto!!.time
                         }
                         val diasVacios = TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS)
                         var enSer = if (enServicio) "Si" else "No"
@@ -1380,7 +1425,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                         it.bovinos!!.toObservable()
                                 .flatMapMaybe { id ->
                                     db.oneById(id, Bovino::class)
-                                }.map{ bov ->
+                                }.map { bov ->
                                     listOf(bov.codigo, it.idPradera!!, it.transactionDate!!.toStringFormat())
                                 }
                     }.toList().applySchedulers()
@@ -1402,7 +1447,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                         it.bovinos!!.toObservable()
                                 .flatMapMaybe { id ->
                                     db.oneById(id, Bovino::class)
-                                }.map{ bov ->
+                                }.map { bov ->
                                     listOf(bov.codigo, it.idPradera!!, it.transactionDate!!.toStringFormat())
                                 }
 
