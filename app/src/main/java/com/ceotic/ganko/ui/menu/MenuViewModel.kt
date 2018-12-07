@@ -397,16 +397,16 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     andEx (ArrayExpression.any(VAR_SERV).`in`(Expression.property("servicios")))
                     .satisfies(VAR_PARTO.notNullOrMissing())
                     , Bovino::class)
-                    .flatMapObservable {bovinos ->
+                    .flatMapObservable { bovinos ->
                         bovinos.toObservable().flatMapMaybe { bovino ->
-                            bovino.servicios?.toObservable()?.filter { it.parto != null && it.parto?.intervalo != 0 && it.parto?.intervalo != null }?.firstElement()?.map {servicio ->
+                            bovino.servicios?.toObservable()?.filter { it.parto != null && it.parto?.intervalo != 0 && it.parto?.intervalo != null }?.firstElement()?.map { servicio ->
                                 servicio.parto!!.intervalo
                             }
                         }
                     }.toList()
-                    .flatMapMaybe {intervalos ->
+                    .flatMapMaybe { intervalos ->
                         val tot = intervalos.size
-                        intervalos.toObservable().reduce { t1: Int, t2: Int -> t2 + t1 }.map {sum ->
+                        intervalos.toObservable().reduce { t1: Int, t2: Int -> t2 + t1 }.map { sum ->
                             sum.toFloat() / tot.toFloat()
                         }
                     }.defaultIfEmpty(0f).applySchedulers()
@@ -429,10 +429,11 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                         bovino.servicios!!.toObservable().filter {
                             it.finalizado == true && it.diagnostico?.confirmacion == true
                         }.toList()
-                                .map {servicios ->
+                                .map { servicios ->
                                     if (servicios.isNotEmpty()) {
                                         val ultimoServicio = servicios.first()
-                                        val ultimoEvento = ultimoServicio.parto?.fecha ?: ultimoServicio.novedad!!.fecha
+                                        val ultimoEvento = ultimoServicio.parto?.fecha
+                                                ?: ultimoServicio.novedad!!.fecha
                                         val dif = Date().time - ultimoEvento.time
                                         return@map TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS)
                                     } else {
@@ -442,7 +443,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     }.toList()
                     .flatMapMaybe {
                         val tot = it.size
-                        it.toObservable().reduce { t1: Long, t2: Long -> t2 + t1 }.map {sum ->
+                        it.toObservable().reduce { t1: Long, t2: Long -> t2 + t1 }.map { sum ->
                             sum.toFloat() / tot.toFloat()
                         }
                     }.defaultIfEmpty(0f).applySchedulers()
@@ -453,11 +454,11 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                 serviciosBovino.toObservable().filter {
                     it.finalizado == true && it.diagnostico?.confirmacion == true
                 }.firstElement()
-                        .map {servicio ->
-                                val ultimoEvento = servicio.parto?.fecha ?: servicio.novedad!!.fecha
-                                val dif = Date().time - ultimoEvento.time
-                                return@map TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS)
-                            }
+                        .map { servicio ->
+                            val ultimoEvento = servicio.parto?.fecha ?: servicio.novedad!!.fecha
+                            val dif = Date().time - ultimoEvento.time
+                            return@map TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS)
+                        }
             }.defaultIfEmpty(0L).applySchedulers()
 
     fun totalAbortos(): Single<Promedio> =
@@ -594,7 +595,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
 
     // region Reportes Leche
 
-    fun reportesLeche(mes: Int, anio: Int): Single<List<List<String>>> =
+    fun reportesLeche(mes: Int, anio: Int): Single<MutableList<List<String?>>> =
             db.listByExp("idFinca" equalEx farmID, Produccion::class)
                     .flatMapObservable { it.toObservable() }
                     .filter {
@@ -603,16 +604,22 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                         val month = cal.get(Calendar.MONTH)
                         val year = cal.get(Calendar.YEAR)
                         month == mes && year == anio
-                    }.map {
-                        listOf(it.litros!!.toString(), it.fecha!!.toStringFormat(), it.jornada!!)
+                    }.flatMapMaybe {
+                        db.oneById(it.bovino!!, Bovino::class)
+                                .map { bov ->
+                                    listOf(bov.codigo, it.litros!!.toString(), it.fecha!!.toStringFormat(), it.jornada!!)
+                                }
                     }.toList().applySchedulers()
 
 
-    fun reportesLeche(from: Date, to: Date): Single<List<List<String>>> =
+    fun reportesLeche(from: Date, to: Date): Single<MutableList<List<String?>>> =
             db.listByExp("idFinca" equalEx farmID andEx ("fecha".betweenDates(from, to)), Produccion::class)
                     .flatMapObservable { it.toObservable() }
-                    .map {
-                        listOf(it.litros!!.toString(), it.fecha!!.toStringFormat(), it.jornada!!)
+                    .flatMapMaybe {
+                        db.oneById(it.bovino!!, Bovino::class)
+                                .map { bov ->
+                                    listOf(bov.codigo, it.litros!!.toString(), it.fecha!!.toStringFormat(), it.jornada!!)
+                                }
                     }.toList().applySchedulers()
 
 
@@ -783,19 +790,19 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                                 .map { cebaList ->
                                     var gananciaPeso = 1f
                                     var cebaMayor = Ceba()
-                                    var cebaMenor= Ceba()
+                                    var cebaMenor = Ceba()
                                     if (cebaList.size == 1) {
                                         gananciaPeso = cebaList[0].gananciaPeso!!
                                     } else {
                                         for (v1 in 0 until cebaList.size) {
-                                            if (cebaList[v1].eliminado==null || cebaList[v1].eliminado == false) cebaMayor = cebaList[v1]
+                                            if (cebaList[v1].eliminado == null || cebaList[v1].eliminado == false) cebaMayor = cebaList[v1]
                                         }
                                         for (v2 in (cebaList.size - 1) downTo 0) {
-                                            if (cebaList[v2].eliminado==null || cebaList[v2].eliminado == false) cebaMenor = cebaList[v2]
+                                            if (cebaList[v2].eliminado == null || cebaList[v2].eliminado == false) cebaMenor = cebaList[v2]
                                         }
                                         var dif = cebaMayor.fecha!!.time - cebaMenor.fecha!!.time
                                         var dias = TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS)
-                                        dias = if(dias==0.toLong()) 1 else dias
+                                        dias = if (dias == 0.toLong()) 1 else dias
                                         gananciaPeso = (cebaMayor.peso!! - cebaMenor.peso!!) / dias
                                     }
                                     listOf(it.codigo, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), gananciaPeso.toString(), it.proposito!!)
@@ -821,19 +828,19 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                                 .map { cebaList ->
                                     var gananciaPeso = 1f
                                     var cebaMayor = Ceba()
-                                    var cebaMenor= Ceba()
+                                    var cebaMenor = Ceba()
                                     if (cebaList.size == 1) {
                                         gananciaPeso = cebaList[0].gananciaPeso!!
                                     } else {
                                         for (v1 in 0 until cebaList.size) {
-                                            if (cebaList[v1].eliminado==null || cebaList[v1].eliminado == false) cebaMayor = cebaList[v1]
+                                            if (cebaList[v1].eliminado == null || cebaList[v1].eliminado == false) cebaMayor = cebaList[v1]
                                         }
                                         for (v2 in (cebaList.size - 1) downTo 0) {
-                                            if (cebaList[v2].eliminado==null || cebaList[v2].eliminado == false) cebaMenor = cebaList[v2]
+                                            if (cebaList[v2].eliminado == null || cebaList[v2].eliminado == false) cebaMenor = cebaList[v2]
                                         }
                                         var dif = cebaMayor.fecha!!.time - cebaMenor.fecha!!.time
                                         var dias = TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS)
-                                        dias = if(dias==0.toLong()) 1 else dias
+                                        dias = if (dias == 0.toLong()) 1 else dias
                                         gananciaPeso = (cebaMayor.peso!! - cebaMenor.peso!!) / dias
                                     }
                                     listOf(it.codigo, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), gananciaPeso.toString(), it.proposito!!)
@@ -1149,33 +1156,83 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     .map { bovino ->
                         var fecha = bovino.servicios!![0].fecha
                         var ultimoServicio = Servicio()
-                        var ultimoParto: Date? = bovino.servicios!![0].parto?.fecha
+                        var diasVacios = 0L
+                        var ultimoPartoOAborto: Date? = null
                         for (servicio in bovino.servicios!!) {
                             if (servicio.fecha!!.time >= fecha!!.time) ultimoServicio = servicio
-                            if (servicio.parto != null) {
-                                if (ultimoParto == null) {
-                                    ultimoParto = servicio.parto!!.fecha
-                                } else {
-                                    if (servicio.parto!!.fecha!! > ultimoParto) ultimoParto = servicio.parto!!.fecha
+                        }
+                        if (ultimoServicio.diagnostico == null) {
+                            if (bovino.servicios!!.size == 1) diasVacios = 0
+                            else {
+                                for (servicio in bovino.servicios!!) {
+                                    if (servicio.finalizado == true) {
+                                        if (ultimoPartoOAborto == null) {
+                                            if (servicio.parto != null) {
+                                                ultimoPartoOAborto = servicio.parto!!.fecha
+                                            } else if (servicio.novedad != null) {
+                                                ultimoPartoOAborto = servicio.novedad!!.fecha
+                                            }
+                                        } else {
+                                            if (servicio.parto != null) {
+                                                if (ultimoPartoOAborto < servicio.parto!!.fecha) ultimoPartoOAborto = servicio.parto!!.fecha
+                                            } else if (servicio.novedad != null) {
+                                                if (ultimoPartoOAborto < servicio.novedad!!.fecha) ultimoPartoOAborto = servicio.novedad!!.fecha
+                                            }
+                                        }
+                                    }
                                 }
+                                diasVacios = Date().time - ultimoPartoOAborto!!.time
+                            }
+                        } else {
+                            if(!ultimoServicio.diagnostico!!.confirmacion){
+                                if (bovino.servicios!!.size == 1) diasVacios = 0
+                                else {
+                                    for (servicio in bovino.servicios!!) {
+                                        if (servicio.finalizado == true) {
+                                            if (ultimoPartoOAborto == null) {
+                                                if (servicio.parto != null) {
+                                                    ultimoPartoOAborto = servicio.parto!!.fecha
+                                                } else if (servicio.novedad != null) {
+                                                    ultimoPartoOAborto = servicio.novedad!!.fecha
+                                                }
+                                            } else {
+                                                if (servicio.parto != null) {
+                                                    if (ultimoPartoOAborto < servicio.parto!!.fecha) ultimoPartoOAborto = servicio.parto!!.fecha
+                                                } else if (servicio.novedad != null) {
+                                                    if (ultimoPartoOAborto < servicio.novedad!!.fecha) ultimoPartoOAborto = servicio.novedad!!.fecha
+                                                }
+                                            }
+                                        }
+                                    }
+                                    diasVacios = Date().time - ultimoPartoOAborto!!.time
+                                }
+                            }else{
+                                for (servicio in bovino.servicios!!) {
+                                    if (servicio.finalizado == true) {
+                                        if (ultimoPartoOAborto == null) {
+                                            if (servicio.parto != null) {
+                                                ultimoPartoOAborto = servicio.parto!!.fecha
+                                            } else if (servicio.novedad != null) {
+                                                ultimoPartoOAborto = servicio.novedad!!.fecha
+                                            }
+                                        } else {
+                                            if (servicio.parto != null) {
+                                                if (ultimoPartoOAborto < servicio.parto!!.fecha) ultimoPartoOAborto = servicio.parto!!.fecha
+                                            } else if (servicio.novedad != null) {
+                                                if (ultimoPartoOAborto < servicio.novedad!!.fecha) ultimoPartoOAborto = servicio.novedad!!.fecha
+                                            }
+                                        }
+                                    }
+                                }
+                                diasVacios = ultimoServicio.fecha!!.time - ultimoPartoOAborto!!.time
                             }
                         }
+
                         val enServicio = ultimoServicio.finalizado?.not() ?: false
-                        val dif = if (enServicio) {
-                            if (ultimoServicio.diagnostico != null) {
-                                if (!ultimoServicio.diagnostico?.confirmacion!!) {
-                                    Date().time - ultimoParto!!.time
-                                } else ultimoServicio.fecha!!.time - ultimoParto!!.time
-                            } else Date().time - ultimoParto!!.time
-                        } else {
-                            if (ultimoServicio.novedad?.novedad == "Aborto") {
-                                Date().time - ultimoServicio.novedad!!.fecha.time
-                            } else Date().time - ultimoParto!!.time
-                        }
-                        val diasVacios = TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS)
+                        diasVacios = TimeUnit.DAYS.convert(diasVacios, TimeUnit.MILLISECONDS)
                         var enSer = if (enServicio) "Si" else "No"
                         //ReporteDiasVacios(bovino.codigo!!, bovino.nombre, ultimoParto.fecha!!, ultimoServicio.fecha!!, diasVacios, enServicio)
-                        listOf(bovino.codigo!!, bovino.nombre!!, if (ultimoParto != null) ultimoParto.toStringFormat() else "Sin parto o Aborto", ultimoServicio.fecha!!.toStringFormat(), diasVacios.toString(), enSer)
+                        listOf(bovino.codigo!!, bovino.nombre!!, if (ultimoPartoOAborto != null) ultimoPartoOAborto.toStringFormat() else "Sin parto o Aborto", ultimoServicio.fecha!!.toStringFormat(), diasVacios.toString(), enSer)
                     }.toList().applySchedulers()
     //endregion
 
@@ -1393,8 +1450,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                         dias <= it.fechaNacimiento!!.time && 1 <= it.partos!!
                     }
                     .map {
-                        listOf(it.codigo!!, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), it.proposito!!, it.raza!!, it.codigoMadre
-                                ?: "", it.codigoPadre ?: "")
+                        listOf(it.codigo!!, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), it.proposito!!, it.raza!!)
                     }.toList().applySchedulers()
 
     //endregion
@@ -1411,6 +1467,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     fun reporteSalida(mes: Int, anio: Int): Single<List<List<String>>> =
             db.listByExp("finca" equalEx farmID, Bovino::class)
                     .flatMapObservable { it.toObservable() }
+                    .filter { it.fechaSalida != null }
                     .filter {
                         val fechaSalida = it.fechaSalida
                         val cal = Calendar.getInstance()

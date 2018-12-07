@@ -261,7 +261,7 @@ fun getHeader(tipoReporte:String):List<String> =
          "Resumen reproductivo"-> listOf()
          //LECHE
          "Consolidado de leche"-> listOf("Tipo","Fecha","Operacion","Numero Litros","Valor litros","Total Litros")
-         "Reporte de leche"-> listOf("Numero de litros","Fecha de producción","Jornada")
+         "Reporte de leche"-> listOf("Codigo","Numero de litros","Fecha de producción","Jornada")
          //CEBA
          "Destetos"-> listOf("Codigo","Nombre","Fecha nacimiento","Fecha destete","Codigo madre","Nombre madre")
          "Ganancia diaria de peso"-> listOf("Codigo","Nombre","Fecha nacimiento","GDP","Proposito")
