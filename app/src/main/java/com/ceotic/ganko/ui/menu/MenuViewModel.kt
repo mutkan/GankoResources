@@ -297,6 +297,8 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     private val VAR_PARTO = ArrayExpression.variable("servicio.parto")
     private val VAR_EMPADRE = ArrayExpression.variable("servicio.empadre")
     private val VAR_FECHA_PARTO = ArrayExpression.variable("servicio.parto.fecha")
+    private val VAR_FINALIZADO = ArrayExpression.variable("servicio.finalizado")
+    private val VAR_CONFIRMACION = ArrayExpression.variable("servicio.diagnostio.confirmacion")
 
 
     fun totalServicios(): Single<Promedio> =
@@ -395,17 +397,17 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     andEx (ArrayExpression.any(VAR_SERV).`in`(Expression.property("servicios")))
                     .satisfies(VAR_PARTO.notNullOrMissing())
                     , Bovino::class)
-                    .flatMapObservable {
-                        it.toObservable().flatMapMaybe { bovino ->
-                            bovino.servicios?.toObservable()?.filter { it.parto != null && it.parto?.intervalo != 0 && it.parto?.intervalo != null }?.firstElement()?.map {
-                                it.parto!!.intervalo
+                    .flatMapObservable {bovinos ->
+                        bovinos.toObservable().flatMapMaybe { bovino ->
+                            bovino.servicios?.toObservable()?.filter { it.parto != null && it.parto?.intervalo != 0 && it.parto?.intervalo != null }?.firstElement()?.map {servicio ->
+                                servicio.parto!!.intervalo
                             }
                         }
                     }.toList()
-                    .flatMapMaybe {
-                        val tot = it.size
-                        it.toObservable().reduce { t1: Int, t2: Int -> t2 + t1 }.map {
-                            it.toFloat() / tot.toFloat()
+                    .flatMapMaybe {intervalos ->
+                        val tot = intervalos.size
+                        intervalos.toObservable().reduce { t1: Int, t2: Int -> t2 + t1 }.map {sum ->
+                            sum.toFloat() / tot.toFloat()
                         }
                     }.defaultIfEmpty(0f).applySchedulers()
 
@@ -418,40 +420,45 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                                 }
                     }.defaultIfEmpty(0).applySchedulers()
 
-    fun promedioDiasVacios(): Maybe<Float> =
+    fun promedioDiasVacios() =
             db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra")
                     andEx (ArrayFunction.length(Expression.property("servicios")).greaterThanOrEqualTo(Expression.value(1)))
-                    andEx (ArrayExpression.any(VAR_SERV).`in`(Expression.property("servicios")))
-                    .satisfies(VAR_PARTO.notNullOrMissing())
                     , Bovino::class)
                     .flatMapObservable { it.toObservable() }
-                    .flatMapMaybe { bovino ->
-                        bovino.servicios?.toObservable()?.filter { it.parto != null }?.firstElement()
-                                ?.map {
-                                    val ultimoServicio = bovino.servicios!![0]
-                                    val ultimoParto = it
-                                    val dif = if (ultimoServicio.diagnostico?.confirmacion!! && ultimoServicio.parto == null) ultimoServicio.fecha!!.time - ultimoParto.fecha!!.time else Date().time - ultimoParto.fecha!!.time
-                                    return@map TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS)
+                    .flatMapSingle { bovino ->
+                        bovino.servicios!!.toObservable().filter {
+                            it.finalizado == true && it.diagnostico?.confirmacion == true
+                        }.toList()
+                                .map {servicios ->
+                                    if (servicios.isNotEmpty()) {
+                                        val ultimoServicio = servicios.first()
+                                        val ultimoEvento = ultimoServicio.parto?.fecha ?: ultimoServicio.novedad!!.fecha
+                                        val dif = Date().time - ultimoEvento.time
+                                        return@map TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS)
+                                    } else {
+                                        0L
+                                    }
                                 }
                     }.toList()
                     .flatMapMaybe {
                         val tot = it.size
-                        it.toObservable().reduce { t1: Long, t2: Long -> t2 + t1 }.map {
-                            it.toFloat() / tot.toFloat()
+                        it.toObservable().reduce { t1: Long, t2: Long -> t2 + t1 }.map {sum ->
+                            sum.toFloat() / tot.toFloat()
                         }
                     }.defaultIfEmpty(0f).applySchedulers()
 
-    fun diasVaciosBovino(idBovino: String): Maybe<Long> =
+    fun diasVaciosBovino(idBovino: String) =
             db.oneById(idBovino, Bovino::class).flatMap { bovino ->
-                bovino.servicios?.toObservable()?.filter { it.parto != null }?.firstElement()
-                        ?.map {
-                            val ultimoServicio = bovino.servicios!![0]
-                            val ultimoParto = it
-                            val dif = if (ultimoServicio.diagnostico?.confirmacion!! && ultimoServicio.parto == null) ultimoServicio.fecha!!.time - ultimoParto.fecha!!.time else Date().time - ultimoParto.fecha!!.time
-                            return@map TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS)
-                        }
-            }.defaultIfEmpty(0)
-                    .applySchedulers()
+                val serviciosBovino = bovino.servicios ?: listOf()
+                serviciosBovino.toObservable().filter {
+                    it.finalizado == true && it.diagnostico?.confirmacion == true
+                }.firstElement()
+                        .map {servicio ->
+                                val ultimoEvento = servicio.parto?.fecha ?: servicio.novedad!!.fecha
+                                val dif = Date().time - ultimoEvento.time
+                                return@map TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS)
+                            }
+            }.defaultIfEmpty(0L).applySchedulers()
 
     fun totalAbortos(): Single<Promedio> =
             db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra")
