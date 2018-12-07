@@ -1092,8 +1092,6 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     fun reporteDiasVacios(): Single<List<List<String>>> =
             db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra")
                     andEx (ArrayFunction.length(Expression.property("servicios")).greaterThanOrEqualTo(Expression.value(1)))
-                    andEx (ArrayExpression.any(VAR_SERV).`in`(Expression.property("servicios")))
-                    .satisfies(VAR_PARTO.notNullOrMissing())
                     , Bovino::class)
                     .flatMapObservable { it.toObservable() }
                     .map { bovino ->
@@ -1118,12 +1116,14 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                                 } else ultimoServicio.fecha!!.time - ultimoParto!!.time
                             } else Date().time - ultimoParto!!.time
                         } else {
-                            Date().time - ultimoParto!!.time
+                            if(ultimoServicio.novedad?.novedad=="Aborto"){
+                                Date().time - ultimoServicio.novedad!!.fecha.time
+                            }else Date().time - ultimoParto!!.time
                         }
                         val diasVacios = TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS)
                         var enSer = if (enServicio) "Si" else "No"
                         //ReporteDiasVacios(bovino.codigo!!, bovino.nombre, ultimoParto.fecha!!, ultimoServicio.fecha!!, diasVacios, enServicio)
-                        listOf(bovino.codigo!!, bovino.nombre!!, if (ultimoParto != null) ultimoParto.toStringFormat() else "Sin parto", ultimoServicio.fecha!!.toStringFormat(), diasVacios.toString(), enSer)
+                        listOf(bovino.codigo!!, bovino.nombre!!, if (ultimoParto != null) ultimoParto.toStringFormat() else "Sin parto o Aborto", ultimoServicio.fecha!!.toStringFormat(), diasVacios.toString(), enSer)
                     }.toList().applySchedulers()
     //endregion
 
