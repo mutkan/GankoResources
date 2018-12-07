@@ -25,7 +25,13 @@ class ListZealAdapter @Inject constructor() : RecyclerView.Adapter<ZealViewHolde
             notifyDataSetChanged()
         }
 
-    private val now: Date = Date()
+    var onService:Boolean = true
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
+
     val clickAddService: PublishSubject<Date> = PublishSubject.create()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ZealViewHolder = ZealViewHolder(parent.inflate(R.layout.template_zeal))
@@ -37,7 +43,7 @@ class ListZealAdapter @Inject constructor() : RecyclerView.Adapter<ZealViewHolde
         holder.binding.zeal = zeal
         holder.binding.clickAddService = clickAddService
         val isZealServed = zealsServed[zeal] ?: false
-        holder.binding.btnAddService.visibility = if (!isZealServed) View.VISIBLE else View.GONE
+        holder.binding.btnAddService.visibility = if (!isZealServed && !onService) View.VISIBLE else View.GONE
     }
 }
 
