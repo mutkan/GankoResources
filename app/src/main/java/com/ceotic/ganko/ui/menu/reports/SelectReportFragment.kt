@@ -143,10 +143,10 @@ class SelectReportFragment : Fragment(), Injectable, com.borax12.materialdateran
     }
 
 
-    private fun pdf(nombre: String, dir: Int, header: List<String>, list: List<List<String>>) {
+    private fun pdf(nombre: String, dir: Int, header: List<String>, list: MutableList<List<String?>>) {
         templatePdf.openFile(nombre, dir)
         templatePdf.addTitle("Reporte $selectedType ", Calendar.getInstance().time.toString())
-        templatePdf.createTable(header, list)
+        templatePdf.createTable(header, list as List<List<String>>)
         templatePdf.closeFile()
         if (dir == 1) {
             templatePdf.viewPdf(activity!!)
@@ -157,8 +157,8 @@ class SelectReportFragment : Fragment(), Injectable, com.borax12.materialdateran
         }
     }
 
-    private fun excel(nombre: String, dir: Int, header: List<String>, list: List<List<String>>) {
-        templateExcel.saveExcelFile(nombre, dir, activity!!, header, list, view!!)
+    private fun excel(nombre: String, dir: Int, header: List<String>, list: MutableList<List<String?>>) {
+        templateExcel.saveExcelFile(nombre, dir, activity!!, header, list as List<List<String>>, view!!)
     }
 
     private fun checkCategoriesSpinnerChanges(selected: Int) {
@@ -190,124 +190,109 @@ class SelectReportFragment : Fragment(), Injectable, com.borax12.materialdateran
         var listareportes: List<List<String>> = emptyList()
         when (selectedType) {
             "Partos futuros" -> if (monthlyRadioButton.isChecked) viewmodel.reporteFuturosPartos(month, year).subscribeBy(
-                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
 
             )
             else viewmodel.reporteFuturosPartos(from, to).subscribeBy(
-                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
 
             )
             "Secado" -> if (monthlyRadioButton.isChecked) viewmodel.reporteSecado(month, year).subscribeBy(
-                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
             else viewmodel.reporteSecado(from, to).subscribeBy(
-                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
             "Preparación" -> if (monthlyRadioButton.isChecked) viewmodel.reportePreparacion(month, year).subscribeBy(
-                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
             else viewmodel.reportePreparacion(from, to).subscribeBy(
-                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
 
             "Días abiertos" -> viewmodel.reporteDiasVacios().subscribeBy(
-                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
 
             "Partos atendidos" -> if (monthlyRadioButton.isChecked) viewmodel.reportePartosAtendidos(month, year).subscribeBy(
-                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
             else viewmodel.reportePartosAtendidos(from, to).subscribeBy(
-                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
             "Abortos" -> if (monthlyRadioButton.isChecked) viewmodel.reporteAbortos(month, year).subscribeBy(
-                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
             else viewmodel.reporteAbortos(from, to).subscribeBy(
-                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
             "Tres servicios" -> viewmodel.reporteTresServicios().subscribeBy(
-                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
-            "Celos" ->  if (monthlyRadioButton.isChecked) viewmodel.reporteCelos(month,year).subscribeBy(
-                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+            "Celos" -> if (monthlyRadioButton.isChecked) viewmodel.reporteCelos(month, year).subscribeBy(
+                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
             else viewmodel.reporteCelos(from, to).subscribeBy(
-                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
-                )
+                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
+            )
 
-
+            "Ganancia diaria de peso" -> if (!monthlyRadioButton.isChecked)
+                viewmodel.reporteGananciaPeso(from, to).subscribeBy(
+                        onSuccess = {
+                            pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>)
+                        })
+            else viewmodel.reporteGananciaPeso(month,year).subscribeBy(
+                    onSuccess = {
+                        pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>)
+                    })
             //LECHE
-            "Consolidado de leche"-> {
+            "Consolidado de leche" -> {
 
                 if (monthlyRadioButton.isChecked) viewmodel.reporteConsolidado(month, year).subscribeBy(
-                        onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                        onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
                 )
-                else viewmodel.reporteConsolidado(from,to).subscribeBy(
-                        onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                else viewmodel.reporteConsolidado(from, to).subscribeBy(
+                        onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
                 )
             }
 
-            "Reporte de leche" -> if (monthlyRadioButton.isChecked) viewmodel.reportesLeche(month,year).subscribeBy(
-                    onSuccess = {pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it)})
-                else viewmodel.reportesLeche(from,to).subscribeBy(
-                    onSuccess = {pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it)}
-                )
+            "Reporte de leche" -> if (monthlyRadioButton.isChecked) viewmodel.reportesLeche(month, year).subscribeBy(
+                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) })
+            else viewmodel.reportesLeche(from, to).subscribeBy(
+                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
+            )
 
             //CEBA
-            "Destetos" -> if (monthlyRadioButton.isChecked) viewmodel.reportesDestete(from,to).subscribeBy(
-                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) })
+            "Destetos" -> if (monthlyRadioButton.isChecked) viewmodel.reportesDestete(from, to).subscribeBy(
+                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) })
             else viewmodel.reportesDestete(from, to).subscribeBy(
-                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
-            )
-          /*  "Ganancia diaria de peso" -> {
-                var gdp: List<List<String>> = emptyList()
-                if (monthlyRadioButton.isChecked) viewmodel.getBovine(idFinca).subscribeBy(
-                        onSuccess = {
-                            for (bovino in it) {
-                                viewmodel.reporteGananciaPeso(bovino, month, year).subscribeBy(
-                                        onSuccess = {
-                                            gdp = gdp.plus(it)
-                                            listareportes = gdp
-                                            pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, listareportes)
-                                        })
-                            }
-                        })
-                else viewmodel.getBovine(idFinca).subscribeBy {
-                    for (bovino in it) {
-                        viewmodel.reporteGananciaPeso(bovino, from, to).subscribeBy(
-                                onSuccess = {
-                                    gdp = gdp.plus(it)
-                                    listareportes = gdp
-                                    pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, listareportes)
-                                })
-                    }
-                }
-            }*/
-            //PRADERAS
-            "Praderas" -> viewmodel.reporteGetPraderas().subscribeBy(
-                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
-            )
-            "Ocupación de praderas" -> viewmodel.reporteOcupacionPraderas().subscribeBy(
-                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
 
-            "Animales en pradera"-> if (monthlyRadioButton.isChecked) viewmodel.reporteMovimientos(month, year).subscribeBy(
-                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+
+            //PRADERAS
+            "Praderas" -> viewmodel.reporteGetPraderas().subscribeBy(
+                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
+            )
+            "Ocupación de praderas" -> viewmodel.reporteOcupacionPraderas().subscribeBy(
+                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
+            )
+
+            "Animales en pradera" -> if (monthlyRadioButton.isChecked) viewmodel.reporteMovimientos(month, year).subscribeBy(
+                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
             else viewmodel.reporteMovimientos(from, to).subscribeBy(
-                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
             //ALIMENTACION
             "Alimentación" -> {
                 var alimentacion: List<List<String>> = emptyList()
-                if (monthlyRadioButton.isChecked) viewmodel.reporteAlimentacion( month, year).subscribeBy(
+                if (monthlyRadioButton.isChecked) viewmodel.reporteAlimentacion(month, year).subscribeBy(
                         onSuccess = {
-                            pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it)
+                            pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>)
 
                         })
-
-                else viewmodel.reporteAlimentacion( from, to).subscribeBy(
+                else viewmodel.reporteAlimentacion(from, to).subscribeBy(
                         onSuccess = {
                             pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it)
 
@@ -316,73 +301,73 @@ class SelectReportFragment : Fragment(), Injectable, com.borax12.materialdateran
 
             //ENTRADAS
             "Inventario" -> if (monthlyRadioButton.isChecked) viewmodel.reporteInventario(month, year).subscribeBy(
-                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
             else viewmodel.reporteInventario(from, to).subscribeBy(
-                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
             "Terneras en estaca" -> if (monthlyRadioButton.isChecked) viewmodel.reporteTernerasEnEstaca(month, year).subscribeBy(
-                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
             else viewmodel.reporteTernerasEnEstaca(from, to).subscribeBy(
-                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
             "Terneras destetas" -> if (monthlyRadioButton.isChecked) viewmodel.reporteTernerasDestetas(month, year).subscribeBy(
-                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
             else viewmodel.reporteTernerasDestetas(from, to).subscribeBy(
-                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
             "Novillas de levante" -> if (monthlyRadioButton.isChecked) viewmodel.reporteTerneraslevante(month, year).subscribeBy(
-                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
             else viewmodel.reporteTerneraslevante(from, to).subscribeBy(
-                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
             "Novillas vientre" -> if (monthlyRadioButton.isChecked) viewmodel.reporteNovillasVientre(month, year).subscribeBy(
-                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
             else viewmodel.reporteNovillasVientre(from, to).subscribeBy(
-                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
 
             "Vacas" -> viewmodel.reporteVacas().subscribeBy(
-                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
 
             //SALIDAS
             // "Salida"-> listOf("Codigo","Nombre","Fecha salida","Tipo salida")
             "Salida" -> if (monthlyRadioButton.isChecked) viewmodel.reporteSalida(month, year).subscribeBy(
-                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             ) else viewmodel.reporteSalida(from, to).subscribeBy(
-                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
 
             //VACUNAS
             "Vacunas" -> if (monthlyRadioButton.isChecked) viewmodel.reporteVacunas(month, year).subscribeBy(
-                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             ) else viewmodel.reporteVacunas(from, to).subscribeBy(
-                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
             //SANIDAD
             "Sanidad" -> if (monthlyRadioButton.isChecked) viewmodel.reporteSanidad(month, year).subscribeBy(
-                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             ) else viewmodel.reporteSanidad(from, to).subscribeBy(
-                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
 
             //MANEJO
             "Manejo" -> if (monthlyRadioButton.isChecked) viewmodel.reporteManejo(month, year).subscribeBy(
-                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             ) else viewmodel.reporteManejo(from, to).subscribeBy(
-                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
             //PAJILLAS
 
             "Pajillas" -> if (monthlyRadioButton.isChecked) viewmodel.reportePajillas(month, year).subscribeBy(
-                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             ) else viewmodel.reportePajillas(from, to).subscribeBy(
-                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
             //   "Pajillas"-> if (monthlyRadioButton.isChecked) viewmodel.re
             else -> emptyList<String>()
@@ -394,75 +379,75 @@ class SelectReportFragment : Fragment(), Injectable, com.borax12.materialdateran
         var listareportes: List<List<String>> = emptyList()
         when (selectedType) {
             "Partos futuros" -> if (monthlyRadioButton.isChecked) viewmodel.reporteFuturosPartos(month, year).subscribeBy(
-                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
 
             )
             else viewmodel.reporteFuturosPartos(from, to).subscribeBy(
-                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
 
             )
             "Secado" -> if (monthlyRadioButton.isChecked) viewmodel.reporteSecado(month, year).subscribeBy(
-                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
             else viewmodel.reporteSecado(from, to).subscribeBy(
-                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
             "Preparación" -> if (monthlyRadioButton.isChecked) viewmodel.reportePreparacion(month, year).subscribeBy(
-                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
             else viewmodel.reportePreparacion(from, to).subscribeBy(
-                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
 
             "Días abiertos" -> viewmodel.reporteDiasVacios().subscribeBy(
-                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
 
             "Partos atendidos" -> if (monthlyRadioButton.isChecked) viewmodel.reportePartosAtendidos(month, year).subscribeBy(
-                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
             else viewmodel.reportePartosAtendidos(from, to).subscribeBy(
-                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
             "Abortos" -> if (monthlyRadioButton.isChecked) viewmodel.reporteAbortos(month, year).subscribeBy(
-                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
             else viewmodel.reporteAbortos(from, to).subscribeBy(
-                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
             "Tres servicios" -> viewmodel.reporteTresServicios().subscribeBy(
-                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
-            "Celos" ->  if (monthlyRadioButton.isChecked) viewmodel.reporteCelos(month,year).subscribeBy(
-                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+            "Celos" -> if (monthlyRadioButton.isChecked) viewmodel.reporteCelos(month, year).subscribeBy(
+                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
             else viewmodel.reporteCelos(from, to).subscribeBy(
-                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
 
 
             //LECHE
-            "Consolidado de leche"-> {
+            "Consolidado de leche" -> {
 
                 if (monthlyRadioButton.isChecked) viewmodel.reporteConsolidado(month, year).subscribeBy(
-                        onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                        onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
                 )
-                else viewmodel.reporteConsolidado(from,to).subscribeBy(
-                        onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                else viewmodel.reporteConsolidado(from, to).subscribeBy(
+                        onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
                 )
             }
 
-            "Reporte de leche" -> if (monthlyRadioButton.isChecked) viewmodel.reportesLeche(month,year).subscribeBy(
-                    onSuccess = {excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it)})
-            else viewmodel.reportesLeche(from,to).subscribeBy(
-                    onSuccess = {excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it)}
+            "Reporte de leche" -> if (monthlyRadioButton.isChecked) viewmodel.reportesLeche(month, year).subscribeBy(
+                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) })
+            else viewmodel.reportesLeche(from, to).subscribeBy(
+                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
 
             //CEBA
-            "Destetos" -> if (monthlyRadioButton.isChecked) viewmodel.reportesDestete(from,to).subscribeBy(
-                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) })
+            "Destetos" -> if (monthlyRadioButton.isChecked) viewmodel.reportesDestete(from, to).subscribeBy(
+                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) })
             else viewmodel.reportesDestete(from, to).subscribeBy(
-                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
             /*  "Ganancia diaria de peso" -> {
                   var gdp: List<List<String>> = emptyList()
@@ -490,28 +475,27 @@ class SelectReportFragment : Fragment(), Injectable, com.borax12.materialdateran
               }*/
             //PRADERAS
             "Praderas" -> viewmodel.reporteGetPraderas().subscribeBy(
-                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
             "Ocupación de praderas" -> viewmodel.reporteOcupacionPraderas().subscribeBy(
-                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
 
-            "Animales en pradera"-> if (monthlyRadioButton.isChecked) viewmodel.reporteMovimientos(month, year).subscribeBy(
-                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+            "Animales en pradera" -> if (monthlyRadioButton.isChecked) viewmodel.reporteMovimientos(month, year).subscribeBy(
+                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
             else viewmodel.reporteMovimientos(from, to).subscribeBy(
-                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
             //ALIMENTACION
             "Alimentación" -> {
                 var alimentacion: List<List<String>> = emptyList()
-                if (monthlyRadioButton.isChecked) viewmodel.reporteAlimentacion( month, year).subscribeBy(
+                if (monthlyRadioButton.isChecked) viewmodel.reporteAlimentacion(month, year).subscribeBy(
                         onSuccess = {
-                            excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it)
+                            excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>)
 
                         })
-
-                else viewmodel.reporteAlimentacion( from, to).subscribeBy(
+                else viewmodel.reporteAlimentacion(from, to).subscribeBy(
                         onSuccess = {
                             excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it)
 
@@ -520,73 +504,73 @@ class SelectReportFragment : Fragment(), Injectable, com.borax12.materialdateran
 
             //ENTRADAS
             "Inventario" -> if (monthlyRadioButton.isChecked) viewmodel.reporteInventario(month, year).subscribeBy(
-                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
             else viewmodel.reporteInventario(from, to).subscribeBy(
-                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
             "Terneras en estaca" -> if (monthlyRadioButton.isChecked) viewmodel.reporteTernerasEnEstaca(month, year).subscribeBy(
-                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
             else viewmodel.reporteTernerasEnEstaca(from, to).subscribeBy(
-                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
             "Terneras destetas" -> if (monthlyRadioButton.isChecked) viewmodel.reporteTernerasDestetas(month, year).subscribeBy(
-                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
             else viewmodel.reporteTernerasDestetas(from, to).subscribeBy(
-                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
             "Novillas de levante" -> if (monthlyRadioButton.isChecked) viewmodel.reporteTerneraslevante(month, year).subscribeBy(
-                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
             else viewmodel.reporteTerneraslevante(from, to).subscribeBy(
-                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
             "Novillas vientre" -> if (monthlyRadioButton.isChecked) viewmodel.reporteNovillasVientre(month, year).subscribeBy(
-                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
             else viewmodel.reporteNovillasVientre(from, to).subscribeBy(
-                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
 
             "Vacas" -> viewmodel.reporteVacas().subscribeBy(
-                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
 
             //SALIDAS
             // "Salida"-> listOf("Codigo","Nombre","Fecha salida","Tipo salida")
             "Salida" -> if (monthlyRadioButton.isChecked) viewmodel.reporteSalida(month, year).subscribeBy(
-                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             ) else viewmodel.reporteSalida(from, to).subscribeBy(
-                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
 
             //VACUNAS
             "Vacunas" -> if (monthlyRadioButton.isChecked) viewmodel.reporteVacunas(month, year).subscribeBy(
-                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             ) else viewmodel.reporteVacunas(from, to).subscribeBy(
-                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
             //SANIDAD
             "Sanidad" -> if (monthlyRadioButton.isChecked) viewmodel.reporteSanidad(month, year).subscribeBy(
-                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             ) else viewmodel.reporteSanidad(from, to).subscribeBy(
-                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
 
             //MANEJO
             "Manejo" -> if (monthlyRadioButton.isChecked) viewmodel.reporteManejo(month, year).subscribeBy(
-                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             ) else viewmodel.reporteManejo(from, to).subscribeBy(
-                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
             //PAJILLAS
 
             "Pajillas" -> if (monthlyRadioButton.isChecked) viewmodel.reportePajillas(month, year).subscribeBy(
-                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             ) else viewmodel.reportePajillas(from, to).subscribeBy(
-                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it) }
+                    onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) }
             )
             //   "Pajillas"-> if (monthlyRadioButton.isChecked) viewmodel.re
             else -> emptyList<String>()

@@ -59,6 +59,13 @@ class ListZealFragment : Fragment(), Injectable {
                         }
                 )
 
+        dis add viewModel.getOnServiceForBovine(idBovino)
+                .subscribeBy(
+                        onSuccess = {
+                            listZealAdapter.onService = it.isNotEmpty()
+                        }
+                )
+
         dis add fabAddZeal.clicks()
                 .subscribeBy(
                         onNext = {
