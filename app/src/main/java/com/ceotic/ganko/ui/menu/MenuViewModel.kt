@@ -1171,95 +1171,42 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     //endregion
 
     //region reporte dias vacios
-    fun reporteDiasVacios(): Single<List<List<String>>> =
-            db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra")
-                    andEx (ArrayFunction.length(Expression.property("servicios")).greaterThanOrEqualTo(Expression.value(1)))
-                    , Bovino::class)
-                    .flatMapObservable { it.toObservable() }
-                    .map { bovino ->
-                        var fecha = bovino.servicios!![0].fecha
-                        var ultimoServicio = Servicio()
-                        var diasVacios = 0L
-                        var ultimoPartoOAborto: Date? = null
-                        for (servicio in bovino.servicios!!) {
-                            if (servicio.fecha!!.time >= fecha!!.time) ultimoServicio = servicio
-                        }
-                        if (ultimoServicio.diagnostico == null) {
-                            if (bovino.servicios!!.size == 1) diasVacios = 0
-                            else {
-                                for (servicio in bovino.servicios!!) {
-                                    if (servicio.finalizado == true) {
-                                        if (ultimoPartoOAborto == null) {
-                                            if (servicio.parto != null) {
-                                                ultimoPartoOAborto = servicio.parto!!.fecha
-                                            } else if (servicio.novedad != null) {
-                                                ultimoPartoOAborto = servicio.novedad!!.fecha
-                                            }
-                                        } else {
-                                            if (servicio.parto != null) {
-                                                if (ultimoPartoOAborto < servicio.parto!!.fecha) ultimoPartoOAborto = servicio.parto!!.fecha
-                                            } else if (servicio.novedad != null) {
-                                                if (ultimoPartoOAborto < servicio.novedad!!.fecha) ultimoPartoOAborto = servicio.novedad!!.fecha
-                                            }
-                                        }
-                                    }
-                                }
-                                diasVacios = Date().time - ultimoPartoOAborto!!.time
-                            }
-                        } else {
-                            if(!ultimoServicio.diagnostico!!.confirmacion){
-                                if (bovino.servicios!!.size == 1) diasVacios = 0
-                                else {
-                                    for (servicio in bovino.servicios!!) {
-                                        if (servicio.finalizado == true) {
-                                            if (ultimoPartoOAborto == null) {
-                                                if (servicio.parto != null) {
-                                                    ultimoPartoOAborto = servicio.parto!!.fecha
-                                                } else if (servicio.novedad != null) {
-                                                    ultimoPartoOAborto = servicio.novedad!!.fecha
-                                                }
-                                            } else {
-                                                if (servicio.parto != null) {
-                                                    if (ultimoPartoOAborto < servicio.parto!!.fecha) ultimoPartoOAborto = servicio.parto!!.fecha
-                                                } else if (servicio.novedad != null) {
-                                                    if (ultimoPartoOAborto < servicio.novedad!!.fecha) ultimoPartoOAborto = servicio.novedad!!.fecha
-                                                }
-                                            }
-                                        }
-                                    }
-                                    diasVacios = Date().time - ultimoPartoOAborto!!.time
-                                }
-                            }else{
-                                if (bovino.servicios!!.size == 1) diasVacios = 0
-                                else{
-                                    for (servicio in bovino.servicios!!) {
-                                        if (servicio.finalizado == true) {
-                                            if (ultimoPartoOAborto == null) {
-                                                if (servicio.parto != null) {
-                                                    ultimoPartoOAborto = servicio.parto!!.fecha
-                                                } else if (servicio.novedad != null) {
-                                                    ultimoPartoOAborto = servicio.novedad!!.fecha
-                                                }
-                                            } else {
-                                                if (servicio.parto != null) {
-                                                    if (ultimoPartoOAborto < servicio.parto!!.fecha) ultimoPartoOAborto = servicio.parto!!.fecha
-                                                } else if (servicio.novedad != null) {
-                                                    if (ultimoPartoOAborto < servicio.novedad!!.fecha) ultimoPartoOAborto = servicio.novedad!!.fecha
-                                                }
-                                            }
-                                        }
-                                    }
-                                    diasVacios = ultimoServicio.fecha!!.time - ultimoPartoOAborto!!.time
+    fun reporteDiasVacios(): Single<MutableList<List<String?>>> {
+        return db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra")
+                andEx (ArrayFunction.length(Expression.property("servicios")).greaterThanOrEqualTo(Expression.value(1)))
+                , Bovino::class)
+                .flatMapObservable { it.toObservable() }
+                .filter { it.servicios != null }
+                .toList()
+                .flatMapObservable { it.toObservable() }
+                .flatMapSingle { bovino ->
+                    var ultimoEvento: Date? = null
+                    var enSer = false
+                    bovino.servicios!!.toObservable()
+                            .filter { it.finalizado == true && it.diagnostico?.confirmacion == true }
+                            .toList()
+                            .map { servicios ->
+                                if (servicios.isNotEmpty()) {
+                                    servicios.first()
+                                } else Servicio()
+                            }.map { ultimoServicio ->
+                                if (ultimoServicio.finalizado != null) {
+                                    ultimoEvento = ultimoServicio.parto?.fecha ?: ultimoServicio.novedad?.fecha
+                                    val dif = Date().time - ultimoEvento!!.time
+                                    val diasVacios = TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS)
+                                    enSer = !ultimoServicio.finalizado!!
+                                    //ReporteDiasVacios(bovino.codigo!!, bovino.nombre, ultimoParto.fecha!!, ultimoServicio.fecha!!, diasVacios, enServicio)
+                                    listOf(bovino.codigo, bovino.nombre,
+                                            ultimoEvento!!.toStringFormat(),
+                                            ultimoServicio.fecha?.toStringFormat(), diasVacios.toString(), if (enSer) "Si" else "No")
+                                } else {
+                                    listOf(bovino.codigo, bovino.nombre,
+                                            if (ultimoEvento != null) ultimoEvento!!.toStringFormat() else "Sin parto o Aborto",
+                                            ultimoServicio.fecha?.toStringFormat(), 0.toString(), "No")
                                 }
                             }
-                        }
-
-                        val enServicio = ultimoServicio.finalizado?.not() ?: false
-                        diasVacios = TimeUnit.DAYS.convert(diasVacios, TimeUnit.MILLISECONDS)
-                        var enSer = if (enServicio) "Si" else "No"
-                        //ReporteDiasVacios(bovino.codigo!!, bovino.nombre, ultimoParto.fecha!!, ultimoServicio.fecha!!, diasVacios, enServicio)
-                        listOf(bovino.codigo!!, bovino.nombre!!, if (ultimoPartoOAborto != null) ultimoPartoOAborto.toStringFormat() else "Sin parto o Aborto", ultimoServicio.fecha!!.toStringFormat(), diasVacios.toString(), enSer)
-                    }.toList().applySchedulers()
+                }.toList().applySchedulers()
+    }
     //endregion
 
     //region reporte pajillas
@@ -1760,14 +1707,14 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
         Promedio("Edad en meses", it)
     }
 
-    fun getPromedioAlimentacionPorTipo(from:Date , to: Date, tipoAlimento: String) = promedioAlimentacion(from, to, tipoAlimento).map {
+    fun getPromedioAlimentacionPorTipo(from: Date, to: Date, tipoAlimento: String) = promedioAlimentacion(from, to, tipoAlimento).map {
         Promedio("Alimentación con $tipoAlimento", it.first,
                 desde = from,
                 hasta = to,
                 valor = it.second)
     }
 
-    fun getPromedioAlimentacionPorTipo(mes:Int, anio:Int, tipoAlimento: String) = promedioAlimentacion(mes, anio, tipoAlimento).map {
+    fun getPromedioAlimentacionPorTipo(mes: Int, anio: Int, tipoAlimento: String) = promedioAlimentacion(mes, anio, tipoAlimento).map {
         Promedio("Alimentación con $tipoAlimento", it.first,
                 mes = mes,
                 anio = anio,

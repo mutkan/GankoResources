@@ -131,7 +131,7 @@ class AddBirthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDat
         val intervalo = binding.intervaloPartos!!.toInt()
 //        val dias = binding.diasVacios!!.toInt()
         val numero = binding.numeroParto!!
-        val parto = Parto(fecha, intervalo, numero, estadoCria)
+        val parto = Parto(fecha, intervalo,sexoCria, numero, estadoCria)
         return servicio.apply {
             this.finalizado = true
             this.parto = parto
