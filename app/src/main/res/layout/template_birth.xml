@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable
-            name="parto"
-            type="com.ceotic.ganko.data.models.Parto"/>
+            name="servicio"
+            type="com.ceotic.ganko.data.models.Servicio"/>
         <import type="android.view.View"/>
     </data>
 
@@ -22,7 +22,7 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:text='@{"Parto de "+parto.sexoCria+" "+parto.estadoCria}'
+            android:text='@{"Parto de "+servicio.parto.sexoCria+" "+servicio.parto.estadoCria}'
             tools:text="Parto de Macho Vivo" />
 
         <TextView
@@ -33,7 +33,7 @@
             android:textColor="@color/check_filter"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/birthTitle"
-            app:dateFormat='@{parto.fecha}'
+            app:dateFormat='@{servicio.parto.fecha}'
             tools:text="20/11/2018" />
 
         <TextView
@@ -54,7 +54,7 @@
             android:layout_marginStart="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/numberOfBirthTxt"
-            android:text='@{""+parto.numero}'
+            android:text='@{""+servicio.parto.numero}'
             tools:text="5" />
 
         <TextView
@@ -64,7 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:text="Intervalo entre Partos"
-            android:visibility='@{parto.intervalo != 0 ? View.VISIBLE : View.GONE}'
+            android:visibility='@{servicio.parto.intervalo != 0 ? View.VISIBLE : View.GONE}'
             app:layout_constraintStart_toEndOf="@+id/numberOfBirthTxt"
             app:layout_constraintTop_toTopOf="@+id/numberOfBirthTxt" />
 
@@ -72,8 +72,8 @@
             android:id="@+id/birthInterval"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text='@{""+parto.intervalo}'
-            android:visibility='@{parto.intervalo != 0 ? View.VISIBLE : View.GONE}'
+            android:text='@{""+servicio.parto.intervalo}'
+            android:visibility='@{servicio.parto.intervalo != 0 ? View.VISIBLE : View.GONE}'
             app:layout_constraintStart_toStartOf="@+id/birthIntervalTxt"
             app:layout_constraintTop_toBottomOf="@+id/birthIntervalTxt"
             tools:text="150" />
@@ -85,7 +85,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:visibility='@{parto.diasVacios != 0 ? View.VISIBLE : View.GONE}'
+            android:visibility='@{servicio.diasVacios != 0 ? View.VISIBLE : View.GONE}'
             android:text="Días Vacios"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/numberOfBirth" />
@@ -98,8 +98,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/emptyDaysTxt"
             app:layout_constraintTop_toBottomOf="@+id/emptyDaysTxt"
-            android:visibility='@{parto.diasVacios != 0 ? View.VISIBLE : View.GONE}'
-            android:text='@{""+parto.diasVacios}'
+            android:visibility='@{servicio.diasVacios != 0 ? View.VISIBLE : View.GONE}'
+            android:text='@{""+servicio.diasVacios}'
             tools:text="150" />
 
         <ImageView

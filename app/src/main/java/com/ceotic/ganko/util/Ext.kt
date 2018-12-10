@@ -224,6 +224,14 @@ fun setRankOrMonth(textView: TextView, promedio: Promedio) {
     }
 }
 
+@BindingAdapter("app:individualValueOrPrice")
+fun setIndividualValueOrPrice(textView: TextView, promedio: Promedio){
+    when{
+        promedio.individual != null -> textView.text = promedio.individual.toString()
+        promedio.valor != null -> textView.text = promedio.valor.toString()
+    }
+}
+
 fun getNameforMonth(month: Int): String = when (month) {
     0 -> "Enero"
     1 -> "Febrero"

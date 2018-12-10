@@ -45,7 +45,7 @@ class ListServiceBovineAdapter @Inject constructor() : RecyclerView.Adapter<Recy
                 holder.binding.clickAddParto = clickAddParto
             }
             is BirthViewHolder -> {
-                holder.binding.parto = services[position].parto!!
+                holder.binding.servicio = services[position]
             }
         }
     }

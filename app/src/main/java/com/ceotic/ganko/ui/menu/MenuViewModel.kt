@@ -448,6 +448,29 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                         }
                     }.defaultIfEmpty(0f).applySchedulers()
 
+    fun promedioEdad(date: Date) =
+            db.listByExp("finca" equalEx farmID
+                    andEx (
+                    (Expression.property("fechaIngreso").notNullOrMissing() andEx ("fechaIngreso" lte date))
+                            orEx (Expression.property("fechaIngreso").isNullOrMissing andEx ("fechaNacimiento" lte date))
+                    )
+                    , Bovino::class)
+                    .flatMapObservable { it.toObservable() }
+                    .map {
+                        val dif = date.time - it.fechaNacimiento!!.time
+                        val days = TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS)
+                        val months = days.toFloat() / 30f
+                        months
+
+                    }
+                    .toList()
+                    .flatMapMaybe {
+                        val tot = it.size
+                        it.toObservable().reduce { t1: Float, t2: Float -> t2 + t1 }.map { sum ->
+                            sum / tot.toFloat()
+                        }
+                    }.defaultIfEmpty(0f).applySchedulers()
+
     fun diasVaciosBovino(idBovino: String) =
             db.oneById(idBovino, Bovino::class).flatMap { bovino ->
                 val serviciosBovino = bovino.servicios ?: listOf()
@@ -1562,7 +1585,10 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     fun promedioGananciaPeso(mes: Int, anio: Int): Maybe<Float> {
         val calendar: Calendar = Calendar.getInstance()
         val from: Date = calendar.apply { set(anio, mes, 1) }.time
-        val to: Date = calendar.apply { set(anio, mes + 1, 1) }.time
+        val to: Date = calendar.apply {
+            set(anio, mes + 1, 1)
+            add(Calendar.DATE, -1)
+        }.time
         return db.groupedListByExp("fecha".betweenDates(from, to) andEx ("finca" equalEx farmID), Ceba::class, Expression.property("bovino"))
                 .flatMapObservable { it.toObservable() }
                 .map { ceba ->
@@ -1581,7 +1607,10 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     fun promedioGananciaPesoBovino(bovino: String, mes: Int, anio: Int): Maybe<Float> {
         val calendar: Calendar = Calendar.getInstance()
         val from: Date = calendar.apply { set(anio, mes, 1) }.time
-        val to: Date = calendar.apply { set(anio, mes + 1, 1) }.time
+        val to: Date = calendar.apply {
+            set(anio, mes + 1, 1)
+            add(Calendar.DATE, -1)
+        }.time
         return db.groupedListByExp("fecha".betweenDates(from, to) andEx ("finca" equalEx farmID) andEx ("bovino" equalEx bovino), Ceba::class, Expression.property("bovino"))
                 .flatMapObservable { it.toObservable() }
                 .map { ceba ->
@@ -1597,7 +1626,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     }
 
     fun promedioLeche(from: Date, to: Date): Maybe<Int> =
-            db.listByExp("idFinca" equalEx farmID!! andEx ("fecha".betweenDates(from, to)), Produccion::class)
+            db.listByExp("idFinca" equalEx farmID andEx ("fecha".betweenDates(from, to)), Produccion::class)
                     .flatMapObservable {
                         it.toObservable().map {
                             it.litros!!.toInt()
@@ -1610,6 +1639,59 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                             sum / tot
                         }
                     }.defaultIfEmpty(0).applySchedulers()
+
+    fun promedioAlimentacion(from: Date, to: Date, tipoAlimento: String): Maybe<Pair<Int, Int>> =
+            db.listByExp("idFinca" equalEx farmID
+                    andEx ("fecha".betweenDates(from, to))
+                    andEx ("tipoAlimento" equalEx tipoAlimento)
+                    , RegistroAlimentacion::class)
+                    .flatMapObservable {
+                        it.toObservable().map {
+                            it.peso!! to it.valorTotal!!
+                        }
+                    }
+                    .toList()
+                    .flatMapMaybe {
+                        val tot = it.size
+                        it.toObservable().reduce { t1: Pair<Int, Int>, t2: Pair<Int, Int> ->
+                            val pesoTot = t1.first + t2.first
+                            val valTot = t1.second + t2.second
+                            pesoTot to valTot
+                        }.map { sum ->
+                            val pesoProm = sum.first / tot
+                            val valProm = sum.second / tot
+                            pesoProm to valProm
+                        }
+                    }.defaultIfEmpty(0 to 0).applySchedulers()
+
+    fun promedioAlimentacion(mes: Int, anio: Int, tipoAlimento: String): Maybe<Pair<Int, Int>> {
+        val calendar: Calendar = Calendar.getInstance()
+        val from: Date = calendar.apply { set(anio, mes, 1) }.time
+        val to: Date = calendar.apply {
+            set(anio, mes + 1, 1)
+            add(Calendar.DATE, -1)
+        }.time
+        return db.listByExp("idFinca" equalEx farmID andEx ("fecha".betweenDates(from, to)) andEx ("tipoAlimento" equalEx tipoAlimento), RegistroAlimentacion::class)
+                .flatMapObservable {
+                    it.toObservable().map {
+                        it.peso!! to it.valorTotal!!
+                    }
+                }
+                .toList()
+                .flatMapMaybe {
+                    val tot = it.size
+                    it.toObservable().reduce { t1: Pair<Int, Int>, t2: Pair<Int, Int> ->
+                        val pesoTot = t1.first + t2.first
+                        val valTot = t1.second + t2.second
+                        pesoTot to valTot
+                    }.map { sum ->
+                        val pesoProm = sum.first / tot
+                        val valProm = sum.second / tot
+                        pesoProm to valProm
+                    }
+                }.defaultIfEmpty(0 to 0).applySchedulers()
+
+    }
 
     fun promedioLecheBovino(bovino: String, from: Date, to: Date): Maybe<Int> =
             db.listByExp("idFinca" equalEx farmID!! andEx ("fecha".betweenDates(from, to)) andEx ("bovino" equalEx bovino), Produccion::class)
@@ -1629,7 +1711,10 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     fun promedioLeche(mes: Int, anio: Int): Maybe<Float> {
         val calendar: Calendar = Calendar.getInstance()
         val from: Date = calendar.apply { set(anio, mes, 1) }.time
-        val to: Date = calendar.apply { set(anio, mes + 1, 1) }.time
+        val to: Date = calendar.apply {
+            set(anio, mes + 1, 1)
+            add(Calendar.DATE, -1)
+        }.time
         return db.listByExp("idFinca" equalEx farmID!! andEx ("fecha".betweenDates(from, to)), Produccion::class)
                 .flatMapObservable {
                     it.toObservable().map {
@@ -1648,7 +1733,10 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     fun promedioLecheBovino(bovino: String, mes: Int, anio: Int): Maybe<Float> {
         val calendar: Calendar = Calendar.getInstance()
         val from: Date = calendar.apply { set(anio, mes, 1) }.time
-        val to: Date = calendar.apply { set(anio, mes + 1, 1) }.time
+        val to: Date = calendar.apply {
+            set(anio, mes + 1, 1)
+            add(Calendar.DATE, -1)
+        }.time
         return db.listByExp("idFinca" equalEx farmID!! andEx ("fecha".betweenDates(from, to)) andEx ("bovino" equalEx bovino), Produccion::class)
                 .flatMapObservable {
                     it.toObservable().map {
@@ -1666,6 +1754,24 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
 
     fun getPromedioLeche(mes: Int, anio: Int) = promedioLeche(mes, anio).map {
         Promedio("Producción de Leche", it, mes = mes, anio = anio)
+    }
+
+    fun getPromedioEdad(to: Date) = promedioEdad(to).map {
+        Promedio("Edad en meses", it)
+    }
+
+    fun getPromedioAlimentacionPorTipo(from:Date , to: Date, tipoAlimento: String) = promedioAlimentacion(from, to, tipoAlimento).map {
+        Promedio("Alimentación con $tipoAlimento", it.first,
+                desde = from,
+                hasta = to,
+                valor = it.second)
+    }
+
+    fun getPromedioAlimentacionPorTipo(mes:Int, anio:Int, tipoAlimento: String) = promedioAlimentacion(mes, anio, tipoAlimento).map {
+        Promedio("Alimentación con $tipoAlimento", it.first,
+                mes = mes,
+                anio = anio,
+                valor = it.second)
     }
 
     fun getPromedioLeche(from: Date, to: Date) = promedioLeche(from, to).map {

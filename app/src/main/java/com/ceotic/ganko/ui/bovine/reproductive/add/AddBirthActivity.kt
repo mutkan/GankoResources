@@ -5,20 +5,10 @@ import android.arch.lifecycle.ViewModelProvider
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.widget.DatePicker
 import com.ceotic.ganko.R
 import com.ceotic.ganko.data.models.Bovino
-import com.ceotic.ganko.data.models.Bovino.Companion.ALERT_120_EMPTY_DAYS
-import com.ceotic.ganko.data.models.Bovino.Companion.ALERT_45_EMPTY_DAYS
-import com.ceotic.ganko.data.models.Bovino.Companion.ALERT_60_EMPTY_DAYS
-import com.ceotic.ganko.data.models.Bovino.Companion.ALERT_90_EMPTY_DAYS
-import com.ceotic.ganko.data.models.Bovino.Companion.ALERT_BIRTH
-import com.ceotic.ganko.data.models.Bovino.Companion.ALERT_DRYING
-import com.ceotic.ganko.data.models.Bovino.Companion.ALERT_EMPTY_DAYS
-import com.ceotic.ganko.data.models.Bovino.Companion.ALERT_PREPARATION
 import com.ceotic.ganko.data.models.Parto
-import com.ceotic.ganko.data.models.ProxStates.Companion.NOT_APPLIED
 import com.ceotic.ganko.data.models.ReproductiveNotification
 import com.ceotic.ganko.data.models.Servicio
 import com.ceotic.ganko.databinding.ActivityAddBirthBinding
@@ -28,7 +18,6 @@ import com.ceotic.ganko.ui.bovine.reproductive.ListServiceFragment.Companion.ARG
 import com.ceotic.ganko.ui.bovine.reproductive.ListServiceFragment.Companion.ARG_SERVICE
 import com.ceotic.ganko.ui.bovine.reproductive.ReproductiveBvnViewModel
 import com.ceotic.ganko.util.*
-import com.ceotic.ganko.work.NotificationWork
 import com.jakewharton.rxbinding2.view.clicks
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.subscribeBy
@@ -140,9 +129,9 @@ class AddBirthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDat
             else -> if (sexoCria == "Macho") "Muerto" else "Muerta"
         }
         val intervalo = binding.intervaloPartos!!.toInt()
-        val dias = binding.diasVacios!!.toInt()
+//        val dias = binding.diasVacios!!.toInt()
         val numero = binding.numeroParto!!
-        val parto = Parto(fecha, intervalo, dias, sexoCria, numero, estadoCria)
+        val parto = Parto(fecha, intervalo, numero, estadoCria)
         return servicio.apply {
             this.finalizado = true
             this.parto = parto

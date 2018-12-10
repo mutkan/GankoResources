@@ -87,14 +87,14 @@ class AddDiagnosisActivity : AppCompatActivity(), Injectable, DatePickerDialog.O
     override fun onResume() {
         super.onResume()
 
-        if (type == TYPE_NOVELTY){
+
             dis add viewModel.getEmptyDaysForBovine(idBovino,servicio.fecha!!)
                     .subscribeBy(
                             onSuccess = {
                                 diasVacios = it
                             }
                     )
-        }
+
 
 
         dis add notPregnant.checkedChanges()
@@ -200,9 +200,11 @@ class AddDiagnosisActivity : AppCompatActivity(), Injectable, DatePickerDialog.O
         val fecha = params[0].toDate()
         val confirmacion = pregnant.isChecked
         val diagnostico = Diagnostico(fecha, confirmacion)
+        val mDiasVacios = if(confirmacion) diasVacios else null
         val fechaPosParto = if (confirmacion) posibleParto else null
         return servicio.apply {
             this.diagnostico = diagnostico
+            this.diasVacios = mDiasVacios
             this.posFechaParto = fechaPosParto
             this.finalizado = confirmacion.not()
         }
@@ -211,7 +213,7 @@ class AddDiagnosisActivity : AppCompatActivity(), Injectable, DatePickerDialog.O
     private fun setNovedad(params: List<String>): Servicio {
         val fecha = params[0].toDate()
         val novedad = noveltySpinner.selectedItem.toString()
-        val mNovedad = Novedad(fecha, novedad, diasVacios)
+        val mNovedad = Novedad(fecha, novedad)
 
         return servicio.apply {
             this.novedad = mNovedad

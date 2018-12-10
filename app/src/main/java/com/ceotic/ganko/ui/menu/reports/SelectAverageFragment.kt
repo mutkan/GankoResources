@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.DatePicker
 import com.borax12.materialdaterangepicker.date.DatePickerDialog
 import com.ceotic.ganko.R
 import com.ceotic.ganko.data.models.Bovino
@@ -38,7 +39,7 @@ import javax.inject.Inject
  * A simple [Fragment] subclass.
  *
  */
-class SelectAverageFragment : Fragment(), Injectable, com.borax12.materialdaterangepicker.date.DatePickerDialog.OnDateSetListener {
+class SelectAverageFragment : Fragment(), Injectable, com.borax12.materialdaterangepicker.date.DatePickerDialog.OnDateSetListener, android.app.DatePickerDialog.OnDateSetListener {
 
     @Inject
     lateinit var factory: ViewModelProvider.Factory
@@ -51,10 +52,19 @@ class SelectAverageFragment : Fragment(), Injectable, com.borax12.materialdatera
     var tipo: Int = -1
     var fechaInit: Date? = null
     var fechaEnd: Date? = null
+    var fechaS: Date? = null
     val calendar: Calendar by lazy { Calendar.getInstance() }
+    var alimento: String = ""
+    val tipo_alimento: Array<String> by lazy { resources.getStringArray(R.array.feed_types) }
     val year: Int by lazy { calendar.get(Calendar.YEAR) }
     val datePicker: DatePickerDialog by lazy {
         DatePickerDialog.newInstance(this, year, calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
+    }
+    val datePickerAge: android.app.DatePickerDialog by lazy {
+        android.app.DatePickerDialog(context, this,
+                year,
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH))
     }
 
 
@@ -85,6 +95,13 @@ class SelectAverageFragment : Fragment(), Injectable, com.borax12.materialdatera
                 .subscribeBy(
                         onNext = {
                             onAverageTypeChanged(it)
+                        }
+                )
+
+        dis add food_type.itemSelections()
+                .subscribeBy(
+                        onNext = {
+                            alimento = tipo_alimento[it]
                         }
                 )
 
@@ -120,6 +137,11 @@ class SelectAverageFragment : Fragment(), Injectable, com.borax12.materialdatera
                     datePicker.show(activity!!.fragmentManager, "dialog")
                 }
 
+        dis add date.clicks()
+                .subscribeBy {
+                    datePickerAge.show()
+                }
+
         dis add fabView.clicks()
                 .flatMapSingle { validateRankAndIndividualAverages() }
                 .flatMapSingle { getAverageByType(tipo) }
@@ -133,10 +155,10 @@ class SelectAverageFragment : Fragment(), Injectable, com.borax12.materialdatera
 
     private fun getAverageByType(averageType: Int): Single<Promedio> =
             when (averageType) {
-                in 0..4 -> getRankAndIndividualAverages(averageType).toSingle()
-                5 -> viewModel.totalAbortos()
-                6 -> viewModel.totalPartos()
-                7 -> viewModel.totalServicios()
+                in 0..6 -> getRankAndIndividualAverages(averageType).toSingle()
+                7 -> viewModel.totalAbortos()
+                8 -> viewModel.totalPartos()
+                9 -> viewModel.totalServicios()
                 else -> viewModel.totalServiciosEfectivos()
             }
 
@@ -144,18 +166,18 @@ class SelectAverageFragment : Fragment(), Injectable, com.borax12.materialdatera
     private fun validateRankAndIndividualAverages(): Single<Boolean> = Single.create { e ->
         val individualOk = if (individualRadioButton.isChecked && groupTotOrInd.visibility == View.VISIBLE) !bovinesAdapter.isEmpty else true
         val rankOk = if (rankRadioButton.isChecked && groupMonthOrRank.visibility == View.VISIBLE) fromDateText.text() != "" else true
+        val dateOk = if (tipo == 5) date.text() != "" else true
         when {
-            individualOk && rankOk -> e.onSuccess(true)
-            !individualOk && !rankOk -> toast("Verifica los campos")
+            individualOk && rankOk && dateOk -> e.onSuccess(true)
             !individualOk -> toast("No hay bovinos")
-            !rankOk -> toast("Selecciona las fechas")
+            else -> toast("Verifica los campos")
         }
     }
 
     private fun getRankAndIndividualAverages(averageType: Int): Maybe<Promedio> {
         val bovino: Bovino? = if (individualRadioButton.isChecked) spinnerBovine.selectedItem as Bovino else null
         val mes = spinnerMonth.selectedItemPosition
-        val anio = Calendar.getInstance().get(Calendar.YEAR)
+        val anio = year
         return when {
             averageType == 0 && individualRadioButton.isChecked && rankRadioButton.isChecked -> viewModel.promedioLecheTotalYBovino(bovino!!._id!!, fechaInit!!, fechaEnd!!)
             averageType == 0 && individualRadioButton.isChecked && monthlyRadioButton.isChecked -> viewModel.promedioLecheTotalYBovino(bovino!!._id!!, mes, anio)
@@ -174,6 +196,11 @@ class SelectAverageFragment : Fragment(), Injectable, com.borax12.materialdatera
             averageType == 3 && individualRadioButton.isChecked -> viewModel.promedioIntervaloPartosTotalYBovino(bovino!!._id!!)
             averageType == 3 && totalRadioButton.isChecked -> viewModel.getPromedioIntervaloPartos()
 
+            averageType == 5 -> viewModel.getPromedioEdad(fechaS!!)
+
+            averageType == 6 && monthlyRadioButton.isChecked -> viewModel.getPromedioAlimentacionPorTipo(mes, anio, alimento)
+            averageType == 6 && rankRadioButton.isChecked -> viewModel.getPromedioAlimentacionPorTipo(fechaInit!!, fechaEnd!!, alimento)
+
             else -> viewModel.partosPorMes(mes, anio).toMaybe()
 
 
@@ -187,7 +214,9 @@ class SelectAverageFragment : Fragment(), Injectable, com.borax12.materialdatera
                 sexSubject.onNext(averageType)
                 groupTotOrInd.visibility = View.VISIBLE
                 groupBov.visibility = if (individualRadioButton.isChecked) View.VISIBLE else View.GONE
+                groupDate.visibility = View.GONE
                 groupMonthOrRank.visibility = View.VISIBLE
+                groupFeed.visibility = View.GONE
                 if (monthlyRadioButton.isChecked) {
                     groupDates.visibility = View.GONE
                     groupMonth.visibility = View.VISIBLE
@@ -203,6 +232,8 @@ class SelectAverageFragment : Fragment(), Injectable, com.borax12.materialdatera
                 groupMonthOrRank.visibility = View.GONE
                 groupDates.visibility = View.GONE
                 groupMonth.visibility = View.GONE
+                groupDate.visibility = View.GONE
+                groupFeed.visibility = View.GONE
             }
             4 -> {
                 groupTotOrInd.visibility = View.GONE
@@ -210,6 +241,31 @@ class SelectAverageFragment : Fragment(), Injectable, com.borax12.materialdatera
                 groupDates.visibility = View.GONE
                 groupMonthOrRank.visibility = View.GONE
                 groupMonth.visibility = View.VISIBLE
+                groupDate.visibility = View.GONE
+                groupFeed.visibility = View.GONE
+            }
+            5 -> {
+                groupTotOrInd.visibility = View.GONE
+                groupBov.visibility = View.GONE
+                groupDates.visibility = View.GONE
+                groupMonthOrRank.visibility = View.GONE
+                groupMonth.visibility = View.GONE
+                groupDate.visibility = View.VISIBLE
+                groupFeed.visibility = View.GONE
+            }
+            6 ->{
+                groupTotOrInd.visibility = View.GONE
+                groupBov.visibility = View.GONE
+                groupDate.visibility = View.GONE
+                groupMonthOrRank.visibility = View.VISIBLE
+                groupFeed.visibility = View.VISIBLE
+                if (monthlyRadioButton.isChecked) {
+                    groupDates.visibility = View.GONE
+                    groupMonth.visibility = View.VISIBLE
+                } else {
+                    groupDates.visibility = View.VISIBLE
+                    groupMonth.visibility = View.GONE
+                }
             }
             else -> {
                 groupTotOrInd.visibility = View.GONE
@@ -217,6 +273,8 @@ class SelectAverageFragment : Fragment(), Injectable, com.borax12.materialdatera
                 groupDates.visibility = View.GONE
                 groupMonthOrRank.visibility = View.GONE
                 groupMonth.visibility = View.GONE
+                groupDate.visibility = View.GONE
+                groupFeed.visibility = View.GONE
             }
         }
     }
@@ -226,6 +284,12 @@ class SelectAverageFragment : Fragment(), Injectable, com.borax12.materialdatera
         fromDateText.setText(sDate)
         fechaInit = "$dayOfMonth/${monthOfYear + 1}/$year".toDate()
         fechaEnd = "$dayOfMonthEnd/${monthOfYearEnd + 1}/$yearEnd".toDate()
+    }
+
+    override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+        val sDate = "$dayOfMonth/${month + 1}/$year"
+        date.setText(sDate)
+        fechaS = sDate.toDate()
     }
 
     companion object {
