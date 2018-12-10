@@ -6,5 +6,5 @@ import java.util.*
 
 @Parcelize
 data class Novedad(val fecha: Date,
-                   val novedad: String,
-                   val diasVacios:Long? = null) : Parcelable
+                   val novedad: String
+) : Parcelable

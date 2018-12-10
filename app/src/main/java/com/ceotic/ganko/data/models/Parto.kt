@@ -8,7 +8,6 @@ import java.util.*
 data class Parto(
         var fecha: Date?,
         var intervalo: Int,
-        var diasVacios: Int,
         var sexoCria: String,
         var numero:Int,
         var estadoCria: String

@@ -16,5 +16,6 @@ data class Servicio(
         var parto: Parto? = null,
         var novedad: Novedad? = null,
         var posFechaParto:Date? = null,
-        var finalizado: Boolean? = null
+        var finalizado: Boolean? = null,
+        var diasVacios: Long? = null
 ):Parcelable
