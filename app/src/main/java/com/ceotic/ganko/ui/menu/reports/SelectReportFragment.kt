@@ -34,6 +34,7 @@ import java.util.*
 import javax.inject.Inject
 
 
+@Suppress("UNCHECKED_CAST")
 class SelectReportFragment : Fragment(), Injectable, com.borax12.materialdaterangepicker.date.DatePickerDialog.OnDateSetListener {
 
 
