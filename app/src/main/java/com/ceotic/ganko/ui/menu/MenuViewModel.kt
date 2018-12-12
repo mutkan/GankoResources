@@ -185,7 +185,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     fun getMeadows(idFinca: String): Single<Pair<List<Pradera>, Long>> {
         val order = Ordering.property("orderValue").ascending()
         return db.listByExp("idFinca" equalEx idFinca, Pradera::class,
-                null, null, arrayOf(order))
+                100, null, arrayOf(order))
                 .map {
                     Single.just(it)
                 }.flatMap {
@@ -1192,9 +1192,14 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                             }.map { ultimoServicio ->
                                 if (ultimoServicio.finalizado != null) {
                                     ultimoEvento = ultimoServicio.parto?.fecha ?: ultimoServicio.novedad?.fecha
-                                    val dif = Date().time - ultimoEvento!!.time
-                                    val diasVacios = TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS)
-
+                                    var diasVacios:Long
+                                    diasVacios = if(enSer!=null){
+                                        val dif = enSer.fecha!!.time - ultimoEvento!!.time
+                                        TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS)
+                                    }else{
+                                        val dif = Date().time - ultimoEvento!!.time
+                                        TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS)
+                                    }
                                     //ReporteDiasVacios(bovino.codigo!!, bovino.nombre, ultimoParto.fecha!!, ultimoServicio.fecha!!, diasVacios, enServicio)
 
                                     listOf(bovino.codigo, bovino.nombre,
