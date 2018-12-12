@@ -1170,6 +1170,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     //region reporte dias vacios
     fun reporteDiasVacios(): Single<MutableList<List<String?>>> {
         return db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra")
+                andEx ("retirado" equalEx false)
                 andEx (ArrayFunction.length(Expression.property("servicios")).greaterThanOrEqualTo(Expression.value(1)))
                 , Bovino::class)
                 .flatMapObservable { it.toObservable() }
@@ -1178,7 +1179,9 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                 .flatMapObservable { it.toObservable() }
                 .flatMapSingle { bovino ->
                     var ultimoEvento: Date? = null
-                    var enSer = false
+                    val enSer = bovino.servicios!!.find{
+                        it.finalizado==false
+                    }
                     bovino.servicios!!.toObservable()
                             .filter { it.finalizado == true && it.diagnostico?.confirmacion == true }
                             .toList()
@@ -1191,15 +1194,23 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                                     ultimoEvento = ultimoServicio.parto?.fecha ?: ultimoServicio.novedad?.fecha
                                     val dif = Date().time - ultimoEvento!!.time
                                     val diasVacios = TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS)
-                                    enSer = !ultimoServicio.finalizado!!
+
                                     //ReporteDiasVacios(bovino.codigo!!, bovino.nombre, ultimoParto.fecha!!, ultimoServicio.fecha!!, diasVacios, enServicio)
+
                                     listOf(bovino.codigo, bovino.nombre,
                                             ultimoEvento!!.toStringFormat(),
-                                            ultimoServicio.fecha?.toStringFormat(), diasVacios.toString(), if (enSer) "Si" else "No")
+                                            if(enSer!=null)enSer.fecha!!.toStringFormat() else ultimoServicio.fecha!!.toStringFormat(),
+                                            diasVacios.toString(), if (enSer!=null) "Si" else "No")
                                 } else {
-                                    listOf(bovino.codigo, bovino.nombre,
-                                            if (ultimoEvento != null) ultimoEvento!!.toStringFormat() else "Sin parto o Aborto",
-                                            ultimoServicio.fecha?.toStringFormat(), 0.toString(), "No")
+                                    if(enSer!=null){
+                                        listOf(bovino.codigo, bovino.nombre,
+                                                 "Sin parto o Aborto",
+                                                enSer.fecha!!.toStringFormat(), 0.toString(), "Si")
+                                    }else{
+                                        listOf(bovino.codigo, bovino.nombre,
+                                                if (ultimoEvento != null) ultimoEvento!!.toStringFormat() else "Sin parto o Aborto",
+                                                ultimoServicio.fecha?.toStringFormat(), 0.toString(), "No")
+                                    }
                                 }
                             }
                 }.toList().applySchedulers()
