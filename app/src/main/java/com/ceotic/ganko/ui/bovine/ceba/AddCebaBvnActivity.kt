@@ -24,9 +24,9 @@ class AddCebaBvnActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListen
 
     val dis: LifeDisposable = LifeDisposable(this)
 
-    val idBovino: String by lazy { intent.extras.getString(EXTRA_ID) }
-
     lateinit var datePicker: DatePickerDialog
+
+    lateinit var idBovino: String
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,6 +34,11 @@ class AddCebaBvnActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListen
         setContentView(R.layout.activity_add_ceba)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setTitle("Agregar Ceba")
+
+        intent.extras?.run {
+            idBovino = getString(EXTRA_ID)
+        }
+
         datePicker = DatePickerDialog(this, AddMilkBvnActivity@ this,
                 Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH),
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
@@ -46,9 +51,23 @@ class AddCebaBvnActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListen
     override fun onResume() {
         super.onResume()
         dis add btnAddCebaBvn.clicks()
-                .flatMap { validateForm(R.string.empty_fields, dateAddCebaBvn.text.toString(), weightAddCebaBvn.text.toString()) }
-                .flatMapSingle {
-                    viewModel.addCeba(Ceba(null, null, null, "",idBovino, it[0].toDate(), it[1].toFloat(), 0f,false))
+                .flatMapMaybe { viewModel.lastCeba(idBovino) }
+                .map { it.peso to it.fecha }
+                .defaultIfEmpty(0f to Date())
+                .flatMap { prev ->
+                    validateForm(R.string.empty_fields, dateAddCebaBvn.text.toString(), weightAddCebaBvn.text.toString())
+                            .map { prev to it }
+                }
+                .flatMapSingle { (prev, form)->
+                    val current = form[0].toDate()
+                    val weight = form[1].toFloat()
+                    val gain: Float = if (prev.first != 0f) {
+                        val milis = current.time - prev.second!!.time
+                        val days = Math.ceil(milis.toDouble() / 84_400_000)
+                        ((weight - prev.first!!) * 1000 / days).toFloat()
+                    } else 0f
+
+                    viewModel.addCeba(Ceba(null, null, null, "", idBovino, current, weight, gain, false))
                 }
                 .subscribeBy(
                         onNext = {
@@ -82,7 +101,7 @@ class AddCebaBvnActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListen
 
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        dateAddCebaBvn.text = "$dayOfMonth/${month+1}/$year"
+        dateAddCebaBvn.text = "$dayOfMonth/${month + 1}/$year"
     }
 
     companion object {
