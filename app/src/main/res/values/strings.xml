@@ -520,13 +520,12 @@
         <item>Ganancia diaria de peso</item>
         <item>Días Abiertos</item>
         <item>Intervalo entre partos</item>
-        <item>Partos por Mes</item>
         <item>Edad</item>
         <item>Alimentación</item>
-        <item>Total Abortos</item>
-        <item>Total Partos</item>
-        <item>Total Servicios</item>
-        <item>Total Servicios Efectivos</item>
+        <item>Abortos</item>
+        <item>Partos</item>
+        <item>Servicios</item>
+        <item>Servicios Efectivos</item>
     </string-array>
 
 

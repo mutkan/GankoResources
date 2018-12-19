@@ -301,32 +301,79 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     private val VAR_CONFIRMACION = ArrayExpression.variable("servicio.diagnostio.confirmacion")
 
 
-    fun totalServicios(): Single<Promedio> =
+    fun totalServicios(from: Date, to: Date): Single<Promedio> =
             db.listByExp("finca" equalEx farmID
                     andEx (ArrayFunction.length(Expression.property("servicios")).greaterThanOrEqualTo(Expression.value(1)))
                     , Bovino::class)
                     .flatMapObservable {
                         it.toObservable()
                     }.flatMap {
-                        it.servicios?.toObservable()
+                        it.servicios?.toObservable()?.filter { servicio ->
+                            servicio.fecha!!.time >= from.time && servicio.fecha!!.time <= to.time
+                        }
                     }
                     .count().map {
-                        Promedio("Total Servicios", it)
+                        Promedio("Servicios", it, desde = from, hasta = to)
                     }.applySchedulers()
 
-    fun totalServiciosEfectivos(): Single<Promedio> =
+
+    fun totalServicios(mes: Int, anio: Int): Single<Promedio> =
+            db.listByExp("finca" equalEx farmID
+                    andEx (ArrayFunction.length(Expression.property("servicios")).greaterThanOrEqualTo(Expression.value(1)))
+                    , Bovino::class)
+                    .flatMapObservable {
+                        it.toObservable()
+                    }.flatMap {
+                        it.servicios?.toObservable()?.filter { servicio ->
+                            val fechaServicio = servicio.fecha!!
+                            val cal = Calendar.getInstance()
+                            cal.timeInMillis = fechaServicio!!.time
+                            val month = cal.get(Calendar.MONTH)
+                            val year = cal.get(Calendar.YEAR)
+                            month == mes && year == anio
+
+                        }
+                    }
+                    .count().map {
+                        Promedio("Servicios", it, mes = mes, anio = anio)
+                    }.applySchedulers()
+
+    fun totalServiciosEfectivos(from: Date, to: Date): Single<Promedio> =
             db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra")
                     andEx (ArrayFunction.length(Expression.property("servicios")).greaterThanOrEqualTo(Expression.value(1)))
                     , Bovino::class)
                     .flatMapObservable {
                         it.toObservable()
                     }.flatMap {
-                        it.servicios?.toObservable()?.filter {
-                            it.diagnostico?.confirmacion ?: false
+                        it.servicios?.toObservable()?.filter { servicio ->
+                            (servicio.diagnostico?.confirmacion
+                                    ?: false) && servicio.fecha!!.time >= from.time && servicio.fecha!!.time <= to.time
                         }
                     }
                     .count().map {
-                        Promedio("Total Servicios Efectivos", it)
+                        Promedio("Servicios Efectivos", it, desde = from, hasta = to)
+                    }.applySchedulers()
+
+    fun totalServiciosEfectivos(mes: Int, anio: Int): Single<Promedio> =
+            db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra")
+                    andEx (ArrayFunction.length(Expression.property("servicios")).greaterThanOrEqualTo(Expression.value(1)))
+                    , Bovino::class)
+                    .flatMapObservable {
+                        it.toObservable()
+                    }.flatMap {
+                        it.servicios?.toObservable()?.filter { servicio ->
+                            val fechaServicio = servicio.fecha!!
+                            val cal = Calendar.getInstance()
+                            cal.timeInMillis = fechaServicio!!.time
+                            val month = cal.get(Calendar.MONTH)
+                            val year = cal.get(Calendar.YEAR)
+
+                            (servicio.diagnostico?.confirmacion
+                                    ?: false) && month == mes && year == anio
+                        }
+                    }
+                    .count().map {
+                        Promedio("Servicios Efectivos", it, mes = mes, anio = anio)
                     }.applySchedulers()
 
     fun totalServiciosMontaNatural(): Single<Promedio> =
@@ -484,7 +531,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                         }
             }.defaultIfEmpty(0L).applySchedulers()
 
-    fun totalAbortos(): Single<Promedio> =
+    fun totalAbortos(from: Date, to: Date): Single<Promedio> =
             db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra")
                     andEx (ArrayFunction.length(Expression.property("servicios")).greaterThanOrEqualTo(Expression.value(1)))
                     andEx (ArrayExpression.any(VAR_SERV).`in`(Expression.property("servicios")))
@@ -493,13 +540,42 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     .flatMapObservable {
                         it.toObservable()
                     }.flatMap {
-                        it.servicios?.toObservable()?.filter { it.novedad?.novedad == "Aborto" }
+                        it.servicios?.toObservable()?.filter { servicio ->
+                            servicio.novedad?.novedad == "Aborto" && servicio.novedad?.fecha!!.time >= from.time && servicio.novedad?.fecha!!.time <= to.time
+                        }
                     }.count()
                     .map {
-                        Promedio("Total Abortos", it)
+                        Promedio("Abortos", it, desde = from, hasta = to)
                     }.applySchedulers()
 
-    fun totalPartos(): Single<Promedio> =
+    fun totalAbortos(mes: Int, anio: Int): Single<Promedio> =
+            db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra")
+                    andEx (ArrayFunction.length(Expression.property("servicios")).greaterThanOrEqualTo(Expression.value(1)))
+                    andEx (ArrayExpression.any(VAR_SERV).`in`(Expression.property("servicios")))
+                    .satisfies(VAR_NOVEDAD.equalTo(Expression.string("Aborto")))
+                    , Bovino::class)
+                    .flatMapObservable {
+                        it.toObservable()
+                    }.flatMap {
+                        it.servicios?.toObservable()?.filter { servicio ->
+                            val mesCorrecto = if (servicio.novedad?.novedad == "Aborto") {
+                                val fechaAborto = servicio.novedad!!.fecha
+                                val cal = Calendar.getInstance()
+                                cal.timeInMillis = fechaAborto.time
+                                val month = cal.get(Calendar.MONTH)
+                                val year = cal.get(Calendar.YEAR)
+                                month == mes && year == anio
+                            } else {
+                                false
+                            }
+                            mesCorrecto
+                        }
+                    }.count()
+                    .map {
+                        Promedio("Abortos", it, mes = mes, anio = anio)
+                    }.applySchedulers()
+
+    fun totalPartos(from: Date, to: Date): Single<Promedio> =
             db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra")
                     andEx (ArrayFunction.length(Expression.property("servicios")).greaterThanOrEqualTo(Expression.value(1)))
                     andEx (ArrayExpression.any(VAR_SERV).`in`(Expression.property("servicios")))
@@ -508,10 +584,12 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     .flatMapObservable {
                         it.toObservable()
                     }.flatMap {
-                        it.servicios?.toObservable()?.filter { it.parto != null }
+                        it.servicios?.toObservable()?.filter { servicio ->
+                            servicio.parto != null && servicio.parto?.fecha!!.time >= from.time && servicio.parto?.fecha!!.time <= to.time
+                        }
                     }.count()
                     .map {
-                        Promedio("Total Partos", it)
+                        Promedio("Partos", it, desde = from, hasta = to)
                     }.applySchedulers()
 
     fun partosPorMes(mes: Int, anio: Int): Single<Promedio> =
@@ -538,7 +616,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                                     serv.finalizado == true && mesCorrecto
                                 }
                     }.count().map {
-                        Promedio("Partos por mes", it, mes = mes, anio = anio)
+                        Promedio("Partos", it, mes = mes, anio = anio)
                     }.applySchedulers()
 
     //region reportes
@@ -949,8 +1027,8 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     .filter {
                         val seismeses: Long = 15552000
                         val docemeses: Long = 31104000
-                        val difInferior = (from.time - it.fechaNacimiento!!.time)/1000
-                        val difSuperior = (to.time - it.fechaNacimiento!!.time)/1000
+                        val difInferior = (from.time - it.fechaNacimiento!!.time) / 1000
+                        val difSuperior = (to.time - it.fechaNacimiento!!.time) / 1000
                         difInferior in seismeses..docemeses || difSuperior in seismeses..docemeses
                     }
                     .map {
@@ -965,10 +1043,10 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     .filter {
                         val seismeses: Long = 15552000
                         val docemeses: Long = 31104000
-                        val fechaInferior = Date(Calendar.getInstance().get(Calendar.YEAR)-1900,mes,1)
-                        val fechaSuperior = fechaInferior.add(Calendar.MONTH,1)
-                        val difInferior = (fechaInferior.time - it.fechaNacimiento!!.time)/1000
-                        val difSuperior = (fechaSuperior!!.time - it.fechaNacimiento!!.time)/1000
+                        val fechaInferior = Date(Calendar.getInstance().get(Calendar.YEAR) - 1900, mes, 1)
+                        val fechaSuperior = fechaInferior.add(Calendar.MONTH, 1)
+                        val difInferior = (fechaInferior.time - it.fechaNacimiento!!.time) / 1000
+                        val difSuperior = (fechaSuperior!!.time - it.fechaNacimiento!!.time) / 1000
                         difInferior in seismeses..docemeses || difSuperior in seismeses..docemeses
                     }
                     .map {
@@ -1179,8 +1257,8 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                 .flatMapObservable { it.toObservable() }
                 .flatMapSingle { bovino ->
                     var ultimoEvento: Date? = null
-                    val enSer = bovino.servicios!!.find{
-                        it.finalizado==false
+                    val enSer = bovino.servicios!!.find {
+                        it.finalizado == false
                     }
                     bovino.servicios!!.toObservable()
                             .filter { it.finalizado == true && it.diagnostico?.confirmacion == true }
@@ -1192,11 +1270,11 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                             }.map { ultimoServicio ->
                                 if (ultimoServicio.finalizado != null) {
                                     ultimoEvento = ultimoServicio.parto?.fecha ?: ultimoServicio.novedad?.fecha
-                                    var diasVacios:Long
-                                    diasVacios = if(enSer!=null){
+                                    var diasVacios: Long
+                                    diasVacios = if (enSer != null) {
                                         val dif = enSer.fecha!!.time - ultimoEvento!!.time
                                         TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS)
-                                    }else{
+                                    } else {
                                         val dif = Date().time - ultimoEvento!!.time
                                         TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS)
                                     }
@@ -1204,14 +1282,14 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
 
                                     listOf(bovino.codigo, bovino.nombre,
                                             ultimoEvento!!.toStringFormat(),
-                                            if(enSer!=null)enSer.fecha!!.toStringFormat() else ultimoServicio.fecha!!.toStringFormat(),
-                                            diasVacios.toString(), if (enSer!=null) "Si" else "No")
+                                            if (enSer != null) enSer.fecha!!.toStringFormat() else ultimoServicio.fecha!!.toStringFormat(),
+                                            diasVacios.toString(), if (enSer != null) "Si" else "No")
                                 } else {
-                                    if(enSer!=null){
+                                    if (enSer != null) {
                                         listOf(bovino.codigo, bovino.nombre,
-                                                 "Sin parto o Aborto",
+                                                "Sin parto o Aborto",
                                                 enSer.fecha!!.toStringFormat(), 0.toString(), "Si")
-                                    }else{
+                                    } else {
                                         listOf(bovino.codigo, bovino.nombre,
                                                 if (ultimoEvento != null) ultimoEvento!!.toStringFormat() else "Sin parto o Aborto",
                                                 ultimoServicio.fecha?.toStringFormat(), 0.toString(), "No")
