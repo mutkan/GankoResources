@@ -445,8 +445,8 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     .satisfies(VAR_PARTO.notNullOrMissing())
                     , Bovino::class)
                     .flatMapObservable { bovinos ->
-                        bovinos.toObservable().flatMapMaybe { bovino ->
-                            bovino.servicios?.toObservable()?.filter { it.parto != null && it.parto?.intervalo != 0 && it.parto?.intervalo != null }?.firstElement()?.map { servicio ->
+                        bovinos.toObservable().flatMap { bovino ->
+                            bovino.servicios?.toObservable()?.filter { it.parto != null && it.parto?.intervalo != 0 && it.parto?.intervalo != null }?.map { servicio ->
                                 servicio.parto!!.intervalo
                             }
                         }
@@ -458,14 +458,20 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                         }
                     }.defaultIfEmpty(0f).applySchedulers()
 
-    fun intervaloPartosBovino(idBovino: String): Maybe<Int> =
+    fun intervaloPartosBovino(idBovino: String): Maybe<Float> =
             db.oneById(idBovino, Bovino::class)
-                    .flatMap { bovino ->
-                        bovino.servicios?.toObservable()?.filter { it.parto != null }?.firstElement()
+                    .flatMapObservable { bovino ->
+                        bovino.servicios?.toObservable()?.filter { it.parto != null && it.parto?.intervalo != 0 && it.parto?.intervalo != null }
                                 ?.map {
                                     it.parto!!.intervalo
                                 }
-                    }.defaultIfEmpty(0).applySchedulers()
+                    }.toList()
+                    .flatMapMaybe { intervalos ->
+                        val tot = intervalos.size
+                        intervalos.toObservable().reduce { t1: Int, t2: Int -> t2 + t1 }.map { sum ->
+                            sum.toFloat() / tot.toFloat()
+                        }
+                    }.defaultIfEmpty(0f).applySchedulers()
 
     fun promedioDiasVacios() =
             db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra")
