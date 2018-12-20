@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.arch.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.widget.DatePicker
 import com.ceotic.ganko.R
 import com.ceotic.ganko.data.models.Ceba
@@ -14,6 +15,7 @@ import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_add_ceba.*
 import org.jetbrains.anko.toast
 import java.util.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class AddCebaBvnActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, Injectable {
@@ -51,9 +53,8 @@ class AddCebaBvnActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListen
     override fun onResume() {
         super.onResume()
         dis add btnAddCebaBvn.clicks()
-                .flatMapMaybe { viewModel.lastCeba(idBovino) }
-                .map { it.peso to it.fecha }
-                .defaultIfEmpty(0f to Date())
+                .flatMapMaybe { viewModel.lastCeba(idBovino).map { it.peso to it.fecha }
+                        .defaultIfEmpty(0f to Date()) }
                 .flatMap { prev ->
                     validateForm(R.string.empty_fields, dateAddCebaBvn.text.toString(), weightAddCebaBvn.text.toString())
                             .map { prev to it }
@@ -63,8 +64,8 @@ class AddCebaBvnActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListen
                     val weight = form[1].toFloat()
                     val gain: Float = if (prev.first != 0f) {
                         val milis = current.time - prev.second!!.time
-                        val days = Math.ceil(milis.toDouble() / 84_400_000)
-                        ((weight - prev.first!!) * 1000 / days).toFloat()
+                        val days = TimeUnit.DAYS.convert(milis, TimeUnit.MILLISECONDS)
+                        ((weight - prev.first!!) * 1000 / days)
                     } else 0f
 
                     viewModel.addCeba(Ceba(null, null, null, "", idBovino, current, weight, gain, false))
@@ -75,9 +76,11 @@ class AddCebaBvnActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListen
                             finish()
                         },
                         onComplete = {
+                            Log.d("ON COMPLETE", "ON COMPLETE")
                             toast("on complete")
                         },
                         onError = {
+                            Log.e("ON ERROR", it.message, it.cause)
                             toast(it.message!!)
                         }
                 )
