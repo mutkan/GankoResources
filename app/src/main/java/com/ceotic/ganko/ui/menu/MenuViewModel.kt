@@ -1601,16 +1601,16 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     }
                     .toList()
                     .flatMapMaybe { lista ->
-                        val tot = lista.size
-                        lista.toObservable().reduce { t1: Float, t2: Float -> t1 + t2 }
+                        val tot = lista.filter { it != 0f }.toList()
+                        tot.toObservable().reduce { t1: Float, t2: Float -> t1 + t2 }
                                 .map {
-                                    it / tot.toFloat()
+                                    it / (tot.size.toFloat())
                                 }
                     }.defaultIfEmpty(0f)
                     .applySchedulers()
 
     fun promedioGananciaPesoBovino(bovino: String, from: Date, to: Date) =
-            db.groupedListByExp("fecha".betweenDates(from, to) andEx ("finca" equalEx farmID) andEx ("bovino" equalEx bovino), Ceba::class, Expression.property("bovino"))
+            db.listByExp("fecha".betweenDates(from, to) andEx ("finca" equalEx farmID) andEx ("bovino" equalEx bovino), Ceba::class)
                     .flatMapObservable {
                         it.toObservable().map { ceba ->
                             Log.d("CEBA", ceba.toString())
@@ -1622,7 +1622,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                         val tot = lista.size
                         lista.toObservable().reduce { t1: Float, t2: Float -> t1 + t2 }
                                 .map {
-                                    it / tot.toFloat()
+                                    it / (tot.toFloat())
                                 }
                     }.defaultIfEmpty(0f)
                     .applySchedulers()
@@ -1634,16 +1634,16 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
             set(anio, mes + 1, 1)
             add(Calendar.DATE, -1)
         }.time
-        return db.groupedListByExp("fecha".betweenDates(from, to) andEx ("finca" equalEx farmID), Ceba::class, Expression.property("bovino"))
+        return db.listByExp("fecha".betweenDates(from, to) andEx ("finca" equalEx farmID), Ceba::class)
                 .flatMapObservable { it.toObservable() }
                 .map { ceba ->
                     Log.d("CEBA", ceba.toString())
                     ceba.gananciaPeso ?: 0f
                 }.toList().flatMapMaybe { lista ->
-                    val tot = lista.size
-                    lista.toObservable().reduce { t1: Float, t2: Float -> t1 + t2 }
+                    val tot = lista.filter { it != 0f }.toList()
+                    tot.toObservable().reduce { t1: Float, t2: Float -> t1 + t2 }
                             .map {
-                                it / tot.toFloat()
+                                it / (tot.size.toFloat())
                             }
                 }.defaultIfEmpty(0f).applySchedulers()
     }
@@ -1656,8 +1656,10 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
             set(anio, mes + 1, 1)
             add(Calendar.DATE, -1)
         }.time
-        return db.groupedListByExp("fecha".betweenDates(from, to) andEx ("finca" equalEx farmID) andEx ("bovino" equalEx bovino), Ceba::class, Expression.property("bovino"))
-                .flatMapObservable { it.toObservable() }
+        return db.listByExp("fecha".betweenDates(from, to) andEx ("finca" equalEx farmID) andEx ("bovino" equalEx bovino), Ceba::class)
+                .flatMapObservable {
+                    it.toObservable()
+                }
                 .map { ceba ->
                     Log.d("CEBA", ceba.toString())
                     ceba.gananciaPeso ?: 0f
@@ -1665,7 +1667,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     val tot = lista.size
                     lista.toObservable().reduce { t1: Float, t2: Float -> t1 + t2 }
                             .map {
-                                it / tot.toFloat()
+                                it / (tot.toFloat())
                             }
                 }.defaultIfEmpty(0f).applySchedulers()
     }

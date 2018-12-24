@@ -67,7 +67,6 @@ class AddCebaBvnActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListen
                         val days = TimeUnit.DAYS.convert(milis, TimeUnit.MILLISECONDS)
                         ((weight - prev.first!!) * 1000 / days)
                     } else 0f
-
                     viewModel.addCeba(Ceba(null, null, null, "", idBovino, current, weight, gain, false))
                 }
                 .subscribeBy(
