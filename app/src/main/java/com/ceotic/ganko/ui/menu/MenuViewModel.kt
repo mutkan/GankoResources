@@ -1838,7 +1838,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     }
 
     fun getPromedioIntervaloPartos() = promedioIntervaloPartos().map {
-        Promedio("Intervalo partos", it)
+        Promedio("Intervalo partos", it, unidades = "Días")
     }
 
     fun promedioLecheTotalYBovino(bovino: String, mes: Int, anio: Int) = promedioLeche(mes, anio).zipWith(promedioLecheBovino(bovino, mes, anio))
@@ -1868,7 +1868,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
 
     fun promedioIntervaloPartosTotalYBovino(bovino: String) = promedioIntervaloPartos().zipWith(intervaloPartosBovino(bovino))
             .map {
-                Promedio("Intervalo entre Partos", it.first, bovino, it.second)
+                Promedio("Intervalo entre Partos", it.first, bovino, it.second, unidades = "Días")
             }
 
 
