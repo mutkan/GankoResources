@@ -1826,11 +1826,11 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     }
 
     fun getPromedioGDP(mes: Int, anio: Int) = promedioGananciaPeso(mes, anio).map {
-        Promedio("Ganancia de Peso", it, mes = mes, anio = anio)
+        Promedio("Ganancia de Peso", it, mes = mes, anio = anio, unidades = "kg")
     }
 
     fun getPromedioGDP(from: Date, to: Date) = promedioGananciaPeso(from, to).map {
-        Promedio("Ganancia de Peso", it, desde = from, hasta = to)
+        Promedio("Ganancia de Peso", it, desde = from, hasta = to, unidades = "kg")
     }
 
     fun getPromedioDiasVacios() = promedioDiasVacios().map {
@@ -1853,12 +1853,12 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
 
     fun promedioGananciaPesoTotalYBovino(bovino: String, mes: Int, anio: Int) = promedioGananciaPeso(mes, anio).zipWith(promedioGananciaPesoBovino(bovino, mes, anio))
             .map {
-                Promedio("Ganancia de peso", it.first, bovino, it.second, mes = mes, anio = anio)
+                Promedio("Ganancia de peso", it.first, bovino, it.second, mes = mes, anio = anio, unidades = "kg")
             }
 
     fun promedioGananciaPesoTotalYBovino(bovino: String, from: Date, to: Date) = promedioGananciaPeso(from, to).zipWith(promedioGananciaPesoBovino(bovino, from, to))
             .map {
-                Promedio("Ganancia de peso", it.first, bovino, it.second, desde = from, hasta = to)
+                Promedio("Ganancia de peso", it.first, bovino, it.second, desde = from, hasta = to, unidades = "kg")
             }
 
     fun promedioDiasVaciosTotalYBovino(bovino: String) = promedioDiasVacios().zipWith(diasVaciosBovino(bovino))
