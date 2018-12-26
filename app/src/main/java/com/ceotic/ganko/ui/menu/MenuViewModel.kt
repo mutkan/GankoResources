@@ -1804,7 +1804,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     }
 
     fun getPromedioEdad(to: Date) = promedioEdad(to).map {
-        Promedio("Edad en meses", it)
+        Promedio("Edad en meses", it, unidades = "Meses")
     }
 
     fun getPromedioAlimentacionPorTipo(from: Date, to: Date, tipoAlimento: String) = promedioAlimentacion(from, to, tipoAlimento).map {
