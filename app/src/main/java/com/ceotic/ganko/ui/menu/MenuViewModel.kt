@@ -1800,7 +1800,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     }
 
     fun getPromedioLeche(mes: Int, anio: Int) = promedioLeche(mes, anio).map {
-        Promedio("Producción de Leche", it, mes = mes, anio = anio)
+        Promedio("Producción de Leche", it, mes = mes, anio = anio, unidades = "Litros")
     }
 
     fun getPromedioEdad(to: Date) = promedioEdad(to).map {
@@ -1822,7 +1822,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     }
 
     fun getPromedioLeche(from: Date, to: Date) = promedioLeche(from, to).map {
-        Promedio("Producción de Leche", it, desde = from, hasta = to)
+        Promedio("Producción de Leche", it, desde = from, hasta = to, unidades = "Litros")
     }
 
     fun getPromedioGDP(mes: Int, anio: Int) = promedioGananciaPeso(mes, anio).map {
@@ -1843,12 +1843,12 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
 
     fun promedioLecheTotalYBovino(bovino: String, mes: Int, anio: Int) = promedioLeche(mes, anio).zipWith(promedioLecheBovino(bovino, mes, anio))
             .map {
-                Promedio("Producción de Leche", it.first, bovino, it.second, mes = mes, anio = anio)
+                Promedio("Producción de Leche", it.first, bovino, it.second, mes = mes, anio = anio, unidades = "Litros")
             }
 
     fun promedioLecheTotalYBovino(bovino: String, from: Date, to: Date) = promedioLeche(from, to).zipWith(promedioLecheBovino(bovino, from, to))
             .map {
-                Promedio("Producción de Leche", it.first, bovino, it.second, desde = from, hasta = to)
+                Promedio("Producción de Leche", it.first, bovino, it.second, desde = from, hasta = to, unidades = "Litros")
             }
 
     fun promedioGananciaPesoTotalYBovino(bovino: String, mes: Int, anio: Int) = promedioGananciaPeso(mes, anio).zipWith(promedioGananciaPesoBovino(bovino, mes, anio))
