@@ -77,13 +77,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Display2"
             android:visibility='@{(promedio.individual != null || promedio.valor != null) ? View.VISIBLE : View.GONE}'
             app:individualValueOrPrice="@{promedio}"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/textView141"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="packed"
+
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView132"
             tools:text="00" />
@@ -119,9 +120,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:text='@{promedio.unidades != null ? promedio.unidades : ""}'
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             app:layout_constraintBottom_toBottomOf="@+id/totalAverage"
-            android:text='@{promedio.unidades != null ? promedio.unidades : ""}'
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/totalAverage"
@@ -133,14 +134,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:text='@{promedio.unidadesPrecio == null &amp; promedio.unidades != null ? promedio.unidades : ""}'
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-            app:layout_constraintBottom_toBottomOf="@+id/individualAverage"
             android:visibility='@{(promedio.individual != null || promedio.valor != null) ? View.VISIBLE : View.GONE}'
-            android:text='@{promedio.unidades != null ? promedio.unidades : ""}'
+            app:layout_constraintBottom_toBottomOf="@+id/individualAverage"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/individualAverage"
             app:layout_constraintTop_toTopOf="@+id/individualAverage"
             tools:text="Litros" />
+
+        <TextView
+            android:id="@+id/textView142"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text='@{promedio.unidadesPrecio}'
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:visibility='@{promedio.unidadesPrecio != null ? View.VISIBLE : View.GONE}'
+            app:layout_constraintBottom_toBottomOf="@+id/individualAverage"
+            app:layout_constraintEnd_toStartOf="@+id/individualAverage"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintTop_toTopOf="@+id/individualAverage"
+            tools:text="$" />
     </android.support.constraint.ConstraintLayout>
 </layout>
