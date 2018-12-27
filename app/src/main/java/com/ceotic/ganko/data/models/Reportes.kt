@@ -244,7 +244,9 @@ data class Promedio(
         val hasta:Date? = null,
         val mes:Int? = null,
         val anio:Int? = null,
-        val valor:Int? = null
+        val valor:Int? = null,
+        val unidades:String? = null,
+        val unidadesPrecio: String? = null
 ) : Parcelable
 
 //region heeader pdf and excel file
