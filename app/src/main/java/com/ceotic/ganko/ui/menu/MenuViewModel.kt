@@ -11,6 +11,7 @@ import com.ceotic.ganko.data.preferences.UserSession
 import com.ceotic.ganko.ui.common.SearchBarActivity
 import com.ceotic.ganko.util.*
 import com.couchbase.lite.*
+import hu.akarnokd.rxjava2.math.MathObservable
 import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -1590,87 +1591,40 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
 
     //endregion
 
+    fun processDates(from: Date?, to: Date?, month: Int?, year: Int?): Pair<Date?, Date?> = when {
+        month != null -> {
+            val calendar: Calendar = Calendar.getInstance()
+            val fromDate: Date = calendar.apply { set(year!!, month, 1) }.time
+            val m = if (month < 12) month + 1 else 1
+            val a = if (m == 1) year!! + 1 else year!!
+            val toDate: Date = calendar.apply {
+                set(a, m, 1)
+                add(Calendar.DATE, -1)
+            }.time
+            fromDate to toDate
+        }
+        from != null -> from to to
+        else -> Pair<Date?, Date?>(null, null)
+    }
 
-    fun promedioGananciaPeso(from: Date, to: Date) =
-            db.groupedListByExp("fecha".betweenDates(from, to) andEx ("finca" equalEx farmID), Ceba::class, Expression.property("bovino"))
-                    .flatMapObservable {
-                        it.toObservable().map { ceba ->
-                            Log.d("CEBA", ceba.toString())
-                            ceba.gananciaPeso ?: 0f
-                        }
-                    }
-                    .toList()
-                    .flatMapMaybe { lista ->
-                        val tot = lista.filter { it != 0f }.toList()
-                        tot.toObservable().reduce { t1: Float, t2: Float -> t1 + t2 }
-                                .map {
-                                    it / (tot.size.toFloat())
-                                }
-                    }.defaultIfEmpty(0f)
-                    .applySchedulers()
+    fun promedioGananciaPeso(from: Date? = null, to: Date? = null, month: Int? = null, year: Int? = null, idBovino:String? = null):Single<Float>{
+        val (ini, end) = processDates(from, to, month, year)
+        var exp = "finca" equalEx farmID andEx ("gananciaPeso" isNullEx false)
+        if(idBovino != null){
+            exp = exp andEx ("bovino" equalEx idBovino)
+        }
+        if(ini != null){
+            exp = exp andEx "fecha".betweenDates(ini, end!!)
+        }
 
-    fun promedioGananciaPesoBovino(bovino: String, from: Date, to: Date) =
-            db.listByExp("fecha".betweenDates(from, to) andEx ("finca" equalEx farmID) andEx ("bovino" equalEx bovino), Ceba::class)
-                    .flatMapObservable {
-                        it.toObservable().map { ceba ->
-                            Log.d("CEBA", ceba.toString())
-                            ceba.gananciaPeso ?: 0f
-                        }
-                    }
-                    .toList()
-                    .flatMapMaybe { lista ->
-                        val tot = lista.size
-                        lista.toObservable().reduce { t1: Float, t2: Float -> t1 + t2 }
-                                .map {
-                                    it / (tot.toFloat())
-                                }
-                    }.defaultIfEmpty(0f)
-                    .applySchedulers()
-
-    fun promedioGananciaPeso(mes: Int, anio: Int): Maybe<Float> {
-        val calendar: Calendar = Calendar.getInstance()
-        val from: Date = calendar.apply { set(anio, mes, 1) }.time
-        val to: Date = calendar.apply {
-            set(anio, mes + 1, 1)
-            add(Calendar.DATE, -1)
-        }.time
-        return db.listByExp("fecha".betweenDates(from, to) andEx ("finca" equalEx farmID), Ceba::class)
+        return db.listByExp(exp, Ceba::class)
                 .flatMapObservable { it.toObservable() }
-                .map { ceba ->
-                    Log.d("CEBA", ceba.toString())
-                    ceba.gananciaPeso ?: 0f
-                }.toList().flatMapMaybe { lista ->
-                    val tot = lista.filter { it != 0f }.toList()
-                    tot.toObservable().reduce { t1: Float, t2: Float -> t1 + t2 }
-                            .map {
-                                it / (tot.size.toFloat())
-                            }
-                }.defaultIfEmpty(0f).applySchedulers()
+                .map { it.gananciaPeso }
+                .to(MathObservable::averageFloat)
+                .first(0f)
+                .applySchedulers()
     }
 
-
-    fun promedioGananciaPesoBovino(bovino: String, mes: Int, anio: Int): Maybe<Float> {
-        val calendar: Calendar = Calendar.getInstance()
-        val from: Date = calendar.apply { set(anio, mes, 1) }.time
-        val to: Date = calendar.apply {
-            set(anio, mes + 1, 1)
-            add(Calendar.DATE, -1)
-        }.time
-        return db.listByExp("fecha".betweenDates(from, to) andEx ("finca" equalEx farmID) andEx ("bovino" equalEx bovino), Ceba::class)
-                .flatMapObservable {
-                    it.toObservable()
-                }
-                .map { ceba ->
-                    Log.d("CEBA", ceba.toString())
-                    ceba.gananciaPeso ?: 0f
-                }.toList().flatMapMaybe { lista ->
-                    val tot = lista.size
-                    lista.toObservable().reduce { t1: Float, t2: Float -> t1 + t2 }
-                            .map {
-                                it / (tot.toFloat())
-                            }
-                }.defaultIfEmpty(0f).applySchedulers()
-    }
 
     fun promedioLeche(from: Date, to: Date): Maybe<Int> =
             db.listByExp("idFinca" equalEx farmID andEx ("fecha".betweenDates(from, to)), Produccion::class)
@@ -1831,13 +1785,15 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
         Promedio("Producción de Leche", it, desde = from, hasta = to, unidades = "Litros")
     }
 
-    fun getPromedioGDP(mes: Int, anio: Int) = promedioGananciaPeso(mes, anio).map {
-        Promedio("Ganancia de Peso", it, mes = mes, anio = anio, unidades = "kg")
+    fun getPromedioGDP(from:Date? = null, to:Date? = null, mes: Int? = null, anio: Int? = null) = promedioGananciaPeso(from, to, mes, anio).map {
+        Promedio("Ganancia de Peso", it, mes = mes, anio = anio, unidades = "Gr")
     }
 
-    fun getPromedioGDP(from: Date, to: Date) = promedioGananciaPeso(from, to).map {
-        Promedio("Ganancia de Peso", it, desde = from, hasta = to, unidades = "kg")
-    }
+    fun promedioGDPTotalYBovino(bovino: String, from:Date? = null, to:Date? = null, mes: Int? = null, anio: Int? = null) =
+            promedioGananciaPeso(from, to, mes, anio).zipWith(promedioGananciaPeso(from, to, mes, anio,bovino))
+            .map {
+                Promedio("Ganancia de peso", it.first, bovino, it.second, mes = mes, anio = anio, unidades = "kg")
+            }
 
     fun getPromedioDiasVacios() = promedioDiasVacios().map {
         Promedio("Dias Vacios", it, unidades = "Días")
@@ -1855,16 +1811,6 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     fun promedioLecheTotalYBovino(bovino: String, from: Date, to: Date) = promedioLeche(from, to).zipWith(promedioLecheBovino(bovino, from, to))
             .map {
                 Promedio("Producción de Leche", it.first, bovino, it.second, desde = from, hasta = to, unidades = "Litros")
-            }
-
-    fun promedioGananciaPesoTotalYBovino(bovino: String, mes: Int, anio: Int) = promedioGananciaPeso(mes, anio).zipWith(promedioGananciaPesoBovino(bovino, mes, anio))
-            .map {
-                Promedio("Ganancia de peso", it.first, bovino, it.second, mes = mes, anio = anio, unidades = "kg")
-            }
-
-    fun promedioGananciaPesoTotalYBovino(bovino: String, from: Date, to: Date) = promedioGananciaPeso(from, to).zipWith(promedioGananciaPesoBovino(bovino, from, to))
-            .map {
-                Promedio("Ganancia de peso", it.first, bovino, it.second, desde = from, hasta = to, unidades = "kg")
             }
 
     fun promedioDiasVaciosTotalYBovino(bovino: String) = promedioDiasVacios().zipWith(diasVaciosBovino(bovino))

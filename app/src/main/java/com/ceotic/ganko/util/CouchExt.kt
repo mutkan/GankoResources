@@ -75,6 +75,9 @@ private fun makeExpressionArray(values: List<Any>): List<Expression> {
 }
 
 fun String.betweenDates(from:Date, to:Date):Expression = Expression.property(this).between(Expression.date(from), Expression.date(to))
+infix fun String.isNullEx(value:Boolean):Expression = if(value) Expression.property(this).isNullOrMissing
+    else Expression.property(this).notNullOrMissing()
+
 
 infix fun String.orderEx(ordering: Int): Ordering = when(ordering){
     DESCENDING -> Ordering.property(this).descending()
