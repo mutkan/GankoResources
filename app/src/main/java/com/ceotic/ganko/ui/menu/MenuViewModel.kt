@@ -1714,10 +1714,10 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
             return db.listByExp(exp, RegistroAlimentacion::class)
                     .flatMapObservable { it.toObservable() }
                     .compose {
-                        it.map { x -> x.peso ?: 0 }
+                        it.map { x -> (x.peso ?: 0).toFloat() / (if(bovino != null) x.bovinos?.size ?: 1 else 1 ) }
                                 .to(MathObservable::averageFloat)
                                 .map { x -> x.roundToInt() }
-                                .zipWith(it.map { x -> x.valorTotal ?: 0 }
+                                .zipWith(it.map { x -> (x.valorTotal ?: 0).toFloat() / (if(bovino != null) x.bovinos?.size ?: 1 else 1 ) }
                                         .to(MathObservable::averageFloat)
                                         .map { x -> x.roundToInt() })
 
