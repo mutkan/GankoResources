@@ -171,10 +171,10 @@ class SelectAverageFragment : Fragment(), Injectable, com.borax12.materialdatera
         val mes = spinnerMonth.selectedItemPosition
         val anio = year
         return when {
-            averageType == 0 && individualRadioButton.isChecked && rankRadioButton.isChecked -> viewModel.promedioLecheTotalYBovino(bovino!!._id!!, fechaInit!!, fechaEnd!!)
-            averageType == 0 && individualRadioButton.isChecked && monthlyRadioButton.isChecked -> viewModel.promedioLecheTotalYBovino(bovino!!._id!!, mes, anio)
-            averageType == 0 && totalRadioButton.isChecked && rankRadioButton.isChecked -> viewModel.getPromedioLeche(fechaInit!!, fechaEnd!!)
-            averageType == 0 && totalRadioButton.isChecked && monthlyRadioButton.isChecked -> viewModel.getPromedioLeche(mes, anio)
+            averageType == 0 && individualRadioButton.isChecked && rankRadioButton.isChecked -> viewModel.promedioLecheTotalYBovino(bovino!!._id!!, from = fechaInit!!, to = fechaEnd!!)
+            averageType == 0 && individualRadioButton.isChecked && monthlyRadioButton.isChecked -> viewModel.promedioLecheTotalYBovino(bovino!!._id!!, mes = mes, anio = anio)
+            averageType == 0 && totalRadioButton.isChecked && rankRadioButton.isChecked -> viewModel.getPromedioLeche(from = fechaInit!!, to = fechaEnd!!)
+            averageType == 0 && totalRadioButton.isChecked && monthlyRadioButton.isChecked -> viewModel.getPromedioLeche(mes = mes, anio= anio)
 
 
             averageType == 1 && individualRadioButton.isChecked && rankRadioButton.isChecked -> viewModel.promedioGDPTotalYBovino(bovino!!._id!!, from = fechaInit!!, to = fechaEnd!!).toMaybe()
@@ -190,8 +190,8 @@ class SelectAverageFragment : Fragment(), Injectable, com.borax12.materialdatera
 
             averageType == 4 -> viewModel.getPromedioEdad(fechaS!!)
 
-            averageType == 5 && monthlyRadioButton.isChecked -> viewModel.getPromedioAlimentacionPorTipo(mes, anio, alimento)
-            averageType == 5 && rankRadioButton.isChecked -> viewModel.getPromedioAlimentacionPorTipo(fechaInit!!, fechaEnd!!, alimento)
+            averageType == 5 && monthlyRadioButton.isChecked -> viewModel.getPromedioAlimentacionPorTipo(alimento, mes = mes, anio = anio)
+            averageType == 5 && rankRadioButton.isChecked -> viewModel.getPromedioAlimentacionPorTipo(alimento, from = fechaInit!!, to = fechaEnd!!)
 
             averageType == 6 && monthlyRadioButton.isChecked -> viewModel.totalAbortos(mes, anio).toMaybe()
             averageType == 6 && rankRadioButton.isChecked -> viewModel.totalAbortos(fechaInit!!, fechaEnd!!).toMaybe()

@@ -83,5 +83,7 @@ infix fun String.orderEx(ordering: Int): Ordering = when(ordering){
     DESCENDING -> Ordering.property(this).descending()
     else -> Ordering.property(this).ascending()
 }
+
+
 const val DESCENDING = 0
 const val ASCENDING = 1
