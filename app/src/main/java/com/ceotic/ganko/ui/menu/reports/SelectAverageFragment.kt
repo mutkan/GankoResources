@@ -145,12 +145,14 @@ class SelectAverageFragment : Fragment(), Injectable, com.borax12.materialdatera
         dis add fabView.clicks()
                 .flatMapSingle { validateRankAndIndividualAverages() }
                 .flatMapMaybe { getRankAndIndividualAverages(tipo) }
+                .doOnError {
+                    Log.e("Error Promedios", it.message, it)
+                    toast("Error obteniendo promedio: ${it.localizedMessage}")
+                }
+                .retry()
                 .subscribeBy(
                         onNext = {
                             startActivity<AverageActivity>("promedio" to it)
-                        },
-                        onError = {
-                            Log.e("Error Promedios", it.localizedMessage, it)
                         }
                 )
     }
