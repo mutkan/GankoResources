@@ -501,9 +501,8 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                 .flatMapObservable{ it.toObservable()}
                 .map{ it._id to it.servicios}
                 .groupBy { it.first }
-                .flatMap { gp-> gp.flatMapSingle { processEmptyDays(it.second!!, ini, iniMilis!!, endMilis, currMilis, currDate) }
-                        .flatMap { it.toObservable() }
-                }
+                .flatMap { gp-> gp.flatMapSingle { processEmptyDays(it.second!!, ini, iniMilis, endMilis, currMilis, currDate) }}
+                .flatMap { it.toObservable() }
                 .map { it.diasVacios }
                 .to(MathObservable::averageFloat)
                 .first(0f)
@@ -518,7 +517,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                 .filter {
                     if (ini != null) {
                         val current = it.fecha!!.time
-                        it.diasVacios != null && current >= iniMilis && current < endMilis
+                        it.diasVacios != null && current >= iniMilis && current <= endMilis
                     } else {
                         it.diasVacios != null
                     }
@@ -542,6 +541,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                                 }
                                 .firstElement()
                                 .map { mutableListOf(it) }
+                                .defaultIfEmpty(mutableListOf())
                                 .toSingle()
                         } else {
                              Single.just(list)
@@ -552,7 +552,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                                         if (srv >= 0 && (srv == 0 || it[0].diagnostico?.confirmacion != true)) {
                                             val preDate = if(it[srv].novedad != null) it [srv].novedad!!.fecha else it[srv].parto!!.fecha
                                             val milis = preDate!!.time
-                                            var dif = currMilis - milis
+                                            var dif = cMilis - milis
                                             dif = (dif - (dif % 86400000)) / 86400000;
                                             if (dif > 0) {
                                                 it.add(0, Servicio(fecha =  currDate, diasVacios = dif, diagnostico = Diagnostico(Date(), true)))
