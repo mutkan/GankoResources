@@ -539,10 +539,8 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                                     Servicio(fecha =  Date(milis), diasVacios = dif, diagnostico = Diagnostico(Date(), true))
 
                                 }
-                                .firstElement()
                                 .map { mutableListOf(it) }
-                                .defaultIfEmpty(mutableListOf())
-                                .toSingle()
+                                .first(mutableListOf())
                         } else {
                              Single.just(list)
                                      .map{
