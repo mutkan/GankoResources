@@ -4,6 +4,7 @@ package com.ceotic.ganko.ui.menu.reports
 import android.arch.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -124,7 +125,7 @@ class SelectAverageFragment : Fragment(), Injectable, com.borax12.materialdatera
                                     groupDates.visibility = View.GONE
                                     groupMonth.visibility = View.VISIBLE
                                 }
-                                tipo >= 6 ->{
+                                tipo >= 6 -> {
                                     groupDates.visibility = View.VISIBLE
                                 }
                             }
@@ -143,13 +144,15 @@ class SelectAverageFragment : Fragment(), Injectable, com.borax12.materialdatera
 
         dis add fabView.clicks()
                 .flatMapSingle { validateRankAndIndividualAverages() }
-                .flatMapMaybe { getRankAndIndividualAverages(tipo)}
+                .flatMapMaybe { getRankAndIndividualAverages(tipo) }
+                .doOnError {
+                    Log.e("Error Promedios", it.message, it)
+                    toast("Error obteniendo promedio: ${it.localizedMessage}")
+                }
+                .retry()
                 .subscribeBy(
                         onNext = {
                             startActivity<AverageActivity>("promedio" to it)
-                        },
-                        onError = {
-                            toast(it.localizedMessage)
                         }
                 )
     }
@@ -157,7 +160,7 @@ class SelectAverageFragment : Fragment(), Injectable, com.borax12.materialdatera
 
     private fun validateRankAndIndividualAverages(): Single<Boolean> = Single.create { e ->
         val individualOk = if (individualRadioButton.isChecked && groupTotOrInd.visibility == View.VISIBLE) !bovinesAdapter.isEmpty else true
-        val rankOk = if (rankRadioButton.isChecked && groupMonthOrRank.visibility == View.VISIBLE) fromDateText.text() != "" else true
+        val rankOk = if ((rankRadioButton.isChecked && groupMonthOrRank.visibility == View.VISIBLE) || tipo == 3) fromDateText.text() != "" else true
         val dateOk = if (tipo == 4) date.text() != "" else true
         when {
             individualOk && rankOk && dateOk -> e.onSuccess(true)
@@ -174,24 +177,31 @@ class SelectAverageFragment : Fragment(), Injectable, com.borax12.materialdatera
             averageType == 0 && individualRadioButton.isChecked && rankRadioButton.isChecked -> viewModel.promedioLecheTotalYBovino(bovino!!._id!!, from = fechaInit!!, to = fechaEnd!!)
             averageType == 0 && individualRadioButton.isChecked && monthlyRadioButton.isChecked -> viewModel.promedioLecheTotalYBovino(bovino!!._id!!, mes = mes, anio = anio)
             averageType == 0 && totalRadioButton.isChecked && rankRadioButton.isChecked -> viewModel.getPromedioLeche(from = fechaInit!!, to = fechaEnd!!)
-            averageType == 0 && totalRadioButton.isChecked && monthlyRadioButton.isChecked -> viewModel.getPromedioLeche(mes = mes, anio= anio)
+            averageType == 0 && totalRadioButton.isChecked && monthlyRadioButton.isChecked -> viewModel.getPromedioLeche(mes = mes, anio = anio)
 
 
             averageType == 1 && individualRadioButton.isChecked && rankRadioButton.isChecked -> viewModel.promedioGDPTotalYBovino(bovino!!._id!!, from = fechaInit!!, to = fechaEnd!!).toMaybe()
             averageType == 1 && individualRadioButton.isChecked && monthlyRadioButton.isChecked -> viewModel.promedioGDPTotalYBovino(bovino!!._id!!, mes = mes, anio = anio).toMaybe()
-            averageType == 1 && totalRadioButton.isChecked && rankRadioButton.isChecked -> viewModel.getPromedioGDP(from=fechaInit!!, to=fechaEnd!!).toMaybe()
-            averageType == 1 && totalRadioButton.isChecked && monthlyRadioButton.isChecked -> viewModel.getPromedioGDP(mes = mes, anio= anio).toMaybe()
+            averageType == 1 && totalRadioButton.isChecked && rankRadioButton.isChecked -> viewModel.getPromedioGDP(from = fechaInit!!, to = fechaEnd!!).toMaybe()
+            averageType == 1 && totalRadioButton.isChecked && monthlyRadioButton.isChecked -> viewModel.getPromedioGDP(mes = mes, anio = anio).toMaybe()
 
-            averageType == 2 && individualRadioButton.isChecked -> viewModel.promedioDiasVaciosTotalYBovino(bovino!!._id!!)
-            averageType == 2 && totalRadioButton.isChecked -> viewModel.getPromedioDiasVacios()
+            averageType == 2 && individualRadioButton.isChecked && rankRadioButton.isChecked -> viewModel.promedioDiasVaciosTotalYBovino(bovino = bovino!!._id!!, from = fechaInit!!, to = fechaEnd!!)
+            averageType == 2 && individualRadioButton.isChecked && monthlyRadioButton.isChecked -> viewModel.promedioDiasVaciosTotalYBovino(bovino = bovino!!._id!!, mes = mes, anio = anio)
+            averageType == 2 && totalRadioButton.isChecked && rankRadioButton.isChecked -> viewModel.getPromedioDiasVacios(from = fechaInit!!, to = fechaEnd!!)
+            averageType == 2 && totalRadioButton.isChecked && monthlyRadioButton.isChecked -> viewModel.getPromedioDiasVacios(mes = mes, anio = anio)
 
-            averageType == 3 && individualRadioButton.isChecked -> viewModel.promedioIntervaloPartosTotalYBovino(bovino!!._id!!)
-            averageType == 3 && totalRadioButton.isChecked -> viewModel.getPromedioIntervaloPartos()
+            averageType == 3 && individualRadioButton.isChecked && rankRadioButton.isChecked -> viewModel.promedioIntervaloPartosTotalYBovino(bovino = bovino!!._id!!, from = fechaInit!!, to = fechaEnd!!)
+            averageType == 3 && individualRadioButton.isChecked && monthlyRadioButton.isChecked -> viewModel.promedioIntervaloPartosTotalYBovino(bovino = bovino!!._id!!, mes = mes, anio = anio)
+            averageType == 3 && totalRadioButton.isChecked && rankRadioButton.isChecked -> viewModel.getPromedioIntervaloPartos(from = fechaInit!!, to = fechaEnd!!)
+            averageType == 3 && totalRadioButton.isChecked && monthlyRadioButton.isChecked -> viewModel.getPromedioIntervaloPartos(mes = mes, anio = anio)
 
             averageType == 4 -> viewModel.getPromedioEdad(fechaS!!)
 
-            averageType == 5 && monthlyRadioButton.isChecked -> viewModel.getPromedioAlimentacionPorTipo(alimento, mes = mes, anio = anio)
-            averageType == 5 && rankRadioButton.isChecked -> viewModel.getPromedioAlimentacionPorTipo(alimento, from = fechaInit!!, to = fechaEnd!!)
+            averageType == 5 && totalRadioButton.isChecked && monthlyRadioButton.isChecked -> viewModel.getPromedioAlimentacionPorTipo(alimento, mes = mes, anio = anio)
+            averageType == 5 && totalRadioButton.isChecked && rankRadioButton.isChecked -> viewModel.getPromedioAlimentacionPorTipo(alimento, from = fechaInit!!, to = fechaEnd!!)
+            averageType == 5 && individualRadioButton.isChecked && monthlyRadioButton.isChecked -> viewModel.getPromedioAlimentacionPorTipo(alimento, mes = mes, anio = anio, bovino = bovino!!._id!!)
+            averageType == 5 && individualRadioButton.isChecked && rankRadioButton.isChecked -> viewModel.getPromedioAlimentacionPorTipo(alimento, from = fechaInit!!, to = fechaEnd!!, bovino = bovino!!._id!!)
+
 
             averageType == 6 && monthlyRadioButton.isChecked -> viewModel.totalAbortos(mes, anio).toMaybe()
             averageType == 6 && rankRadioButton.isChecked -> viewModel.totalAbortos(fechaInit!!, fechaEnd!!).toMaybe()
@@ -227,15 +237,27 @@ class SelectAverageFragment : Fragment(), Injectable, com.borax12.materialdatera
                     groupMonth.visibility = View.GONE
                 }
             }
-            in 2..3 -> {
+            2 -> {
+                sexSubject.onNext(0)
+                groupTotOrInd.visibility = View.VISIBLE
+                groupBov.visibility = if (individualRadioButton.isChecked) View.VISIBLE else View.GONE
+                groupMonthOrRank.visibility = View.VISIBLE
+                if (monthlyRadioButton.isChecked) {
+                    groupDates.visibility = View.GONE
+                    groupMonth.visibility = View.VISIBLE
+                } else {
+                    groupDates.visibility = View.VISIBLE
+                    groupMonth.visibility = View.GONE
+                }
+            }
+            3 -> {
                 sexSubject.onNext(0)
                 groupTotOrInd.visibility = View.VISIBLE
                 groupBov.visibility = if (individualRadioButton.isChecked) View.VISIBLE else View.GONE
                 groupMonthOrRank.visibility = View.GONE
-                groupDates.visibility = View.GONE
+                groupDates.visibility = View.VISIBLE
                 groupMonth.visibility = View.GONE
-                groupDate.visibility = View.GONE
-                groupFeed.visibility = View.GONE
+
             }
             4 -> {
                 groupTotOrInd.visibility = View.GONE
@@ -246,8 +268,9 @@ class SelectAverageFragment : Fragment(), Injectable, com.borax12.materialdatera
                 groupDate.visibility = View.VISIBLE
                 groupFeed.visibility = View.GONE
             }
-            5 ->{
-                groupTotOrInd.visibility = View.GONE
+            5 -> {
+                sexSubject.onNext(1)
+                groupTotOrInd.visibility = View.VISIBLE
                 groupBov.visibility = View.GONE
                 groupDate.visibility = View.GONE
                 groupMonthOrRank.visibility = View.VISIBLE
