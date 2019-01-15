@@ -193,6 +193,9 @@ class AddFeedActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDate
             if (resultCode == Activity.RESULT_OK) {
                 group = data?.extras?.getParcelable(SelectActivity.DATA_GROUP)
                 bovines = data?.extras?.getStringArray(SelectActivity.DATA_BOVINES)?.toList()
+                group?.let {
+                    bovines = it.bovines
+                }
             } else {
                 finish()
             }
