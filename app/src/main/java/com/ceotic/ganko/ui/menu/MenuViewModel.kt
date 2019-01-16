@@ -541,6 +541,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                                 }
                                 .map { mutableListOf(it) }
                                 .first(mutableListOf())
+
                         } else {
                              Single.just(list)
                                      .map{
@@ -551,7 +552,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                                             val preDate = if(it[srv].novedad != null) it [srv].novedad!!.fecha else it[srv].parto!!.fecha
                                             val milis = preDate!!.time
                                             var dif = cMilis - milis
-                                            dif = (dif - (dif % 86400000)) / 86400000;
+                                            dif = (dif - (dif % 86400000)) / 86400000
                                             if (dif > 0) {
                                                 it.add(0, Servicio(fecha =  currDate, diasVacios = dif, diagnostico = Diagnostico(Date(), true)))
                                             }
@@ -914,8 +915,9 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                         .flatMapObservable { it.toObservable() }
                         .map {
                             if(it.available == false){
-                                var ultimo = it.mantenimiento!!.last()
-                                listOf(it.identificador!!.toString(), it.tipoGraminea!!, ultimo.fechaMantenimiento!!.toStringFormat(), it.fechaOcupacion!!.toStringFormat())
+
+                                val ultimo = it.mantenimiento?.lastOrNull()
+                                listOf(it.identificador?.toString() ?:"" , it.tipoGraminea?: "", ultimo?.fechaMantenimiento?.toStringFormat() ?: "", it.fechaOcupacion?.toStringFormat() ?: "")
                             }else{
                                 listOf(it.identificador!!.toString(), "", "", "Libre")
                             }
@@ -1791,7 +1793,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
         fun promedioGDPTotalYBovino(bovino: String, from: Date? = null, to: Date? = null, mes: Int? = null, anio: Int? = null) =
                 promedioGananciaPeso(from, to, mes, anio).zipWith(promedioGananciaPeso(from, to, mes, anio, bovino))
                         .map {
-                            Promedio("Ganancia de peso", it.first, bovino, it.second, desde = from, hasta = to, mes = mes, anio = anio, unidades = "kg")
+                            Promedio("Ganancia de peso", it.first, bovino, it.second, desde = from, hasta = to, mes = mes, anio = anio, unidades = "Gr")
                         }
 
         fun getPromedioDiasVacios(from: Date? = null, to: Date? = null, mes: Int? = null, anio: Int? = null) = promedioDiasVacios(from, to, mes, anio).map {
