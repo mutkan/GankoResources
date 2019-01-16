@@ -51,7 +51,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:text='@{promedio.total+""}'
+            android:text='@{(promedio.total+"").replace(".", ",")}'
             android:textAppearance="@style/TextAppearance.AppCompat.Display2"
             app:layout_constraintEnd_toStartOf="@+id/textView140"
             app:layout_constraintHorizontal_bias="0.5"

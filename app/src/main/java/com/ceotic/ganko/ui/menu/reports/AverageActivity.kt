@@ -31,6 +31,7 @@ class AverageActivity : AppCompatActivity(), Injectable {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         fixColor(11)
+
         title = "PROMEDIOS"
         binding = DataBindingUtil.setContentView(this, R.layout.activity_average)
         binding.promedio = promedio
