@@ -513,7 +513,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
 
     private fun processEmptyDays(x: List<Servicio>, ini: Date?, iniMilis: Long, endMilis: Long, currMilis: Long, currDate: Date) =
         x.toObservable()
-                .filter { it.diagnostico?.confirmacion ?: false && it.diasVacios != 0L }
+                .filter { it.diagnostico?.confirmacion == true && it.diasVacios != 0f }
                 .filter {
                     if (ini != null) {
                         val current = it.fecha!!.time
@@ -525,18 +525,18 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                 .toList()
                 .flatMap {list->
                     if (ini != null && list.size == 0) {
-                        list.toObservable()
+                        x.toObservable()
                                 .filter{
                                     val current = it.fecha!!.time
-                                    current < iniMilis && (it.diagnostico?.confirmacion ?: false)
+                                    current < iniMilis && (it.diagnostico?.confirmacion == true)
                                 }
                                 .filter{it.parto != null || it.novedad != null}
                                 .map {
                                     val milis = if(currMilis < endMilis) currMilis else endMilis
                                     val curr = if(it.parto != null) it.parto!!.fecha?.time else it.novedad!!.fecha.time
-                                    var dif = milis - (curr ?: 0)
+                                    var dif:Double = (milis - (curr ?: 0)).toDouble()
                                     dif = (dif - (dif % 86400000)) / 86400000
-                                    Servicio(fecha =  Date(milis), diasVacios = dif, diagnostico = Diagnostico(Date(), true))
+                                    Servicio(fecha =  Date(milis), diasVacios = dif.toFloat(), diagnostico = Diagnostico(Date(), true))
 
                                 }
                                 .map { mutableListOf(it) }
@@ -551,10 +551,10 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                                         if (srv >= 0 && (srv == 0 || it[0].diagnostico?.confirmacion != true)) {
                                             val preDate = if(it[srv].novedad != null) it [srv].novedad!!.fecha else it[srv].parto!!.fecha
                                             val milis = preDate!!.time
-                                            var dif = cMilis - milis
+                                            var dif:Double = (cMilis - milis).toDouble()
                                             dif = (dif - (dif % 86400000)) / 86400000
                                             if (dif > 0) {
-                                                it.add(0, Servicio(fecha =  currDate, diasVacios = dif, diagnostico = Diagnostico(Date(), true)))
+                                                it.add(0, Servicio(fecha =  currDate, diasVacios = dif.toFloat(), diagnostico = Diagnostico(Date(), true)))
                                             }
                                         }
 
@@ -1669,7 +1669,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
         fun processDates(from: Date?, to: Date?, month: Int?, year: Int?): Pair<Date?, Date?> = when {
             month != null -> {
                 val calendar: Calendar = Calendar.getInstance()
-                val fromDate: Date = calendar.apply { set(year!!, month, 1) }.time
+                val fromDate: Date = calendar.apply { set(year!!, month, 1,0,0,0) }.time
                 val m = if (month < 12) month + 1 else 1
                 val a = if (m == 1) year!! + 1 else year!!
                 val toDate: Date = calendar.apply {
@@ -1746,11 +1746,11 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     .flatMapObservable { it.toObservable() }
                     .groupBy { "${it.bovino}_${format.format(it.fecha)}" }
                     .flatMapSingle {
-                        it.map { x -> x.litros?.toInt() ?: 0 }
-                                .reduce(0) { a: Int, v: Int -> a + v }
+                        it.map { x -> x.litros?.toFloat() ?: 0f }
+                                .reduce(0f) { a: Float, v: Float -> a + v }
                     }
                     .to(MathObservable::averageFloat)
-                    .map { it.roundToInt() }
+                    .map { Math.ceil(it.toDouble()).toInt() }
                     .first(0)
                     .toMaybe()
                     .applySchedulers()

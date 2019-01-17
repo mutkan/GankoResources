@@ -204,7 +204,7 @@ class AddDiagnosisActivity : AppCompatActivity(), Injectable, DatePickerDialog.O
         val fechaPosParto = if (confirmacion) posibleParto else null
         return servicio.apply {
             this.diagnostico = diagnostico
-            this.diasVacios = mDiasVacios
+            this.diasVacios = mDiasVacios?.toFloat()
             this.posFechaParto = fechaPosParto
             this.finalizado = confirmacion.not()
         }
