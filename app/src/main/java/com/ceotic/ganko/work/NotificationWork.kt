@@ -70,6 +70,7 @@ class NotificationWork : Worker() {
         const val TYPE_VACCINES = 2
         const val TYPE_REPRODUCTIVE = 3
         const val TYPE_MEADOW = 4
+        const val TYPE_BOVINE = 5
 
 
         fun notify(type: Int, title: String, msg: String, docId: String, time: Long, timeUnit: TimeUnit):UUID {

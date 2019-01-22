@@ -89,12 +89,6 @@ class App : MultiDexApplication(), HasActivityInjector {
         }
     }
 
-    override fun onTerminate() {
-        if (changeToken != null) db.removeChangeListener(changeToken)
-        super.onTerminate()
-
-    }
-
     companion object {
         const val CHANNEL_ID = "ganko.channel.notification"
     }
