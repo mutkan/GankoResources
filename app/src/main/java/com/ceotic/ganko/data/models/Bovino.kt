@@ -64,6 +64,8 @@ class Bovino(
 
     companion object {
         const val ALERT_DIAGNOSIS = "diagnostico"
+        const val ALERT_21_DAYS_AFTER_SERVICE = "21DiasDesdeServicio"
+        const val ALERT_3_FAILED_SERVICES= "3ServiciosFallidos"
 
         const val ALERT_EMPTY_DAYS = "diasVacios"
         const val ALERT_45_EMPTY_DAYS = "45DiasVacios"

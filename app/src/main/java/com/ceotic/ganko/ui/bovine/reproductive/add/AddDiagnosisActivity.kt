@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.DatePicker
 import com.ceotic.ganko.R
 import com.ceotic.ganko.data.models.Bovino.Companion.ALERT_120_EMPTY_DAYS
+import com.ceotic.ganko.data.models.Bovino.Companion.ALERT_3_FAILED_SERVICES
 import com.ceotic.ganko.data.models.Bovino.Companion.ALERT_45_EMPTY_DAYS
 import com.ceotic.ganko.data.models.Bovino.Companion.ALERT_60_EMPTY_DAYS
 import com.ceotic.ganko.data.models.Bovino.Companion.ALERT_90_EMPTY_DAYS
@@ -165,17 +166,23 @@ class AddDiagnosisActivity : AppCompatActivity(), Injectable, DatePickerDialog.O
                                     .flatMap { viewModel.markNotifcationsAsAppliedByTagAndBovineId(ALERT_EMPTY_DAYS, idBovino) }
 
                         }
+                        type == TYPE_DIAGNOSIS && servicioActual.diagnostico?.confirmacion == false->{
+                            if (bovino.serviciosFallidos!! == 3) {
+                                val uuidServiciosFallidos = NotificationWork.notify(NotificationWork.TYPE_REPRODUCTIVE, "Tres Servicios Fallidos", "El bovino: ${bovino.nombre}, lleva 3 servicios fallidos de manera consecutiva", idBovino,
+                                        10, TimeUnit.SECONDS)
+                                Log.d("SERVICIOS FALLIDOS", uuidServiciosFallidos.toString())
+                                bovino.notificacionesReproductivo!![ALERT_3_FAILED_SERVICES] = uuidServiciosFallidos
+                            }
+
+                                viewModel.updateBovino(idBovino, bovino)
+
+                        }
                         type == TYPE_NOVELTY && servicioActual.finalizado!! -> {
                             val uuidSecado = bovino.notificacionesReproductivo!![ALERT_DRYING]
                             val uuidPreparacion = bovino.notificacionesReproductivo!![ALERT_PREPARATION]
                             val uuidParto = bovino.notificacionesReproductivo!![ALERT_BIRTH]
                             NotificationWork.cancelNotificationsById(uuidSecado, uuidPreparacion, uuidParto)
-                            val emptyDaysNotifications = ReproductiveNotification.setEmptyDaysNotifications(bovino,servicioActual.novedad!!.fecha)
-                            if (bovino.serviciosFallidos!! == 3) {
-                                val uuidServiciosFallidos = NotificationWork.notify(NotificationWork.TYPE_REPRODUCTIVE, "Tres Servicios Fallidos", "El bovino: ${bovino.nombre}, lleva 3 servicios fallidos de manera consecutiva", idBovino,
-                                        10, TimeUnit.SECONDS)
-                                Log.d("SERVICIOS FALLIDOS", uuidServiciosFallidos.toString())
-                            }
+                            val emptyDaysNotifications = ReproductiveNotification.setEmptyDaysNotifications(bovino, servicioActual.novedad!!.fecha)
                             viewModel.insertNotifications(emptyDaysNotifications).flatMap {
                                 viewModel.updateBovino(idBovino, bovino)
                             }

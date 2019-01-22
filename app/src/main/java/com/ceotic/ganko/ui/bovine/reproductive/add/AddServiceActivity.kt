@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import com.ceotic.ganko.R
 import com.ceotic.ganko.data.models.Bovino
+import com.ceotic.ganko.data.models.Bovino.Companion.ALERT_21_DAYS_AFTER_SERVICE
 import com.ceotic.ganko.data.models.Bovino.Companion.ALERT_DIAGNOSIS
 import com.ceotic.ganko.data.models.Servicio
 import com.ceotic.ganko.data.models.Straw
@@ -125,12 +126,20 @@ class AddServiceActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
                 .flatMapSingle { bovino ->
                     val ultimoServicio = bovino.servicios!![0].fecha!!.toStringFormat()
                     val dif = Date().time - bovino.servicios!![0].fecha!!.time
-                    val daysToDiagnosis =  34 - TimeUnit.DAYS.convert((dif), TimeUnit.MILLISECONDS)
-                    Log.d("Dias to diagnostico", daysToDiagnosis.toString())
+                    val daysSinceService = TimeUnit.DAYS.convert((dif), TimeUnit.MILLISECONDS)
+                    val daysToDiagnosis =  34 - daysSinceService
+                    val daysToAlert = 21 - daysSinceService
+                    Log.d("Dias para diagnostico", daysToDiagnosis.toString())
+                    Log.d("Dias para alerta", daysToAlert.toString())
                     if(daysToDiagnosis >= 0){
                         val uuidDiagnosis = NotificationWork.notify(TYPE_REPRODUCTIVE, "Recordatorio Diagnostico de preñez", "Verificar preñez del bovino ${bovino.nombre}, fecha del servicio $ultimoServicio", idBovino,
                                 daysToDiagnosis, TimeUnit.DAYS)
                         bovino.notificacionesReproductivo!![ALERT_DIAGNOSIS] = uuidDiagnosis
+                    }
+                    if(daysToAlert >= 0){
+                        val uuid21Days = NotificationWork.notify(TYPE_REPRODUCTIVE, "Recordatorio 21 días desde el servicio", "Verificar celo del bovino ${bovino.nombre}, fecha del servicio $ultimoServicio", idBovino,
+                                daysToAlert, TimeUnit.DAYS)
+                        bovino.notificacionesReproductivo!![ALERT_21_DAYS_AFTER_SERVICE] = uuid21Days
                     }
                     viewModel.updateBovino(idBovino, bovino)
                 }
