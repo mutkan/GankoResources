@@ -272,7 +272,7 @@ fun getHeader(tipoReporte:String):List<String> =
          "Praderas"-> listOf("Numero","Tipo Graminea","Fecha fertilizacion","Producto","Cantidad")
          "Ocupación de praderas"-> listOf("Numero","Graminea","Fecha de mantenimiento","Fecha ocupacion")
          //ALIMENTACION
-         "Alimentación"-> listOf("Codigos","Tipo de alimento","Ración","Precio total")
+         "Alimentación"-> listOf("Codigo Bovino","Tipo de alimento","Ración","Precio total")
          "Suplementos usados"-> listOf("Nombre","Total usado","Valor total")
          //MOVIMIENTOS
          "Animales en pradera"-> listOf("Bovinos","Pradera","Fecha de transaccion")
