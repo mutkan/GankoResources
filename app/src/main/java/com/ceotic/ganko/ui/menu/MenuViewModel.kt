@@ -1669,12 +1669,14 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
         fun processDates(from: Date?, to: Date?, month: Int?, year: Int?): Pair<Date?, Date?> = when {
             month != null -> {
                 val calendar: Calendar = Calendar.getInstance()
-                val fromDate: Date = calendar.apply { set(year!!, month, 1,0,0,0) }.time
-                val m = if (month < 12) month + 1 else 1
-                val a = if (m == 1) year!! + 1 else year!!
-                val toDate: Date = calendar.apply {
-                    set(a, m, 1)
+                val fromDate: Date = calendar.apply {
+                    set(year!!, month, 1,11,59,59)
                     add(Calendar.DATE, -1)
+                }.time
+                val m = if (month < 11) month + 1 else 0
+                val a = if (m == 0) year!! + 1 else year!!
+                val toDate: Date = calendar.apply {
+                    set(a, m, 1, 0, 0, 0)
                 }.time
                 fromDate to toDate
             }
@@ -1744,7 +1746,9 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
 
             return db.listByExp(exp, Produccion::class)
                     .flatMapObservable { it.toObservable() }
-                    .groupBy { "${it.bovino}_${format.format(it.fecha)}" }
+                    .groupBy {
+                        val key = "${it.bovino}_${format.format(it.fecha)}"
+                    key}
                     .flatMapSingle {
                         it.map { x -> x.litros?.toFloat() ?: 0f }
                                 .reduce(0f) { a: Float, v: Float -> a + v }
