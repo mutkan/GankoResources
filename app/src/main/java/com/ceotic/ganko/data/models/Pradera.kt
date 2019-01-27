@@ -36,7 +36,8 @@ class Mantenimiento(
         var producto: String? = null,
         var cantidad: Float? = null,
         var valor: Float? = null,
-        var total: Float? = null
+        var total: Float? = null,
+        var graminea:String? = null
 ) : Parcelable
 
 @Parcelize

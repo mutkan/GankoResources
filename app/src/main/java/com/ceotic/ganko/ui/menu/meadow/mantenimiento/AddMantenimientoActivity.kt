@@ -84,7 +84,7 @@ class AddMantenimientoActivity : AppCompatActivity(), DatePickerDialog.OnDateSet
                 .flatMap { validateForm(R.string.empty_fields,maintenanceDate.text.toString(),maintenanceProduct.text(),
                         maintenanceQuantity.text(),maintenancePrice.text(),maintenanceTotal.text()) }
                 .flatMapSingle {
-                    val mantenimiento = Mantenimiento(it[0].toDate(),it[1],it[2].toFloat(),it[3].toFloat(),it[4].toFloat())
+                    val mantenimiento = Mantenimiento(it[0].toDate(),it[1],it[2].toFloat(),it[3].toFloat(),it[4].toFloat(), meadow.tipoGraminea)
                     meadow.mantenimiento!!.add(mantenimiento)
                     viewmodel.updateMeadow(meadow)
                 }.subscribeBy (

@@ -54,6 +54,10 @@ class MeadowUsedFragment : Fragment(), Injectable {
                 }
 
         dis add clickRemoveGroupFromMeadow
+                .flatMapSingle { x ->
+                    viewmodel.freeMeadow("${x.identificador}")
+                            .map { x }
+                }
                 .flatMapSingle { pradera ->
                     val grupo = pradera.group
                     pradera.apply {
@@ -68,6 +72,7 @@ class MeadowUsedFragment : Fragment(), Injectable {
                                 viewmodel.updateGroup(it.apply { this.pradera = null })
                             }
                 }
+
                 .subscribeBy(
                         onNext = {
                             toast("Datos guardados correctamente")
