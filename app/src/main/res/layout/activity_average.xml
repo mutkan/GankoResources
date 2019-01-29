@@ -50,11 +50,12 @@
             android:id="@+id/totalAverage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
-            android:text='@{promedio.total+""}'
+            android:layout_marginStart="32dp"
+            android:text='@{(promedio.total+"").replace(".", ",")}'
             android:textAppearance="@style/TextAppearance.AppCompat.Display2"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/textView140"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView122"
             tools:text="00" />
@@ -65,9 +66,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:visibility='@{(promedio.individual != null || promedio.valor != null) ? View.VISIBLE : View.GONE}'
             android:text='@{promedio.valor != null ? "Valor:" : "Individual"}'
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:visibility='@{(promedio.individual != null || promedio.valor != null) ? View.VISIBLE : View.GONE}'
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/totalAverage" />
 
@@ -75,14 +76,17 @@
             android:id="@+id/individualAverage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Display2"
             android:visibility='@{(promedio.individual != null || promedio.valor != null) ? View.VISIBLE : View.GONE}'
-            app:layout_constraintEnd_toEndOf="parent"
+            app:individualValueOrPrice="@{promedio}"
+            app:layout_constraintEnd_toStartOf="@+id/textView141"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView132"
-            app:individualValueOrPrice="@{promedio}"
             tools:text="00" />
 
         <TextView
@@ -90,11 +94,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
-            app:rankOrMonth='@{promedio}'
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView62"
+            app:rankOrMonth='@{promedio}'
             tools:text="20/07/2018 - 20/08/2018" />
 
         <TextView
@@ -103,12 +107,55 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:visibility='@{bovino != null ? View.VISIBLE : View.GONE}'
             android:text='@{"Bovino: "+bovino.nombre +" Código: "+bovino.codigo}'
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:visibility='@{bovino != null ? View.VISIBLE : View.GONE}'
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView61"
             tools:text="Bovino tal" />
+
+        <TextView
+            android:id="@+id/textView140"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text='@{promedio.unidades != null ? promedio.unidades : ""}'
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            app:layout_constraintBottom_toBottomOf="@+id/totalAverage"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/totalAverage"
+            app:layout_constraintTop_toTopOf="@+id/totalAverage"
+            tools:text="Litros" />
+
+        <TextView
+            android:id="@+id/textView141"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text='@{promedio.unidadesPrecio == null &amp; promedio.unidades != null ? promedio.unidades : ""}'
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:visibility='@{(promedio.individual != null || promedio.valor != null) ? View.VISIBLE : View.GONE}'
+            app:layout_constraintBottom_toBottomOf="@+id/individualAverage"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/individualAverage"
+            app:layout_constraintTop_toTopOf="@+id/individualAverage"
+            tools:text="Litros" />
+
+        <TextView
+            android:id="@+id/textView142"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text='@{promedio.unidadesPrecio}'
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:visibility='@{promedio.unidadesPrecio != null ? View.VISIBLE : View.GONE}'
+            app:layout_constraintBottom_toBottomOf="@+id/individualAverage"
+            app:layout_constraintEnd_toStartOf="@+id/individualAverage"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintTop_toTopOf="@+id/individualAverage"
+            tools:text="$" />
     </android.support.constraint.ConstraintLayout>
 </layout>

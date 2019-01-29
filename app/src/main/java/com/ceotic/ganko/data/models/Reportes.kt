@@ -244,7 +244,9 @@ data class Promedio(
         val hasta:Date? = null,
         val mes:Int? = null,
         val anio:Int? = null,
-        val valor:Int? = null
+        val valor:Int? = null,
+        val unidades:String? = null,
+        val unidadesPrecio: String? = null
 ) : Parcelable
 
 //region heeader pdf and excel file
@@ -261,16 +263,16 @@ fun getHeader(tipoReporte:String):List<String> =
          "Celos"-> listOf("Codigo","Nombre","Fecha celo")
          "Resumen reproductivo"-> listOf()
          //LECHE
-         "Consolidado de leche"-> listOf("Tipo","Fecha","Operacion","Numero Litros","Valor litros","Total Litros")
+         "Consolidado de leche"-> listOf("Tipo","Fecha","Operacion","Numero Litros","Valor litros","Total Valor")
          "Reporte de leche"-> listOf("Codigo","Numero de litros","Fecha de producción","Jornada")
          //CEBA
-         "Destetos"-> listOf("Codigo","Nombre","Fecha nacimiento","Fecha destete","Codigo madre","Nombre madre")
+         "Destetos"-> listOf("Codigo","Nombre","Fecha nacimiento","Fecha destete","Codigo madre")
          "Ganancia diaria de peso"-> listOf("Codigo","Nombre","Fecha nacimiento","GDP","Proposito")
          //PRADERAS
          "Praderas"-> listOf("Numero","Tipo Graminea","Fecha fertilizacion","Producto","Cantidad")
-         "Ocupación de praderas"-> listOf("Numero","Graminea","Fecha de mantenimiento","Fecha ocupacion")
+         "Ocupación de praderas"-> listOf("Numero","Graminea","Fecha de mantenimiento","Dias Libres","Fecha ocupacion")
          //ALIMENTACION
-         "Alimentación"-> listOf("Codigos","Tipo de alimento","Ración","Precio total")
+         "Alimentación"-> listOf("Codigo Bovino","Tipo de alimento","Ración","Precio total")
          "Suplementos usados"-> listOf("Nombre","Total usado","Valor total")
          //MOVIMIENTOS
          "Animales en pradera"-> listOf("Bovinos","Pradera","Fecha de transaccion")

@@ -94,7 +94,7 @@ class MenuActivity : SearchBarActivity(MENU_SEARCH_FILTER), Injectable, HasSuppo
 
         dis add adapter.clickMenu
                 .subscribe {
-                    if (phone) drawer.closeDrawers()
+                    drawer.closeDrawers()
                     when (it) {
                         1 -> nav.navigateToFarm()
                         in 2..13 -> clickOnMenu(it)

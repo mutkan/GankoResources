@@ -17,5 +17,5 @@ data class Servicio(
         var novedad: Novedad? = null,
         var posFechaParto:Date? = null,
         var finalizado: Boolean? = null,
-        var diasVacios: Long? = null
+        var diasVacios: Float? = null
 ):Parcelable

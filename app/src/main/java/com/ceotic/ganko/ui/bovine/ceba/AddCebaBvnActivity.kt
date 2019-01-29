@@ -62,12 +62,30 @@ class AddCebaBvnActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListen
                 .flatMapSingle { (prev, form)->
                     val current = form[0].toDate()
                     val weight = form[1].toFloat()
+
+                    val prevCal = Calendar.getInstance().apply {
+                        time = prev.second!!
+                        set(Calendar.HOUR, 0)
+                        set(Calendar.MINUTE, 0)
+                        set(Calendar.SECOND,0)
+                        set(Calendar.MILLISECOND,0)
+                    }.time
+
+                    val currCal = Calendar.getInstance().apply {
+                        time = current
+                        set(Calendar.HOUR_OF_DAY,23)
+                        set(Calendar.MINUTE, 59)
+                        set(Calendar.SECOND,59)
+                        set(Calendar.MILLISECOND,0)
+                        add(Calendar.SECOND, 10)
+                    }.time
+
+
                     val gain: Float = if (prev.first != 0f) {
-                        val milis = current.time - prev.second!!.time
+                        val milis = currCal.time - prevCal.time
                         val days = TimeUnit.DAYS.convert(milis, TimeUnit.MILLISECONDS)
                         ((weight - prev.first!!) * 1000 / days)
                     } else 0f
-
                     viewModel.addCeba(Ceba(null, null, null, "", idBovino, current, weight, gain, false))
                 }
                 .subscribeBy(

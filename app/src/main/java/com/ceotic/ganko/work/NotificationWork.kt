@@ -10,18 +10,19 @@ import com.ceotic.ganko.R
 import com.ceotic.ganko.ui.menu.MenuActivity
 import java.util.concurrent.TimeUnit
 import android.app.PendingIntent
+import android.content.Context
 import android.graphics.Color
 import com.ceotic.ganko.ui.bovine.reproductive.ReproductiveBvnActivity
 import java.util.*
 
 
-class NotificationWork : Worker() {
+class NotificationWork(context: Context, params: WorkerParameters) : Worker(context, params) {
 
     override fun doWork(): Result {
 
-        val title = inputData.getString(ARG_TITLE, "Ganko")
-        val msg = inputData.getString(ARG_DESCRIPTION, null)
-        val id = inputData.getString(ARG_ID, null)
+        val title = inputData.getString(ARG_TITLE) ?: "Ganko"
+        val msg = inputData.getString(ARG_DESCRIPTION)
+        val id = inputData.getString(ARG_ID)
         val type = inputData.getInt(ARG_TYPE, 0)
 
         val icon = when (type) {
@@ -56,7 +57,7 @@ class NotificationWork : Worker() {
         NotificationManagerCompat.from(applicationContext)
                 .notify(Random().nextInt(), notification)
 
-        return Result.SUCCESS
+        return Result.success()
     }
 
     companion object {
@@ -70,15 +71,17 @@ class NotificationWork : Worker() {
         const val TYPE_VACCINES = 2
         const val TYPE_REPRODUCTIVE = 3
         const val TYPE_MEADOW = 4
+        const val TYPE_BOVINE = 5
 
 
-        fun notify(type: Int, title: String, msg: String, docId: String, time: Long, timeUnit: TimeUnit):UUID {
+        fun notify(type: Int, title: String, msg: String, docId: String, time: Long, timeUnit: TimeUnit): UUID {
 
-            val data: Data = mapOf(ARG_ID to docId ,
-                    ARG_TITLE to title,
-                    ARG_DESCRIPTION to msg,
-                    ARG_TYPE to type)
-                    .toWorkData()
+            val data: Data = Data.Builder()
+                    .putString(ARG_ID, docId)
+                    .putString(ARG_TITLE, title)
+                    .putString(ARG_DESCRIPTION, msg)
+                    .putInt(ARG_TYPE, type)
+                    .build()
 
             val notificationWork = OneTimeWorkRequestBuilder<NotificationWork>()
                     .setInitialDelay(time, timeUnit)
@@ -87,19 +90,19 @@ class NotificationWork : Worker() {
 
             WorkManager.getInstance().enqueue(notificationWork)
 
-            return  notificationWork.id
+            return notificationWork.id
         }
 
-        fun cancelNotificationByTag(tag: String){
+        fun cancelNotificationByTag(tag: String) {
             WorkManager.getInstance().cancelAllWorkByTag(tag)
         }
 
-        fun cancelNotificationById(id:UUID){
+        fun cancelNotificationById(id: UUID) {
             WorkManager.getInstance().cancelWorkById(id)
         }
 
-        fun cancelNotificationsById(vararg ids:UUID?){
-            ids.forEach {id ->
+        fun cancelNotificationsById(vararg ids: UUID?) {
+            ids.forEach { id ->
                 id?.let { WorkManager.getInstance().cancelWorkById(it) }
             }
         }
