@@ -80,7 +80,6 @@ class ReportViewModel(private val db: CouchRx, private val userSession: UserSess
                     val srv = it.first.servicios!![0]
                     listOf(it.first.codigo!!, it.first.nombre!!,
                             srv.posFechaParto?.toStringFormat() ?: "",
-                            srv.fecha!!.toStringFormat(),
                             Date(it.second).toStringFormat())
                 }
                 .toList()
@@ -442,7 +441,7 @@ class ReportViewModel(private val db: CouchRx, private val userSession: UserSess
         return db.listByExp(q, Bovino::class)
                 .flatMapObservable { it.toObservable() }
                 .map {
-                    listOf(it.codigo!!, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), it.fechaDestete!!.toStringFormat(), it.codigoMadre!!, "")
+                    listOf(it.codigo!!, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), it.fechaDestete!!.toStringFormat(), it.codigoMadre!!)
                 }.toList().applySchedulers()
     }
 
