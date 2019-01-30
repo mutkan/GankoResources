@@ -1,22 +1,27 @@
 package com.ceotic.ganko.ui.menu.meadow
 
+//import com.example.cristian.myapplication.databinding.FragmentMeadowBinding
 import android.app.ProgressDialog
 import android.arch.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
-import android.view.*
-import android.widget.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
+import android.widget.AdapterView
 import com.ceotic.ganko.R
 import com.ceotic.ganko.data.models.Pradera
 import com.ceotic.ganko.databinding.TemplateAddMeadowBinding
-//import com.example.cristian.myapplication.databinding.FragmentMeadowBinding
 import com.ceotic.ganko.di.Injectable
 import com.ceotic.ganko.ui.adapters.MeadowAdapter
 import com.ceotic.ganko.ui.menu.MenuViewModel
 import com.ceotic.ganko.util.LifeDisposable
+import com.ceotic.ganko.util.applySchedulers
 import com.ceotic.ganko.util.buildViewModel
 import com.ceotic.ganko.util.text
+import io.reactivex.Single
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.rxkotlin.toObservable
 import kotlinx.android.synthetic.main.fragment_meadow.*
@@ -35,8 +40,7 @@ class MeadowFragment : Fragment(), Injectable {
 
     val adapter: MeadowAdapter by lazy { MeadowAdapter() }
     val dis: LifeDisposable = LifeDisposable(this)
-    var identificador = 0
-    lateinit var ipd:ProgressDialog
+    lateinit var ipd: ProgressDialog
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_meadow, container, false)
@@ -53,17 +57,16 @@ class MeadowFragment : Fragment(), Injectable {
 
     override fun onResume() {
         super.onResume()
-        ipd = indeterminateProgressDialog("CARGANDO","")
+        ipd = indeterminateProgressDialog("CARGANDO", "")
         ipd.show()
 
-        if(ipd.isShowing && adapter.data.isNotEmpty()) ipd.dismiss()
+        if (ipd.isShowing && adapter.data.isNotEmpty()) ipd.dismiss()
 
         dis add viewModel.getMeadows(viewModel.getFarmId())
                 .subscribeBy {
                     if (it.first.isEmpty()) createMeadows()
                     else {
                         adapter.data = it.first.toMutableList()
-                        identificador = it.second.toInt()
                         ipd.dismiss()
                     }
                 }
@@ -73,7 +76,7 @@ class MeadowFragment : Fragment(), Injectable {
                     val meadow = it
                     if (meadow.usedMeadow == false) {
                         alert {
-                            val viewbind = TemplateAddMeadowBinding.inflate(layoutInflater,null,false)
+                            val viewbind = TemplateAddMeadowBinding.inflate(layoutInflater, null, false)
                             viewbind.spnMeadowUnit.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                                 override fun onNothingSelected(p0: AdapterView<*>?) {
                                     meadow.tamanoEnHectareas = false
@@ -94,15 +97,16 @@ class MeadowFragment : Fragment(), Injectable {
                                     meadow.emptyMeadow = false
                                     meadow.available = true
                                     meadow.fechaSalida = Date()
-                                    identificador += 1
-                                    meadow.identificador = identificador
                                     meadow.tamano = viewbind.meadowSize.text().toFloat()
-                                    viewModel.updateMeadow(meadow._id!!, meadow)
+                                    dis add calculateIndentificator()
+                                            .flatMap {
+                                                meadow.identificador = it
+                                                viewModel.updateMeadow(meadow._id!!, meadow)
+                                            }
                                             .flatMap {
                                                 viewModel.getMeadows(viewModel.getFarmId())
                                             }.subscribeBy {
                                                 adapter.data = it.first.toMutableList()
-                                                identificador = it.second.toInt()
                                                 ipd.dismiss()
                                             }
                                 } else toast(R.string.empty_fields)
@@ -110,7 +114,7 @@ class MeadowFragment : Fragment(), Injectable {
                             noButton { }
                         }.show()
                     } else {
-                        val options = listOf("Administrar", "Alertas","Remover")
+                        val options = listOf("Administrar", "Alertas", "Remover")
                         selector("Seleccione una opcion", options) { _, i ->
                             when (i) {
                                 0 -> startActivity<ManageMeadowActivity>(MEADOWID to meadow._id!!)
@@ -120,15 +124,13 @@ class MeadowFragment : Fragment(), Injectable {
                                     meadow.usedMeadow = false
                                     meadow.emptyMeadow = true
                                     meadow.available = null
-                                    identificador -= 1
                                     meadow.identificador = null
                                     meadow.tamano = 0f
-                                    viewModel.updateMeadow(meadow._id!!, meadow)
+                                    dis add viewModel.updateMeadow(meadow._id!!, meadow)
                                             .flatMap {
                                                 viewModel.getMeadows(viewModel.getFarmId())
                                             }.subscribeBy {
                                                 adapter.data = it.first.toMutableList()
-                                                identificador = it.second.toInt()
                                                 ipd.dismiss()
                                             }
                                 }
@@ -143,8 +145,8 @@ class MeadowFragment : Fragment(), Injectable {
 
     fun createMeadows() {
         val listPraderas = mutableListOf<Pradera>()
-        for(i in 0..99){
-            val pradera = Pradera(idFinca = viewModel.getFarmId(), usedMeadow = false, emptyMeadow = true,orderValue = i)
+        for (i in 0..99) {
+            val pradera = Pradera(idFinca = viewModel.getFarmId(), usedMeadow = false, emptyMeadow = true, orderValue = i)
             listPraderas.add(pradera)
         }
         dis add listPraderas.toObservable()
@@ -155,10 +157,33 @@ class MeadowFragment : Fragment(), Injectable {
                 .flatMap { viewModel.getMeadows(viewModel.getFarmId()) }
                 .subscribeBy {
                     adapter.data = it.first.toMutableList()
-                    identificador = it.second.toInt()
                     ipd.dismiss()
                 }
     }
+
+    fun calculateIndentificator(): Single<Int> {
+        var prev = 0
+        return adapter.data.toObservable()
+                .filter { it.identificador != null }
+                .map { it.identificador!! }
+                .toList()
+                .map {
+                    it.sort()
+                    it
+                }
+                .flatMap { ids->
+                    ids.toObservable().filter {
+                        val valid = prev != (it - 1)
+                        if (!valid) prev = it
+                        valid
+                    }
+                            .map { prev + 1 }
+                            .first(0)
+                            .map { if(it == 0) (ids.lastOrNull() ?: 0) + 1 else it }
+                }
+                .applySchedulers()
+    }
+
 
     companion object {
         const val MEADOWID = "meadow"
