@@ -13,9 +13,7 @@ import io.reactivex.rxkotlin.toObservable
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-class ReportViewModel(private val db: CouchRx, private val userSession: UserSession) {
-
-    private val farmID: String = userSession.farmID
+class ReportViewModel(private val farmID:String, private val db: CouchRx) {
 
     private fun reporteFuturosPartos(from: Date? = null, to: Date? = null, month: Int? = null, year: Int? = null): Single<List<List<String>>> {
         val (ini, end) = processDates(from, to, month, year)
