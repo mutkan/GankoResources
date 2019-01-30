@@ -79,8 +79,8 @@ class ReportViewModel(private val db: CouchRx, private val userSession: UserSess
                 .map {
                     val srv = it.first.servicios!![0]
                     listOf(it.first.codigo!!, it.first.nombre!!,
-                            srv.posFechaParto?.toStringFormat() ?: "",
-                            Date(it.second).toStringFormat())
+                            Date(it.second).toStringFormat(),
+                            srv.posFechaParto?.toStringFormat() ?: "")
                 }
                 .toList()
                 .applySchedulers()
@@ -118,7 +118,7 @@ class ReportViewModel(private val db: CouchRx, private val userSession: UserSess
                     if (last == -1 && lastSrv > -1) {
                         result[5] = "Si"
                         result[3] = srvs[lastSrv].fecha!!.toStringFormat()
-                    } else if (last == lastSrv) {
+                    } else if (last >= lastSrv && last != -1) {
                         val sLast = srvs[last]
                         val fromMilis = if (sLast.parto != null) sLast.parto!!.fecha!!.time
                         else sLast.novedad!!.fecha.time
@@ -129,7 +129,7 @@ class ReportViewModel(private val db: CouchRx, private val userSession: UserSess
                         result[2] = Date(fromMilis).toStringFormat()
                         result[3] = sLast.fecha!!.toStringFormat()
                         result[4] = "${Math.ceil(days)}"
-                    } else if (last < lastSrv) {
+                    } else if (last < lastSrv && last != -1) {
                         val s = srvs[lastSrv]
                         val toMilis = if (s.diagnostico != null && s.diagnostico!!.confirmacion) s.fecha!!.time
                         else cMilis
@@ -404,7 +404,7 @@ class ReportViewModel(private val db: CouchRx, private val userSession: UserSess
         val q = ("idFarm" equalEx farmID
                 andEx ("fecha".betweenDates(ini!!, end!!)))
 
-        return db.listByExp(q, SalidaLeche::class)
+        return db.listByExp(q, SalidaLeche::class, orderBy = arrayOf("fecha" orderEx DESCENDING))
                 .flatMapObservable { it.toObservable() }
                 .map {
                     listOf(it.type!!, it.fecha!!.toStringFormat(),
@@ -418,7 +418,7 @@ class ReportViewModel(private val db: CouchRx, private val userSession: UserSess
         val q = ("idFinca" equalEx farmID
                 andEx "fecha".betweenDates(ini!!, end!!))
 
-        return db.listByExp(q, Produccion::class)
+        return db.listByExp(q, Produccion::class, orderBy = arrayOf("fecha" orderEx DESCENDING))
                 .flatMapObservable { it.toObservable() }
                 .groupBy { it.bovino }
                 .flatMap { gp ->
