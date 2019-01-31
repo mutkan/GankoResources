@@ -26,3 +26,18 @@ fun Date.addCurrentHour(){
     add(Calendar.MINUTE, calendar.get(Calendar.MINUTE))
 }
 
+fun calculateNotifyTime(frequency:Long, units:String):Long{
+    val proxTime = when (units) {
+        "Horas" -> frequency
+        "Días" -> frequency * 24
+        "Meses" -> frequency * 24 * 30
+        else -> frequency * 24 * 30 * 12
+    }
+    return when (proxTime) {
+        in 0..2 -> proxTime
+        in 3..10 -> proxTime - 1
+        in 11..36 -> proxTime - 3
+        else -> proxTime - 24
+    }
+}
+

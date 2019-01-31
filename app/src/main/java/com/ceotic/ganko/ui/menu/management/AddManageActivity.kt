@@ -10,9 +10,8 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.DatePicker
 import com.ceotic.ganko.R
-import com.ceotic.ganko.data.models.Group
+import com.ceotic.ganko.data.models.*
 import com.ceotic.ganko.data.models.ProxStates.Companion.APPLIED
-import com.ceotic.ganko.data.models.RegistroManejo
 import com.ceotic.ganko.data.models.RegistroManejo.Companion.NOT_APPLIED
 import com.ceotic.ganko.databinding.ActivityAddManageBinding
 import com.ceotic.ganko.di.Injectable
@@ -44,7 +43,7 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
     lateinit var factory: ViewModelProvider.Factory
     val viewModel: MenuViewModel by lazy { buildViewModel<MenuViewModel>(factory) }
     val dis: LifeDisposable = LifeDisposable(this)
-    private val edit: Boolean by lazy { intent.getBooleanExtra("edit", false) }
+    private val edit: Boolean by lazy { intent.extras?.getBoolean("edit", false) ?: false }
     lateinit var previousManage: RegistroManejo
     lateinit var datePicker: DatePickerDialog
     lateinit var binding: ActivityAddManageBinding
@@ -70,12 +69,12 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back_white)
         binding.page = 1
         binding.other = false
-        datePicker = DatePickerDialog(this, AddManageActivity@ this,
+        datePicker = DatePickerDialog(this, this,
                 Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH),
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
 
         if (edit) {
-            previousManage = intent!!.getParcelableExtra(PREVIOUS_MANAGE)
+            previousManage = intent!!.extras!!.getParcelable(PREVIOUS_MANAGE)
             startActivityForResult<ReApplyActivity>(REQUEST_CODE, EXTRA_ID to previousManage._id!!)
             setEdit()
         } else {
@@ -95,14 +94,13 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                 }
                 .flatMapSingle {
                     val manage = createManage()
-                    if (edit) viewModel.insertManage(manage).flatMap { id ->
+                    val notifyTime = calculateNotifyTime(frecuency.text().toLong(), spinnerFrecuency.selectedItem.toString())
+                    if (edit) viewModel.insertManage(manage, notifyTime).flatMap { id ->
                         viewModel.updateManage(previousManage.apply { estadoProximo = APPLIED }).map { id }
                     }
-                    else viewModel.insertManage(manage)
+                    else viewModel.insertManageFirst(manage, notifyTime)
                 }
-                .flatMapSingle { docId ->
-                    setNotification(docId)
-                }.retry()
+                .retry()
                 .subscribeBy(
                         onNext = {
                             if (!edit) toast("Evento registrado")
@@ -163,28 +161,6 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                 .subscribe { datePicker.show() }
     }
 
-    private fun setNotification(docId: String): Single<Unit>? = SingleFromCallable {
-        var aplicaciones = numberAplications.text().toInt()
-        if (aplicaciones > 1) {
-            val proximaAplicacion = frecuency.text().toLong()
-            val unidadTiempo = spinnerFrecuency.selectedItem.toString()
-            val proxTime = when (unidadTiempo) {
-                "Horas" -> proximaAplicacion
-                "Días" -> proximaAplicacion * 24
-                "Meses" -> proximaAplicacion * 24 * 30
-                else -> proximaAplicacion * 24 * 30 * 12
-            }
-            val notifyTime: Long = when (proxTime) {
-                in 3..24 -> proxTime - 1
-                else -> proxTime - 24
-            }
-            val evento = spinnerEventType.selectedItem.toString()
-
-            NotificationWork.notify(TYPE_MANAGEMENT, "Recordatorio Manejo", "Evento pendiente: $evento", docId,
-                    notifyTime, TimeUnit.HOURS)
-        }
-    }
-
     private fun createManage(): RegistroManejo {
         val producto = product.text()
         val frecuencia = if (frecuency.text() == "") 0 else frecuency.text().toInt()
@@ -193,19 +169,13 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
         val observaciones: String? = observations.text.toString()
         val precioAsistencia = if (assistancePrice.text() == "") 0 else assistancePrice.text().toInt()
         val fechaEvento = eventDate.text.toString().toDate()
+        fechaEvento.addCurrentHour()
+
         val evento = spinnerEventType.selectedItem.toString()
         var otro: String? = null
         if (evento == "Otro") otro = otherWhich.text.toString()
         val tratamiento = treatment.text.toString()
         val aplicaciones = numberAplications.text.toString().toInt()
-        val fechaProximo = if (aplicaciones > 1) {
-            when (unidadTiempo) {
-                "Horas" -> fechaEvento.add(Calendar.HOUR, frecuencia)
-                "Días" -> fechaEvento.add(Calendar.DATE, frecuencia)
-                "Meses" -> fechaEvento.add(Calendar.MONTH, frecuencia)
-                else -> fechaEvento.add(Calendar.YEAR, frecuencia)
-            }
-        } else null
 
         val numAplicacion = if (edit) {
             if (previousManage.numeroAplicaciones!! > previousManage.aplicacion!!) {
@@ -215,10 +185,22 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
             }
         } else 1
 
+        val fechaProximo = if (aplicaciones > 1 && numAplicacion < aplicaciones) {
+            when (unidadTiempo) {
+                "Horas" -> fechaEvento.add(Calendar.HOUR, frecuencia)
+                "Días" -> fechaEvento.add(Calendar.DATE, frecuencia)
+                "Meses" -> fechaEvento.add(Calendar.MONTH, frecuencia)
+                else -> fechaEvento.add(Calendar.YEAR, frecuencia)
+            }
+        } else null
+
+        val grupo:Grupo? = if(group != null) Grupo(group!!._id!!, group!!.nombre, group!!.color)
+        else null
+
         return if (!edit) {
             RegistroManejo(idFinca = farmId, fecha = fechaEvento, fechaProxima = fechaProximo, frecuencia = frecuencia, unidadFrecuencia = unidadTiempo, numeroAplicaciones = aplicaciones,
                     aplicacion = 1, tipo = evento, titulo = evento, otro = otro, tratamiento = tratamiento, descripcion = tratamiento, producto = producto, observaciones = observaciones,
-                    valorProducto = precioProducto, valorAsistencia = precioAsistencia, grupo = group, bovinos = bovines, estadoProximo = NOT_APPLIED)
+                    valorProducto = precioProducto, valorAsistencia = precioAsistencia, grupo = grupo, bovinos = bovines, estadoProximo = NOT_APPLIED)
         } else {
             RegistroManejo(idAplicacionUno = previousManage.idAplicacionUno, idFinca = farmId, fecha = fechaEvento, fechaProxima = if (aplicaciones > numAplicacion) {
                 fechaProximo
@@ -226,7 +208,7 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                 null
             }, frecuencia = frecuencia, unidadFrecuencia = unidadTiempo, numeroAplicaciones = aplicaciones,
                     aplicacion = numAplicacion, tipo = evento, titulo = evento, otro = otro, tratamiento = tratamiento, descripcion = tratamiento, producto = producto, observaciones = observaciones,
-                    valorProducto = precioProducto, valorAsistencia = precioAsistencia, grupo = group, bovinos = bovines, estadoProximo = NOT_APPLIED, noBovinos = noBovines)
+                    valorProducto = precioProducto, valorAsistencia = precioAsistencia, grupo = grupo, bovinos = bovines, estadoProximo = NOT_APPLIED, noBovinos = noBovines)
         }
 
     }

@@ -308,7 +308,27 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
 
 
     //region Manejo
-    fun insertManage(registroManejo: RegistroManejo): Single<String> = db.insertDosisUno(registroManejo).applySchedulers()
+    fun insertManageFirst(registroManejo: RegistroManejo, notifyTime: Long): Single<String> = db.insertDosisUno(registroManejo)
+            .flatMap {
+                val title = if(registroManejo.tipo == "Otro") registroManejo.otro!!
+                else registroManejo.tipo!!
+
+                makeAlarm(it, registroManejo.bovinos ?: emptyList(), registroManejo.grupo,
+                    title, registroManejo.tratamiento?: "", registroManejo.aplicacion ?: 0,
+                        registroManejo.numeroAplicaciones?:0,
+                    registroManejo.fechaProxima, notifyTime) }
+            .applySchedulers()
+
+    fun insertManage(registroManejo: RegistroManejo, notifyTime: Long): Single<String> = db.insertDosisUno(registroManejo)
+            .flatMap {
+                val title = if(registroManejo.tipo == "Otro") registroManejo.otro!!
+                else registroManejo.tipo!!
+
+                makeAlarm(it, registroManejo.bovinos ?: emptyList(), registroManejo.grupo,
+                        title, registroManejo.tratamiento?: "", registroManejo.aplicacion ?: 0,
+                        registroManejo.numeroAplicaciones?:0,
+                        registroManejo.fechaProxima, notifyTime) }
+            .applySchedulers()
 
     fun getManages(): Observable<List<RegistroManejo>> = SearchBarActivity.query
             .startWith("")
@@ -318,7 +338,9 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                 db.listObsByExp(exp, RegistroManejo::class, orderBy = arrayOf("fecha" orderEx DESCENDING))
             }.applySchedulers()
 
-    fun updateManage(registroManejo: RegistroManejo): Single<Unit> = db.update(registroManejo._id!!, registroManejo).applySchedulers()
+    fun updateManage(registroManejo: RegistroManejo): Single<Unit> = db.update(registroManejo._id!!, registroManejo)
+            .flatMap { cancelAlarm(registroManejo._id!!) }
+            .applySchedulers()
 
     fun getNextManages(from: Date, to: Date): Observable<List<RegistroManejo>> =
             db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProxima".betweenDates(from, to)) andEx ("estadoProximo" equalEx NOT_APPLIED), RegistroManejo::class, orderBy = arrayOf("fecha" orderEx DESCENDING)).applySchedulers()
@@ -331,10 +353,6 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
 
     //endregion
 
-    fun getNotifications(from: Date, to: Date): Single<List<Alarm>> =
-            db.listByExp("idFinca" equalEx farmID andEx ("fechaProxima".betweenDates(from, to)) andEx ("activa" equalEx true), Alarm::class, orderBy = arrayOf("fechaProxima" orderEx ASCENDING))
-                    .applySchedulers()
-
     fun getAllCows(): Single<List<Bovino>> = db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra"), Bovino::class)
             .applySchedulers()
 
@@ -342,6 +360,70 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
 
 
     fun validatePlan(): Boolean = userSession.validatePlanDate().first
+
+
+
+    //region Notificaiones
+
+    fun getNotifications(from: Date, to: Date): Single<List<Alarm>> =
+            db.listByExp("idFinca" equalEx farmID andEx ("fechaProxima".betweenDates(from, to)) andEx ("activa" equalEx true), Alarm::class, orderBy = arrayOf("fechaProxima" orderEx ASCENDING))
+                    .applySchedulers()
+
+    private fun prepareNotificationBovine(id:String, bovines:List<String> = emptyList(), group:Grupo? =null) = if(bovines.size == 1 && group == null)
+        db.oneById(bovines[0], Bovino::class)
+                .map { "${it._id};;${it.nombre};;${it.codigo}" to id }
+                .defaultIfEmpty("" to id)
+                .toSingle()
+    else Single.just("" to id)
+
+    private fun prepareAlarm(data:Pair<String, String>, bovines:List<String> = emptyList(), group:Grupo? = null, title:String, description:String, nextDate:Date?, notifyTime: Long):Single<String>{
+        val bvn = data.first.split(";;")
+        var bvnInfo:AlarmBovine? = null
+        var info = ""
+        if(bvn.isNotEmpty()){
+            bvnInfo = AlarmBovine(bvn[0], bvn[1], bvn[2])
+            info = "- Bovino ${bvnInfo.codigo}"
+        }
+
+        if(group != null){
+            info = "- Grupo ${group.nombre}"
+        }
+
+        val des = description + info
+
+        val uuid = NotificationWork.notify(NotificationWork.TYPE_HEALTH, title,
+                des, data.second, notifyTime, TimeUnit.HOURS)
+
+        val alarm = Alarm(
+                titulo = title,
+                descripcion = description,
+                alarma = ALARM_HEALTH,
+                idFinca = farmID,
+                fechaProxima = nextDate,
+                type = TYPE_ALARM,
+                device = listOf(
+                        AlarmDevice(userSession.device, uuid.toString())
+                ),
+                grupo = group,
+                bovinos = bovines,
+                activa = true,
+                reference = data.second,
+                bovino = bvnInfo
+        )
+
+        return db.insert(alarm)
+    }
+
+    private fun makeAlarm(id:String, bovines:List<String> = emptyList(), group:Grupo? = null, title:String, description:String, application:Int , numApplication:Int, nextDate:Date?, notifyTime: Long):Single<String>{
+        val to =( (nextDate?.time ?: 0) / 3600000) + notifyTime
+        val now = Date().time / 3600000
+        return if(to > now && application < numApplication){
+            prepareNotificationBovine(id, bovines, group)
+                    .flatMap { prepareAlarm(it, bovines, group, title, description, nextDate,notifyTime)  }
+        }else{
+            Single.just("")
+        }
+    }
 
     private fun cancelAlarm(reference:String):Single<Unit>{
         return db.listByExp("reference" equalEx  reference
@@ -357,5 +439,8 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     }
                 }
     }
+
+
+    //endregion
 
 }

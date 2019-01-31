@@ -189,7 +189,7 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                     }
 
                     .flatMapSingle {
-                        val notifyTime = calculateNotifyTime()
+                        val notifyTime = calculateNotifyTime(frequency.text().toLong(), unidadTiempo)
                         val healthAplication = previousHealth.aplicacion!!.plus(1)
                         viewModel.addHealth(
 
@@ -230,7 +230,7 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                     }
 
                     .flatMapSingle {
-                        val notifyTime = calculateNotifyTime()
+                        val notifyTime = calculateNotifyTime(frequency.text().toLong(), unidadTiempo)
                         viewModel.addFirstHealth(
                                 Sanidad(null, null, null, farmId, spinnerEvent.selectedItem.toString(), frecuencyOptionsHealth.selectedItem.toString(),
                                         dateAddHealth.text.toString().toDate(), fechaProxima1(dateAddHealth.text().toDate(), applicacion_number.text().toInt(), frequency.text().toInt()),
@@ -257,23 +257,6 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                     )
         }
     }
-
-    fun calculateNotifyTime():Long{
-        val frequencyTime = frequency.text().toLong()
-        val proxTime = when (unidadTiempo) {
-            "Horas" -> frequencyTime
-            "Días" -> frequencyTime * 24
-            "Meses" -> frequencyTime * 24 * 30
-            else -> frequencyTime * 24 * 30 * 12
-        }
-        return when (proxTime) {
-            in 0..2 -> proxTime
-            in 3..10 -> proxTime - 1
-            in 11..36 -> proxTime - 3
-            else -> proxTime - 24
-        }
-    }
-
 
     private fun setEdit() {
         val evento = eventos.indexOf(previousHealth.evento)
