@@ -119,10 +119,13 @@ class AddVaccineActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
                 .flatMap { validateFields() }
                 .flatMapSingle {
                     val vaccine = createVaccine(it)
-                    if (edit) viewModel.inserVaccine(vaccine).flatMap { id ->
+                    val notifyTime = if(revaccinationRequired.isChecked)
+                        calculateNotifyTime(nextApplicationVaccine.text().toLong(), timeUnitsSpinner.selectedItem.toString())
+                    else 0
+                    if (edit) viewModel.inserVaccine(vaccine, notifyTime).flatMap { id ->
                         viewModel.updateVaccine(previousVaccine.apply { estadoProximo = APPLIED }).map { id }
                     }
-                    else viewModel.inserFirstVaccine(vaccine)
+                    else viewModel.inserFirstVaccine(vaccine, notifyTime)
                 }
                 .flatMapSingle { docId ->
                     setNotification(docId)
@@ -251,6 +254,8 @@ class AddVaccineActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
 
     private fun createVaccine(fields: List<String>): RegistroVacuna {
         val fecha = fields[0].toDate()
+        fecha.addCurrentHour()
+
         val valor = fields[1].toInt()
         val idFinca = viewModel.getFarmId()
         val nombreVacuna = fields[2]

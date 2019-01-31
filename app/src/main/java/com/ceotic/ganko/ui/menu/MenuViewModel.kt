@@ -277,11 +277,23 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
 
 
     //region Vacunas
-    fun inserVaccine(registroVacuna: RegistroVacuna): Single<String> = db.insert(registroVacuna).applySchedulers()
+    fun inserVaccine(registroVacuna: RegistroVacuna, notifyTime: Long): Single<String> = db.insert(registroVacuna)
+            .flatMap { makeAlarm(it,registroVacuna.bovinos ?: emptyList(),registroVacuna.grupo,
+                    registroVacuna.titulo!!, registroVacuna.descripcion!!, null,null,
+                    registroVacuna.fechaProxima, notifyTime, ALARM_VACCINE
+                    ) }
+            .applySchedulers()
 
-    fun inserFirstVaccine(registroVacuna: RegistroVacuna): Single<String> = db.insertDosisUno(registroVacuna).applySchedulers()
+    fun inserFirstVaccine(registroVacuna: RegistroVacuna, notifyTime: Long): Single<String> = db.insertDosisUno(registroVacuna)
+            .flatMap { makeAlarm(it,registroVacuna.bovinos ?: emptyList(),registroVacuna.grupo,
+                    registroVacuna.titulo!!, registroVacuna.descripcion!!, null,null,
+                    registroVacuna.fechaProxima, notifyTime, ALARM_VACCINE
+            ) }
+            .applySchedulers()
 
-    fun updateVaccine(registroVacuna: RegistroVacuna): Single<Unit> = db.update(registroVacuna._id!!, registroVacuna).applySchedulers()
+    fun updateVaccine(registroVacuna: RegistroVacuna): Single<Unit> = db.update(registroVacuna._id!!, registroVacuna)
+            .flatMap { cancelAlarm(registroVacuna._id!!) }
+            .applySchedulers()
 
     fun getVaccinations(): Observable<List<RegistroVacuna>> = SearchBarActivity.query
             .startWith("")
@@ -316,7 +328,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                 makeAlarm(it, registroManejo.bovinos ?: emptyList(), registroManejo.grupo,
                     title, registroManejo.tratamiento?: "", registroManejo.aplicacion ?: 0,
                         registroManejo.numeroAplicaciones?:0,
-                    registroManejo.fechaProxima, notifyTime) }
+                    registroManejo.fechaProxima, notifyTime, ALARM_MANAGE) }
             .applySchedulers()
 
     fun insertManage(registroManejo: RegistroManejo, notifyTime: Long): Single<String> = db.insertDosisUno(registroManejo)
@@ -327,7 +339,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                 makeAlarm(it, registroManejo.bovinos ?: emptyList(), registroManejo.grupo,
                         title, registroManejo.tratamiento?: "", registroManejo.aplicacion ?: 0,
                         registroManejo.numeroAplicaciones?:0,
-                        registroManejo.fechaProxima, notifyTime) }
+                        registroManejo.fechaProxima, notifyTime, ALARM_MANAGE) }
             .applySchedulers()
 
     fun getManages(): Observable<List<RegistroManejo>> = SearchBarActivity.query
@@ -376,7 +388,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                 .toSingle()
     else Single.just("" to id)
 
-    private fun prepareAlarm(data:Pair<String, String>, bovines:List<String> = emptyList(), group:Grupo? = null, title:String, description:String, nextDate:Date?, notifyTime: Long):Single<String>{
+    private fun prepareAlarm(data:Pair<String, String>, bovines:List<String> = emptyList(), group:Grupo? = null, title:String, description:String, nextDate:Date?, notifyTime: Long, type:Int):Single<String>{
         val bvn = data.first.split(";;")
         var bvnInfo:AlarmBovine? = null
         var info = ""
@@ -397,7 +409,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
         val alarm = Alarm(
                 titulo = title,
                 descripcion = description,
-                alarma = ALARM_HEALTH,
+                alarma = type,
                 idFinca = farmID,
                 fechaProxima = nextDate,
                 type = TYPE_ALARM,
@@ -414,12 +426,12 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
         return db.insert(alarm)
     }
 
-    private fun makeAlarm(id:String, bovines:List<String> = emptyList(), group:Grupo? = null, title:String, description:String, application:Int , numApplication:Int, nextDate:Date?, notifyTime: Long):Single<String>{
+    private fun makeAlarm(id:String, bovines:List<String> = emptyList(), group:Grupo? = null, title:String, description:String, application:Int? = null , numApplication:Int? = null, nextDate:Date?, notifyTime: Long, type:Int):Single<String>{
         val to =( (nextDate?.time ?: 0) / 3600000) + notifyTime
         val now = Date().time / 3600000
-        return if(to > now && application < numApplication){
+        return if(to > now && (application == null ||application < numApplication!!)){
             prepareNotificationBovine(id, bovines, group)
-                    .flatMap { prepareAlarm(it, bovines, group, title, description, nextDate,notifyTime)  }
+                    .flatMap { prepareAlarm(it, bovines, group, title, description, nextDate,to - now, type)  }
         }else{
             Single.just("")
         }
