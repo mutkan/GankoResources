@@ -35,6 +35,13 @@ class CouchRx @Inject constructor(private val db: Database
         it.onSuccess(document.id)
     }
 
+    fun <T : Any> insertBlock(doc: T): String{
+        val document = objectToDocument(doc)
+        document.setArray("channels", MutableArray().addString(session.userId))
+        db.save(document)
+        return document.id
+    }
+
     fun <T : Any> update(id: String, doc: T): Single<Unit> = Single.create {
 
         val document = objectToDocument(doc)

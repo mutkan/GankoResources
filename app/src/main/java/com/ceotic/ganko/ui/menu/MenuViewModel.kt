@@ -329,7 +329,8 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     //endregion
 
     fun getNotifications(from: Date, to: Date): Single<List<Alarm>> =
-            db.listByExpNoType("idFinca" equalEx farmID andEx ("fechaProxima".betweenDates(from, to)) andEx ("estadoProximo" equalEx NOT_APPLIED), Alarm::class, orderBy = arrayOf("fecha" orderEx DESCENDING)).applySchedulers()
+            db.listByExp("idFinca" equalEx farmID andEx ("fechaProxima".betweenDates(from, to)) andEx ("activa" equalEx true), Alarm::class, orderBy = arrayOf("fechaProxima" orderEx ASCENDING))
+                    .applySchedulers()
 
     fun getAllCows(): Single<List<Bovino>> = db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra"), Bovino::class)
             .applySchedulers()

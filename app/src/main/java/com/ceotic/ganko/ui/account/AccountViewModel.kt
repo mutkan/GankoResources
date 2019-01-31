@@ -48,6 +48,7 @@ class AccountViewModel @Inject constructor(private val loginClient: LoginClient,
         session.userId = loginResponse.user.id
         session.plan = loginResponse.user.doc.plan
         session.planDate = loginResponse.user.doc.ultimoPago ?: Date()
+        session.device = Date().time
         it.onNext(loginResponse.user.id)
     }
 }

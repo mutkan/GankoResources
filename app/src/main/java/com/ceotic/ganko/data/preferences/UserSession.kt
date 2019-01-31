@@ -41,6 +41,10 @@ class UserSession @Inject constructor(val prefs: SharedPreferences) {
         get() = prefs.getBoolean(KEY_PLAN_VALID, false)
         set(value) = prefs.save(KEY_PLAN_VALID to value)
 
+    var device:Long
+        get() = prefs.getLong(KEY_DEVICE, 0L)
+        set(value) = prefs.save(KEY_DEVICE to value)
+
 
     fun destroysession() {
         token = ""
@@ -92,6 +96,7 @@ class UserSession @Inject constructor(val prefs: SharedPreferences) {
         private val PLAN_BASIC_3 = "basico2"
         private val PLAN_PREMIUM = "premium"
         private val PLAN_PREMIUM_2 = "premium2"
+        private val KEY_DEVICE = "device"
 
         val PLAN_LIMIT = 0
         val PlAN_DATE = 1

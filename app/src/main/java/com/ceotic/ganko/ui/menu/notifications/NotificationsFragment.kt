@@ -4,6 +4,7 @@ package com.ceotic.ganko.ui.menu.notifications
 import android.arch.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -69,6 +70,7 @@ class NotificationsFragment : Fragment(), Injectable {
                 .subscribeBy(
                         onSuccess = {
                             adapter.data = it
+                            Log.i("FechaAlarma", "Resultado ${it.size}")
                             isEmpty = it.isEmpty()
                         }
                 )
