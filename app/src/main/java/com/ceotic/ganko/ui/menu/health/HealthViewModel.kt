@@ -21,13 +21,13 @@ class HealthViewModel @Inject constructor(private val db: CouchRx,
 
     fun addFirstHealth(health: Sanidad, notifyTime:Long): Single<String> =
             db.insertDosisUno(health)
-                    .flatMap { prepareBovine(it, health)}
-                    .flatMap { prepareAlarm(it, health, notifyTime)}
+                    .flatMap { makeAlarm(it, health, notifyTime)}
                     .applySchedulers()
 
 
-    fun addHealth(health: Sanidad): Single<String> =
+    fun addHealth(health: Sanidad, notifyTime: Long): Single<String> =
             db.insert(health)
+                    .flatMap { makeAlarm(it, health, notifyTime)}
                     .applySchedulers()
 
     fun updateHealth(sanidad: Sanidad): Single<Unit>
@@ -81,14 +81,29 @@ class HealthViewModel @Inject constructor(private val db: CouchRx,
         return db.insert(alarm)
     }
 
+    private fun makeAlarm(id:String, health:Sanidad, notifyTime: Long):Single<String>{
+        val to =( (health.fechaProxima?.time ?: 0) / 3600000) + notifyTime
+        val now = Date().time / 3600000
+        return if(to > now){
+            prepareBovine(id,health)
+                    .flatMap { prepareAlarm(it, health, to - now) }
+        }else{
+            Single.just("")
+        }
+    }
+
     private fun cancelAlarm(health:Sanidad):Single<Unit>{
-        return db.oneByExp("reference" equalEx  health._id!!
+        return db.listByExp("reference" equalEx  health._id!!
                 andEx ("activa" equalEx false)
                 andEx ("fechaProxima" gt Date())
-                , Alarm::class )
-                .flatMapSingle {
-                    NotificationWork.cancelAlarm(it, userSession.device )
-                    db.update(it._id!!, it)
+                , Alarm::class, limit = 1 )
+                .flatMap{
+                    if(it.isNotEmpty()){
+                        NotificationWork.cancelAlarm(it[0], userSession.device )
+                        db.update(it[0]._id!!, it[0])
+                    }else{
+                        Single.just(Unit)
+                    }
                 }
     }
 

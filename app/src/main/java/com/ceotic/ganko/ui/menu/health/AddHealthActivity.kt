@@ -200,7 +200,8 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                                         product_health.text(), dosis.text(), null, applicacion_number.text().toInt(),
                                         healthAplication,
                                         if(observations_health.text()!= "") observations_health.text() else getString(R.string.no_observations), product_value.text().toInt(), attention_value.text().toInt(),
-                                        group?.toGrupo(), bovines!!, unidadTiempo, noBovines!!, ProxStates.NOT_APPLIED, previousHealth.idAplicacionUno))
+                                        group?.toGrupo(), bovines!!, unidadTiempo, noBovines!!, ProxStates.NOT_APPLIED, previousHealth.idAplicacionUno),
+                                notifyTime)
 
 
 

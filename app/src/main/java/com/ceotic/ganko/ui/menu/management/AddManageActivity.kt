@@ -53,7 +53,7 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
 
     var dia: Int = 0
     var mes: Int = 0
-    var año: Int = 0
+    var anio: Int = 0
 
     var groupFragment: GroupFragment? = null
     var group: Group? = null
@@ -256,7 +256,7 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
         eventDate.text = "$dayOfMonth/${month + 1}/$year"
         dia = dayOfMonth
         mes = month
-        año = year
+        anio = year
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

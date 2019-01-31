@@ -535,6 +535,12 @@
         <item>Vacunas</item>
         <item>Vacunas</item>
         <item>Vacunas</item>
+
+        <item>Sanidad</item>
+        <item>Vacunas</item>
+        <item>Manejo</item>
+
+
     </string-array>
 
     <string-array name="notification_icon">
@@ -543,6 +549,12 @@
         <item>0</item>
         <item>0</item>
         <item>0</item>
+
+        <item>1</item>
+        <item>0</item>
+        <item>2</item>
+
+
     </string-array>
 
 </resources>

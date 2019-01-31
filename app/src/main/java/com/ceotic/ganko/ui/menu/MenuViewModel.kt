@@ -344,13 +344,17 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     fun validatePlan(): Boolean = userSession.validatePlanDate().first
 
     private fun cancelAlarm(reference:String):Single<Unit>{
-        return db.oneByExp("reference" equalEx  reference
+        return db.listByExp("reference" equalEx  reference
                 andEx ("activa" equalEx false)
                 andEx ("fechaProxima" gt Date())
                 , Alarm::class )
-                .flatMapSingle {
-                    NotificationWork.cancelAlarm(it, userSession.device )
-                    db.update(it._id!!, it)
+                .flatMap {
+                    if(it.isNotEmpty()){
+                        NotificationWork.cancelAlarm(it[0], userSession.device )
+                        db.update(it[0]._id!!, it[0])
+                    }else{
+                        Single.just(Unit)
+                    }
                 }
     }
 
