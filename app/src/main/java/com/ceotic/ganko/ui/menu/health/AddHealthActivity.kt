@@ -189,19 +189,7 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                     }
 
                     .flatMapSingle {
-                        //  NotificationWork.notify(0,"Sanidad",binding.diagnosis.text()
-                        val frequencyTime = frequency.text().toLong()
-                        val proxTime = when (unidadTiempo) {
-                            "Horas" -> frequencyTime
-                            "Días" -> frequencyTime * 24
-                            "Meses" -> frequencyTime * 24 * 30
-                            else -> frequencyTime * 24 * 30 * 12
-                        }
-                        val notifyTime: Long = when (proxTime) {
-                            in 3..24 -> proxTime - 1
-                            else -> proxTime - 24
-                        }
-
+                        val notifyTime = calculateNotifyTime()
                         val healthAplication = previousHealth.aplicacion!!.plus(1)
                         viewModel.addHealth(
 
@@ -213,16 +201,14 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                                         healthAplication,
                                         if(observations_health.text()!= "") observations_health.text() else getString(R.string.no_observations), product_value.text().toInt(), attention_value.text().toInt(),
                                         group?.toGrupo(), bovines!!, unidadTiempo, noBovines!!, ProxStates.NOT_APPLIED, previousHealth.idAplicacionUno))
-                                .map { it to notifyTime }
 
 
-                    }.flatMapSingle { pair ->
-                        viewModel.updateHealth(previousHealth.apply { estadoProximo = APPLIED }).map { pair }
+
+                    }.flatMapSingle {
+                        viewModel.updateHealth(previousHealth.apply { estadoProximo = APPLIED })
                     }
                     .subscribeBy(
                             onNext = {
-                                NotificationWork.notify(NotificationWork.TYPE_HEALTH, "Sanidad", diagnosis.text(), it.first,
-                                        it.second, TimeUnit.HOURS)
                                 toast("Sanidad agregada exitosamente")
                                 finish()
                             },
@@ -238,25 +224,12 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
         } else {
             dis add btnFinalizeHealth.clicks()
                     .flatMap {
-
                         validateForm(R.string.empty_fields, dosis.text.toString(), frequency.text(),
                                 product_value.text.toString(), attention_value.text.toString(), applicacion_number.text.toString())
                     }
 
                     .flatMapSingle {
-                        //  NotificationWork.notify(0,"Sanidad",binding.diagnosis.text()
-                        val frequencyTime = frequency.text().toLong()
-                        val proxTime = when (unidadTiempo) {
-                            "Horas" -> frequencyTime
-                            "Días" -> frequencyTime * 24
-                            "Meses" -> frequencyTime * 24 * 30
-                            else -> frequencyTime * 24 * 30 * 12
-                        }
-                        val notifyTime: Long = when (proxTime) {
-                            in 3..24 -> proxTime - 1
-                            else -> proxTime - 24
-                        }
-
+                        val notifyTime = calculateNotifyTime()
                         viewModel.addFirstHealth(
                                 Sanidad(null, null, null, farmId, spinnerEvent.selectedItem.toString(), frecuencyOptionsHealth.selectedItem.toString(),
                                         dateAddHealth.text.toString().toDate(), fechaProxima1(dateAddHealth.text().toDate(), applicacion_number.text().toInt(), frequency.text().toInt()),
@@ -264,14 +237,12 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                                         if (binding.otherSelect) other.text() else null, diagnosis.text(), treatment_health.text(),
                                         product_health.text(), dosis.text(), null, applicacion_number.text().toInt(), 1,
                                         if(observations_health.text()!= "") observations_health.text() else getString(R.string.no_observations), product_value.text().toInt(), attention_value.text().toInt(),
-                                        group?.toGrupo(), bovines!!, unidadTiempo, emptyList())
-                        ).map { it to notifyTime }
+                                        group?.toGrupo(), bovines!!, unidadTiempo, emptyList()), notifyTime
+                        )
 
                     }
                     .subscribeBy(
                             onNext = {
-                                 NotificationWork.notify(NotificationWork.TYPE_HEALTH,"Sanidad", diagnosis.text(),it.first,
-                                        it.second,TimeUnit.HOURS)
                                 toast("Sanidad agregada exitosamente")
                                 finish()
                             },
@@ -283,6 +254,22 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                                 Log.e("Error", it.message, it)
                             }
                     )
+        }
+    }
+
+    fun calculateNotifyTime():Long{
+        val frequencyTime = frequency.text().toLong()
+        val proxTime = when (unidadTiempo) {
+            "Horas" -> frequencyTime
+            "Días" -> frequencyTime * 24
+            "Meses" -> frequencyTime * 24 * 30
+            else -> frequencyTime * 24 * 30 * 12
+        }
+        return when (proxTime) {
+            in 0..2 -> proxTime
+            in 3..10 -> proxTime - 1
+            in 11..36 -> proxTime - 3
+            else -> proxTime - 24
         }
     }
 
@@ -318,9 +305,12 @@ class AddHealthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
         binding.page = binding.page!!.minus(1)
     }
 
+
+
     private fun fechaProxima1(fecha: Date, aplicaciones: Int, frecuencia: Int): Date? {
        // unidadTiempo = frecuencyOptionsHealth.selectedItem.toString()
-        return if (aplicaciones != 1) {
+        fecha.addCurrentHour()
+        return if (aplicaciones > 1) {
             when (unidadTiempo) {
                 "Horas" -> fecha.add(Calendar.HOUR, frecuencia)
                 "Días" -> fecha.add(Calendar.DATE, frecuencia)

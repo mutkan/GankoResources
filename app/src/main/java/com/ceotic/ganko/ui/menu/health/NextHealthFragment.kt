@@ -66,7 +66,6 @@ class NextHealthFragment : Fragment(), Injectable {
         dis add adapterNext.clickApply
                 .subscribeBy( onNext = {
                     it.estadoProximo = ProxStates.APPLIED
-                    viewModel.updateHealth(it._id!!,it)
                     startActivity<AddHealthActivity>("edit" to true, PREVIOUS_HEALTH to it)
                 })
 
@@ -74,7 +73,7 @@ class NextHealthFragment : Fragment(), Injectable {
         dis add adapterNext.clickSkip
                 .flatMapSingle {
                     it.estadoProximo = ProxStates.SKIPED
-                    viewModel.updateHealth(it._id!!,it)
+                    viewModel.updateHealth(it)
                 }
                 .subscribe()
 

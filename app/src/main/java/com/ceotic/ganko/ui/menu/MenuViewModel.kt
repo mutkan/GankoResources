@@ -12,6 +12,7 @@ import com.ceotic.ganko.ui.common.SearchBarActivity
 import com.ceotic.ganko.ui.menu.reports.AverageViewModel
 import com.ceotic.ganko.ui.menu.reports.ReportViewModel
 import com.ceotic.ganko.util.*
+import com.ceotic.ganko.work.NotificationWork
 import com.couchbase.lite.*
 import hu.akarnokd.rxjava2.math.MathObservable
 import io.reactivex.Maybe
@@ -171,7 +172,9 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
             db.listObsByExp("idFinca" equalEx farmID andEx ("fechaProxima" lt from) andEx ("estadoProximo" equalEx ProxStates.NOT_APPLIED), Sanidad::class)
                     .applySchedulers()
 
-    fun updateHealth(id: String, sanidad: Sanidad): Single<Unit> = db.update(sanidad._id!!, sanidad).applySchedulers()
+    fun updateHealth(sanidad: Sanidad): Single<Unit> = db.update(sanidad._id!!, sanidad)
+            .flatMap { cancelAlarm(sanidad._id!!) }
+            .applySchedulers()
 
     fun getMilk(idFinca: String): Observable<List<SalidaLeche>> = SearchBarActivity.query
             .startWith("")
@@ -339,5 +342,16 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
 
 
     fun validatePlan(): Boolean = userSession.validatePlanDate().first
+
+    private fun cancelAlarm(reference:String):Single<Unit>{
+        return db.oneByExp("reference" equalEx  reference
+                andEx ("activa" equalEx false)
+                andEx ("fechaProxima" gt Date())
+                , Alarm::class )
+                .flatMapSingle {
+                    NotificationWork.cancelAlarm(it, userSession.device )
+                    db.update(it._id!!, it)
+                }
+    }
 
 }

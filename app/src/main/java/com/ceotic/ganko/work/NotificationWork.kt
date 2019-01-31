@@ -12,6 +12,7 @@ import java.util.concurrent.TimeUnit
 import android.app.PendingIntent
 import android.content.Context
 import android.graphics.Color
+import com.ceotic.ganko.data.models.Alarm
 import com.ceotic.ganko.ui.bovine.reproductive.ReproductiveBvnActivity
 import java.util.*
 
@@ -104,6 +105,14 @@ class NotificationWork(context: Context, params: WorkerParameters) : Worker(cont
         fun cancelNotificationsById(vararg ids: UUID?) {
             ids.forEach { id ->
                 id?.let { WorkManager.getInstance().cancelWorkById(it) }
+            }
+        }
+
+        fun cancelAlarm(alarm: Alarm, device:Long){
+            alarm.activa = false
+            val idx = alarm.device.indexOfFirst { it.device == device }
+            if(idx > -1){
+               cancelNotificationById(UUID.fromString(alarm.device[idx].uuid))
             }
         }
 

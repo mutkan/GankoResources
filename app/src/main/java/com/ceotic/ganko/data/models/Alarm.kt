@@ -9,6 +9,11 @@ const val ALARM_3_MONTHS = 2
 const val ALARM_4_MONTHS = 3
 const val ALARM_12_MONTHS = 4
 
+const val ALARM_HEALTH = 5
+const val ALARM_VACCINE = 6
+const val ALARM_MANAGE = 7
+
+
 class Alarm(
         val _id: String? = null,
         val _sequence: Long? = null,

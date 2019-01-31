@@ -19,3 +19,10 @@ fun processDates(from: Date?, to: Date?, month: Int?, year: Int?): Pair<Date?, D
     from != null -> from to to
     else -> Pair<Date?, Date?>(null, null)
 }
+
+fun Date.addCurrentHour(){
+    val calendar = Calendar.getInstance()
+    add(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY))
+    add(Calendar.MINUTE, calendar.get(Calendar.MINUTE))
+}
+
