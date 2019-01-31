@@ -1,12 +1,10 @@
 package com.ceotic.ganko.ui.adapters
 
-import android.databinding.DataBindingUtil
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import com.ceotic.ganko.R
-import com.ceotic.ganko.data.models.*
+import com.ceotic.ganko.data.models.Alarm
 import com.ceotic.ganko.databinding.TemplateItemNotificationBinding
 import com.ceotic.ganko.util.inflate
 import io.reactivex.subjects.PublishSubject
@@ -23,39 +21,27 @@ class NotificationsListAdapter @Inject constructor() : RecyclerView.Adapter<Noti
     val onClickNotification: PublishSubject<Alarm> = PublishSubject.create()
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationViewHolder = NotificationViewHolder(parent.inflate(R.layout.template_item_notification))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationViewHolder
+            = NotificationViewHolder(parent.inflate(R.layout.template_item_notification))
 
     override fun onBindViewHolder(holder: NotificationViewHolder, position: Int) {
-        val notification = data[position]
-        when (notification.type) {
-            RegistroVacuna::class.simpleName -> {
-                holder.bind(notification, "Vacuna", onClickNotification)
-            }
-            RegistroManejo::class.simpleName -> {
-                holder.bind(notification, "Manejo", onClickNotification)
-            }
-            Sanidad::class.simpleName -> {
-                holder.bind(notification, "Sanidad", onClickNotification)
-            }
-            ReproductiveNotification::class.simpleName ->{
-                holder.bind(notification, "Reproductivo", onClickNotification)
-            }
-        }
-
+        holder.bind(data[position], onClickNotification)
     }
 
-
     override fun getItemCount(): Int = data.size
-
 
 }
 
 class NotificationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    val binding: TemplateItemNotificationBinding = DataBindingUtil.bind(itemView)!!
-    fun bind(notification: Alarm, tipo: String, onClickNotification: PublishSubject<Alarm>) = binding.run {
+    private val binding: TemplateItemNotificationBinding = TemplateItemNotificationBinding.bind(itemView)
+    fun bind(notification: Alarm, onClickNotification: PublishSubject<Alarm>) = binding.run {
         this.notification = notification
-        this.tipo = tipo
         this.onClickNotification = onClickNotification
+        this.bvnTxt = when{
+            notification.grupo != null -> "Grupo ${notification.grupo!!.nombre}"
+            notification.bovino != null -> "Codigo ${notification.bovino!!.codigo}"
+            else -> "${notification.bovinos.size} Bovinos"
+        }
     }
 
 }

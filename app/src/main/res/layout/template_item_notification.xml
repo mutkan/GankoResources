@@ -7,7 +7,7 @@
             name="notification"
             type="com.ceotic.ganko.data.models.Alarm"/>
         <variable
-            name="tipo"
+            name="bvnTxt"
             type="String"/>
         <variable
             name="onClickNotification"
@@ -26,7 +26,7 @@
             android:layout_height="24dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:visibility='@{tipo == "Vacuna" ? View.VISIBLE : View.GONE}'
+            android:visibility='@{@intArray/notification_icon[notification.alarma] == 0 ? View.VISIBLE : View.GONE}'
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_vaccine_gray" />
@@ -37,7 +37,7 @@
             android:layout_height="24dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:visibility='@{tipo == "Sanidad" ? View.VISIBLE : View.GONE}'
+            android:visibility='@{@intArray/notification_icon[notification.alarma] == 1 ? View.VISIBLE : View.GONE}'
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_health_gray" />
@@ -48,7 +48,7 @@
             android:layout_height="24dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:visibility='@{tipo == "Manejo" ? View.VISIBLE : View.GONE}'
+            android:visibility='@{@intArray/notification_icon[notification.alarma] == 2 ? View.VISIBLE : View.GONE}'
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_management_gray" />
@@ -59,10 +59,12 @@
             android:layout_height="24dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:visibility='@{tipo == "Reproductivo" ? View.VISIBLE : View.GONE}'
+            android:visibility='@{@intArray/notification_icon[notification.alarma] == 3 ? View.VISIBLE : View.GONE}'
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_bovine_grey" />
+
+
 
         <TextView
             android:id="@+id/notificationTitle"
@@ -80,37 +82,39 @@
             android:id="@+id/textView60"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
             android:text='@{notification.descripcion}'
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            app:layout_constraintBottom_toTopOf="@+id/bvnIcon"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/guideline17"
-            app:layout_constraintTop_toBottomOf="@+id/notificationTitle"
+            app:layout_constraintTop_toBottomOf="@+id/type"
             tools:text="Descripción" />
 
         <TextView
             android:id="@+id/type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="8dp"
-            android:text='@{tipo}'
+            android:layout_marginStart="8dp"
+            android:text="@{@stringArray/notification_types[notification.alarma]}"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@color/colorAccent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline17"
+            app:layout_constraintTop_toBottomOf="@+id/notificationTitle"
             tools:text="vacuna" />
 
-        <ImageView
+        <View
             android:id="@+id/div"
             android:layout_width="0dp"
             android:layout_height="1dp"
+            android:background="@color/section_name_filter"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@color/section_name_filter" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <android.support.constraint.Guideline
             android:id="@+id/guideline17"
@@ -123,14 +127,54 @@
             android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@color/colorAccent"
             app:dateFormat='@{notification.fechaProxima}'
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="22/02/2018" />
+
+        <ImageView
+            android:visibility="@{notification.grupo != null ? View.VISIBLE : View.GONE}"
+            android:id="@+id/iconGp"
+            android:layout_width="@dimen/icon"
+            android:layout_height="@dimen/icon"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/bvnInfo"
+            app:srcCompat="@drawable/ic_group_grey" />
+
+        <ImageView
+            android:visibility="@{notification.grupo == null ? View.VISIBLE : View.GONE}"
+            android:id="@+id/bvnIcon"
+            android:layout_width="@dimen/icon"
+            android:layout_height="@dimen/icon"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/bvnInfo"
+            app:srcCompat="@drawable/ic_bovine_grey" />
+
+        <TextView
+            android:id="@+id/bvnInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView60"
-            tools:text="22/02/2018" />
+            android:text="@{bvnTxt}"
+            tools:text="Grupo Color" />
+
+        <android.support.constraint.Group
+            android:id="@+id/gpBovine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{notification.grupo != null || notification.bovino !=null || notification.bovinos.size() > 0 ? View.VISIBLE: View.GONE}"
+            app:constraint_referenced_ids="iconGp,bvnIcon,bvnInfo" />
+
     </android.support.constraint.ConstraintLayout>
 </layout>

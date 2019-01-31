@@ -529,6 +529,21 @@
         <item>Servicios Efectivos</item>
     </string-array>
 
+    <string-array name="notification_types">
+        <item>Reproductivo</item>
+        <item>Vacunas</item>
+        <item>Vacunas</item>
+        <item>Vacunas</item>
+        <item>Vacunas</item>
+    </string-array>
+
+    <string-array name="notification_icon">
+        <item>3</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+    </string-array>
 
 </resources>
 
