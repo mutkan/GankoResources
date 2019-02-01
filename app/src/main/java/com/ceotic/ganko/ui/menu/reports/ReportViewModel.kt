@@ -688,25 +688,18 @@ class ReportViewModel(private val farmID:String, private val db: CouchRx) {
         return db.listByExp("finca" equalEx farmID, Bovino::class)
                 .flatMapObservable { it.toObservable() }
                 .flatMapMaybe {
-                    db.listByExp("fecha".betweenDates(ini!!, end!!) andEx ("bovino" equalEx it._id!!), Ceba::class, orderBy = arrayOf("fecha" orderEx DESCENDING))
+                    db.listByExp("fecha".betweenDates(ini!!, end!!) andEx ("bovino" equalEx it._id!!) andEx (("eliminado" equalEx false ) orEx ("eliminado" isNullEx true)), Ceba::class, orderBy = arrayOf("fecha" orderEx DESCENDING))
                             .filter { it.isNotEmpty() }
                             .map { cebaList ->
-                                var gananciaPeso = 1f
-                                var cebaMayor = Ceba()
-                                var cebaMenor = Ceba()
+                                var gananciaPeso =0f
                                 if (cebaList.size == 1) {
                                     gananciaPeso = cebaList[0].gananciaPeso!!
-                                } else {
-                                    for (v1 in 0 until cebaList.size) {
-                                        if (cebaList[v1].eliminado == null || cebaList[v1].eliminado == false) cebaMayor = cebaList[v1]
-                                    }
-                                    for (v2 in (cebaList.size - 1) downTo 0) {
-                                        if (cebaList[v2].eliminado == null || cebaList[v2].eliminado == false) cebaMenor = cebaList[v2]
-                                    }
+                                } else if(cebaList.size > 1) {
+                                    val cebaMayor = cebaList[0]
+                                    val cebaMenor = cebaList.last()
                                     val dif = cebaMayor.fecha!!.time - cebaMenor.fecha!!.time
-                                    var dias = TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS)
-                                    dias = if (dias == 0.toLong()) 1 else dias
-                                    gananciaPeso = (cebaMayor.peso!! - cebaMenor.peso!!) / dias
+                                    val dias = Math.ceil(dif.toDouble() / 86400000)
+                                    gananciaPeso =((cebaMayor.peso!! - cebaMenor.peso!!) / dias).toFloat()
                                 }
                                 listOf(it.codigo!!, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), gananciaPeso.toString(), it.proposito!!)
                             }
