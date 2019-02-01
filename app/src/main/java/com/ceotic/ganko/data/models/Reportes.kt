@@ -261,7 +261,8 @@ fun getHeader(tipoReporte:String):List<String> =
          "Abortos"-> listOf("Codigo","Nombre","Fecha servicio","Fecha confirmacion aborto")
          "Tres servicios"-> listOf("Codigo","Nombre","Ultimo servicio","Dias vacios")
          "Celos"-> listOf("Codigo","Nombre","Fecha celo")
-         "Resumen reproductivo"-> listOf()
+         "Resumen reproductivo"-> listOf("Codigo", "Nombre", "Fecha Parto", "Tipo", "Toro/Pajilla",
+                 "Fecha Confirmación", "Dias en Leche", "Dias Abiertos", "Fecha Secado", "Proximo Parto", "Servicio")
          //LECHE
          "Consolidado de leche"-> listOf("Tipo","Fecha","Operacion","Numero Litros","Valor litros","Total Valor")
          "Reporte de leche"-> listOf("Codigo","Numero de litros","Fecha de producción","Jornada")
