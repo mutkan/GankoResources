@@ -169,6 +169,16 @@ fun applyFormat(textView: TextView, date: Date?) {
 
 }
 
+@BindingAdapter("app:dateFormatH")
+fun applyFormatH(textView: TextView, date: Date?) {
+    if (date != null) {
+        val format = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+        textView.text = format.format(date)
+    } else textView.text = ""
+
+
+}
+
 fun Float.currencyFormat(): String {
     val currencyFormat = NumberFormat.getCurrencyInstance()
     currencyFormat.currency = Currency.getInstance(Locale.getDefault())

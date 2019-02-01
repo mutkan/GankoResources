@@ -6,8 +6,7 @@ import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import com.ceotic.ganko.R
-import com.ceotic.ganko.data.models.MeadowAlarm
-import com.ceotic.ganko.data.models.Pradera
+import com.ceotic.ganko.data.models.*
 import com.ceotic.ganko.di.Injectable
 import com.ceotic.ganko.util.*
 import com.ceotic.ganko.work.NotificationWork
@@ -75,11 +74,13 @@ class AddMeadowAlertActivity : AppCompatActivity(), Injectable {
                     }
 
                     val notifyTime: Long = when (time) {
-                        in 2..24 -> time - 1
+                        in 0..2 -> time
+                        in 3..10 -> time - 1
+                        in 11..36 -> time - 3
                         else -> time - 24
                     }
                     val calendar = Calendar.getInstance()
-                    calendar.timeInMillis = Date().getTime()+(time*3600000)
+                    calendar.timeInMillis = Date().time + (time*3600000)
                     val date = "${calendar.get(Calendar.DAY_OF_MONTH)}/${calendar.get(Calendar.MONTH)+1}/${calendar.get(Calendar.YEAR)}".toDate()
 
                     meadowAlarm = MeadowAlarm(null, null, null, idMeadow,
@@ -89,13 +90,27 @@ class AddMeadowAlertActivity : AppCompatActivity(), Injectable {
                                 "Descanso" -> "La pradera ${meadow.identificador} ya debe ser desocupada"
                                 else -> "La pradera ${meadow.identificador} debe ser fertilizada"
                             }, false, date, meadowAlarmType.selectedItem.toString())
-                    viewModel.addMeadowAlert(meadowAlarm)
+
+                    val alarm = Alarm(
+                            titulo = meadowAlarm.title,
+                            descripcion = meadowAlarm.description,
+                            alarma = when (meadowAlarmType.selectedItem.toString()) {
+                                "Ocupacion" -> ALARM_MEADOW_OCUPATION
+                                "Descanso" -> ALARM_MEADOW_REST
+                                else -> ALARM_MEADOW_FERTILIZATION
+                            },
+                            fechaProxima = calendar.time,
+                            type = TYPE_ALARM,
+                            activa = true,
+                            reference = "${meadow.identificador}"
+                    )
+                    viewModel.insertAlarm(alarm, notifyTime)
+                            .flatMap { viewModel.addMeadowAlert(meadowAlarm) }
                             .map {
                                 it to notifyTime
                             }
+
                 }.subscribeBy {
-                    NotificationWork.notify(NotificationWork.TYPE_MEADOW, meadowAlarm.title!!, meadowAlarm.description!!, it.first,
-                            it.second, TimeUnit.HOURS)
                     toast("Alerta agregada exitosamente")
                     finish()
                 }

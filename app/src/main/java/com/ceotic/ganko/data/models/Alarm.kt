@@ -28,6 +28,12 @@ const val ALARM_ZEAL_64 = 17
 const val ALARM_ZEAL_84 = 18
 const val ALARM_DIAGNOSIS = 19
 
+const val ALARM_MEADOW_OCUPATION = 20
+const val ALARM_MEADOW_REST = 21
+const val ALARM_MEADOW_FERTILIZATION = 22
+const val ALARM_MEADOW_EXIT = 23
+
+
 
 class Alarm(
         val _id: String? = null,

@@ -247,6 +247,26 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                     Single.just(Unit)
                 }
             }
+            .flatMap {
+                val now = Date().time / 60000
+                val milis = now + 7200
+
+                val alarm = Alarm(
+                        titulo = "5 Dias libre Paradera $meadow",
+                        descripcion = "La pradera $meadow lleva 5 dias desocupada",
+                        alarma = ALARM_MEADOW_EXIT,
+                        fechaProxima = Date(milis),
+                        type = TYPE_ALARM,
+                        activa = true,
+                        reference = meadow,
+                        idFinca = farmID
+                )
+                val uuid = NotificationWork.notify(NotificationWork.TYPE_MEADOW, alarm.titulo!!, alarm.descripcion!!,
+                        alarm.reference!!, 7200, TimeUnit.MINUTES)
+
+                alarm.device = listOf(AlarmDevice(userSession.device, uuid.toString()))
+                db.insert(alarm).map { Unit }
+            }
             .applySchedulers()
 
 
