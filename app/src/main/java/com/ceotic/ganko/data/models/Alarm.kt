@@ -13,6 +13,21 @@ const val ALARM_HEALTH = 5
 const val ALARM_VACCINE = 6
 const val ALARM_MANAGE = 7
 
+const val ALARM_SECADO = 8
+const val ALARM_PREPARACION = 9
+const val ALARM_NACIMIENTO = 10
+
+const val ALARM_EMPTY_DAYS_45 = 11
+const val ALARM_EMPTY_DAYS_60 = 12
+const val ALARM_EMPTY_DAYS_90 = 13
+const val ALARM_EMPTY_DAYS_120 = 14
+
+const val ALARM_ZEAL_21 = 15
+const val ALARM_ZEAL_42 = 16
+const val ALARM_ZEAL_64 = 17
+const val ALARM_ZEAL_84 = 18
+const val ALARM_DIAGNOSIS = 19
+
 
 class Alarm(
         val _id: String? = null,
@@ -21,7 +36,7 @@ class Alarm(
         val alarma:Int? = null,
         val titulo: String? = null,
         val descripcion: String? = null,
-        val idFinca:String? = null,
+        var idFinca:String? = null,
         val idAplicacionUno:String? = null,
         val type: String? = null,
         val numeroAplicaciones: Int? = null,

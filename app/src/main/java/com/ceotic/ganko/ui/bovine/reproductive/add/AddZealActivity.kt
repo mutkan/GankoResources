@@ -4,22 +4,19 @@ import android.app.DatePickerDialog
 import android.arch.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.View
 import android.widget.DatePicker
 import com.ceotic.ganko.R
-import com.ceotic.ganko.data.models.Bovino.Companion.ALERT_ZEAL
+import com.ceotic.ganko.data.models.*
 import com.ceotic.ganko.di.Injectable
 import com.ceotic.ganko.ui.bovine.reproductive.ListZealFragment.Companion.ID_BOVINO
 import com.ceotic.ganko.ui.bovine.reproductive.ReproductiveBvnViewModel
 import com.ceotic.ganko.util.*
-import com.ceotic.ganko.work.NotificationWork
-import com.ceotic.ganko.work.NotificationWork.Companion.TYPE_REPRODUCTIVE
 import com.jakewharton.rxbinding2.view.clicks
+import io.reactivex.Single
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_add_zeal.*
 import java.util.*
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class AddZealActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, Injectable {
@@ -55,20 +52,34 @@ class AddZealActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
         dis add btnAddZeal.clicks()
                 .flatMap { validateForm(R.string.empty_fields, zealDate.text()) }
                 .flatMapMaybe {
-                    Log.d("IDBOVINO", idBovino)
-                    viewModel.insertZeal(idBovino, it[0].toDate(), nextZealDate)
+                    val date = it[0].toDate()
+                    date.addCurrentHour()
+                    viewModel.insertZeal(idBovino, date, nextZealDate)
                 }
                 .flatMapSingle { bovino ->
-                    val ultimoCelo = bovino.celos!![0].toStringFormat()
-                    val dif = nextZealDate.time - Date().time
-                    val notifyTime = TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS) - 1
-                    Log.d("Days to zeal", notifyTime.toString())
-                    if (notifyTime >= 0) {
-                        val uuidCelo = NotificationWork.notify(TYPE_REPRODUCTIVE, "Recordatorio Celo", "Es probable que el bovino ${bovino.nombre} entre en celo mañana, fecha de ultimo celo $ultimoCelo", idBovino,
-                                notifyTime, TimeUnit.DAYS)
-                        bovino.notificacionesReproductivo!![ALERT_ZEAL] = uuidCelo
+                    val dif = (nextZealDate.time/60000) - (Date().time/60000)
+
+                    if (dif >= 0) {
+                        val not = Alarm(
+                                bovino = AlarmBovine(bovino._id!!, bovino.nombre!!, bovino.codigo!!),
+                                titulo = "Recordatorio Celo",
+                                descripcion = "Posible que el bovino ${bovino.codigo} entre en celo",
+                                alarma = ALARM_ZEAL_21,
+                                fechaProxima = nextZealDate,
+                                type = TYPE_ALARM,
+                                activa = true,
+                                reference = bovino._id
+                        ) to dif
+
+                        viewModel.cancelNotiByDiagnosis(bovino._id!!, ALARM_ZEAL_21, ALARM_ZEAL_42, ALARM_ZEAL_64,
+                                ALARM_ZEAL_84)
+                                .flatMap { viewModel.insertNotifications(listOf(not)) }
+
+
+                    }else{
+                        Single.just(listOf(""))
                     }
-                    viewModel.updateBovino(idBovino, bovino)
+
 
                 }
                 .subscribeBy(

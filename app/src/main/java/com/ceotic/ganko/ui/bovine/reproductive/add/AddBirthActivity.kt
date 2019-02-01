@@ -9,7 +9,6 @@ import android.widget.DatePicker
 import com.ceotic.ganko.R
 import com.ceotic.ganko.data.models.Bovino
 import com.ceotic.ganko.data.models.Parto
-import com.ceotic.ganko.data.models.ReproductiveNotification
 import com.ceotic.ganko.data.models.Servicio
 import com.ceotic.ganko.databinding.ActivityAddBirthBinding
 import com.ceotic.ganko.di.Injectable
@@ -99,15 +98,8 @@ class AddBirthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDat
                 .flatMapMaybe {
                     val servicio = setParto(it)
                     viewModel.addParto(idBovino, servicio, position)
-                }.flatMapSingle { pair ->
-                    val mBovino = pair.first
-                    val servicio = pair.second
-                    val fechaParto = servicio.parto!!.fecha!!
-                    val reproductiveAlerts =  ReproductiveNotification.setEmptyDaysNotifications(mBovino,fechaParto)
-
-                    viewModel.insertNotifications(reproductiveAlerts).flatMap {
-                        viewModel.updateBovino(idBovino, mBovino)
-                    }
+                }.flatMapSingle { (bvn, srv)->viewModel.prepareNovelty(bvn, srv)
+                        .flatMap { viewModel.prepareBirthZeal(bvn, srv.parto!!.fecha!!) }
                 }
                 .subscribeBy(
                         onNext = {

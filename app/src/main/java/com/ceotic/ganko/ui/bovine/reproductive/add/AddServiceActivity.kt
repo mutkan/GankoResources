@@ -8,25 +8,18 @@ import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import com.ceotic.ganko.R
-import com.ceotic.ganko.data.models.Bovino
-import com.ceotic.ganko.data.models.Bovino.Companion.ALERT_21_DAYS_AFTER_SERVICE
-import com.ceotic.ganko.data.models.Bovino.Companion.ALERT_DIAGNOSIS
-import com.ceotic.ganko.data.models.Servicio
-import com.ceotic.ganko.data.models.Straw
+import com.ceotic.ganko.data.models.*
 import com.ceotic.ganko.di.Injectable
 import com.ceotic.ganko.ui.bovine.reproductive.ListServiceFragment.Companion.ARG_ID
 import com.ceotic.ganko.ui.bovine.reproductive.ListZealFragment.Companion.ARG_ZEAL
 import com.ceotic.ganko.ui.bovine.reproductive.ReproductiveBvnViewModel
 import com.ceotic.ganko.util.*
-import com.ceotic.ganko.work.NotificationWork
-import com.ceotic.ganko.work.NotificationWork.Companion.TYPE_REPRODUCTIVE
 import com.jakewharton.rxbinding2.view.clicks
 import com.jakewharton.rxbinding2.widget.checkedChanges
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_add_service.*
 import java.util.*
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class AddServiceActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDateSetListener {
@@ -125,23 +118,47 @@ class AddServiceActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
                 }
                 .flatMapSingle { bovino ->
                     val ultimoServicio = bovino.servicios!![0].fecha!!.toStringFormat()
-                    val dif = Date().time - bovino.servicios!![0].fecha!!.time
-                    val daysSinceService = TimeUnit.DAYS.convert((dif), TimeUnit.MILLISECONDS)
-                    val daysToDiagnosis =  34 - daysSinceService
-                    val daysToAlert = 21 - daysSinceService
-                    Log.d("Dias para diagnostico", daysToDiagnosis.toString())
-                    Log.d("Dias para alerta", daysToAlert.toString())
-                    if(daysToDiagnosis >= 0){
-                        val uuidDiagnosis = NotificationWork.notify(TYPE_REPRODUCTIVE, "Recordatorio Diagnostico de preñez", "Verificar preñez del bovino ${bovino.nombre}, fecha del servicio $ultimoServicio", idBovino,
-                                daysToDiagnosis, TimeUnit.DAYS)
-                        bovino.notificacionesReproductivo!![ALERT_DIAGNOSIS] = uuidDiagnosis
+                    val date = bovino.servicios!![0].fecha!!.time / 60000
+                    val now = Date().time / 60000
+
+                    val diagnosis = date + 48960
+                    val dNotification = diagnosis - now
+
+                    val zeal = date + 30240
+                    val dZeal = zeal - now
+
+                    val alarms:MutableList<Pair<Alarm, Long>> = mutableListOf()
+
+                    if(dNotification > 0){
+                        alarms.add(Alarm(
+                                bovino = AlarmBovine(bovino._id!!, bovino.nombre!!, bovino.codigo!!),
+                                titulo = "Diagnostico de preñez",
+                                descripcion = "Verificar estado de preñez",
+                                alarma = ALARM_DIAGNOSIS,
+                                fechaProxima = Date(diagnosis),
+                                type = TYPE_ALARM,
+                                activa = true,
+                                reference = bovino._id
+                        ) to dNotification)
                     }
-                    if(daysToAlert >= 0){
-                        val uuid21Days = NotificationWork.notify(TYPE_REPRODUCTIVE, "Recordatorio 21 días desde el servicio", "Verificar celo del bovino ${bovino.nombre}, fecha del servicio $ultimoServicio", idBovino,
-                                daysToAlert, TimeUnit.DAYS)
-                        bovino.notificacionesReproductivo!![ALERT_21_DAYS_AFTER_SERVICE] = uuid21Days
+
+                    if(dZeal > 0){
+                        alarms.add(Alarm(
+                                bovino = AlarmBovine(bovino._id!!, bovino.nombre!!, bovino.codigo!!),
+                                titulo = "21 Dias desde el servicio",
+                                descripcion = "Verificar celo",
+                                alarma = ALARM_DIAGNOSIS,
+                                fechaProxima = Date(diagnosis),
+                                type = TYPE_ALARM,
+                                activa = true,
+                                reference = bovino._id
+                        ) to dZeal)
                     }
-                    viewModel.updateBovino(idBovino, bovino)
+                    viewModel.cancelNotiByDiagnosis(bovino._id!!, ALARM_ZEAL_21
+                            , ALARM_ZEAL_42, ALARM_ZEAL_64, ALARM_ZEAL_84)
+                            .flatMap { viewModel.insertNotifications(alarms) }
+
+
                 }
                 .subscribeBy(
                         onNext = {
@@ -164,6 +181,7 @@ class AddServiceActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
 
     private fun createService(params: List<String>): Servicio {
         val fecha = params[0].toDate()
+        fecha.addCurrentHour()
         val condicion = params[1].toDouble()
         val montaN = getString(R.string.monta_natural)
         val inseminacion = getString(R.string.inseminaci_n_artificial)

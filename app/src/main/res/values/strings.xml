@@ -540,6 +540,21 @@
         <item>Vacunas</item>
         <item>Manejo</item>
 
+        <item>Secado</item>
+        <item>Preparación</item>
+        <item>Nacimiento</item>
+
+        <item>Reproductivo</item>
+        <item>Reproductivo</item>
+        <item>Reproductivo</item>
+        <item>Reproductivo</item>
+
+        <item>Reproductivo</item>
+        <item>Reproductivo</item>
+        <item>Reproductivo</item>
+        <item>Reproductivo</item>
+        <item>Reproductivo</item>
+
 
     </string-array>
 
@@ -553,6 +568,21 @@
         <item>1</item>
         <item>0</item>
         <item>2</item>
+
+        <item>3</item>
+        <item>3</item>
+        <item>3</item>
+
+        <item>3</item>
+        <item>3</item>
+        <item>3</item>
+        <item>3</item>
+
+        <item>3</item>
+        <item>3</item>
+        <item>3</item>
+        <item>3</item>
+        <item>3</item>
 
 
     </string-array>

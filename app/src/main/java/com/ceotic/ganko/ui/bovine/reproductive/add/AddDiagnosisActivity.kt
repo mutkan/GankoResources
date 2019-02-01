@@ -5,23 +5,10 @@ import android.arch.lifecycle.ViewModelProvider
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.View
 import android.widget.DatePicker
 import com.ceotic.ganko.R
-import com.ceotic.ganko.data.models.Bovino.Companion.ALERT_120_EMPTY_DAYS
-import com.ceotic.ganko.data.models.Bovino.Companion.ALERT_3_FAILED_SERVICES
-import com.ceotic.ganko.data.models.Bovino.Companion.ALERT_45_EMPTY_DAYS
-import com.ceotic.ganko.data.models.Bovino.Companion.ALERT_60_EMPTY_DAYS
-import com.ceotic.ganko.data.models.Bovino.Companion.ALERT_90_EMPTY_DAYS
-import com.ceotic.ganko.data.models.Bovino.Companion.ALERT_BIRTH
-import com.ceotic.ganko.data.models.Bovino.Companion.ALERT_DRYING
-import com.ceotic.ganko.data.models.Bovino.Companion.ALERT_EMPTY_DAYS
-import com.ceotic.ganko.data.models.Bovino.Companion.ALERT_PREPARATION
-import com.ceotic.ganko.data.models.Diagnostico
-import com.ceotic.ganko.data.models.Novedad
-import com.ceotic.ganko.data.models.ReproductiveNotification
-import com.ceotic.ganko.data.models.Servicio
+import com.ceotic.ganko.data.models.*
 import com.ceotic.ganko.databinding.ActivityAddDiagnosisBinding
 import com.ceotic.ganko.di.Injectable
 import com.ceotic.ganko.ui.bovine.reproductive.ListServiceFragment.Companion.ARG_ID
@@ -36,6 +23,7 @@ import com.ceotic.ganko.work.NotificationWork
 import com.jakewharton.rxbinding2.view.clicks
 import com.jakewharton.rxbinding2.widget.checkedChanges
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_add_diagnosis.*
 import java.util.*
@@ -54,7 +42,7 @@ class AddDiagnosisActivity : AppCompatActivity(), Injectable, DatePickerDialog.O
     private val dis: LifeDisposable = LifeDisposable(this)
     lateinit var binding: ActivityAddDiagnosisBinding
     var posibleParto: Date? = null
-    var diasVacios:Long? = null
+    var diasVacios: Long? = null
     private val calendar: Calendar by lazy { Calendar.getInstance() }
     private val datePicker: DatePickerDialog by lazy {
         DatePickerDialog(this, this,
@@ -89,12 +77,12 @@ class AddDiagnosisActivity : AppCompatActivity(), Injectable, DatePickerDialog.O
         super.onResume()
 
 
-            dis add viewModel.getEmptyDaysForBovine(idBovino,servicio.fecha!!)
-                    .subscribeBy(
-                            onSuccess = {
-                                diasVacios = it
-                            }
-                    )
+        dis add viewModel.getEmptyDaysForBovine(idBovino, servicio.fecha!!)
+                .subscribeBy(
+                        onSuccess = {
+                            diasVacios = it
+                        }
+                )
 
 
 
@@ -125,76 +113,22 @@ class AddDiagnosisActivity : AppCompatActivity(), Injectable, DatePickerDialog.O
                 .flatMapMaybe {
                     val servicio = if (type == TYPE_DIAGNOSIS) setDiagnosis(it) else setNovedad(it)
                     val failed = !servicio.diagnostico!!.confirmacion && servicio.finalizado!!
-                    Log.d("failed", failed.toString())
                     viewModel.updateServicio(idBovino, servicio, position, failed)
                 }.flatMapSingle { bovino ->
                     val servicioActual = bovino.servicios!![position]
-                    val fechaServicioActual = servicioActual.fecha!!.toStringFormat()
+
                     when {
-                        type == TYPE_DIAGNOSIS && servicioActual.diagnostico?.confirmacion == true -> {
-                            val posibleParto = servicioActual.posFechaParto!!
-                            val dif = posibleParto.time - Date().time
-                            val daysToBirth = TimeUnit.DAYS.convert((dif), TimeUnit.MILLISECONDS)
-                            Log.d("dias para el parto", daysToBirth.toString())
-                            val notifyTimeSecado = daysToBirth - 60
-                            val notifyTimePreparacion = daysToBirth - 30
-                            val notifyTimeParto = daysToBirth - 1
-
-                            val uuid45EmptyDays = bovino.notificacionesReproductivo?.get(ALERT_45_EMPTY_DAYS)
-                            val uuid60EmptyDays = bovino.notificacionesReproductivo?.get(ALERT_60_EMPTY_DAYS)
-                            val uuid90EmptyDays = bovino.notificacionesReproductivo?.get(ALERT_90_EMPTY_DAYS)
-                            val uuid120EmptyDays = bovino.notificacionesReproductivo?.get(ALERT_120_EMPTY_DAYS)
-
-                            NotificationWork.cancelNotificationsById(uuid45EmptyDays, uuid60EmptyDays, uuid90EmptyDays, uuid120EmptyDays)
-
-                            if (notifyTimeSecado >= 0) {
-                                val uuidSecado = NotificationWork.notify(NotificationWork.TYPE_REPRODUCTIVE, "Recordatorio Secado", "Comenzar secado del bovino: ${bovino.nombre}, fecha del servicio: $fechaServicioActual, posible parto: ${posibleParto.toStringFormat()}", idBovino,
-                                        notifyTimeSecado, TimeUnit.DAYS)
-                                bovino.notificacionesReproductivo!![ALERT_DRYING] = uuidSecado
-                            }
-                            if (notifyTimePreparacion >= 0) {
-                                val uuidPreparacion = NotificationWork.notify(NotificationWork.TYPE_REPRODUCTIVE, "Recordatorio Preparación", "Comenzar preparación para el parto del bovino: ${bovino.nombre}, fecha del servicio: $fechaServicioActual, posible parto: ${posibleParto.toStringFormat()}", idBovino,
-                                        notifyTimePreparacion, TimeUnit.DAYS)
-                                bovino.notificacionesReproductivo!![ALERT_PREPARATION] = uuidPreparacion
-                            }
-                            if (notifyTimeParto >= 0) {
-                                val uuidParto = NotificationWork.notify(NotificationWork.TYPE_REPRODUCTIVE, "Recordatorio Parto", "Es probable que el parto del bovino: ${bovino.nombre} sea mañana, fecha del servicio: $fechaServicioActual, posible parto: ${posibleParto.toStringFormat()}", idBovino,
-                                        notifyTimeParto, TimeUnit.DAYS)
-                                bovino.notificacionesReproductivo!![ALERT_BIRTH] = uuidParto
-                            }
-                            viewModel.updateBovino(idBovino, bovino)
-                                    .flatMap { viewModel.markNotifcationsAsAppliedByTagAndBovineId(ALERT_EMPTY_DAYS, idBovino) }
-
-                        }
-                        type == TYPE_DIAGNOSIS && servicioActual.diagnostico?.confirmacion == false->{
-                            if (bovino.serviciosFallidos!! == 3) {
-                                val uuidServiciosFallidos = NotificationWork.notify(NotificationWork.TYPE_REPRODUCTIVE, "Tres Servicios Fallidos", "El bovino: ${bovino.nombre}, lleva 3 servicios fallidos de manera consecutiva", idBovino,
-                                        10, TimeUnit.SECONDS)
-                                Log.d("SERVICIOS FALLIDOS", uuidServiciosFallidos.toString())
-                                bovino.notificacionesReproductivo!![ALERT_3_FAILED_SERVICES] = uuidServiciosFallidos
-                            }
-
-                                viewModel.updateBovino(idBovino, bovino)
-
-                        }
-                        type == TYPE_NOVELTY && servicioActual.finalizado!! -> {
-                            val uuidSecado = bovino.notificacionesReproductivo!![ALERT_DRYING]
-                            val uuidPreparacion = bovino.notificacionesReproductivo!![ALERT_PREPARATION]
-                            val uuidParto = bovino.notificacionesReproductivo!![ALERT_BIRTH]
-                            NotificationWork.cancelNotificationsById(uuidSecado, uuidPreparacion, uuidParto)
-                            val emptyDaysNotifications = ReproductiveNotification.setEmptyDaysNotifications(bovino, servicioActual.novedad!!.fecha)
-                            viewModel.insertNotifications(emptyDaysNotifications).flatMap {
-                                viewModel.updateBovino(idBovino, bovino)
-                            }
-                        }
-                        else -> viewModel.updateBovino(idBovino, bovino)
+                        type == TYPE_DIAGNOSIS && servicioActual.diagnostico?.confirmacion == true ->
+                            prepareConfirmedDiagnosis(bovino, servicioActual)
+                        type == TYPE_DIAGNOSIS && servicioActual.diagnostico?.confirmacion == false ->
+                            prepareRejectedDiagnosis(bovino)
+                        type == TYPE_NOVELTY && servicioActual.finalizado!! ->
+                            viewModel.prepareNovelty(bovino, servicioActual)
+                        else -> Single.just(emptyList())
                     }
                 }
                 .subscribeBy(
-                        onNext = {
-
-                            finish()
-                        }
+                        onNext = { finish() }
                 )
     }
 
@@ -207,7 +141,7 @@ class AddDiagnosisActivity : AppCompatActivity(), Injectable, DatePickerDialog.O
         val fecha = params[0].toDate()
         val confirmacion = pregnant.isChecked
         val diagnostico = Diagnostico(fecha, confirmacion)
-        val mDiasVacios = if(confirmacion) diasVacios else null
+        val mDiasVacios = if (confirmacion) diasVacios else null
         val fechaPosParto = if (confirmacion) posibleParto else null
         return servicio.apply {
             this.diagnostico = diagnostico
@@ -219,6 +153,7 @@ class AddDiagnosisActivity : AppCompatActivity(), Injectable, DatePickerDialog.O
 
     private fun setNovedad(params: List<String>): Servicio {
         val fecha = params[0].toDate()
+        fecha.addCurrentHour()
         val novedad = noveltySpinner.selectedItem.toString()
         val mNovedad = Novedad(fecha, novedad)
 
@@ -231,4 +166,76 @@ class AddDiagnosisActivity : AppCompatActivity(), Injectable, DatePickerDialog.O
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         diagnosisDate.setText("$dayOfMonth/${month + 1}/$year")
     }
+
+    fun prepareConfirmedDiagnosis(bovino: Bovino, service: Servicio): Single<List<Unit>> {
+        val posibleParto = service.posFechaParto!!
+        val now = Date().time
+        val dif = posibleParto.time - now
+        val minsToBirth = TimeUnit.MINUTES.convert((dif), TimeUnit.MILLISECONDS)
+        val notifyTimeSecado = minsToBirth - 86400
+        val notifyTimePreparacion = minsToBirth - 43200
+        val notifyTimeParto = minsToBirth - 1440
+
+        val alarms: MutableList<Pair<Alarm, Long>> = mutableListOf()
+
+        if (notifyTimeSecado >= 0) {
+            alarms.add(
+                    Alarm(
+                            bovino = AlarmBovine(bovino._id!!, bovino.nombre!!, bovino.codigo!!),
+                            titulo = "Recordatorio Secado",
+                            descripcion = "Comenzar secado",
+                            alarma = ALARM_SECADO,
+                            fechaProxima = Date(now + (notifyTimeSecado * 60000)),
+                            type = TYPE_ALARM,
+                            activa = true,
+                            reference = bovino._id
+                    ) to notifyTimeSecado
+            )
+        }
+
+        if (notifyTimePreparacion >= 0) {
+            alarms.add(
+                    Alarm(
+                            bovino = AlarmBovine(bovino._id!!, bovino.nombre!!, bovino.codigo!!),
+                            titulo = "Recordatorio Preparación",
+                            descripcion = "Comenzar preparación para el parto",
+                            alarma = ALARM_PREPARACION,
+                            fechaProxima = Date(now + (notifyTimePreparacion * 60000)),
+                            type = TYPE_ALARM,
+                            activa = true,
+                            reference = bovino._id
+                    ) to notifyTimePreparacion
+            )
+        }
+
+        if (notifyTimeParto >= 0) {
+            alarms.add(
+                    Alarm(
+                            bovino = AlarmBovine(bovino._id!!, bovino.nombre!!, bovino.codigo!!),
+                            titulo = "Recordatorio Parto",
+                            descripcion = "Posible parto el dia de mañana",
+                            alarma = ALARM_NACIMIENTO,
+                            fechaProxima = Date(now + (notifyTimeParto * 60000)),
+                            type = TYPE_ALARM,
+                            activa = true,
+                            reference = bovino._id
+                    ) to notifyTimeParto
+            )
+        }
+
+        return viewModel.insertNotifications(alarms)
+                .flatMap { viewModel.cancelNotiByDiagnosis(bovino._id!!, ALARM_18_MONTHS,
+                        ALARM_EMPTY_DAYS_45, ALARM_EMPTY_DAYS_60, ALARM_EMPTY_DAYS_90,
+                        ALARM_EMPTY_DAYS_120, ALARM_ZEAL_21) }
+    }
+
+    fun prepareRejectedDiagnosis(bovino: Bovino): Single<List<Unit>> {
+        if (bovino.serviciosFallidos!! == 3) {
+            NotificationWork.notify(NotificationWork.TYPE_REPRODUCTIVE, "Tres Servicios Fallidos", "El bovino: ${bovino.nombre}, lleva 3 servicios fallidos de manera consecutiva", idBovino,
+                    10, TimeUnit.SECONDS)
+        }
+        return Single.just(emptyList())
+    }
+
+
 }

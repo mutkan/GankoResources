@@ -96,7 +96,8 @@ class BovineViewModel @Inject constructor(private val db: CouchRx, private val u
                 device = listOf(
                         AlarmDevice(userSession.device, uuid.toString())
                 ),
-                activa = true
+                activa = true,
+                reference = id
         )
         db.insertBlock(alarm)
     }

@@ -49,9 +49,7 @@ class Bovino(
         var servicios: List<Servicio>? = listOf(),
         var vacunas: List<Vacuna>? = listOf(),
         var sanidad: List<Sanidad>? = listOf(),
-        var manejo: List<Manage>? = listOf(),
-
-        var notificacionesReproductivo: HashMap<String,UUID?>? = hashMapOf()
+        var manejo: List<Manage>? = listOf()
 
 ) : Parcelable {
     init {
