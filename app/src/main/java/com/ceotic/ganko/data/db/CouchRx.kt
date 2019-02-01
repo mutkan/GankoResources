@@ -191,9 +191,12 @@ class CouchRx @Inject constructor(private val db: Database
             .toList()
 
     fun ListObsByQuery(query: Query): Observable<ResultSet> = Observable.create { emitter ->
-        query.addChangeListener {
+        val token = query.addChangeListener {
             if (it.error == null) emitter.onNext(it.results)
             else emitter.onError(it.error)
+        }
+        emitter.setCancellable {
+            query.removeChangeListener(token)
         }
     }
 
@@ -203,10 +206,13 @@ class CouchRx @Inject constructor(private val db: Database
                 .from(DataSource.database(db))
                 .where(expression andEx ("type" equalEx kClass.simpleName.toString()))
                 .orderBy(*orderBy)
-        query.addChangeListener {
+        val token = query.addChangeListener {
             if (it.error == null) emitter.onNext(it.results)
             else emitter.onError(it.error)
 
+        }
+        emitter.setCancellable {
+            query.removeChangeListener(token)
         }
     }
             .flatMap { result ->
