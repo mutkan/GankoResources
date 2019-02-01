@@ -687,9 +687,8 @@ class ReportViewModel(private val farmID:String, private val db: CouchRx) {
         val (ini, end) = processDates(from, to, month, year)
         return db.listByExp("finca" equalEx farmID, Bovino::class)
                 .flatMapObservable { it.toObservable() }
-                .flatMapMaybe {
+                .flatMapSingle {
                     db.listByExp("fecha".betweenDates(ini!!, end!!) andEx ("bovino" equalEx it._id!!) andEx (("eliminado" equalEx false ) orEx ("eliminado" isNullEx true)), Ceba::class, orderBy = arrayOf("fecha" orderEx DESCENDING))
-                            .filter { it.isNotEmpty() }
                             .map { cebaList ->
                                 var gananciaPeso =0f
                                 if (cebaList.size == 1) {
@@ -699,7 +698,7 @@ class ReportViewModel(private val farmID:String, private val db: CouchRx) {
                                     val cebaMenor = cebaList.last()
                                     val dif = cebaMayor.fecha!!.time - cebaMenor.fecha!!.time
                                     val dias = Math.ceil(dif.toDouble() / 86400000)
-                                    gananciaPeso =((cebaMayor.peso!! - cebaMenor.peso!!) / dias).toFloat()
+                                    gananciaPeso =((cebaMayor.peso!! - cebaMenor.peso!!) * 1000 / dias).toFloat()
                                 }
                                 listOf(it.codigo!!, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), gananciaPeso.toString(), it.proposito!!)
                             }
