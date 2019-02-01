@@ -9,7 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.ceotic.ganko.R
-import com.ceotic.ganko.data.models.EmptyDaysValidations
+import com.ceotic.ganko.data.EmptyDaysValidations
 import com.ceotic.ganko.data.models.Servicio
 import com.ceotic.ganko.databinding.FragmentListServiceBinding
 import com.ceotic.ganko.di.Injectable
@@ -20,12 +20,9 @@ import com.ceotic.ganko.ui.bovine.reproductive.add.AddServiceActivity
 import com.ceotic.ganko.util.LifeDisposable
 import com.ceotic.ganko.util.buildViewModel
 import com.jakewharton.rxbinding2.view.clicks
-import io.reactivex.Observable
 import io.reactivex.Single
-import io.reactivex.functions.Function3
 import io.reactivex.functions.Function4
 import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.rxkotlin.zipWith
 import kotlinx.android.synthetic.main.fragment_list_service.*
 import org.jetbrains.anko.support.v4.startActivity
 import javax.inject.Inject

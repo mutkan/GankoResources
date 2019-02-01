@@ -9,24 +9,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.ceotic.ganko.R
-import com.ceotic.ganko.data.models.RegistroManejo
-import com.ceotic.ganko.data.models.RegistroVacuna
-import com.ceotic.ganko.data.models.ReproductiveNotification
-import com.ceotic.ganko.data.models.Sanidad
 import com.ceotic.ganko.di.Injectable
 import com.ceotic.ganko.ui.adapters.NotificationsListAdapter
-import com.ceotic.ganko.ui.bovine.DetailBovineActivity
-import com.ceotic.ganko.ui.bovine.reproductive.ReproductiveBvnActivity
 import com.ceotic.ganko.ui.menu.MenuViewModel
-import com.ceotic.ganko.ui.menu.health.detail.HealthDetailActivity
-import com.ceotic.ganko.ui.menu.management.detail.ManageDetailActivity
-import com.ceotic.ganko.ui.menu.vaccines.detail.VaccineDetailActivity
 import com.ceotic.ganko.util.LifeDisposable
 import com.ceotic.ganko.util.add
 import com.ceotic.ganko.util.buildViewModel
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.fragment_notifications.*
-import org.jetbrains.anko.support.v4.startActivity
 import java.util.*
 import javax.inject.Inject
 
