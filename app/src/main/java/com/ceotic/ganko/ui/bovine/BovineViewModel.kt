@@ -45,15 +45,15 @@ class BovineViewModel @Inject constructor(private val db: CouchRx, private val u
             val treeMoths = (30 * 1_440) + twoMoths + 2
             makeVaccineAlarm(id, nowMin, treeMoths, bovino, ALARM_3_MONTHS,
                     "Rabia",
-                    "Carbono Sitomatico",
+                    "Carbón Sitomático",
                     "Edema Maligno",
-                    "Septicemia")
+                    "Septicemia Hemorrágica")
 
             val fourMoths = (30 * 1_440) + treeMoths + 2
-            makeVaccineAlarm(id, nowMin, fourMoths, bovino, ALARM_4_MONTHS,  "Bruselocis")
+            makeVaccineAlarm(id, nowMin, fourMoths, bovino, ALARM_4_MONTHS,  "Brucelocis")
 
             val twelveMoths = (240 * 1_440) + fourMoths + 2
-            makeVaccineAlarm(id, nowMin, twelveMoths, bovino, ALARM_12_MONTHS,"Carbon bactediriano")
+            makeVaccineAlarm(id, nowMin, twelveMoths, bovino, ALARM_12_MONTHS,"Carbón Bacteridiano")
 
             makeReproductiveAlarm(id, nowMin, timeMin,  bovino)
         }

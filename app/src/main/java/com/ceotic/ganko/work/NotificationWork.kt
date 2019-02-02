@@ -15,6 +15,7 @@ import android.graphics.Color
 import com.ceotic.ganko.data.models.Alarm
 import com.ceotic.ganko.ui.bovine.reproductive.ReproductiveBvnActivity
 import java.util.*
+import kotlin.random.Random.Default.nextInt
 
 
 class NotificationWork(context: Context, params: WorkerParameters) : Worker(context, params) {
@@ -25,6 +26,9 @@ class NotificationWork(context: Context, params: WorkerParameters) : Worker(cont
         val msg = inputData.getString(ARG_DESCRIPTION)
         val id = inputData.getString(ARG_ID)
         val type = inputData.getInt(ARG_TYPE, 0)
+
+        val requestCode = nextInt()
+
 
         val icon = when (type) {
             TYPE_HEALTH -> R.drawable.ic_notify_hea
@@ -41,7 +45,7 @@ class NotificationWork(context: Context, params: WorkerParameters) : Worker(cont
             else -> Intent(applicationContext, ReproductiveBvnActivity::class.java).apply { putExtra("idBovino", id) }
         }
 
-        val pendingIntent = PendingIntent.getActivity(applicationContext, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT)
+        val pendingIntent = PendingIntent.getActivity(applicationContext, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
         val notification = NotificationCompat.Builder(applicationContext, App.CHANNEL_ID)
                 .setSmallIcon(icon)
@@ -56,7 +60,7 @@ class NotificationWork(context: Context, params: WorkerParameters) : Worker(cont
                 .setAutoCancel(true)
                 .build()
         NotificationManagerCompat.from(applicationContext)
-                .notify(Random().nextInt(), notification)
+                .notify(requestCode, notification)
 
         return Result.success()
     }
@@ -66,6 +70,7 @@ class NotificationWork(context: Context, params: WorkerParameters) : Worker(cont
         private const val ARG_ID = "ARG_ID"
         private const val ARG_DESCRIPTION = "ARG_DESCRIPTION"
         private const val ARG_TYPE = "ARG_TYPE"
+        private const val ARG_REQUEST_CODE = "ARG_REQUEST_CODE"
 
         const val TYPE_HEALTH = 0
         const val TYPE_MANAGEMENT = 1
