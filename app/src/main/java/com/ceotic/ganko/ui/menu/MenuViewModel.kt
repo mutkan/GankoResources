@@ -297,17 +297,17 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
 
 
     //region Vacunas
-    fun inserVaccine(registroVacuna: RegistroVacuna, notifyTime: Long): Single<String> = db.insert(registroVacuna)
+    fun inserVaccine(registroVacuna: RegistroVacuna): Single<String> = db.insert(registroVacuna)
             .flatMap { makeAlarm(it,registroVacuna.bovinos ?: emptyList(),registroVacuna.grupo,
                     registroVacuna.titulo!!, registroVacuna.descripcion!!, null,null,
-                    registroVacuna.fechaProxima, notifyTime, ALARM_VACCINE
+                    registroVacuna.fechaProxima, ALARM_VACCINE
                     ) }
             .applySchedulers()
 
-    fun inserFirstVaccine(registroVacuna: RegistroVacuna, notifyTime: Long): Single<String> = db.insertDosisUno(registroVacuna)
+    fun inserFirstVaccine(registroVacuna: RegistroVacuna): Single<String> = db.insertDosisUno(registroVacuna)
             .flatMap { makeAlarm(it,registroVacuna.bovinos ?: emptyList(),registroVacuna.grupo,
                     registroVacuna.titulo!!, registroVacuna.descripcion!!, null,null,
-                    registroVacuna.fechaProxima, notifyTime, ALARM_VACCINE
+                    registroVacuna.fechaProxima, ALARM_VACCINE
             ) }
             .applySchedulers()
 
@@ -340,7 +340,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
 
 
     //region Manejo
-    fun insertManageFirst(registroManejo: RegistroManejo, notifyTime: Long): Single<String> = db.insertDosisUno(registroManejo)
+    fun insertManageFirst(registroManejo: RegistroManejo): Single<String> = db.insertDosisUno(registroManejo)
             .flatMap {
                 val title = if(registroManejo.tipo == "Otro") registroManejo.otro!!
                 else registroManejo.tipo!!
@@ -348,10 +348,10 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                 makeAlarm(it, registroManejo.bovinos ?: emptyList(), registroManejo.grupo,
                     title, registroManejo.tratamiento?: "", registroManejo.aplicacion ?: 0,
                         registroManejo.numeroAplicaciones?:0,
-                    registroManejo.fechaProxima, notifyTime, ALARM_MANAGE) }
+                    registroManejo.fechaProxima, ALARM_MANAGE) }
             .applySchedulers()
 
-    fun insertManage(registroManejo: RegistroManejo, notifyTime: Long): Single<String> = db.insertDosisUno(registroManejo)
+    fun insertManage(registroManejo: RegistroManejo): Single<String> = db.insertDosisUno(registroManejo)
             .flatMap {
                 val title = if(registroManejo.tipo == "Otro") registroManejo.otro!!
                 else registroManejo.tipo!!
@@ -359,7 +359,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                 makeAlarm(it, registroManejo.bovinos ?: emptyList(), registroManejo.grupo,
                         title, registroManejo.tratamiento?: "", registroManejo.aplicacion ?: 0,
                         registroManejo.numeroAplicaciones?:0,
-                        registroManejo.fechaProxima, notifyTime, ALARM_MANAGE) }
+                        registroManejo.fechaProxima, ALARM_MANAGE) }
             .applySchedulers()
 
     fun getManages(): Observable<List<RegistroManejo>> = SearchBarActivity.query
@@ -446,8 +446,8 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
         return db.insert(alarm)
     }
 
-    private fun makeAlarm(id:String, bovines:List<String> = emptyList(), group:Grupo? = null, title:String, description:String, application:Int? = null , numApplication:Int? = null, nextDate:Date?, notifyTime: Long, type:Int):Single<String>{
-        val to =( (nextDate?.time ?: 0) / 3600000) + notifyTime
+    private fun makeAlarm(id:String, bovines:List<String> = emptyList(), group:Grupo? = null, title:String, description:String, application:Int? = null , numApplication:Int? = null, nextDate:Date?, type:Int):Single<String>{
+        val to =( (nextDate?.time ?: 0) / 3600000)
         val now = Date().time / 3600000
         return if(to > now && (application == null ||application < numApplication!!)){
             prepareNotificationBovine(id, bovines, group)

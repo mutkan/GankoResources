@@ -19,15 +19,15 @@ class HealthViewModel @Inject constructor(private val db: CouchRx,
     fun getFarmId(): String = farmID
 
 
-    fun addFirstHealth(health: Sanidad, notifyTime:Long): Single<String> =
+    fun addFirstHealth(health: Sanidad): Single<String> =
             db.insertDosisUno(health)
-                    .flatMap { makeAlarm(it, health, notifyTime)}
+                    .flatMap { makeAlarm(it, health)}
                     .applySchedulers()
 
 
-    fun addHealth(health: Sanidad, notifyTime: Long): Single<String> =
+    fun addHealth(health: Sanidad): Single<String> =
             db.insert(health)
-                    .flatMap { makeAlarm(it, health, notifyTime)}
+                    .flatMap { makeAlarm(it, health)}
                     .applySchedulers()
 
     fun updateHealth(sanidad: Sanidad): Single<Unit>
@@ -81,8 +81,8 @@ class HealthViewModel @Inject constructor(private val db: CouchRx,
         return db.insert(alarm)
     }
 
-    private fun makeAlarm(id:String, health:Sanidad, notifyTime: Long):Single<String>{
-        val to =( (health.fechaProxima?.time ?: 0) / 3600000) + notifyTime
+    private fun makeAlarm(id:String, health:Sanidad):Single<String>{
+        val to =( (health.fechaProxima?.time ?: 0) / 3600000)
         val now = Date().time / 3600000
         return if(to > now && health.aplicacion!! < health.numeroAplicaciones!!){
             prepareBovine(id,health)

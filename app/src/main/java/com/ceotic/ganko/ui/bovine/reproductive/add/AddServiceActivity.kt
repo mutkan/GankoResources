@@ -28,7 +28,7 @@ class AddServiceActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
     lateinit var factory: ViewModelProvider.Factory
     val viewModel: ReproductiveBvnViewModel by lazy { buildViewModel<ReproductiveBvnViewModel>(factory) }
     private val idBovino: String by lazy { intent.getStringExtra(ARG_ID) ?: "" }
-    private val celo: String by lazy { intent.getStringExtra(ARG_ZEAL) ?: ""}
+    private val celo: String by lazy { intent.getStringExtra(ARG_ZEAL) ?: "" }
     private val dis: LifeDisposable = LifeDisposable(this)
     private val calendar: Calendar by lazy { Calendar.getInstance() }
     private val strawAdapter: ArrayAdapter<Straw> by lazy { ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, mutableListOf<Straw>()) }
@@ -127,9 +127,9 @@ class AddServiceActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
                     val zeal = date + 30240
                     val dZeal = zeal - now
 
-                    val alarms:MutableList<Pair<Alarm, Long>> = mutableListOf()
+                    val alarms: MutableList<Pair<Alarm, Long>> = mutableListOf()
 
-                    if(dNotification > 0){
+                    if (dNotification > 0) {
                         alarms.add(Alarm(
                                 bovino = AlarmBovine(bovino._id!!, bovino.nombre!!, bovino.codigo!!),
                                 titulo = "Diagnostico de preñez",
@@ -142,7 +142,7 @@ class AddServiceActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
                         ) to dNotification)
                     }
 
-                    if(dZeal > 0){
+                    if (dZeal > 0) {
                         alarms.add(Alarm(
                                 bovino = AlarmBovine(bovino._id!!, bovino.nombre!!, bovino.codigo!!),
                                 titulo = "21 Dias desde el servicio",
@@ -181,7 +181,7 @@ class AddServiceActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
 
     private fun createService(params: List<String>): Servicio {
         val fecha = params[0].toDate()
-        fecha.addCurrentHour()
+                .addCurrentHour()
         val condicion = params[1].toDouble()
         val montaN = getString(R.string.monta_natural)
         val inseminacion = getString(R.string.inseminaci_n_artificial)

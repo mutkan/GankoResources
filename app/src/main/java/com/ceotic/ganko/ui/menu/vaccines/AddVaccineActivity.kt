@@ -14,9 +14,9 @@ import android.view.ViewGroup
 import android.widget.DatePicker
 import com.ceotic.ganko.R
 import com.ceotic.ganko.data.models.Group
-import com.ceotic.ganko.data.models.RegistroVacuna
 import com.ceotic.ganko.data.models.ProxStates.Companion.APPLIED
 import com.ceotic.ganko.data.models.ProxStates.Companion.NOT_APPLIED
+import com.ceotic.ganko.data.models.RegistroVacuna
 import com.ceotic.ganko.data.models.toGrupo
 import com.ceotic.ganko.databinding.ActivityAddVaccineBinding
 import com.ceotic.ganko.di.Injectable
@@ -32,7 +32,6 @@ import com.ceotic.ganko.work.NotificationWork
 import com.ceotic.ganko.work.NotificationWork.Companion.TYPE_VACCINES
 import com.jakewharton.rxbinding2.view.clicks
 import com.jakewharton.rxbinding2.widget.checkedChanges
-import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.internal.operators.single.SingleFromCallable
@@ -119,13 +118,10 @@ class AddVaccineActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
                 .flatMap { validateFields() }
                 .flatMapSingle {
                     val vaccine = createVaccine(it)
-                    val notifyTime = if(revaccinationRequired.isChecked)
-                        calculateNotifyTime(nextApplicationVaccine.text().toLong(), timeUnitsSpinner.selectedItem.toString())
-                    else 0
-                    if (edit) viewModel.inserVaccine(vaccine, notifyTime).flatMap { id ->
+                    if (edit) viewModel.inserVaccine(vaccine).flatMap { id ->
                         viewModel.updateVaccine(previousVaccine.apply { estadoProximo = APPLIED }).map { id }
                     }
-                    else viewModel.inserFirstVaccine(vaccine, notifyTime)
+                    else viewModel.inserFirstVaccine(vaccine)
                 }
                 .flatMapSingle { docId ->
                     setNotification(docId)
@@ -183,7 +179,7 @@ class AddVaccineActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
 
     }
 
-    private fun setNotification(docId: String):Single<Unit> = SingleFromCallable{
+    private fun setNotification(docId: String): Single<Unit> = SingleFromCallable {
         if (revaccinationRequired.isChecked) {
             val proximaAplicacion = nextApplicationVaccine.text().toLong()
             val unidadTiempo = timeUnitsSpinner.selectedItem.toString()
@@ -247,14 +243,14 @@ class AddVaccineActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
         return when {
             revaccinationRequired.isChecked && dosisVacuna != -1.0 -> validateForm(R.string.empty_fields, fecha, valor, nombreVacuna, proximaAplicacion)
             revaccinationRequired.isChecked && dosisVacuna == -1.0 -> validateForm(R.string.empty_fields, fecha, valor, nombreVacuna, proximaAplicacion, otraDosis)
-            !revaccinationRequired.isChecked && dosisVacuna == -1.0 -> validateForm(R.string.empty_fields, fecha, valor, nombreVacuna,otraDosis)
+            !revaccinationRequired.isChecked && dosisVacuna == -1.0 -> validateForm(R.string.empty_fields, fecha, valor, nombreVacuna, otraDosis)
             else -> validateForm(R.string.empty_fields, fecha, valor, nombreVacuna)
         }
     }
 
     private fun createVaccine(fields: List<String>): RegistroVacuna {
         val fecha = fields[0].toDate()
-        fecha.addCurrentHour()
+                .addCurrentHour()
 
         val valor = fields[1].toInt()
         val idFinca = viewModel.getFarmId()

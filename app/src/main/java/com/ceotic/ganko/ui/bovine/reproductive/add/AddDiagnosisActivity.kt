@@ -153,7 +153,7 @@ class AddDiagnosisActivity : AppCompatActivity(), Injectable, DatePickerDialog.O
 
     private fun setNovedad(params: List<String>): Servicio {
         val fecha = params[0].toDate()
-        fecha.addCurrentHour()
+                .addCurrentHour()
         val novedad = noveltySpinner.selectedItem.toString()
         val mNovedad = Novedad(fecha, novedad)
 

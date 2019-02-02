@@ -94,11 +94,10 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
                 }
                 .flatMapSingle {
                     val manage = createManage()
-                    val notifyTime = calculateNotifyTime(frecuency.text().toLong(), spinnerFrecuency.selectedItem.toString())
-                    if (edit) viewModel.insertManage(manage, notifyTime).flatMap { id ->
+                    if (edit) viewModel.insertManage(manage).flatMap { id ->
                         viewModel.updateManage(previousManage.apply { estadoProximo = APPLIED }).map { id }
                     }
-                    else viewModel.insertManageFirst(manage, notifyTime)
+                    else viewModel.insertManageFirst(manage)
                 }
                 .retry()
                 .subscribeBy(
@@ -168,8 +167,9 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
         val precioProducto = if (productPrice.text() == "") 0 else productPrice.text().toInt()
         val observaciones: String? = observations.text.toString()
         val precioAsistencia = if (assistancePrice.text() == "") 0 else assistancePrice.text().toInt()
-        val fechaEvento = eventDate.text.toString().toDate()
-        fechaEvento.addCurrentHour()
+        val fechaEvento = eventDate.text.toString()
+                .toDate()
+                .addCurrentHour()
 
         val evento = spinnerEventType.selectedItem.toString()
         var otro: String? = null
@@ -194,7 +194,7 @@ class AddManageActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDa
             }
         } else null
 
-        val grupo:Grupo? = if(group != null) Grupo(group!!._id!!, group!!.nombre, group!!.color)
+        val grupo: Grupo? = if (group != null) Grupo(group!!._id!!, group!!.nombre, group!!.color)
         else null
 
         return if (!edit) {

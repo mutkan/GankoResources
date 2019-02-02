@@ -53,11 +53,11 @@ class AddZealActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
                 .flatMap { validateForm(R.string.empty_fields, zealDate.text()) }
                 .flatMapMaybe {
                     val date = it[0].toDate()
-                    date.addCurrentHour()
+                            .addCurrentHour()
                     viewModel.insertZeal(idBovino, date, nextZealDate)
                 }
                 .flatMapSingle { bovino ->
-                    val dif = (nextZealDate.time/60000) - (Date().time/60000)
+                    val dif = (nextZealDate.time / 60000) - (Date().time / 60000)
 
                     if (dif >= 0) {
                         val not = Alarm(
@@ -76,7 +76,7 @@ class AddZealActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
                                 .flatMap { viewModel.insertNotifications(listOf(not)) }
 
 
-                    }else{
+                    } else {
                         Single.just(listOf(""))
                     }
 

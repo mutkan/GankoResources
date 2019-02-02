@@ -20,10 +20,10 @@ fun processDates(from: Date?, to: Date?, month: Int?, year: Int?): Pair<Date?, D
     else -> Pair<Date?, Date?>(null, null)
 }
 
-fun Date.addCurrentHour(){
+fun Date.addCurrentHour():Date{
     val calendar = Calendar.getInstance()
-    add(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY))
-    add(Calendar.MINUTE, calendar.get(Calendar.MINUTE))
+    val milis = ((calendar.get(Calendar.HOUR_OF_DAY) * 60) + calendar.get(Calendar.MINUTE)) * 60000
+    return Date(time + milis)
 }
 
 fun calculateNotifyTime(frequency:Long, units:String):Long{
@@ -34,9 +34,9 @@ fun calculateNotifyTime(frequency:Long, units:String):Long{
         else -> frequency * 24 * 30 * 12
     }
     return when (proxTime) {
-        in 0..2 -> proxTime
-        in 3..10 -> proxTime - 1
-        in 11..36 -> proxTime - 3
+        in 0..6 -> proxTime
+        in 7..12 -> proxTime - 1
+        in 13..36 -> proxTime - 3
         else -> proxTime - 24
     }
 }
