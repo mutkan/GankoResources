@@ -80,7 +80,7 @@ class AddMeadowAlertActivity : AppCompatActivity(), Injectable {
                         else -> time - 24
                     }
                     val calendar = Calendar.getInstance()
-                    calendar.timeInMillis = Date().time + (time*3600000)
+                    calendar.timeInMillis = Date().time + (time*3600000) + 600000
                     val date = "${calendar.get(Calendar.DAY_OF_MONTH)}/${calendar.get(Calendar.MONTH)+1}/${calendar.get(Calendar.YEAR)}".toDate()
 
                     meadowAlarm = MeadowAlarm(null, null, null, idMeadow,

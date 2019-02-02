@@ -20,9 +20,9 @@ fun processDates(from: Date?, to: Date?, month: Int?, year: Int?): Pair<Date?, D
     else -> Pair<Date?, Date?>(null, null)
 }
 
-fun Date.addCurrentHour():Date{
+fun Date.addCurrentHour(minutes:Int = 0):Date{
     val calendar = Calendar.getInstance()
-    val milis = ((calendar.get(Calendar.HOUR_OF_DAY) * 60) + calendar.get(Calendar.MINUTE)) * 60000
+    val milis = ((calendar.get(Calendar.HOUR_OF_DAY) * 60) + calendar.get(Calendar.MINUTE) + minutes) * 60000
     return Date(time + milis)
 }
 

@@ -117,7 +117,6 @@ class AddServiceActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
                         }
                 }
                 .flatMapSingle { bovino ->
-                    val ultimoServicio = bovino.servicios!![0].fecha!!.toStringFormat()
                     val date = bovino.servicios!![0].fecha!!.time / 60000
                     val now = Date().time / 60000
 
@@ -135,7 +134,7 @@ class AddServiceActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
                                 titulo = "Diagnostico de preñez",
                                 descripcion = "Verificar estado de preñez",
                                 alarma = ALARM_DIAGNOSIS,
-                                fechaProxima = Date(diagnosis),
+                                fechaProxima = Date(diagnosis * 60000),
                                 type = TYPE_ALARM,
                                 activa = true,
                                 reference = bovino._id
@@ -148,7 +147,7 @@ class AddServiceActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
                                 titulo = "21 Dias desde el servicio",
                                 descripcion = "Verificar celo",
                                 alarma = ALARM_DIAGNOSIS,
-                                fechaProxima = Date(diagnosis),
+                                fechaProxima = Date(zeal * 60000),
                                 type = TYPE_ALARM,
                                 activa = true,
                                 reference = bovino._id
@@ -181,7 +180,7 @@ class AddServiceActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
 
     private fun createService(params: List<String>): Servicio {
         val fecha = params[0].toDate()
-                .addCurrentHour()
+                .addCurrentHour(10)
         val condicion = params[1].toDouble()
         val montaN = getString(R.string.monta_natural)
         val inseminacion = getString(R.string.inseminaci_n_artificial)

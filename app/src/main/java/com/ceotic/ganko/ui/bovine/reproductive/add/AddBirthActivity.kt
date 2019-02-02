@@ -115,6 +115,7 @@ class AddBirthActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDat
 
     private fun setParto(params: List<String>): Servicio {
         val fecha = params[0].toDate()
+                .addCurrentHour(2)
         val sexoCria = if (calfSex.checkedRadioButtonId == R.id.male) "Macho" else "Hembra"
         val estadoCria = when (calf.checkedRadioButtonId) {
             R.id.alive -> if (sexoCria == "Macho") "Vivo" else "Viva"
