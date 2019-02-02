@@ -74,9 +74,9 @@ class AddMeadowAlertActivity : AppCompatActivity(), Injectable {
                     }
 
                     val notifyTime: Long = when (time) {
-                        in 0..2 -> time
-                        in 3..10 -> time - 1
-                        in 11..36 -> time - 3
+                        in 0..6 -> time
+                        in 7..12 -> time - 1
+                        in 13..36 -> time - 3
                         else -> time - 24
                     }
                     val calendar = Calendar.getInstance()
