@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -19,9 +18,9 @@
         style="@style/textview_label"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
         android:text="Fecha"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,23 +29,23 @@
     <EditText
         android:id="@+id/date_feed"
         style="@style/edit_text"
-        android:ems="10"
-        android:focusable="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
-        android:hint="@string/date_value"
+        android:layout_marginEnd="24dp"
         android:clickable="true"
+        android:ems="10"
+        android:focusable="false"
+        android:hint="@string/date_value"
         android:inputType="date"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
     <EditText
-        style="@style/edit_text"
         android:id="@+id/price_feed"
+        style="@style/edit_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -57,15 +56,15 @@
         app:layout_constraintTop_toBottomOf="@+id/textView16" />
 
     <EditText
-        style="@style/edit_text"
-        app:layout_constraintStart_toStartOf="@+id/textView15"
         android:id="@+id/ration_feed"
+        style="@style/edit_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:hint="@string/weight_in_kg"
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="@+id/textView15"
+        app:layout_constraintStart_toStartOf="@+id/textView15"
         app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
 
@@ -82,28 +81,29 @@
     <Spinner
         android:id="@+id/food_type"
         android:layout_width="0dp"
-        android:entries="@array/feed_types"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:entries="@array/feed_types"
         app:layout_constraintEnd_toEndOf="@+id/textView12"
         app:layout_constraintStart_toStartOf="@+id/textView12"
         app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
     <TextView
         android:id="@+id/textView15"
-        android:layout_width="0dp"
         style="@style/textview_label"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/ration"
         app:layout_constraintEnd_toEndOf="@+id/food_type"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/food_type"
-        app:layout_constraintTop_toBottomOf="@+id/food_type" />
+        app:layout_constraintTop_toBottomOf="@+id/otherTxt" />
 
     <TextView
         android:id="@+id/textView16"
-        android:layout_width="0dp"
         style="@style/textview_label"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/price"
@@ -128,11 +128,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:text="$0"
         android:textSize="@dimen/farm_name"
         app:layout_constraintEnd_toEndOf="@+id/textView20"
         app:layout_constraintStart_toStartOf="@+id/textView20"
-        app:layout_constraintTop_toBottomOf="@+id/textView20"
-        android:text="$0" />
+        app:layout_constraintTop_toBottomOf="@+id/textView20" />
 
     <Button
         android:id="@+id/btnCancelFeed"
@@ -150,13 +150,38 @@
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp"
         android:text="@string/btn_add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/btnCancelFeed" />
+
+    <TextView
+        android:id="@+id/labelOther"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Otro"
+        style="@style/textview_label"
+        app:layout_constraintStart_toStartOf="@+id/food_type"
+        app:layout_constraintTop_toBottomOf="@+id/food_type" />
+
+    <EditText
+        android:id="@+id/otherTxt"
+        style="@style/edit_text"
+        android:visibility="gone"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="Otro"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="@+id/food_type"
+        app:layout_constraintStart_toStartOf="@+id/labelOther"
+        app:layout_constraintTop_toBottomOf="@+id/labelOther" />
 
 
 </android.support.constraint.ConstraintLayout>

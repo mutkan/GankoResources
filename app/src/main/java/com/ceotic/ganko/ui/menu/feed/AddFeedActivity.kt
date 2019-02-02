@@ -7,6 +7,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
+import android.view.View
 import android.widget.DatePicker
 import com.ceotic.ganko.R
 import com.ceotic.ganko.data.models.Group
@@ -45,9 +46,6 @@ class AddFeedActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDate
     val tipo_alimento: Array<String> by lazy { resources.getStringArray(R.array.feed_types) }
     lateinit var datePicker: DatePickerDialog
 
-
-
-
     var precioTotal: Int = 0
         set(value) {
             field = value
@@ -74,7 +72,7 @@ class AddFeedActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDate
         startActivityForResult<SelectActivity>(SelectActivity.REQUEST_SELECT,
                 SelectActivity.EXTRA_COLOR to 4)
 
-        datePicker= DatePickerDialog(this, AddFeedActivity@ this,
+        datePicker = DatePickerDialog(this, AddFeedActivity@ this,
                 calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH))
 
@@ -113,6 +111,14 @@ class AddFeedActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDate
                 .subscribeBy(
                         onNext = {
                             alimento = tipo_alimento[it]
+                            if (tipo_alimento[it] == "Otro") {
+                                labelOther.visibility = View.VISIBLE
+                                otherTxt.visibility = View.VISIBLE
+                            } else {
+                                labelOther.visibility = View.GONE
+                                otherTxt.visibility = View.GONE
+                            }
+
                         }
                 )
 
@@ -184,7 +190,9 @@ class AddFeedActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDate
         val fecha = date_feed.text()
         val peso = ration_feed.text()
         val valorkg = price_feed.text()
-        return validateForm(R.string.empty_fields, fecha, peso, valorkg)
+        val other = if (alimento == "Otro") otherTxt.text.toString()
+        else "Otro"
+        return validateForm(R.string.empty_fields, fecha, peso, valorkg, other)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -208,20 +216,13 @@ class AddFeedActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnDate
         val precio_kg = fields[2].toInt()
         val precio_total = precioTotal
         val idFinca = viewModel.getFarmId()
-        return when (alimento) {
-            "Forraje" -> RegistroAlimentacion(idFinca = idFinca, tipoAlimento = "Forraje", bovinos = bovines, fecha = fecha, peso = racion, valorkg = precio_kg, valorTotal = precio_total, grupo = group?.toGrupo())
-            "Concentrado" -> RegistroAlimentacion(idFinca = idFinca, tipoAlimento = "Concentrado", bovinos = bovines, fecha = fecha, peso = racion, valorkg = precio_kg, valorTotal = precio_total, grupo = group?.toGrupo())
-            "Ensilajes"->RegistroAlimentacion(idFinca = idFinca, tipoAlimento = "Ensilajes", bovinos = bovines, fecha = fecha, peso = racion, valorkg = precio_kg, valorTotal = precio_total, grupo = group?.toGrupo())
-            "Bloques nutricionales"-> RegistroAlimentacion(idFinca = idFinca, tipoAlimento = "Bloques nutricionales", bovinos = bovines, fecha = fecha, peso = racion, valorkg = precio_kg, valorTotal = precio_total, grupo = group?.toGrupo())
-            "Sal mineralizada"->RegistroAlimentacion(idFinca = idFinca, tipoAlimento = "Sal mineralizada", bovinos = bovines, fecha = fecha, peso = racion, valorkg = precio_kg, valorTotal = precio_total, grupo = group?.toGrupo())
-            "Sorgo"->RegistroAlimentacion(idFinca = idFinca, tipoAlimento = "Sorgo", bovinos = bovines, fecha = fecha, peso = racion, valorkg = precio_kg, valorTotal = precio_total, grupo = group?.toGrupo())
-            "Heno"->RegistroAlimentacion(idFinca = idFinca, tipoAlimento = "Heno", bovinos = bovines, fecha = fecha, peso = racion, valorkg = precio_kg, valorTotal = precio_total, grupo = group?.toGrupo())
-            "Alfalfa"->RegistroAlimentacion(idFinca = idFinca, tipoAlimento = "Alfalfa", bovinos = bovines, fecha = fecha, peso = racion, valorkg = precio_kg, valorTotal = precio_total, grupo = group?.toGrupo())
-            "Pasto de corte"-> RegistroAlimentacion(idFinca = idFinca, tipoAlimento = "Pasto de corte", bovinos = bovines, fecha = fecha, peso = racion, valorkg = precio_kg, valorTotal = precio_total, grupo = group?.toGrupo())
-            "Cebada"-> RegistroAlimentacion(idFinca = idFinca, tipoAlimento = "Cebada", bovinos = bovines, fecha = fecha, peso = racion, valorkg = precio_kg, valorTotal = precio_total, grupo = group?.toGrupo())
-            else -> RegistroAlimentacion(idFinca = idFinca, tipoAlimento = "Maiz", bovinos = bovines, fecha = fecha, peso = racion, valorkg = precio_kg, valorTotal = precio_total, grupo = group?.toGrupo())
+        val other = if (alimento == "Otro") otherTxt.text.toString()
+        else null
 
-        }
+        return RegistroAlimentacion(idFinca = idFinca, tipoAlimento = alimento, otro = other, bovinos = bovines,
+                fecha = fecha, peso = racion, valorkg = precio_kg,
+                valorTotal = precio_total, grupo = group?.toGrupo())
+
     }
 
     companion object {

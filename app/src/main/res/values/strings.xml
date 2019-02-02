@@ -298,6 +298,7 @@
         <item>Alfalfa</item>
         <item>Pasto de corte</item>
         <item>Cebada</item>
+        <item>Otro</item>
     </string-array>
 
     <string-array name="meadow_alarm_type">
