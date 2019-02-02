@@ -63,7 +63,8 @@ class App : MultiDexApplication(), HasActivityInjector {
 
             val channels = mutableListOf("account_${session.userId}")
             val planValid = session.validatePlanDate()
-            if (planValid.first) channels.add(session.userId!!)
+            if (planValid.first)
+                channels.add(session.userId!!)
 
             config.channels = channels
             replicator = Replicator(config)

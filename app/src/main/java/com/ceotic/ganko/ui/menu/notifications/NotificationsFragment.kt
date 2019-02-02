@@ -47,14 +47,10 @@ class NotificationsFragment : Fragment(), Injectable {
         return inflater.inflate(R.layout.fragment_notifications, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        notificationsList.adapter = adapter
-    }
-
     override fun onResume() {
         super.onResume()
-
+        adapter.icons = activity!!.resources.getIntArray(R.array.notification_icon)
+        notificationsList.adapter = adapter
         dis add viewModel.getNotifications(from, to)
                 .subscribeBy(
                         onSuccess = {

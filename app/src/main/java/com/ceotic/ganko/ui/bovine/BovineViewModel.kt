@@ -63,7 +63,7 @@ class BovineViewModel @Inject constructor(private val db: CouchRx, private val u
 
     private fun makeReproductiveAlarm(id:String, nowMin:Long, birthMin:Long, bovine:Bovino){
         if(bovine.genero == "Hembra"){
-            val to = birthMin + 777600
+            val to = birthMin + 777600 + 3
             if(nowMin < to){
                 val title = "Inicio Reproductivo - ${bovine.codigo}"
                 val description = "Bovino COD ${bovine.codigo}, Confirmación de ciclo reproductivo"

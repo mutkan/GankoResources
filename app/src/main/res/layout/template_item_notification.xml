@@ -10,6 +10,9 @@
             name="bvnTxt"
             type="String"/>
         <variable
+            name="icon"
+            type="int"/>
+        <variable
             name="onClickNotification"
             type="io.reactivex.subjects.PublishSubject"/>
         <import type="android.view.View"/>
@@ -26,7 +29,7 @@
             android:layout_height="24dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:visibility='@{@intArray/notification_icon[notification.alarma] == 0 ? View.VISIBLE : View.GONE}'
+            android:visibility='@{icon == 0 ? View.VISIBLE : View.GONE}'
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_vaccine_gray" />
@@ -37,7 +40,7 @@
             android:layout_height="24dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:visibility='@{@intArray/notification_icon[notification.alarma] == 1 ? View.VISIBLE : View.GONE}'
+            android:visibility='@{icon == 1 ? View.VISIBLE : View.GONE}'
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_health_gray" />
@@ -48,7 +51,7 @@
             android:layout_height="24dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:visibility='@{@intArray/notification_icon[notification.alarma] == 2 ? View.VISIBLE : View.GONE}'
+            android:visibility='@{icon == 2 ? View.VISIBLE : View.GONE}'
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_management_gray" />
@@ -59,7 +62,7 @@
             android:layout_height="24dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:visibility='@{@intArray/notification_icon[notification.alarma] == 3 ? View.VISIBLE : View.GONE}'
+            android:visibility='@{icon == 3 ? View.VISIBLE : View.GONE}'
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_bovine_grey" />
@@ -70,7 +73,7 @@
             android:layout_height="24dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:visibility='@{@intArray/notification_icon[notification.alarma] == 4 ? View.VISIBLE : View.GONE}'
+            android:visibility='@{icon == 4 ? View.VISIBLE : View.GONE}'
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_prairies_gray" />
@@ -171,6 +174,7 @@
             app:srcCompat="@drawable/ic_bovine_grey" />
 
         <TextView
+            android:visibility="@{notification.bovino != null || notification.bovinos.size()> 0 || notification.grupo != null ? View.VISIBLE : View.GONE}"
             android:id="@+id/bvnInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -181,12 +185,6 @@
             android:text="@{bvnTxt}"
             tools:text="Grupo Color" />
 
-        <android.support.constraint.Group
-            android:id="@+id/gpBovine"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="@{notification.grupo != null || notification.bovino !=null || notification.bovinos.size() > 0 ? View.VISIBLE: View.GONE}"
-            app:constraint_referenced_ids="iconGp,bvnIcon,bvnInfo" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>

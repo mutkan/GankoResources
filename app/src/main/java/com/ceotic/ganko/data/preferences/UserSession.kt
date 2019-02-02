@@ -101,7 +101,7 @@ class UserSession @Inject constructor(val prefs: SharedPreferences) {
         val PLAN_LIMIT = 0
         val PlAN_DATE = 1
 
-        const val FOUR_MONTH = 10_368_000L
+        const val FOUR_MONTH = 10_368_000_000L
         const val YEAR = 31_356_000_000L
     }
 
