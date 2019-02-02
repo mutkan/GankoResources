@@ -160,7 +160,7 @@
             app:srcCompat="@drawable/ic_group_grey" />
 
         <ImageView
-            android:visibility="@{notification.grupo == null ? View.VISIBLE : View.GONE}"
+            android:visibility="@{notification.bovino != null || notification.bovinos.size()> 0 ? View.VISIBLE : View.GONE}"
             android:id="@+id/bvnIcon"
             android:layout_width="@dimen/icon"
             android:layout_height="@dimen/icon"
