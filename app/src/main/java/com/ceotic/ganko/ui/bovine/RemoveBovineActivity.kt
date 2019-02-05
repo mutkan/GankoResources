@@ -59,7 +59,7 @@ class RemoveBovineActivity : AppCompatActivity() , Injectable, DatePickerDialog.
                         else -> "Muerte"
                     }
                     bovino.fechaSalida = retirementDateRemoveBovine.text.toString().toDate()
-                    viewModel.updateBovine(bovino._id!!,bovino)
+                    viewModel.removeBovine(bovino._id!!,bovino)
                 }
                 .subscribeByAction(
                         onNext = {

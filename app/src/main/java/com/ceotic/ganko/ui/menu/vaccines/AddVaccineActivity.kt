@@ -123,9 +123,7 @@ class AddVaccineActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
                     }
                     else viewModel.inserFirstVaccine(vaccine)
                 }
-                .flatMapSingle { docId ->
-                    setNotification(docId)
-                }.retry()
+                .retry()
                 .subscribeBy(
                         onNext = {
                             finish()
@@ -178,33 +176,6 @@ class AddVaccineActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
                 )
 
     }
-
-    private fun setNotification(docId: String): Single<Unit> = SingleFromCallable {
-        if (revaccinationRequired.isChecked) {
-            val proximaAplicacion = nextApplicationVaccine.text().toLong()
-            val unidadTiempo = timeUnitsSpinner.selectedItem.toString()
-            val proxTime = when (unidadTiempo) {
-                "Horas" -> proximaAplicacion
-                "Días" -> proximaAplicacion * 24
-                "Meses" -> proximaAplicacion * 24 * 30
-                else -> proximaAplicacion * 24 * 30 * 12
-            }
-            val notifyTime: Long = when {
-                proxTime in 3..24 -> proxTime - 1
-                proxTime > 24 -> proxTime - 24
-                else -> proxTime
-            }
-            val nombreVacuna = otherVaccine.text()
-            val dosis = when {
-                dosisVacuna != -1.0 -> dosisVacuna
-                else -> otherDose.text().toDouble()
-            }
-            NotificationWork.notify(TYPE_VACCINES, "Recordatorio Vacunas", "Aplicación de vacuna contra $nombreVacuna, $dosis ml", docId,
-                    notifyTime, TimeUnit.HOURS)
-        }
-
-    }
-
 
     private fun hideNextApplicationGroup() {
         TransitionManager.beginDelayedTransition(contentView!! as ViewGroup)

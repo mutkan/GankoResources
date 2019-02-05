@@ -232,7 +232,7 @@ class AddDiagnosisActivity : AppCompatActivity(), Injectable, DatePickerDialog.O
     fun prepareRejectedDiagnosis(bovino: Bovino): Single<List<Unit>> {
         if (bovino.serviciosFallidos!! == 3) {
             NotificationWork.notify(NotificationWork.TYPE_REPRODUCTIVE, "Tres Servicios Fallidos", "El bovino: ${bovino.nombre}, lleva 3 servicios fallidos de manera consecutiva", idBovino,
-                    10, TimeUnit.SECONDS)
+                    5, TimeUnit.SECONDS)
         }
         return Single.just(emptyList())
     }

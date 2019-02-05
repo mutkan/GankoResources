@@ -5,11 +5,10 @@ import android.util.Log
 import com.ceotic.ganko.data.db.CouchRx
 import com.ceotic.ganko.data.models.*
 import com.ceotic.ganko.data.preferences.UserSession
-import com.ceotic.ganko.util.andEx
-import com.ceotic.ganko.util.applySchedulers
-import com.ceotic.ganko.util.equalEx
+import com.ceotic.ganko.util.*
 import com.ceotic.ganko.work.NotificationWork
 import io.reactivex.Single
+import io.reactivex.rxkotlin.toObservable
 import java.io.File
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -50,7 +49,7 @@ class BovineViewModel @Inject constructor(private val db: CouchRx, private val u
                     "Septicemia Hemorrágica")
 
             val fourMoths = (30 * 1_440) + treeMoths + 2
-            makeVaccineAlarm(id, nowMin, fourMoths, bovino, ALARM_4_MONTHS,  "Brucelocis")
+            makeVaccineAlarm(id, nowMin, fourMoths, bovino, ALARM_4_MONTHS,  "Brucelosis")
 
             val twelveMoths = (240 * 1_440) + fourMoths + 2
             makeVaccineAlarm(id, nowMin, twelveMoths, bovino, ALARM_12_MONTHS,"Carbón Bacteridiano")
@@ -102,7 +101,32 @@ class BovineViewModel @Inject constructor(private val db: CouchRx, private val u
         db.insertBlock(alarm)
     }
 
-    fun updateBovine(idBovine: String, bovine: Bovino) = db.update(idBovine, bovine).applySchedulers()
+    fun removeBovine(idBovine: String, bovine: Bovino) = db.update(idBovine, bovine)
+            .flatMap { db.listByExp("activa" equalEx true
+                    andEx ("fechaProxima" gt Date())
+                    andEx ("bovino.id" equalEx bovine._id!! orEx ("bovinos" containsEx bovine._id!!)), Alarm::class) }
+            .flatMapObservable { it.toObservable() }
+            .flatMapSingle {
+                if(it.bovino != null || it.bovinos.size == 1){
+                    NotificationWork.cancelAlarm(it, userSession.device)
+                    db.update(it._id!!, it)
+                }else if(it.grupo == null){
+                    val idx = it.bovinos.indexOfFirst { x-> x == bovine._id }
+                    if(idx > -1){
+                        val idxs = it.bovinos.toMutableList()
+                        idxs.removeAt(idx)
+                        it.bovinos = idxs
+                        db.update(it._id!!, it)
+                    }else{
+                        Single.just(Unit)
+                    }
+
+                }else Single.just(Unit)
+            }
+            .toList()
+            .applySchedulers()
+
+
 
     fun getImage(idBovine: String, imageName: String) = db.getFile(idBovine, imageName).applySchedulers()
 
