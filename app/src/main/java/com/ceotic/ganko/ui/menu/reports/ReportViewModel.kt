@@ -439,7 +439,7 @@ class ReportViewModel(private val farmID:String, private val db: CouchRx) {
         return db.listByExp(q, Bovino::class)
                 .flatMapObservable { it.toObservable() }
                 .map {
-                    listOf(it.codigo!!, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), it.fechaDestete!!.toStringFormat(), it.codigoMadre!!)
+                    listOf(it.codigo?:"", it.nombre?:"", it.fechaNacimiento?.toStringFormat() ?: "", it.fechaDestete?.toStringFormat() ?: "", it.codigoMadre?: "")
                 }.toList().applySchedulers()
     }
 

@@ -201,9 +201,10 @@ class SelectReportFragment : Fragment(), Injectable, com.borax12.materialdateran
             f = from
             t = to
         }
-        viewmodel.reports.getReport(selectedType, f, t, m, y).subscribeBy(
+        dis add viewmodel.reports.getReport(selectedType, f, t, m, y).subscribeBy(
                 onSuccess = {pdf("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>)},
-                onError = { toast("Error al generar reporte") }
+                onError = {
+                    toast("Error al generar reporte") }
         )
 
     }
@@ -223,9 +224,10 @@ class SelectReportFragment : Fragment(), Injectable, com.borax12.materialdateran
             f = from
             t = to
         }
-        viewmodel.reports.getReport(selectedType, f, t, m, y).subscribeBy(
+        dis add viewmodel.reports.getReport(selectedType, f, t, m, y).subscribeBy(
                 onSuccess = { excel("reporte " + categoriesSpinner.selectedItem + " " + Calendar.MONTH, dir, header, it as MutableList<List<String?>>) },
-                onError = { toast("Error al generar reporte") }
+                onError = {
+                    toast("Error al generar reporte") }
         )
 
     }
