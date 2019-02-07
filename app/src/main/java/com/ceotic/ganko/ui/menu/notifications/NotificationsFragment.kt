@@ -82,6 +82,7 @@ class NotificationsFragment : Fragment(), Injectable {
                                 in ALARM_2_MONTHS .. ALARM_MANAGE -> notificationSelected.onNotificationSelected(it.alarma)
                                 in ALARM_SECADO .. ALARM_ZEAL_84 -> startActivity<DetailBovineActivity>(DetailBovineActivity.EXTRA_ID to it.reference!!)
                                 ALARM_REJECT_DIAGNOSIS_3 -> startActivity<DetailBovineActivity>(DetailBovineActivity.EXTRA_ID to it.reference!!)
+                                in ALARM_MEADOW_OCUPATION .. ALARM_MEADOW_EXIT -> notificationSelected.onNotificationSelected(it.alarma)
                             }
 
                         }

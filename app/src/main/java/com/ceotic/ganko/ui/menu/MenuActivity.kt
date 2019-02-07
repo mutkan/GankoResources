@@ -16,6 +16,8 @@ import android.view.View
 import com.ceotic.ganko.R
 import com.ceotic.ganko.data.models.ALARM_HEALTH
 import com.ceotic.ganko.data.models.ALARM_MANAGE
+import com.ceotic.ganko.data.models.ALARM_MEADOW_EXIT
+import com.ceotic.ganko.data.models.ALARM_MEADOW_OCUPATION
 import com.ceotic.ganko.di.Injectable
 import com.ceotic.ganko.ui.adapters.MenuAdapter
 import com.ceotic.ganko.ui.common.PageChangeListener
@@ -201,6 +203,7 @@ class MenuActivity : SearchBarActivity(MENU_SEARCH_FILTER), Injectable, HasSuppo
         when(alarm){
             ALARM_MANAGE -> clickOnMenu(6)
             ALARM_HEALTH -> clickOnMenu(9)
+            in ALARM_MEADOW_OCUPATION .. ALARM_MEADOW_EXIT -> clickOnMenu(11)
             else -> clickOnMenu(8)
         }
 
