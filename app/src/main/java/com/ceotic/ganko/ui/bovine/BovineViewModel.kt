@@ -29,8 +29,8 @@ class BovineViewModel @Inject constructor(private val db: CouchRx, private val u
             .flatMap { makeBirthAlarm(it.first, bovino, it) }
             .applySchedulers()
 
-    private fun <T>makeBirthAlarm(id: String, bovino: Bovino, data:T):Single<T> = Single.create {
-        bovino.fechaNacimiento?.let { birth->
+    private fun <T> makeBirthAlarm(id: String, bovino: Bovino, data: T): Single<T> = Single.create {
+        bovino.fechaNacimiento?.let { birth ->
 
             val now = Calendar.getInstance()
 
@@ -49,21 +49,21 @@ class BovineViewModel @Inject constructor(private val db: CouchRx, private val u
                     "Septicemia Hemorrágica")
 
             val fourMoths = (30 * 1_440) + treeMoths + 2
-            makeVaccineAlarm(id, nowMin, fourMoths, bovino, ALARM_4_MONTHS,  "Brucelosis")
+            makeVaccineAlarm(id, nowMin, fourMoths, bovino, ALARM_4_MONTHS, "Brucelosis")
 
             val twelveMoths = (240 * 1_440) + fourMoths + 2
-            makeVaccineAlarm(id, nowMin, twelveMoths, bovino, ALARM_12_MONTHS,"Carbón Bacteridiano")
+            makeVaccineAlarm(id, nowMin, twelveMoths, bovino, ALARM_12_MONTHS, "Carbón Bacteridiano")
 
-            makeReproductiveAlarm(id, nowMin, timeMin,  bovino)
+            makeReproductiveAlarm(id, nowMin, timeMin, bovino)
         }
 
         it.onSuccess(data)
     }
 
-    private fun makeReproductiveAlarm(id:String, nowMin:Long, birthMin:Long, bovine:Bovino){
-        if(bovine.genero == "Hembra"){
+    private fun makeReproductiveAlarm(id: String, nowMin: Long, birthMin: Long, bovine: Bovino) {
+        if (bovine.genero == "Hembra") {
             val to = birthMin + 777600 + 3
-            if(nowMin < to){
+            if (nowMin < to) {
                 val title = "Inicio Reproductivo - ${bovine.codigo}"
                 val description = "Bovino COD ${bovine.codigo}, Confirmación de ciclo reproductivo"
                 makeNotification(id, title, description, bovine, to, to - nowMin, ALARM_18_MONTHS)
@@ -71,7 +71,7 @@ class BovineViewModel @Inject constructor(private val db: CouchRx, private val u
         }
     }
 
-    private fun makeVaccineAlarm(id: String, from: Long, to: Long, bovine: Bovino, alarm:Int, vararg vac:String) {
+    private fun makeVaccineAlarm(id: String, from: Long, to: Long, bovine: Bovino, alarm: Int, vararg vac: String) {
         if (from < to) {
             val title = "Vacunas de Nacimiento - ${bovine.codigo}"
             val description = "Bovino COD ${bovine.codigo}, Aplicar vacunas ${vac.joinToString(", ")}"
@@ -80,10 +80,10 @@ class BovineViewModel @Inject constructor(private val db: CouchRx, private val u
         }
     }
 
-    private fun makeNotification(id:String, title:String, description:String, bovine:Bovino, to:Long, time:Long, alarmType:Int){
+    private fun makeNotification(id: String, title: String, description: String, bovine: Bovino, to: Long, time: Long, alarmType: Int) {
         val uuid = NotificationWork.notify(NotificationWork.TYPE_BOVINE, title, description, id,
                 time, TimeUnit.MINUTES)
-        val date = Date(to*60000)
+        val date = Date(to * 60000)
         val alarm = Alarm(
                 bovino = AlarmBovine(id, bovine.nombre!!, bovine.codigo!!),
                 titulo = title,
@@ -102,29 +102,35 @@ class BovineViewModel @Inject constructor(private val db: CouchRx, private val u
     }
 
     fun removeBovine(idBovine: String, bovine: Bovino) = db.update(idBovine, bovine)
-            .flatMap { db.listByExp("activa" equalEx true
-                    andEx ("fechaProxima" gt Date())
-                    andEx ("bovino.id" equalEx bovine._id!! orEx ("bovinos" containsEx bovine._id!!)), Alarm::class) }
+            .flatMap {
+                db.listByExp("activa" equalEx true
+                        andEx ("fechaProxima" gt Date())
+                        andEx ("bovino.id" equalEx bovine._id!! orEx ("bovinos" containsEx bovine._id!!)), Alarm::class)
+            }
             .flatMapObservable { it.toObservable() }
             .flatMapSingle {
-                if(it.bovino != null || it.bovinos.size == 1){
+                if (it.bovino != null || it.bovinos.size == 1) {
                     NotificationWork.cancelAlarm(it, userSession.device)
                     db.update(it._id!!, it)
-                }else if(it.grupo == null){
-                    val idx = it.bovinos.indexOfFirst { x-> x == bovine._id }
-                    if(idx > -1){
+                } else if (it.grupo == null) {
+                    val idx = it.bovinos.indexOfFirst { x -> x == bovine._id }
+                    if (idx > -1) {
                         val idxs = it.bovinos.toMutableList()
                         idxs.removeAt(idx)
                         it.bovinos = idxs
                         db.update(it._id!!, it)
-                    }else{
+                    } else {
                         Single.just(Unit)
                     }
 
-                }else Single.just(Unit)
+                } else Single.just(Unit)
             }
             .toList()
             .applySchedulers()
+
+
+    fun verifyCode(code: String): Single<Boolean> = db.oneByExp("codigo" equalEx code, Bovino::class)
+            .isEmpty
 
 
 

@@ -33,6 +33,8 @@ const val ALARM_MEADOW_REST = 21
 const val ALARM_MEADOW_FERTILIZATION = 22
 const val ALARM_MEADOW_EXIT = 23
 
+const val ALARM_REJECT_DIAGNOSIS_3 = 24
+
 
 
 class Alarm(

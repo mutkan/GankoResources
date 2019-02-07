@@ -164,6 +164,10 @@ class ReproductiveBvnViewModel @Inject constructor(private val db: CouchRx, priv
             .applySchedulers()
 
     // fun insertNotifications(notifications: List<ReproductiveNotification>): Single<List<String>> = notifications.toObservable().flatMapSingle { db.insert(it) }.toList()
+    fun insertAlarm(alarm:Alarm, uuid:UUID) = db.insert(alarm.apply {
+        idFinca = farmId
+        device = listOf(AlarmDevice(userSession.device, uuid.toString()))
+    })
 
     fun insertNotifications(notifications: List<Pair<Alarm, Long>>): Single<List<String>> = notifications.toObservable()
             .flatMapSingle { (alarm, time) ->

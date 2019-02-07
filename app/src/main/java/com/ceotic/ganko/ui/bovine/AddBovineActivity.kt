@@ -17,6 +17,8 @@ import com.jakewharton.rxbinding2.view.clicks
 import com.jakewharton.rxbinding2.widget.checkedChanges
 import com.jakewharton.rxbinding2.widget.itemSelections
 import com.squareup.picasso.Picasso
+import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_add_bovine.*
 import org.jetbrains.anko.toast
@@ -157,29 +159,36 @@ class AddBovineActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListene
 
         dis add btnAddFeed.clicks()
                 .flatMap {
-                    if (binding.page == 1)
-                        validateForm(R.string.empty_fields, bovineIdentificationNumber.text.toString(),
+                    when {
+                        binding.page == 1 -> validateForm(R.string.empty_fields, bovineIdentificationNumber.text.toString(),
                                 bovineName.text.toString(), bovineRace.text.toString(), spinnerOrigin.selectedItem.toString(),
                                 if (sexBovine.checkedRadioButtonId == R.id.male) "Macho"
                                 else "Hembra",
                                 if (sexBovine.checkedRadioButtonId == R.id.male) "No Previous Births"
                                 else previousBovineBirths.text.toString()
 
-                        )
-                    else if (binding.page == 2) {
-                        val bvnWeanedDate: String
-                        if (check_weaned.isChecked) bvnWeanedDate = bovineWeanedDate.text.toString()
-                        else bvnWeanedDate = "NoWeaned"
-                        validateForm(R.string.empty_fields, bovineWeight.text.toString(), bovineColor.text.toString(),
-                                bovineBirthDate.text.toString(), bvnWeanedDate,
-                                when {
-                                    purpose.checkedRadioButtonId == R.id.dairy -> "Lecheria"
-                                    purpose.checkedRadioButtonId == R.id.meat -> "Ceba"
-                                    else -> "Ambos"
+                        ).flatMapSingle { viewModel.verifyCode(it[0]) }
+                                .flatMap { empty ->
+                                    Observable.create<List<String>> {
+                                        if(empty) it.onNext(emptyList())
+                                        else toast("El Codigo de bovino ya existe")
+                                        it.onComplete()
+                                    }
                                 }
-                        )
-                    } else {
-                        validateForm(R.string.empty_fields,
+                        binding.page == 2 -> {
+                            val bvnWeanedDate: String
+                            if (check_weaned.isChecked) bvnWeanedDate = bovineWeanedDate.text.toString()
+                            else bvnWeanedDate = "NoWeaned"
+                            validateForm(R.string.empty_fields, bovineWeight.text.toString(), bovineColor.text.toString(),
+                                    bovineBirthDate.text.toString(), bvnWeanedDate,
+                                    when {
+                                        purpose.checkedRadioButtonId == R.id.dairy -> "Lecheria"
+                                        purpose.checkedRadioButtonId == R.id.meat -> "Ceba"
+                                        else -> "Ambos"
+                                    }
+                            )
+                        }
+                        else -> validateForm(R.string.empty_fields,
                                 if (spinnerOrigin.selectedItem == "Compra") purchaseDate.text.toString()
                                 else "No Aplica",
                                 if (spinnerOrigin.selectedItem == "Compra") purchasePrice.text.toString()

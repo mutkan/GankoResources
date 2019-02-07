@@ -700,7 +700,7 @@ class ReportViewModel(private val farmID:String, private val db: CouchRx) {
                                     val dias = Math.ceil(dif.toDouble() / 86400000)
                                     gananciaPeso =((cebaMayor.peso!! - cebaMenor.peso!!) * 1000 / dias).toFloat()
                                 }
-                                listOf(it.codigo!!, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), gananciaPeso.toString(), it.proposito!!)
+                                listOf(it.codigo!!, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), "$gananciaPeso Gr", it.proposito!!)
                             }
                 }.toList().applySchedulers()
     }
