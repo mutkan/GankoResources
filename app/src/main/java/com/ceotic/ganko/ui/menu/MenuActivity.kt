@@ -14,10 +14,13 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import com.ceotic.ganko.R
+import com.ceotic.ganko.data.models.ALARM_HEALTH
+import com.ceotic.ganko.data.models.ALARM_MANAGE
 import com.ceotic.ganko.di.Injectable
 import com.ceotic.ganko.ui.adapters.MenuAdapter
 import com.ceotic.ganko.ui.common.PageChangeListener
 import com.ceotic.ganko.ui.common.SearchBarActivity
+import com.ceotic.ganko.ui.menu.notifications.NotificationsFragment
 import com.ceotic.ganko.util.LifeDisposable
 import com.ceotic.ganko.util.buildViewModel
 import dagger.android.AndroidInjector
@@ -27,7 +30,7 @@ import kotlinx.android.synthetic.main.activity_menu.*
 import javax.inject.Inject
 
 
-class MenuActivity : SearchBarActivity(MENU_SEARCH_FILTER), Injectable, HasSupportFragmentInjector {
+class MenuActivity : SearchBarActivity(MENU_SEARCH_FILTER), Injectable, HasSupportFragmentInjector, NotificationsFragment.OnNotificationSelected {
 
     @Inject
     lateinit var injector: DispatchingAndroidInjector<Fragment>
@@ -194,5 +197,13 @@ class MenuActivity : SearchBarActivity(MENU_SEARCH_FILTER), Injectable, HasSuppo
         }
     }
 
+    override fun onNotificationSelected(alarm: Int) {
+        when(alarm){
+            ALARM_MANAGE -> clickOnMenu(6)
+            ALARM_HEALTH -> clickOnMenu(9)
+            else -> clickOnMenu(8)
+        }
+
+    }
 
 }

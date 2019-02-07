@@ -7,6 +7,7 @@ import com.ceotic.ganko.data.models.*
 import com.ceotic.ganko.data.preferences.UserSession
 import com.ceotic.ganko.util.*
 import com.ceotic.ganko.work.NotificationWork
+import io.reactivex.Maybe
 import io.reactivex.Single
 import io.reactivex.rxkotlin.toObservable
 import java.io.File
@@ -142,5 +143,7 @@ class BovineViewModel @Inject constructor(private val db: CouchRx, private val u
                     .defaultIfEmpty(true)
                     .toSingle()
                     .applySchedulers()
+
+    fun byId(id:String): Maybe<Bovino> = db.oneById(id, Bovino::class)
 
 }

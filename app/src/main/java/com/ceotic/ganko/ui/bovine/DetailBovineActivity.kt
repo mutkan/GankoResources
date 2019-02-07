@@ -21,6 +21,7 @@ import com.ceotic.ganko.util.LifeDisposable
 import com.ceotic.ganko.util.buildViewModel
 import com.jakewharton.rxbinding2.view.clicks
 import com.squareup.picasso.Picasso
+import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_bovine_profile.*
 import org.jetbrains.anko.startActivity
 import javax.inject.Inject
@@ -34,7 +35,7 @@ class DetailBovineActivity : AppCompatActivity(), Injectable {
 
     val dis: LifeDisposable = LifeDisposable(this)
 
-    val bovine: Bovino by lazy { intent.extras.getParcelable<Bovino>(BOVINE) }
+    var bovine: Bovino? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,74 +44,91 @@ class DetailBovineActivity : AppCompatActivity(), Injectable {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back_white)
-        binding.bovine = bovine
-        binding.sex = bovine.genero == "Hembra"
 
+        bovine = intent?.extras?.getParcelable(BOVINE)
 
     }
 
     override fun onResume() {
         super.onResume()
-
-        bovine.imagen?.let { imageName ->
-            dis add viewModel.getImage(bovine._id!!, imageName).subscribe { file ->
-                Picasso.get().load(file)
-                        .into(banner)
-            }
+        if(bovine != null){
+            setupBovine()
+        }else{
+            val idBovine = intent.extras.getString(EXTRA_ID)
+            dis add viewModel.byId(idBovine)
+                    .subscribeBy(
+                            onSuccess = {
+                                bovine = it
+                                setupBovine()
+                            }
+                    )
         }
 
+
         dis add btnAddMilkProfileBovine.clicks()
-                .subscribe { startActivity<AddMilkBvnActivity>(EXTRA_ID to bovine._id) }
+                .subscribe { startActivity<AddMilkBvnActivity>(EXTRA_ID to bovine!!._id) }
 
         dis add btnMilkProfileActivity.clicks()
-                .subscribe { startActivity<MilkBvnActivity>(EXTRA_ID to bovine._id) }
+                .subscribe { startActivity<MilkBvnActivity>(EXTRA_ID to bovine!!._id) }
 
         dis add btnReproduciveProfileActivity.clicks()
-                .subscribe { startActivity<ReproductiveBvnActivity>(EXTRA_ID to bovine._id) }
+                .subscribe { startActivity<ReproductiveBvnActivity>(EXTRA_ID to bovine!!._id) }
 
         dis add btnNextReproductive.clicks()
-                .subscribe { startActivity<ReproductiveBvnActivity>(EXTRA_ID to bovine._id) }
+                .subscribe { startActivity<ReproductiveBvnActivity>(EXTRA_ID to bovine!!._id) }
 
         dis add btnMeatProfileActivity.clicks()
-                .subscribe { startActivity<CebaBvnActivity>(EXTRA_ID to bovine._id) }
+                .subscribe { startActivity<CebaBvnActivity>(EXTRA_ID to bovine!!._id) }
 
         dis add btnNextMeat.clicks()
-                .subscribe { startActivity<CebaBvnActivity>(EXTRA_ID to bovine._id) }
+                .subscribe { startActivity<CebaBvnActivity>(EXTRA_ID to bovine!!._id) }
 
         dis add btnFeedingProfileActivity.clicks()
-                .subscribe { startActivity<FeedBvnActivity>(EXTRA_ID to bovine._id) }
+                .subscribe { startActivity<FeedBvnActivity>(EXTRA_ID to bovine!!._id) }
 
         dis add btnNextFeeding.clicks()
-                .subscribe { startActivity<FeedBvnActivity>(EXTRA_ID to bovine._id) }
+                .subscribe { startActivity<FeedBvnActivity>(EXTRA_ID to bovine!!._id) }
 
         dis add btnManagementProfileActivity.clicks()
-                .subscribe { startActivity<ManageBvnActivity>(EXTRA_ID to bovine._id) }
+                .subscribe { startActivity<ManageBvnActivity>(EXTRA_ID to bovine!!._id) }
 
         dis add btnNextManagement.clicks()
-                .subscribe { startActivity<ManageBvnActivity>(EXTRA_ID to bovine._id) }
+                .subscribe { startActivity<ManageBvnActivity>(EXTRA_ID to bovine!!._id) }
 
         dis add btnMovementProfileActivity.clicks()
-                .subscribe { startActivity<MovementBvnActivity>(EXTRA_ID to bovine._id) }
+                .subscribe { startActivity<MovementBvnActivity>(EXTRA_ID to bovine!!._id) }
 
         dis add btnNextMovement.clicks()
-                .subscribe { startActivity<MovementBvnActivity>(EXTRA_ID to bovine._id) }
+                .subscribe { startActivity<MovementBvnActivity>(EXTRA_ID to bovine!!._id) }
 
         dis add btnVaccinesProfileActivity.clicks()
-                .subscribe { startActivity<VaccinationBvnActivity>(EXTRA_ID to bovine._id) }
+                .subscribe { startActivity<VaccinationBvnActivity>(EXTRA_ID to bovine!!._id) }
 
         dis add btnNextVaccines.clicks()
-                .subscribe { startActivity<VaccinationBvnActivity>(EXTRA_ID to bovine._id) }
+                .subscribe { startActivity<VaccinationBvnActivity>(EXTRA_ID to bovine!!._id) }
 
         dis add btnHealthProfileActivity.clicks()
-                .subscribe { startActivity<HealthBvnActivity>(EXTRA_ID to bovine._id) }
+                .subscribe { startActivity<HealthBvnActivity>(EXTRA_ID to bovine!!._id) }
 
         dis add btnNextHealth.clicks()
-                .subscribe { startActivity<HealthBvnActivity>(EXTRA_ID to bovine._id) }
+                .subscribe { startActivity<HealthBvnActivity>(EXTRA_ID to bovine!!._id) }
     }
 
     override fun onSupportNavigateUp(): Boolean {
         finish()
         return true
+    }
+
+    fun setupBovine(){
+        binding.bovine = bovine
+        binding.sex = bovine!!.genero == "Hembra"
+
+        bovine!!.imagen?.let { imageName ->
+            dis add viewModel.getImage(bovine!!._id!!, imageName).subscribe { file ->
+                Picasso.get().load(file)
+                        .into(banner)
+            }
+        }
     }
 
     companion object {
