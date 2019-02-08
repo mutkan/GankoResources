@@ -146,7 +146,7 @@ class AddServiceActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
                                 bovino = AlarmBovine(bovino._id!!, bovino.nombre!!, bovino.codigo!!),
                                 titulo = "21 Dias desde el servicio",
                                 descripcion = "Verificar celo",
-                                alarma = ALARM_DIAGNOSIS,
+                                alarma = ALARM_ZEAL_21,
                                 fechaProxima = Date(zeal * 60000),
                                 type = TYPE_ALARM,
                                 activa = true,

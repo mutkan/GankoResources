@@ -77,7 +77,10 @@ class AddZealActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
 
 
                     } else {
-                        Single.just(listOf(""))
+                        viewModel.cancelNotiByDiagnosis(bovino._id!!, ALARM_ZEAL_21, ALARM_ZEAL_42, ALARM_ZEAL_64,
+                                ALARM_ZEAL_84)
+                                .flatMap { Single.just(listOf("")) }
+
                     }
 
 

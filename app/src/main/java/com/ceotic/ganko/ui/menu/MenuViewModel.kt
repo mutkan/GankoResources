@@ -251,7 +251,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                         titulo = "5 Dias libre Paradera $meadow",
                         descripcion = "La pradera $meadow lleva 5 dias desocupada",
                         alarma = ALARM_MEADOW_EXIT,
-                        fechaProxima = Date(milis),
+                        fechaProxima = Date(milis * 60000),
                         type = TYPE_ALARM,
                         activa = true,
                         reference = meadow,

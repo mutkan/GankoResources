@@ -124,6 +124,9 @@ class AddDiagnosisActivity : AppCompatActivity(), Injectable, DatePickerDialog.O
                             prepareRejectedDiagnosis(bovino)
                         type == TYPE_NOVELTY && servicioActual.finalizado!! ->
                             viewModel.prepareNovelty(bovino, servicioActual)
+                                    .flatMap {
+                                        viewModel.prepareBirthZeal(bovino, servicioActual.novedad!!.fecha)
+                                    }
                         else -> Single.just(emptyList())
                     }
                 }
