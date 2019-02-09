@@ -25,7 +25,6 @@ import java.net.URI
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
-import javax.inject.Named
 import kotlin.concurrent.schedule
 
 class App : MultiDexApplication(), HasActivityInjector {
@@ -39,16 +38,10 @@ class App : MultiDexApplication(), HasActivityInjector {
     @Inject
     lateinit var db: Database
 
-    @Named("dbName")
-    @Inject
-    lateinit var dbName: String
-
     override fun activityInjector(): AndroidInjector<Activity> = injector
 
     private var replicator: Replicator? = null
     private var changeToken: ListenerToken? = null
-    private var notiToken: ListenerToken? = null
-    private var notiDisableToken: ListenerToken? = null
 
     override fun onCreate() {
         super.onCreate()
@@ -116,7 +109,7 @@ class App : MultiDexApplication(), HasActivityInjector {
 
         var now: Long = 0
         Observable.create<ResultSet> { emitter ->
-            notiToken = QueryBuilder
+            QueryBuilder
                     .select(SelectResult.all())
                     .from(DataSource.database(db))
                     .where(exp)
@@ -126,7 +119,7 @@ class App : MultiDexApplication(), HasActivityInjector {
         }
                 .doOnNext { now = Date().time }
                 .flatMap { it.toObservable() }
-                .map { it.getDictionary(dbName) }
+                .map { it.getDictionary("ganko-database") }
                 .map {
                     val milis = it.getDate("fechaProxima").time - now
                     val reference = it.getString("reference")
@@ -172,7 +165,7 @@ class App : MultiDexApplication(), HasActivityInjector {
                 )
 
         Observable.create<ResultSet> { emitter ->
-            notiToken = QueryBuilder
+            QueryBuilder
                     .select(SelectResult.all())
                     .from(DataSource.database(db))
                     .where(expDis)
@@ -181,7 +174,7 @@ class App : MultiDexApplication(), HasActivityInjector {
                     }
         }
                 .flatMap { it.toObservable() }
-                .map { it.getDictionary(dbName) }
+                .map { it.getDictionary("ganko-database") }
                 .map { it.getArray("device") as Array<Dictionary> }
                 .flatMap { it.toObservable() }
                 .filter { it.getLong("device") == device }
