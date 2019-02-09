@@ -19,6 +19,7 @@ import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.rxkotlin.toObservable
 import io.reactivex.schedulers.Schedulers
 import java.net.URI
@@ -26,6 +27,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.concurrent.schedule
+
 
 class App : MultiDexApplication(), HasActivityInjector {
 
@@ -110,7 +112,7 @@ class App : MultiDexApplication(), HasActivityInjector {
         var now: Long = 0
         Observable.create<ResultSet> { emitter ->
             QueryBuilder
-                    .select(SelectResult.all())
+                    .select(SelectResult.all(), SelectResult.expression(Meta.id))
                     .from(DataSource.database(db))
                     .where(exp)
                     .addChangeListener {
@@ -119,11 +121,12 @@ class App : MultiDexApplication(), HasActivityInjector {
         }
                 .doOnNext { now = Date().time }
                 .flatMap { it.toObservable() }
-                .map { it.getDictionary("ganko-database") }
-                .map {
-                    val milis = it.getDate("fechaProxima").time - now
-                    val reference = it.getString("reference")
-                    val alarm = it.getInt("alarma")
+                .map { it.getDictionary("ganko-database") to it.getString("id") }
+                .map {(c, id)->
+
+                    val milis = c.getDate("fechaProxima").time - now
+                    val reference = c.getString("reference")
+                    val alarm = c.getInt("alarma")
                     val type = when (alarm) {
                         in ALARM_2_MONTHS..ALARM_12_MONTHS, ALARM_VACCINE -> NotificationWork.TYPE_VACCINES
                         ALARM_18_MONTHS, in ALARM_SECADO..ALARM_DIAGNOSIS, ALARM_REJECT_DIAGNOSIS_3 -> NotificationWork.TYPE_REPRODUCTIVE
@@ -132,28 +135,39 @@ class App : MultiDexApplication(), HasActivityInjector {
                         else -> NotificationWork.TYPE_MEADOW
                     }
                     val (title, des) = when (alarm) {
-                        in ALARM_18_MONTHS..ALARM_12_MONTHS -> it.getString("titulo") to it.getString("descripcion")
+                        in ALARM_18_MONTHS..ALARM_12_MONTHS -> c.getString("titulo") to c.getString("descripcion")
                         in ALARM_SECADO..ALARM_DIAGNOSIS -> {
-                            val bvn = it.getDictionary("bovino")
-                            it.getString("titulo") to it.getString("descripcion") + ", Bovino " + bvn.getString("codigo")
+                            val bvn = c.getDictionary("bovino")
+                            c.getString("titulo") to c.getString("descripcion") + ", Bovino " + bvn.getString("codigo")
                         }
                         in ALARM_HEALTH..ALARM_MANAGE -> {
-                            val bvn = it.getDictionary("bovino")
-                            val gp = it.getDictionary("grupo")
+                            val bvn = c.getDictionary("bovino")
+                            val gp = c.getDictionary("grupo")
                             val info = when {
                                 bvn != null -> " - Bovino ${bvn.getString("codigo")}"
                                 gp != null -> " - Grupo ${gp.getString("nombre")}"
                                 else -> ""
                             }
-                            it.getString("titulo") to it.getString("descripcion") + info
+                            c.getString("titulo") to c.getString("descripcion") + info
                         }
-                        in ALARM_MEADOW_OCUPATION..ALARM_MEADOW_EXIT -> it.getString("titulo") to it.getString("descripcion")
+                        in ALARM_MEADOW_OCUPATION..ALARM_MEADOW_EXIT -> c.getString("titulo") to c.getString("descripcion")
                         else -> {
-                            val bvn = it.getDictionary("bovino")
-                            it.getString("titulo") to it.getString("descripcion") + ", Bovino " + bvn.getString("codigo")
+                            val bvn = c.getDictionary("bovino")
+                            c.getString("titulo") to c.getString("descripcion") + ", Bovino " + bvn.getString("codigo")
                         }
                     }
-                    NotificationWork.notify(type, title, des, reference, milis, TimeUnit.MILLISECONDS)
+                    val uuid = NotificationWork.notify(type, title, des, reference, milis, TimeUnit.MILLISECONDS)
+                    id to uuid
+                }
+                .flatMapSingle {(id, uuid)->
+                    val doc = db.getDocument(id).toMutable()
+                    val devices = doc.getArray("device")
+                    val dev = MutableDictionary()
+                    dev.setLong("device", device)
+                    dev.setString("uuid", uuid.toString())
+                    devices.addDictionary(dev)
+                    doc.setArray("device", devices)
+                    Single.fromCallable { db.save(doc) }
                 }
                 .subscribeOn(Schedulers.io())
                 .subscribe()
