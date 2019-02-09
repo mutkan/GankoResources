@@ -2,7 +2,6 @@ package com.ceotic.ganko.ui.menu
 
 import android.arch.lifecycle.ViewModel
 import android.graphics.Color
-import android.util.Log
 import com.ceotic.ganko.R
 import com.ceotic.ganko.data.db.CouchRx
 import com.ceotic.ganko.data.models.*
@@ -13,21 +12,18 @@ import com.ceotic.ganko.ui.menu.reports.AverageViewModel
 import com.ceotic.ganko.ui.menu.reports.ReportViewModel
 import com.ceotic.ganko.util.*
 import com.ceotic.ganko.work.NotificationWork
-import com.couchbase.lite.*
-import hu.akarnokd.rxjava2.math.MathObservable
+import com.couchbase.lite.Expression
+import com.couchbase.lite.Ordering
 import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
-import io.reactivex.functions.BiFunction
 import io.reactivex.rxkotlin.Observables
 import io.reactivex.rxkotlin.toObservable
 import io.reactivex.rxkotlin.zipWith
 import io.reactivex.subjects.PublishSubject
-import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
-import kotlin.math.roundToInt
 
 /**
  * Created by Ana Marin on 11/03/2018.
@@ -255,7 +251,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
                         titulo = "5 Dias libre Paradera $meadow",
                         descripcion = "La pradera $meadow lleva 5 dias desocupada",
                         alarma = ALARM_MEADOW_EXIT,
-                        fechaProxima = Date(milis),
+                        fechaProxima = Date(milis * 60000),
                         type = TYPE_ALARM,
                         activa = true,
                         reference = meadow,
@@ -305,7 +301,8 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
             .applySchedulers()
 
     fun inserFirstVaccine(registroVacuna: RegistroVacuna): Single<String> = db.insertDosisUno(registroVacuna)
-            .flatMap { makeAlarm(it,registroVacuna.bovinos ?: emptyList(),registroVacuna.grupo,
+            .flatMap {
+                makeAlarm(it,registroVacuna.bovinos ?: emptyList(),registroVacuna.grupo,
                     registroVacuna.titulo!!, registroVacuna.descripcion!!, null,null,
                     registroVacuna.fechaProxima, ALARM_VACCINE
             ) }
@@ -398,21 +395,23 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     //region Notificaiones
 
     fun getNotifications(from: Date, to: Date): Single<List<Alarm>> =
-            db.listByExp("idFinca" equalEx farmID andEx ("fechaProxima".betweenDates(from, to)) andEx ("activa" equalEx true), Alarm::class, orderBy = arrayOf("fechaProxima" orderEx ASCENDING))
+            db.listByExp("idFinca" equalEx farmID andEx ("fechaProxima".betweenDates(from, to)) andEx ("activa" equalEx true), Alarm::class, orderBy = arrayOf("fechaProxima" orderEx DESCENDING))
                     .applySchedulers()
 
-    private fun prepareNotificationBovine(id:String, bovines:List<String> = emptyList(), group:Grupo? =null) = if(bovines.size == 1 && group == null)
+    private fun prepareNotificationBovine(id:String, bovines:List<String> = emptyList(), group:Grupo? =null) =
+            if(bovines.size == 1 && group == null)
         db.oneById(bovines[0], Bovino::class)
                 .map { "${it._id};;${it.nombre};;${it.codigo}" to id }
                 .defaultIfEmpty("" to id)
                 .toSingle()
-    else Single.just("" to id)
+    else
+                Single.just("" to id)
 
     private fun prepareAlarm(data:Pair<String, String>, bovines:List<String> = emptyList(), group:Grupo? = null, title:String, description:String, nextDate:Date?, notifyTime: Long, type:Int):Single<String>{
         val bvn = data.first.split(";;")
         var bvnInfo:AlarmBovine? = null
         var info = ""
-        if(bvn.isNotEmpty()){
+        if(bvn.size > 2){
             bvnInfo = AlarmBovine(bvn[0], bvn[1], bvn[2])
             info = "- Bovino ${bvnInfo.codigo}"
         }
@@ -459,11 +458,12 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
 
     private fun cancelAlarm(reference:String):Single<Unit>{
         return db.listByExp("reference" equalEx  reference
-                andEx ("activa" equalEx false)
+                andEx ("activa" equalEx true)
                 andEx ("fechaProxima" gt Date())
                 , Alarm::class )
                 .flatMap {
                     if(it.isNotEmpty()){
+                        it[0].activa = false
                         NotificationWork.cancelAlarm(it[0], userSession.device )
                         db.update(it[0]._id!!, it[0])
                     }else{

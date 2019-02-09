@@ -5,11 +5,11 @@ import android.util.Log
 import com.ceotic.ganko.data.db.CouchRx
 import com.ceotic.ganko.data.models.*
 import com.ceotic.ganko.data.preferences.UserSession
-import com.ceotic.ganko.util.andEx
-import com.ceotic.ganko.util.applySchedulers
-import com.ceotic.ganko.util.equalEx
+import com.ceotic.ganko.util.*
 import com.ceotic.ganko.work.NotificationWork
+import io.reactivex.Maybe
 import io.reactivex.Single
+import io.reactivex.rxkotlin.toObservable
 import java.io.File
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -30,8 +30,8 @@ class BovineViewModel @Inject constructor(private val db: CouchRx, private val u
             .flatMap { makeBirthAlarm(it.first, bovino, it) }
             .applySchedulers()
 
-    private fun <T>makeBirthAlarm(id: String, bovino: Bovino, data:T):Single<T> = Single.create {
-        bovino.fechaNacimiento?.let { birth->
+    private fun <T> makeBirthAlarm(id: String, bovino: Bovino, data: T): Single<T> = Single.create {
+        bovino.fechaNacimiento?.let { birth ->
 
             val now = Calendar.getInstance()
 
@@ -50,41 +50,41 @@ class BovineViewModel @Inject constructor(private val db: CouchRx, private val u
                     "Septicemia Hemorrágica")
 
             val fourMoths = (30 * 1_440) + treeMoths + 2
-            makeVaccineAlarm(id, nowMin, fourMoths, bovino, ALARM_4_MONTHS,  "Brucelocis")
+            makeVaccineAlarm(id, nowMin, fourMoths, bovino, ALARM_4_MONTHS, "Brucelosis")
 
             val twelveMoths = (240 * 1_440) + fourMoths + 2
-            makeVaccineAlarm(id, nowMin, twelveMoths, bovino, ALARM_12_MONTHS,"Carbón Bacteridiano")
+            makeVaccineAlarm(id, nowMin, twelveMoths, bovino, ALARM_12_MONTHS, "Carbón Bacteridiano")
 
-            makeReproductiveAlarm(id, nowMin, timeMin,  bovino)
+            makeReproductiveAlarm(id, nowMin, timeMin, bovino)
         }
 
         it.onSuccess(data)
     }
 
-    private fun makeReproductiveAlarm(id:String, nowMin:Long, birthMin:Long, bovine:Bovino){
-        if(bovine.genero == "Hembra"){
+    private fun makeReproductiveAlarm(id: String, nowMin: Long, birthMin: Long, bovine: Bovino) {
+        if (bovine.genero == "Hembra") {
             val to = birthMin + 777600 + 3
-            if(nowMin < to){
+            if (nowMin < to) {
                 val title = "Inicio Reproductivo - ${bovine.codigo}"
-                val description = "Bovino COD ${bovine.codigo}, Confirmación de ciclo reproductivo"
+                val description = "Bovino ${bovine.codigo}, Confirmación de ciclo reproductivo"
                 makeNotification(id, title, description, bovine, to, to - nowMin, ALARM_18_MONTHS)
             }
         }
     }
 
-    private fun makeVaccineAlarm(id: String, from: Long, to: Long, bovine: Bovino, alarm:Int, vararg vac:String) {
+    private fun makeVaccineAlarm(id: String, from: Long, to: Long, bovine: Bovino, alarm: Int, vararg vac: String) {
         if (from < to) {
             val title = "Vacunas de Nacimiento - ${bovine.codigo}"
-            val description = "Bovino COD ${bovine.codigo}, Aplicar vacunas ${vac.joinToString(", ")}"
+            val description = "Bovino ${bovine.codigo}, Aplicar vacunas ${vac.joinToString(", ")}"
             makeNotification(id, title, description, bovine, to, to - from, alarm)
 
         }
     }
 
-    private fun makeNotification(id:String, title:String, description:String, bovine:Bovino, to:Long, time:Long, alarmType:Int){
+    private fun makeNotification(id: String, title: String, description: String, bovine: Bovino, to: Long, time: Long, alarmType: Int) {
         val uuid = NotificationWork.notify(NotificationWork.TYPE_BOVINE, title, description, id,
                 time, TimeUnit.MINUTES)
-        val date = Date(to*60000)
+        val date = Date(to * 60000)
         val alarm = Alarm(
                 bovino = AlarmBovine(id, bovine.nombre!!, bovine.codigo!!),
                 titulo = title,
@@ -102,7 +102,38 @@ class BovineViewModel @Inject constructor(private val db: CouchRx, private val u
         db.insertBlock(alarm)
     }
 
-    fun updateBovine(idBovine: String, bovine: Bovino) = db.update(idBovine, bovine).applySchedulers()
+    fun removeBovine(idBovine: String, bovine: Bovino) = db.update(idBovine, bovine)
+            .flatMap {
+                db.listByExp("activa" equalEx true
+                        andEx ("fechaProxima" gt Date())
+                        andEx ("bovino.id" equalEx bovine._id!! orEx ("bovinos" containsEx bovine._id!!)), Alarm::class)
+            }
+            .flatMapObservable { it.toObservable() }
+            .flatMapSingle {
+                if (it.bovino != null || it.bovinos.size == 1) {
+                    NotificationWork.cancelAlarm(it, userSession.device)
+                    db.update(it._id!!, it)
+                } else if (it.grupo == null) {
+                    val idx = it.bovinos.indexOfFirst { x -> x == bovine._id }
+                    if (idx > -1) {
+                        val idxs = it.bovinos.toMutableList()
+                        idxs.removeAt(idx)
+                        it.bovinos = idxs
+                        db.update(it._id!!, it)
+                    } else {
+                        Single.just(Unit)
+                    }
+
+                } else Single.just(Unit)
+            }
+            .toList()
+            .applySchedulers()
+
+
+    fun verifyCode(code: String): Single<Boolean> = db.oneByExp("codigo" equalEx code, Bovino::class)
+            .isEmpty
+
+
 
     fun getImage(idBovine: String, imageName: String) = db.getFile(idBovine, imageName).applySchedulers()
 
@@ -112,5 +143,7 @@ class BovineViewModel @Inject constructor(private val db: CouchRx, private val u
                     .defaultIfEmpty(true)
                     .toSingle()
                     .applySchedulers()
+
+    fun byId(id:String): Maybe<Bovino> = db.oneById(id, Bovino::class)
 
 }

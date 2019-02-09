@@ -2,6 +2,7 @@ package com.ceotic.ganko.ui.menu.notifications
 
 
 import android.arch.lifecycle.ViewModelProvider
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
@@ -9,14 +10,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.ceotic.ganko.R
+import com.ceotic.ganko.data.models.*
 import com.ceotic.ganko.di.Injectable
 import com.ceotic.ganko.ui.adapters.NotificationsListAdapter
+import com.ceotic.ganko.ui.bovine.DetailBovineActivity
 import com.ceotic.ganko.ui.menu.MenuViewModel
+import com.ceotic.ganko.ui.menu.health.detail.HealthDetailActivity
+import com.ceotic.ganko.ui.menu.management.detail.ManageDetailActivity
+import com.ceotic.ganko.ui.menu.vaccines.detail.VaccineDetailActivity
 import com.ceotic.ganko.util.LifeDisposable
 import com.ceotic.ganko.util.add
 import com.ceotic.ganko.util.buildViewModel
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.fragment_notifications.*
+import org.jetbrains.anko.support.v4.startActivity
 import java.util.*
 import javax.inject.Inject
 
@@ -41,6 +48,12 @@ class NotificationsFragment : Fragment(), Injectable {
     }
     val from: Date by lazy { Date(cal.timeInMillis).add(Calendar.DATE,-7)!! }
     val to: Date by lazy { from.add(Calendar.DATE, 14)!! }
+    lateinit var notificationSelected:OnNotificationSelected
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        notificationSelected = context as OnNotificationSelected
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -55,22 +68,25 @@ class NotificationsFragment : Fragment(), Injectable {
                 .subscribeBy(
                         onSuccess = {
                             adapter.data = it
-                            Log.i("FechaAlarma", "Resultado ${it.size}")
                             isEmpty = it.isEmpty()
                         }
                 )
 
-        /*dis add adapter.onClickNotification
+
+
+        dis add adapter.onClickNotification
                 .subscribeBy(
                         onNext = {
-                            when(it.type){
-                                RegistroVacuna::class.simpleName -> startActivity<VaccineDetailActivity>(VaccineDetailActivity.ID_VACCINE to it._id!!, VaccineDetailActivity.ID_FIRST_VACCINE to it.idAplicacionUno!!)
-                                RegistroManejo::class.simpleName -> startActivity<ManageDetailActivity>(ManageDetailActivity.ID_MANAGE to it._id!!, ManageDetailActivity.ID_FIRST_MANAGE to it.idAplicacionUno!!)
-                                Sanidad::class.simpleName -> startActivity<HealthDetailActivity>(HealthDetailActivity.ID_HEALTH to it._id!!, HealthDetailActivity.ID_FIRST_HEALTH to it.idAplicacionUno!!)
+                            when(it.alarma!!){
+                                ALARM_18_MONTHS -> startActivity<DetailBovineActivity>(DetailBovineActivity.EXTRA_ID to it.reference!!)
+                                in ALARM_2_MONTHS .. ALARM_MANAGE -> notificationSelected.onNotificationSelected(it.alarma)
+                                in ALARM_SECADO .. ALARM_ZEAL_84 -> startActivity<DetailBovineActivity>(DetailBovineActivity.EXTRA_ID to it.reference!!)
+                                ALARM_REJECT_DIAGNOSIS_3 -> startActivity<DetailBovineActivity>(DetailBovineActivity.EXTRA_ID to it.reference!!)
+                                in ALARM_MEADOW_OCUPATION .. ALARM_MEADOW_EXIT -> notificationSelected.onNotificationSelected(it.alarma)
                             }
 
                         }
-                )*/
+                )
 
     }
 
@@ -79,5 +95,9 @@ class NotificationsFragment : Fragment(), Injectable {
         fun instance(): NotificationsFragment = NotificationsFragment()
     }
 
+
+    interface OnNotificationSelected{
+        fun onNotificationSelected(alarm:Int)
+    }
 
 }

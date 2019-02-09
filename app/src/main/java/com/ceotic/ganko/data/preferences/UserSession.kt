@@ -92,8 +92,8 @@ class UserSession @Inject constructor(val prefs: SharedPreferences) {
 
         private val PLAN_FREE = "gratuito"
         private val PLAN_BASIC = "basico"
-        private val PLAN_BASIC_2 = "basico1"
-        private val PLAN_BASIC_3 = "basico2"
+        private val PLAN_BASIC_2 = "basico2"
+        private val PLAN_BASIC_3 = "basico3"
         private val PLAN_PREMIUM = "premium"
         private val PLAN_PREMIUM_2 = "premium2"
         private val KEY_DEVICE = "device"

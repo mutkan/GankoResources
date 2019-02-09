@@ -81,10 +81,10 @@ class AddMeadowAlertActivity : AppCompatActivity(), Injectable {
                     }
                     val calendar = Calendar.getInstance()
                     calendar.timeInMillis = Date().time + (time*3600000) + 600000
-                    val date = "${calendar.get(Calendar.DAY_OF_MONTH)}/${calendar.get(Calendar.MONTH)+1}/${calendar.get(Calendar.YEAR)}".toDate()
+                    val date = calendar.time
 
                     meadowAlarm = MeadowAlarm(null, null, null, idMeadow,
-                            "Acciones pendientes en Pradera " + meadow.identificador,
+                            "Acciones pendientes en Pradera " + meadow.identificador, //El ultimo valor como identificador se usa en la web
                             when (meadowAlarmType.selectedItem.toString()) {
                                 "Ocupacion" -> "La pradera ${meadow.identificador} ya puede ser ocupada"
                                 "Descanso" -> "La pradera ${meadow.identificador} ya debe ser desocupada"

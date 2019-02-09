@@ -49,7 +49,7 @@ class ReproductiveBvnViewModel @Inject constructor(private val db: CouchRx, priv
                 val servicios = b.servicios!!.toMutableList()
                 servicios[position] = servicio
                 b.servicios = servicios.toList()
-                b.serviciosFallidos = if (failed) b.serviciosFallidos?.plus(1) ?: 1 else 0
+                b.serviciosFallidos = if (failed) (b.serviciosFallidos ?: 0) + 1 else 0
 
                 db.update(idBovino, b).map { b }
             }.applySchedulers()
@@ -164,6 +164,10 @@ class ReproductiveBvnViewModel @Inject constructor(private val db: CouchRx, priv
             .applySchedulers()
 
     // fun insertNotifications(notifications: List<ReproductiveNotification>): Single<List<String>> = notifications.toObservable().flatMapSingle { db.insert(it) }.toList()
+    fun insertAlarm(alarm:Alarm, uuid:UUID) = db.insert(alarm.apply {
+        idFinca = farmId
+        device = listOf(AlarmDevice(userSession.device, uuid.toString()))
+    })
 
     fun insertNotifications(notifications: List<Pair<Alarm, Long>>): Single<List<String>> = notifications.toObservable()
             .flatMapSingle { (alarm, time) ->
@@ -178,11 +182,12 @@ class ReproductiveBvnViewModel @Inject constructor(private val db: CouchRx, priv
             .applySchedulers()
 
     fun cancelNotiByDiagnosis(id: String, vararg types:Int):Single<List<Unit>> = db.listByExp("reference" equalEx id
-            andEx ("activa" equalEx false)
+            andEx ("activa" equalEx true)
             andEx ("fechaProxima" gt Date())
             andEx ("alarma" inEx types.toList()), Alarm::class)
             .flatMapObservable { it.toObservable() }
             .flatMapSingle {
+                it.activa = false
                 NotificationWork.cancelAlarm(it, userSession.device)
                 db.update(it._id!!, it)
             }

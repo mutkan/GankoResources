@@ -46,7 +46,7 @@ class HealthViewModel @Inject constructor(private val db: CouchRx,
         val bvn = data.first.split(";;")
         var bvnInfo:AlarmBovine? = null
         var info = ""
-        if(bvn.isNotEmpty()){
+        if(bvn.size > 2){
             bvnInfo = AlarmBovine(bvn[0], bvn[1], bvn[2])
             info = "- Bovino ${bvnInfo.codigo}"
         }

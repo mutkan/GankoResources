@@ -124,6 +124,9 @@ class AddDiagnosisActivity : AppCompatActivity(), Injectable, DatePickerDialog.O
                             prepareRejectedDiagnosis(bovino)
                         type == TYPE_NOVELTY && servicioActual.finalizado!! ->
                             viewModel.prepareNovelty(bovino, servicioActual)
+                                    .flatMap {
+                                        viewModel.prepareBirthZeal(bovino, servicioActual.novedad!!.fecha)
+                                    }
                         else -> Single.just(emptyList())
                     }
                 }
@@ -229,13 +232,32 @@ class AddDiagnosisActivity : AppCompatActivity(), Injectable, DatePickerDialog.O
                         ALARM_EMPTY_DAYS_120, ALARM_ZEAL_21) }
     }
 
-    fun prepareRejectedDiagnosis(bovino: Bovino): Single<List<Unit>> {
+    fun prepareRejectedDiagnosis(bovino: Bovino): Single<List<Unit>> =
         if (bovino.serviciosFallidos!! == 3) {
-            NotificationWork.notify(NotificationWork.TYPE_REPRODUCTIVE, "Tres Servicios Fallidos", "El bovino: ${bovino.nombre}, lleva 3 servicios fallidos de manera consecutiva", idBovino,
-                    10, TimeUnit.SECONDS)
+            val uuid = NotificationWork.notify(NotificationWork.TYPE_REPRODUCTIVE, "Tres Servicios Fallidos", "El bovino: ${bovino.nombre}, lleva 3 servicios fallidos de manera consecutiva", idBovino,
+                    2, TimeUnit.SECONDS)
+
+            val alarm = Alarm(
+                    bovino = AlarmBovine(bovino._id!!, bovino.nombre!!, bovino.codigo!!),
+                    titulo = "Tres Servicios Fallidos",
+                    descripcion = "El Bovino lleva 3 servicios fallidos de manera consecutiva",
+                    alarma = ALARM_REJECT_DIAGNOSIS_3,
+                    fechaProxima = Date(),
+                    type = TYPE_ALARM,
+                    activa = true,
+                    reference = bovino._id
+            )
+
+            viewModel.insertAlarm(alarm, uuid)
+                    .map { emptyList<Unit>() }
+
+        }else{
+            Single.just(emptyList())
         }
-        return Single.just(emptyList())
-    }
+
+
+
+
 
 
 }

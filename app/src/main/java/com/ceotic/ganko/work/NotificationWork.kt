@@ -37,13 +37,15 @@ class NotificationWork(context: Context, params: WorkerParameters) : Worker(cont
             TYPE_MEADOW -> R.drawable.ic_prairies
             else -> R.drawable.ic_bovine
         }
-        val intent: Intent = when (type) {
+        /*val intent: Intent = when (type) {
             TYPE_HEALTH -> Intent(applicationContext, MenuActivity::class.java).apply { putExtra("fragment", 0) }
             TYPE_MANAGEMENT -> Intent(applicationContext, MenuActivity::class.java).apply { putExtra("fragment", 1) }
             TYPE_VACCINES -> Intent(applicationContext, MenuActivity::class.java).apply { putExtra("fragment", 2) }
             TYPE_MEADOW -> Intent(applicationContext, MenuActivity::class.java).apply { putExtra("fragment", 4) }
             else -> Intent(applicationContext, ReproductiveBvnActivity::class.java).apply { putExtra("idBovino", id) }
-        }
+        }*/
+
+        val intent = Intent(applicationContext, MenuActivity::class.java).apply { putExtra("fragment", 13) }
 
         val pendingIntent = PendingIntent.getActivity(applicationContext, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
@@ -115,10 +117,10 @@ class NotificationWork(context: Context, params: WorkerParameters) : Worker(cont
 
         fun cancelAlarm(alarm: Alarm, device:Long){
             alarm.activa = false
-            val idx = alarm.device.indexOfFirst { it.device == device }
+            /*val idx = alarm.device.indexOfFirst { it.device == device }
             if(idx > -1){
                cancelNotificationById(UUID.fromString(alarm.device[idx].uuid))
-            }
+            }*/
         }
 
 
