@@ -117,10 +117,10 @@ class NotificationWork(context: Context, params: WorkerParameters) : Worker(cont
 
         fun cancelAlarm(alarm: Alarm, device:Long){
             alarm.activa = false
-            val idx = alarm.device.indexOfFirst { it.device == device }
+            /*val idx = alarm.device.indexOfFirst { it.device == device }
             if(idx > -1){
                cancelNotificationById(UUID.fromString(alarm.device[idx].uuid))
-            }
+            }*/
         }
 
 
