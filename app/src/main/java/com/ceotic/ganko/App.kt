@@ -9,12 +9,12 @@ import com.ceotic.ganko.data.models.*
 import com.ceotic.ganko.data.preferences.UserSession
 import com.ceotic.ganko.di.AppInjector
 import com.ceotic.ganko.util.andEx
-import com.ceotic.ganko.util.containsEx
 import com.ceotic.ganko.util.equalEx
 import com.ceotic.ganko.util.gt
 import com.ceotic.ganko.work.NotificationWork
 import com.couchbase.lite.*
-import com.couchbase.lite.Dictionary
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.convertValue
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
@@ -39,6 +39,9 @@ class App : MultiDexApplication(), HasActivityInjector {
 
     @Inject
     lateinit var db: Database
+
+    @Inject
+    lateinit var mapper: ObjectMapper
 
     override fun activityInjector(): AndroidInjector<Activity> = injector
 
@@ -106,7 +109,9 @@ class App : MultiDexApplication(), HasActivityInjector {
         val exp = ("activa" equalEx true
                 andEx ("fechaProxima" gt Date())
                 andEx ("type" equalEx TYPE_ALARM)
-                andEx Expression.negated("device" containsEx device)
+                andEx Expression.negated(
+                ArrayExpression.any(ArrayExpression.variable("d")).`in`(Expression.property("device"))
+                        .satisfies(ArrayExpression.variable("d.device").equalTo(Expression.value(device))))
                 )
 
         var now: Long = 0
@@ -120,13 +125,18 @@ class App : MultiDexApplication(), HasActivityInjector {
                     }
         }
                 .doOnNext { now = Date().time }
-                .flatMap { it.toObservable() }
-                .map { it.getDictionary("ganko-database") to it.getString("id") }
-                .map {(c, id)->
-
-                    val milis = c.getDate("fechaProxima").time - now
-                    val reference = c.getString("reference")
-                    val alarm = c.getInt("alarma")
+                .flatMap {
+                    it.toObservable()
+                }
+                .map { it.getDictionary("ganko-database").toMap() to it.getString("id") }
+                .map {
+                    it.first["_id"] = it.second
+                    mapper.convertValue<Alarm>(it.first)
+                }
+                .map { a ->
+                    val milis = a.fechaProxima!!.time - now
+                    val reference = a.reference!!
+                    val alarm = a.alarma
                     val type = when (alarm) {
                         in ALARM_2_MONTHS..ALARM_12_MONTHS, ALARM_VACCINE -> NotificationWork.TYPE_VACCINES
                         ALARM_18_MONTHS, in ALARM_SECADO..ALARM_DIAGNOSIS, ALARM_REJECT_DIAGNOSIS_3 -> NotificationWork.TYPE_REPRODUCTIVE
@@ -135,36 +145,38 @@ class App : MultiDexApplication(), HasActivityInjector {
                         else -> NotificationWork.TYPE_MEADOW
                     }
                     val (title, des) = when (alarm) {
-                        in ALARM_18_MONTHS..ALARM_12_MONTHS -> c.getString("titulo") to c.getString("descripcion")
+                        in ALARM_18_MONTHS..ALARM_12_MONTHS -> a.titulo to a.descripcion
                         in ALARM_SECADO..ALARM_DIAGNOSIS -> {
-                            val bvn = c.getDictionary("bovino")
-                            c.getString("titulo") to c.getString("descripcion") + ", Bovino " + bvn.getString("codigo")
+                            val bvn = a.bovino
+                            a.titulo to a.descripcion + ", Bovino " + bvn!!.codigo
                         }
                         in ALARM_HEALTH..ALARM_MANAGE -> {
-                            val bvn = c.getDictionary("bovino")
-                            val gp = c.getDictionary("grupo")
+                            val bvn = a.bovino
+                            val gp = a.grupo
                             val info = when {
-                                bvn != null -> " - Bovino ${bvn.getString("codigo")}"
-                                gp != null -> " - Grupo ${gp.getString("nombre")}"
+                                bvn != null -> " - Bovino ${bvn.codigo}"
+                                gp != null -> " - Grupo ${gp.nombre}"
                                 else -> ""
                             }
-                            c.getString("titulo") to c.getString("descripcion") + info
+                            a.titulo to a.descripcion + info
                         }
-                        in ALARM_MEADOW_OCUPATION..ALARM_MEADOW_EXIT -> c.getString("titulo") to c.getString("descripcion")
+                        in ALARM_MEADOW_OCUPATION..ALARM_MEADOW_EXIT -> a.titulo to a.descripcion
                         else -> {
-                            val bvn = c.getDictionary("bovino")
-                            c.getString("titulo") to c.getString("descripcion") + ", Bovino " + bvn.getString("codigo")
+                            val bvn = a.bovino!!
+                            a.titulo to a.descripcion + ", Bovino " + bvn.codigo
                         }
                     }
-                    val uuid = NotificationWork.notify(type, title, des, reference, milis, TimeUnit.MILLISECONDS)
-                    id to uuid
+                    val uuid = NotificationWork.notify(type, title!!, des!!, reference, milis, TimeUnit.MILLISECONDS)
+                    a._id!! to uuid
+
+
                 }
-                .flatMapSingle {(id, uuid)->
+                .flatMapSingle { (id, uuid) ->
                     val doc = db.getDocument(id).toMutable()
                     val devices = doc.getArray("device")
                     val dev = MutableDictionary()
                     dev.setLong("device", device)
-                    dev.setString("uuid", uuid.toString())
+                    dev.setString("uuid", "$uuid")
                     devices.addDictionary(dev)
                     doc.setArray("device", devices)
                     Single.fromCallable { db.save(doc) }
@@ -175,7 +187,8 @@ class App : MultiDexApplication(), HasActivityInjector {
         val expDis = ("activa" equalEx false
                 andEx ("fechaProxima" gt Date())
                 andEx ("type" equalEx TYPE_ALARM)
-                andEx ("device" containsEx device)
+                andEx ArrayExpression.any(ArrayExpression.variable("d")).`in`(Expression.property("device"))
+                .satisfies(ArrayExpression.variable("d.device").equalTo(Expression.value(device)))
                 )
 
         Observable.create<ResultSet> { emitter ->
@@ -188,12 +201,13 @@ class App : MultiDexApplication(), HasActivityInjector {
                     }
         }
                 .flatMap { it.toObservable() }
-                .map { it.getDictionary("ganko-database") }
-                .map { it.getArray("device") as Array<Dictionary> }
+                .map { it.getDictionary("ganko-database").toMap() }
+                .map {mapper.convertValue<Alarm>(it)}
+                .map { it.device }
                 .flatMap { it.toObservable() }
-                .filter { it.getLong("device") == device }
+                .filter { it.device == device }
                 .map {
-                    val uuid = it.getString("uuid")
+                    val uuid = it.uuid
                     NotificationWork.cancelNotificationById(UUID.fromString(uuid))
                 }
                 .subscribeOn(Schedulers.io())
