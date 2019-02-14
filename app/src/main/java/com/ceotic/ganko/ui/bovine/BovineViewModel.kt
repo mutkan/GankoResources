@@ -130,7 +130,7 @@ class BovineViewModel @Inject constructor(private val db: CouchRx, private val u
             .applySchedulers()
 
 
-    fun verifyCode(code: String): Single<Boolean> = db.oneByExp("codigo" equalEx code, Bovino::class)
+    fun verifyCode(code: String): Single<Boolean> = db.oneByExp("codigo" equalEx code andEx ("finca" equalEx userSession.farmID), Bovino::class)
             .isEmpty
 
 

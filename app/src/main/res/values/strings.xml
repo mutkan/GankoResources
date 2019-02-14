@@ -559,6 +559,8 @@
         <item>Praderas</item>
         <item>Praderas</item>
 
+        <item>Reproductivo</item>
+
     </string-array>
 
     <integer-array name="notification_icon">
@@ -592,6 +594,7 @@
         <item>4</item>
         <item>4</item>
 
+        <item>3</item>
 
     </integer-array>
 
