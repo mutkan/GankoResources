@@ -234,6 +234,7 @@ class AddDiagnosisActivity : AppCompatActivity(), Injectable, DatePickerDialog.O
 
     fun prepareRejectedDiagnosis(bovino: Bovino): Single<List<Unit>> =
         if (bovino.serviciosFallidos!! == 3) {
+            val milis = Date().time + 420000
             val uuid = NotificationWork.notify(NotificationWork.TYPE_REPRODUCTIVE, "Tres Servicios Fallidos", "El bovino: ${bovino.nombre}, lleva 3 servicios fallidos de manera consecutiva", idBovino,
                     2, TimeUnit.SECONDS)
 
@@ -242,7 +243,7 @@ class AddDiagnosisActivity : AppCompatActivity(), Injectable, DatePickerDialog.O
                     titulo = "Tres Servicios Fallidos",
                     descripcion = "El Bovino lleva 3 servicios fallidos de manera consecutiva",
                     alarma = ALARM_REJECT_DIAGNOSIS_3,
-                    fechaProxima = Date(),
+                    fechaProxima = Date(milis),
                     type = TYPE_ALARM,
                     activa = true,
                     reference = bovino._id
