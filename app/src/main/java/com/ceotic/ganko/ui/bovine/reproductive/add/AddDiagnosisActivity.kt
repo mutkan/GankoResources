@@ -229,7 +229,7 @@ class AddDiagnosisActivity : AppCompatActivity(), Injectable, DatePickerDialog.O
         return viewModel.insertNotifications(alarms)
                 .flatMap { viewModel.cancelNotiByDiagnosis(bovino._id!!, ALARM_18_MONTHS,
                         ALARM_EMPTY_DAYS_45, ALARM_EMPTY_DAYS_60, ALARM_EMPTY_DAYS_90,
-                        ALARM_EMPTY_DAYS_120, ALARM_ZEAL_21) }
+                        ALARM_EMPTY_DAYS_120, ALARM_ZEAL_21, ALARM_DIAGNOSIS) }
     }
 
     fun prepareRejectedDiagnosis(bovino: Bovino): Single<List<Unit>> =
@@ -254,6 +254,7 @@ class AddDiagnosisActivity : AppCompatActivity(), Injectable, DatePickerDialog.O
         }else{
             Single.just(emptyList())
         }
+                .flatMap { viewModel.cancelNotiByDiagnosis(bovino._id!!, ALARM_ZEAL_21, ALARM_DIAGNOSIS) }
 
 
 
