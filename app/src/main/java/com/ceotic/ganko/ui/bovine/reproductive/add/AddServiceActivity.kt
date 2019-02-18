@@ -154,7 +154,7 @@ class AddServiceActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
                         ) to dZeal)
                     }
                     viewModel.cancelNotiByDiagnosis(bovino._id!!, ALARM_ZEAL_21
-                            , ALARM_ZEAL_42, ALARM_ZEAL_64, ALARM_ZEAL_84)
+                            , ALARM_ZEAL_42, ALARM_ZEAL_64, ALARM_ZEAL_84, fromNow = false)
                             .flatMap { viewModel.insertNotifications(alarms) }
 
 

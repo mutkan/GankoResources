@@ -181,18 +181,29 @@ class ReproductiveBvnViewModel @Inject constructor(private val db: CouchRx, priv
             .toList()
             .applySchedulers()
 
-    fun cancelNotiByDiagnosis(id: String, vararg types:Int):Single<List<Unit>> = db.listByExp("reference" equalEx id
-            andEx ("activa" equalEx true)
-            andEx ("fechaProxima" gt Date())
-            andEx ("alarma" inEx types.toList()), Alarm::class)
-            .flatMapObservable { it.toObservable() }
-            .flatMapSingle {
-                it.activa = false
-                NotificationWork.cancelAlarm(it, userSession.device)
-                db.update(it._id!!, it)
-            }
-            .toList()
-            .applySchedulers()
+    fun cancelNotiByDiagnosis(id: String, vararg types:Int , fromNow:Boolean = true):Single<List<Unit>>{
+
+        val q = if(fromNow)
+                ("reference" equalEx id
+                andEx ("activa" equalEx true)
+                andEx ("fechaProxima" gt Date())
+                andEx ("alarma" inEx types.toList()))
+        else
+            ("reference" equalEx id
+                    andEx ("activa" equalEx true)
+                    andEx ("alarma" inEx types.toList()))
+
+        return db.listByExp(q, Alarm::class)
+                .flatMapObservable { it.toObservable() }
+                .flatMapSingle {
+                    it.activa = false
+                    NotificationWork.cancelAlarm(it, userSession.device)
+                    db.update(it._id!!, it)
+                }
+                .toList()
+                .applySchedulers()
+
+    }
 
     fun prepareNovelty(bovino: Bovino, src: Servicio): Single<List<Unit>> {
         val date = if(src.parto != null) src.parto!!.fecha!!.time/ 60000
@@ -222,7 +233,7 @@ class ReproductiveBvnViewModel @Inject constructor(private val db: CouchRx, priv
                 }.toList()
                 .flatMap(this::insertNotifications)
                 .flatMap {cancelNotiByDiagnosis(bovino._id!!, ALARM_SECADO, ALARM_PREPARACION,
-                        ALARM_NACIMIENTO)  }
+                        ALARM_NACIMIENTO, fromNow = false)  }
                 .applySchedulers()
 
     }

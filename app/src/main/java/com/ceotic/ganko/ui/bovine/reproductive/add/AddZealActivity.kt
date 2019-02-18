@@ -72,13 +72,13 @@ class AddZealActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
                         ) to dif
 
                         viewModel.cancelNotiByDiagnosis(bovino._id!!, ALARM_ZEAL_21, ALARM_ZEAL_42, ALARM_ZEAL_64,
-                                ALARM_ZEAL_84)
+                                ALARM_ZEAL_84, fromNow = false)
                                 .flatMap { viewModel.insertNotifications(listOf(not)) }
 
 
                     } else {
                         viewModel.cancelNotiByDiagnosis(bovino._id!!, ALARM_ZEAL_21, ALARM_ZEAL_42, ALARM_ZEAL_64,
-                                ALARM_ZEAL_84)
+                                ALARM_ZEAL_84, fromNow = false)
                                 .flatMap { Single.just(listOf("")) }
 
                     }
