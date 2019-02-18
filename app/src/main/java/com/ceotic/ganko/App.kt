@@ -18,7 +18,6 @@ import com.fasterxml.jackson.module.kotlin.convertValue
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
-import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.rxkotlin.toObservable
 import io.reactivex.schedulers.Schedulers
@@ -47,6 +46,8 @@ class App : MultiDexApplication(), HasActivityInjector {
 
     private var replicator: Replicator? = null
     private var changeToken: ListenerToken? = null
+    private var addToken: ListenerToken? = null
+    private var cancelToken: ListenerToken? = null
 
     override fun onCreate() {
         super.onCreate()
@@ -114,20 +115,41 @@ class App : MultiDexApplication(), HasActivityInjector {
                         .satisfies(ArrayExpression.variable("d.device").equalTo(Expression.value(device))))
                 )
 
+        addNotification(device, exp)
+                .subscribe()
+
+        val expDis = ("activa" equalEx false
+                andEx ("fechaProxima" gt Date())
+                andEx ("type" equalEx TYPE_ALARM)
+                andEx ArrayExpression.any(ArrayExpression.variable("d")).`in`(Expression.property("device"))
+                .satisfies(ArrayExpression.variable("d.device").equalTo(Expression.value(device)))
+                )
+
+       cancelNotification(device, expDis)
+               .subscribe()
+    }
+
+    private fun addNotification(device: Long, exp: Expression): Single<Unit> {
         var now: Long = 0
-        Observable.create<ResultSet> { emitter ->
-            QueryBuilder
+        var query: Query? = null
+        return Single.create<ResultSet> { emitter ->
+            query = QueryBuilder
                     .select(SelectResult.all(), SelectResult.expression(Meta.id))
                     .from(DataSource.database(db))
                     .where(exp)
-                    .addChangeListener {
-                        emitter.onNext(it.results)
-                    }
+
+            addToken = query?.addChangeListener {
+                emitter.onSuccess(it.results)
+            }
+
         }
-                .doOnNext { now = Date().time }
-                .flatMap {
-                    it.toObservable()
+                .doOnSuccess {
+                    now = Date().time
+                    query?.removeChangeListener(addToken)
+                    query = null
+                    addToken = null
                 }
+                .flatMapObservable { it.toObservable() }
                 .map { it.getDictionary("ganko-database").toMap() to it.getString("id") }
                 .map {
                     it.first["_id"] = it.second
@@ -182,37 +204,64 @@ class App : MultiDexApplication(), HasActivityInjector {
                     doc.setArray("device", devices)
                     Single.fromCallable { db.save(doc) }
                 }
-                .subscribeOn(Schedulers.io())
-                .subscribe()
-
-        val expDis = ("activa" equalEx false
-                andEx ("fechaProxima" gt Date())
-                andEx ("type" equalEx TYPE_ALARM)
-                andEx ArrayExpression.any(ArrayExpression.variable("d")).`in`(Expression.property("device"))
-                .satisfies(ArrayExpression.variable("d.device").equalTo(Expression.value(device)))
-                )
-
-        Observable.create<ResultSet> { emitter ->
-            QueryBuilder
-                    .select(SelectResult.all())
-                    .from(DataSource.database(db))
-                    .where(expDis)
-                    .addChangeListener {
-                        emitter.onNext(it.results)
-                    }
-        }
-                .flatMap { it.toObservable() }
-                .map { it.getDictionary("ganko-database").toMap() }
-                .map {mapper.convertValue<Alarm>(it)}
-                .map { it.device }
-                .flatMap { it.toObservable() }
-                .filter { it.device == device }
-                .map {
-                    val uuid = it.uuid
-                    NotificationWork.cancelNotificationById(UUID.fromString(uuid))
+                .toList()
+                .flatMap {
+                    Single.timer(500, TimeUnit.MILLISECONDS)
+                            .flatMap { addNotification(device, exp) }
                 }
                 .subscribeOn(Schedulers.io())
-                .subscribe()
+
+
+    }
+
+    private fun cancelNotification(device: Long, exp: Expression): Single<Unit> {
+        var query: Query? = null
+
+        return Single.create<ResultSet> { emitter ->
+            query = QueryBuilder
+                    .select(SelectResult.all())
+                    .from(DataSource.database(db))
+                    .where(exp)
+
+            cancelToken = query?.addChangeListener {
+                emitter.onSuccess(it.results)
+            }
+        }
+                .doOnSuccess {
+                    query?.removeChangeListener(cancelToken)
+                    query = null
+                    cancelToken = null
+                }
+                .flatMapObservable { it.toObservable() }
+                .map { it.getDictionary("ganko-database").toMap() }
+                .map { mapper.convertValue<Alarm>(it) }
+                .map { a ->
+                    val idx = a.device.indexOfFirst { it.device == device }
+                    val uuid = a.device[idx].uuid
+                    NotificationWork.cancelNotificationById(UUID.fromString(uuid))
+                    val devices = a.device.toMutableList()
+                    devices.removeAt(idx)
+                    a.device = devices
+                  a
+                }
+                .flatMapSingle{ a-> Single.fromCallable {
+                    val doc = db.getDocument(a._id).toMutable()
+                    val channels = doc.getArray("channels")
+
+                    val map = mapper.convertValue(a, Map::class.java) as MutableMap<String, Any>
+                    map.remove("_id")
+                    map.remove("_sequence")
+                    doc.setData(map)
+                    if(channels != null) doc.setArray("channels", channels)
+                    db.save(doc)
+                } }
+                .toList()
+                .map { Unit }
+                .flatMap {
+                    Single.timer(500, TimeUnit.MILLISECONDS)
+                            .flatMap { cancelNotification(device, exp) }
+                }
+                .subscribeOn(Schedulers.io())
     }
 
     companion object {
