@@ -133,6 +133,7 @@ class App : MultiDexApplication(), HasActivityInjector {
                     it.first["_id"] = it.second
                     mapper.convertValue<Alarm>(it.first)
                 }
+                .distinct { it._id }
                 .map { a ->
                     val milis = a.fechaProxima!!.time - now
                     val reference = a.reference!!
