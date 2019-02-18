@@ -47,7 +47,7 @@ class NotificationsFragment : Fragment(), Injectable {
         }
     }
     val from: Date by lazy { Date(cal.timeInMillis).add(Calendar.DATE,-7)!! }
-    val to: Date by lazy { from.add(Calendar.DATE, 14)!! }
+    val to: Date by lazy { from.add(Calendar.DATE, 10)!! }
     lateinit var notificationSelected:OnNotificationSelected
 
     override fun onAttach(context: Context?) {
