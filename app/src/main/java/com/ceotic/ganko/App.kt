@@ -46,8 +46,6 @@ class App : MultiDexApplication(), HasActivityInjector {
 
     private var replicator: Replicator? = null
     private var changeToken: ListenerToken? = null
-    private var addToken: ListenerToken? = null
-    private var cancelToken: ListenerToken? = null
 
     override fun onCreate() {
         super.onCreate()
@@ -125,13 +123,14 @@ class App : MultiDexApplication(), HasActivityInjector {
                 .satisfies(ArrayExpression.variable("d.device").equalTo(Expression.value(device)))
                 )
 
-       cancelNotification(device, expDis)
-               .subscribe()
+        cancelNotification(device, expDis)
+                .subscribe()
     }
 
     private fun addNotification(device: Long, exp: Expression): Single<Unit> {
         var now: Long = 0
         var query: Query? = null
+        var addToken: ListenerToken? = null
         return Single.create<ResultSet> { emitter ->
             query = QueryBuilder
                     .select(SelectResult.all(), SelectResult.expression(Meta.id))
@@ -145,7 +144,7 @@ class App : MultiDexApplication(), HasActivityInjector {
         }
                 .doOnSuccess {
                     now = Date().time
-                    query?.removeChangeListener(addToken)
+                    addToken?.run { query?.removeChangeListener(this) }
                     query = null
                     addToken = null
                 }
@@ -216,6 +215,7 @@ class App : MultiDexApplication(), HasActivityInjector {
 
     private fun cancelNotification(device: Long, exp: Expression): Single<Unit> {
         var query: Query? = null
+        var cancelToken: ListenerToken? = null
 
         return Single.create<ResultSet> { emitter ->
             query = QueryBuilder
@@ -228,7 +228,7 @@ class App : MultiDexApplication(), HasActivityInjector {
             }
         }
                 .doOnSuccess {
-                    query?.removeChangeListener(cancelToken)
+                    cancelToken?.run { query?.removeChangeListener(this) }
                     query = null
                     cancelToken = null
                 }
@@ -242,19 +242,21 @@ class App : MultiDexApplication(), HasActivityInjector {
                     val devices = a.device.toMutableList()
                     devices.removeAt(idx)
                     a.device = devices
-                  a
+                    a
                 }
-                .flatMapSingle{ a-> Single.fromCallable {
-                    val doc = db.getDocument(a._id).toMutable()
-                    val channels = doc.getArray("channels")
+                .flatMapSingle { a ->
+                    Single.fromCallable {
+                        val doc = db.getDocument(a._id).toMutable()
+                        val channels = doc.getArray("channels")
 
-                    val map = mapper.convertValue(a, Map::class.java) as MutableMap<String, Any>
-                    map.remove("_id")
-                    map.remove("_sequence")
-                    doc.setData(map)
-                    if(channels != null) doc.setArray("channels", channels)
-                    db.save(doc)
-                } }
+                        val map = mapper.convertValue(a, Map::class.java) as MutableMap<String, Any>
+                        map.remove("_id")
+                        map.remove("_sequence")
+                        doc.setData(map)
+                        if (channels != null) doc.setArray("channels", channels)
+                        db.save(doc)
+                    }
+                }
                 .toList()
                 .map { Unit }
                 .flatMap {

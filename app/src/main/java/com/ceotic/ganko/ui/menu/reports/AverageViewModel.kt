@@ -16,7 +16,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.math.roundToInt
 
-class AverageViewModel(private val farmID:String, private val db: CouchRx){
+class AverageViewModel(private val farmID: String, private val db: CouchRx) {
 
     private fun promedioGananciaPeso(from: Date? = null, to: Date? = null, month: Int? = null, year: Int? = null, idBovino: String? = null): Single<Float> {
         val (ini, end) = processDates(from, to, month, year)
@@ -193,29 +193,19 @@ class AverageViewModel(private val farmID:String, private val db: CouchRx){
                     }
 
     private fun promedioEdad(date: Date) =
-            db.listByExp("finca" equalEx farmID
-                    andEx (
-                    (Expression.property("fechaIngreso").notNullOrMissing() andEx ("fechaIngreso" lte date))
-                            orEx (Expression.property("fechaIngreso").isNullOrMissing andEx ("fechaNacimiento" lte date))
-                    )
-                    , Bovino::class)
+            db.listByExp("finca" equalEx farmID andEx ("fechaNacimiento" lte date), Bovino::class)
                     .flatMapObservable { it.toObservable() }
                     .map {
                         val dif = date.time - it.fechaNacimiento!!.time
-                        val days = TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS)
-                        val months = days.toFloat() / 30f
-                        months
-
+                        val months = Math.floor(dif.toDouble() / 2592000000)
+                        if(months < 0)  0 else months.toInt()
                     }
-                    .toList()
-                    .flatMapMaybe {
-                        val tot = it.size
-                        it.toObservable().reduce { t1: Float, t2: Float -> t2 + t1 }.map { sum ->
-                            sum / tot.toFloat()
-                        }
-                    }.defaultIfEmpty(0f).applySchedulers()
+                    .to(MathObservable::averageFloat)
+                    .first(0f)
+                    .toMaybe()
+                    .applySchedulers()
 
-    fun totalAbortos(from: Date? = null, to: Date? = null, month: Int? = null, year: Int? = null): Single<Promedio>{
+    fun totalAbortos(from: Date? = null, to: Date? = null, month: Int? = null, year: Int? = null): Single<Promedio> {
 
         val (ini, end) = processDates(from, to, month, year)
         val iniMilis = ini!!.time
@@ -262,7 +252,7 @@ class AverageViewModel(private val farmID:String, private val db: CouchRx){
                 }.applySchedulers()
     }
 
-    fun totalServicios(from: Date? = null, to: Date? = null, month: Int? = null, year: Int? = null): Single<Promedio>{
+    fun totalServicios(from: Date? = null, to: Date? = null, month: Int? = null, year: Int? = null): Single<Promedio> {
         val (ini, end) = processDates(from, to, month, year)
 
         val iniMilis = ini!!.time
@@ -352,7 +342,6 @@ class AverageViewModel(private val farmID:String, private val db: CouchRx){
     }
 
 
-
     fun getPromedioLeche(from: Date? = null, to: Date? = null, mes: Int? = null, anio: Int? = null) = promedioLeche(from, to, mes, anio).map {
         Promedio("Producción de Leche", it, desde = from, hasta = to, mes = mes, anio = anio, unidades = "Litros")
     }
@@ -432,7 +421,6 @@ class AverageViewModel(private val farmID:String, private val db: CouchRx){
                                 mes = mes,
                                 anio = anio)
                     }
-
 
 
     companion object {
