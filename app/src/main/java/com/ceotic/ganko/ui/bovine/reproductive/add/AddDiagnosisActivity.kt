@@ -125,7 +125,7 @@ class AddDiagnosisActivity : AppCompatActivity(), Injectable, DatePickerDialog.O
                         type == TYPE_NOVELTY && servicioActual.finalizado!! ->
                             viewModel.prepareNovelty(bovino, servicioActual)
                                     .flatMap {
-                                        viewModel.prepareBirthZeal(bovino, servicioActual.novedad!!.fecha)
+                                        viewModel.prepareBirthZeal(bovino, servicioActual.novedad!!.fecha, "La Novedad")
                                     }
                         else -> Single.just(emptyList())
                     }
@@ -181,7 +181,7 @@ class AddDiagnosisActivity : AppCompatActivity(), Injectable, DatePickerDialog.O
 
         val alarms: MutableList<Pair<Alarm, Long>> = mutableListOf()
 
-        if (notifyTimeSecado >= 0) {
+        if (notifyTimeSecado + DAY_7_MIN >= 0) {
             alarms.add(
                     Alarm(
                             bovino = AlarmBovine(bovino._id!!, bovino.nombre!!, bovino.codigo!!),
@@ -196,7 +196,7 @@ class AddDiagnosisActivity : AppCompatActivity(), Injectable, DatePickerDialog.O
             )
         }
 
-        if (notifyTimePreparacion >= 0) {
+        if (notifyTimePreparacion + DAY_7_MIN >= 0) {
             alarms.add(
                     Alarm(
                             bovino = AlarmBovine(bovino._id!!, bovino.nombre!!, bovino.codigo!!),
@@ -211,7 +211,7 @@ class AddDiagnosisActivity : AppCompatActivity(), Injectable, DatePickerDialog.O
             )
         }
 
-        if (notifyTimeParto >= 0) {
+        if (notifyTimeParto + DAY_7_MIN >= 0) {
             alarms.add(
                     Alarm(
                             bovino = AlarmBovine(bovino._id!!, bovino.nombre!!, bovino.codigo!!),

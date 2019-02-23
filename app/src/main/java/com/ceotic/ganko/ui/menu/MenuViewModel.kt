@@ -448,7 +448,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     private fun makeAlarm(id:String, bovines:List<String> = emptyList(), group:Grupo? = null, title:String, description:String, application:Int? = null , numApplication:Int? = null, nextDate:Date?, type:Int):Single<String>{
         val to =( (nextDate?.time ?: 0) / 3600000)
         val now = Date().time / 3600000
-        return if(to > now && (application == null ||application < numApplication!!)){
+        return if(to > (now - DAY_7_HOUR) && (application == null ||application < numApplication!!)){
             prepareNotificationBovine(id, bovines, group)
                     .flatMap { prepareAlarm(it, bovines, group, title, description, nextDate,to - now, type)  }
         }else{

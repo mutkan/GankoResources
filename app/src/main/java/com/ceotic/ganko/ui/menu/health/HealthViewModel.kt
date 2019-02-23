@@ -84,7 +84,7 @@ class HealthViewModel @Inject constructor(private val db: CouchRx,
     private fun makeAlarm(id:String, health:Sanidad):Single<String>{
         val to =( (health.fechaProxima?.time ?: 0) / 3600000)
         val now = Date().time / 3600000
-        return if(to > now && health.aplicacion!! < health.numeroAplicaciones!!){
+        return if(to > (now - DAY_7_HOUR) && health.aplicacion!! < health.numeroAplicaciones!!){
             prepareBovine(id,health)
                     .flatMap { prepareAlarm(it, health, to - now) }
         }else{

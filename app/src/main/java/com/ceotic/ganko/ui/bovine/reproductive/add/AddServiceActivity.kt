@@ -128,7 +128,7 @@ class AddServiceActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
 
                     val alarms: MutableList<Pair<Alarm, Long>> = mutableListOf()
 
-                    if (dNotification > 0) {
+                    if (dNotification + DAY_7_MIN > 0) {
                         alarms.add(Alarm(
                                 bovino = AlarmBovine(bovino._id!!, bovino.nombre!!, bovino.codigo!!),
                                 titulo = "Diagnostico de preñez",
@@ -141,7 +141,7 @@ class AddServiceActivity : AppCompatActivity(), Injectable, DatePickerDialog.OnD
                         ) to dNotification)
                     }
 
-                    if (dZeal > 0) {
+                    if (dZeal + DAY_7_MIN > 0) {
                         alarms.add(Alarm(
                                 bovino = AlarmBovine(bovino._id!!, bovino.nombre!!, bovino.codigo!!),
                                 titulo = "21 Dias desde el servicio",

@@ -59,7 +59,7 @@ class AddZealActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
                 .flatMapSingle { bovino ->
                     val dif = (nextZealDate.time / 60000) - (Date().time / 60000)
 
-                    if (dif >= 0) {
+                    if (dif + DAY_7_MIN >= 0) {
                         val not = Alarm(
                                 bovino = AlarmBovine(bovino._id!!, bovino.nombre!!, bovino.codigo!!),
                                 titulo = "Recordatorio Celo",

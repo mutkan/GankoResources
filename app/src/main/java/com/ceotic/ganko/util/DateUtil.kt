@@ -2,6 +2,10 @@ package com.ceotic.ganko.util
 
 import java.util.*
 
+const val DAY_7_MIN = 10080
+const val DAY_7_MILIS = 604800000
+const val DAY_7_HOUR = 168
+
 fun processDates(from: Date?, to: Date?, month: Int?, year: Int?): Pair<Date?, Date?> = when {
     month != null -> {
         val calendar: Calendar = Calendar.getInstance()

@@ -64,7 +64,7 @@ class BovineViewModel @Inject constructor(private val db: CouchRx, private val u
     private fun makeReproductiveAlarm(id: String, nowMin: Long, birthMin: Long, bovine: Bovino) {
         if (bovine.genero == "Hembra") {
             val to = birthMin + 777600 + 3
-            if (nowMin < to) {
+            if (nowMin - DAY_7_MIN < to) {
                 val title = "Inicio Reproductivo - ${bovine.codigo}"
                 val description = "Bovino ${bovine.codigo}, Confirmación de ciclo reproductivo"
                 makeNotification(id, title, description, bovine, to, to - nowMin, ALARM_18_MONTHS)
@@ -73,7 +73,7 @@ class BovineViewModel @Inject constructor(private val db: CouchRx, private val u
     }
 
     private fun makeVaccineAlarm(id: String, from: Long, to: Long, bovine: Bovino, alarm: Int, vararg vac: String) {
-        if (from < to) {
+        if (from - DAY_7_MIN < to) {
             val title = "Vacunas de Nacimiento - ${bovine.codigo}"
             val description = "Bovino ${bovine.codigo}, Aplicar vacunas ${vac.joinToString(", ")}"
             makeNotification(id, title, description, bovine, to, to - from, alarm)

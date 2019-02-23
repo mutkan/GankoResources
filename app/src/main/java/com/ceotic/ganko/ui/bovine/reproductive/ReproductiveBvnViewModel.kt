@@ -213,7 +213,7 @@ class ReproductiveBvnViewModel @Inject constructor(private val db: CouchRx, priv
 
         return listOf((date + 64800) to "45", (date + 86400) to "60", (date + 129600) to "90", (date + 172800) to "120").toObservable()
                 .map { (emptyDays, type)-> Triple(emptyDays, emptyDays- now, type)}
-                .filter{it.second > 0}
+                .filter{it.second + DAY_7_MIN> 0}
                 .map {(emptyDays, time, type)->
                     Alarm(
                             bovino = AlarmBovine(bovino._id!!, bovino.nombre!!, bovino.codigo!!),
@@ -239,18 +239,18 @@ class ReproductiveBvnViewModel @Inject constructor(private val db: CouchRx, priv
     }
 
 
-    fun prepareBirthZeal(bovino: Bovino, birth:Date): Single<List<String>> {
+    fun prepareBirthZeal(bovino: Bovino, birth:Date, title:String = "El Parto"): Single<List<String>> {
         val date = birth.time / 60000
         val now = Date().time / 60000
 
         return listOf((date + 34560) to "21", (date + 60480) to "42", (date + 92160) to "64", (date + 120960) to "84").toObservable()
                 .map { (emptyDays, type)-> Triple(emptyDays, emptyDays- now, type)}
-                .filter{it.second > 0}
+                .filter{it.second + DAY_7_MIN > 0}
                 .map {(emptyDays, time, type)->
                     Alarm(
                             bovino = AlarmBovine(bovino._id!!, bovino.nombre!!, bovino.codigo!!),
-                            titulo = "$type Dias Desde El Parto",
-                            descripcion = "Se cumplen $type dias desde el parto, verificar celo",
+                            titulo = "$type Dias Desde $title",
+                            descripcion = "Se cumplen $type dias desde ${title.toLowerCase()}, verificar celo",
                             alarma = when(type){
                                 "21" -> ALARM_ZEAL_21
                                 "42" -> ALARM_ZEAL_42
