@@ -236,7 +236,7 @@ class AddDiagnosisActivity : AppCompatActivity(), Injectable, DatePickerDialog.O
         if (bovino.serviciosFallidos!! == 3) {
             val milis = Date().time + 420000
             val uuid = NotificationWork.notify(NotificationWork.TYPE_REPRODUCTIVE, "Tres Servicios Fallidos", "El bovino: ${bovino.nombre}, lleva 3 servicios fallidos de manera consecutiva", idBovino,
-                    2, TimeUnit.SECONDS)
+                    2, TimeUnit.SECONDS, viewModel.getFarmID())
 
             val alarm = Alarm(
                     bovino = AlarmBovine(bovino._id!!, bovino.nombre!!, bovino.codigo!!),

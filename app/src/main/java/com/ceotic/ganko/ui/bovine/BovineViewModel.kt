@@ -83,7 +83,7 @@ class BovineViewModel @Inject constructor(private val db: CouchRx, private val u
 
     private fun makeNotification(id: String, title: String, description: String, bovine: Bovino, to: Long, time: Long, alarmType: Int) {
         val uuid = NotificationWork.notify(NotificationWork.TYPE_BOVINE, title, description, id,
-                time, TimeUnit.MINUTES)
+                time, TimeUnit.MINUTES, userSession.farmID)
         val date = Date(to * 60000)
         val alarm = Alarm(
                 bovino = AlarmBovine(id, bovine.nombre!!, bovine.codigo!!),

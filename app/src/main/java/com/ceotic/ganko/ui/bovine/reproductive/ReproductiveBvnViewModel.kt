@@ -18,9 +18,7 @@ import kotlin.collections.HashMap
 
 class ReproductiveBvnViewModel @Inject constructor(private val db: CouchRx, private val userSession: UserSession) : ViewModel() {
 
-    private val farmId = userSession.farmID
-
-    fun getFarmID() = farmId
+    fun getFarmID() = userSession.farmID
 
     fun getBovino(idBovino: String) = db.oneById(idBovino, Bovino::class).applySchedulers()
 
@@ -148,7 +146,7 @@ class ReproductiveBvnViewModel @Inject constructor(private val db: CouchRx, priv
 
     fun markStrawAsUsed(strawID: String): Single<Unit> = db.oneById(strawID, Straw::class).flatMapSingle { db.update(it._id!!, it.apply { state = Straw.USED_STRAW }) }.applySchedulers()
 
-    fun getAllBulls(): Single<List<Bovino>> = db.listByExp("finca" equalEx farmId andEx ("genero" equalEx "Macho") andEx ("retirado" equalEx false), Bovino::class)
+    fun getAllBulls(): Single<List<Bovino>> = db.listByExp("finca" equalEx userSession.farmID andEx ("genero" equalEx "Macho") andEx ("retirado" equalEx false), Bovino::class)
             .flatMap {
                 it.toObservable().filter {
                     val dif = Date().time - it.fechaNacimiento!!.time
@@ -160,12 +158,12 @@ class ReproductiveBvnViewModel @Inject constructor(private val db: CouchRx, priv
 
             .applySchedulers()
 
-    fun getAllStraws(): Single<List<Straw>> = db.listByExp("idFarm" equalEx farmId andEx ("state" equalEx Straw.UNUSED_STRAW), Straw::class)
+    fun getAllStraws(): Single<List<Straw>> = db.listByExp("idFarm" equalEx userSession.farmID andEx ("state" equalEx Straw.UNUSED_STRAW), Straw::class)
             .applySchedulers()
 
     // fun insertNotifications(notifications: List<ReproductiveNotification>): Single<List<String>> = notifications.toObservable().flatMapSingle { db.insert(it) }.toList()
     fun insertAlarm(alarm:Alarm, uuid:UUID) = db.insert(alarm.apply {
-        idFinca = farmId
+        idFinca = userSession.farmID
         device = listOf(AlarmDevice(userSession.device, uuid.toString()))
     })
 
@@ -173,8 +171,8 @@ class ReproductiveBvnViewModel @Inject constructor(private val db: CouchRx, priv
             .flatMapSingle { (alarm, time) ->
                 val uuid = NotificationWork.notify(NotificationWork.TYPE_REPRODUCTIVE, alarm.titulo!!,
                         alarm.descripcion + ", Bovino ${alarm.bovino!!.codigo}", alarm.bovino!!.id,
-                        time, TimeUnit.MINUTES)
-                alarm.idFinca = farmId
+                        time, TimeUnit.MINUTES, userSession.farmID)
+                alarm.idFinca = userSession.farmID
                 alarm.device = listOf(AlarmDevice(userSession.device, uuid.toString()))
                 db.insert(alarm)
             }

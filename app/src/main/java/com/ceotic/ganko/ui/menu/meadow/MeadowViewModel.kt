@@ -36,7 +36,7 @@ class MeadowViewModel @Inject constructor(private val db: CouchRx, private val u
 
     fun insertAlarm(alarm: Alarm, timeUnit:Long):Single<String>{
         val uuid = NotificationWork.notify(NotificationWork.TYPE_MEADOW, alarm.titulo!!, alarm.descripcion!!,
-                alarm.reference!!, timeUnit, TimeUnit.HOURS)
+                alarm.reference!!, timeUnit, TimeUnit.HOURS, userSession.farmID)
         alarm.idFinca = userSession.farmID
         alarm.device = listOf(AlarmDevice(userSession.device, uuid.toString()))
 

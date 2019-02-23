@@ -188,7 +188,7 @@ class App : MultiDexApplication(), HasActivityInjector {
                             a.titulo to a.descripcion + ", Bovino " + bvn.codigo
                         }
                     }
-                    val uuid = NotificationWork.notify(type, title!!, des!!, reference, milis, TimeUnit.MILLISECONDS)
+                    val uuid = NotificationWork.notify(type, title!!, des!!, reference, milis, TimeUnit.MILLISECONDS, a.idFinca!!)
                     a._id!! to uuid
 
 

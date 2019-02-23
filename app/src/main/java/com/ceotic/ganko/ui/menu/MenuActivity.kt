@@ -29,6 +29,7 @@ import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import kotlinx.android.synthetic.main.activity_menu.*
+import kotlinx.android.synthetic.main.template_birth.*
 import javax.inject.Inject
 
 
@@ -55,6 +56,10 @@ class MenuActivity : SearchBarActivity(MENU_SEARCH_FILTER), Injectable, HasSuppo
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu)
+        intent.extras?.getString("farm")?.run {
+            viewModel.setFarmId(this)
+        }
+
 
         phone = resources.getBoolean(R.bool.phone)
 

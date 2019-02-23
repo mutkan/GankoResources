@@ -15,8 +15,7 @@ import javax.inject.Inject
 class HealthViewModel @Inject constructor(private val db: CouchRx,
                                           private val userSession: UserSession) : ViewModel() {
 
-    private val farmID = userSession.farmID
-    fun getFarmId(): String = farmID
+    fun getFarmId(): String = userSession.farmID
 
 
     fun addFirstHealth(health: Sanidad): Single<String> =
@@ -59,13 +58,13 @@ class HealthViewModel @Inject constructor(private val db: CouchRx,
         val description = health.tratamiento + info
 
         val uuid = NotificationWork.notify(NotificationWork.TYPE_HEALTH, title,
-                description, data.second, notifyTime, TimeUnit.HOURS)
+                description, data.second, notifyTime, TimeUnit.HOURS, userSession.farmID)
 
         val alarm = Alarm(
                 titulo = title,
                 descripcion = health.tratamiento,
                 alarma = ALARM_HEALTH,
-                idFinca = farmID,
+                idFinca = userSession.farmID,
                 fechaProxima = health.fechaProxima,
                 type = TYPE_ALARM,
                 device = listOf(

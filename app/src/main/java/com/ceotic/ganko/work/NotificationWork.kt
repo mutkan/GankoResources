@@ -26,6 +26,7 @@ class NotificationWork(context: Context, params: WorkerParameters) : Worker(cont
         val msg = inputData.getString(ARG_DESCRIPTION)
         val id = inputData.getString(ARG_ID)
         val type = inputData.getInt(ARG_TYPE, 0)
+        val farm = inputData.getString(ARG_FARM)
 
         val requestCode = nextInt()
 
@@ -45,7 +46,10 @@ class NotificationWork(context: Context, params: WorkerParameters) : Worker(cont
             else -> Intent(applicationContext, ReproductiveBvnActivity::class.java).apply { putExtra("idBovino", id) }
         }*/
 
-        val intent = Intent(applicationContext, MenuActivity::class.java).apply { putExtra("fragment", 13) }
+        val intent = Intent(applicationContext, MenuActivity::class.java).apply {
+            putExtra("fragment", 13)
+            putExtra("farm", farm)
+        }
 
         val pendingIntent = PendingIntent.getActivity(applicationContext, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
@@ -72,6 +76,7 @@ class NotificationWork(context: Context, params: WorkerParameters) : Worker(cont
         private const val ARG_ID = "ARG_ID"
         private const val ARG_DESCRIPTION = "ARG_DESCRIPTION"
         private const val ARG_TYPE = "ARG_TYPE"
+        private const val ARG_FARM = "ARG_FARM"
         private const val ARG_REQUEST_CODE = "ARG_REQUEST_CODE"
 
         const val TYPE_HEALTH = 0
@@ -82,13 +87,14 @@ class NotificationWork(context: Context, params: WorkerParameters) : Worker(cont
         const val TYPE_BOVINE = 5
 
 
-        fun notify(type: Int, title: String, msg: String, docId: String, time: Long, timeUnit: TimeUnit): UUID {
+        fun notify(type: Int, title: String, msg: String, docId: String, time: Long, timeUnit: TimeUnit, farm:String): UUID {
 
             val data: Data = Data.Builder()
                     .putString(ARG_ID, docId)
                     .putString(ARG_TITLE, title)
                     .putString(ARG_DESCRIPTION, msg)
                     .putInt(ARG_TYPE, type)
+                    .putString(ARG_FARM, farm)
                     .build()
 
             val notificationWork = OneTimeWorkRequestBuilder<NotificationWork>()

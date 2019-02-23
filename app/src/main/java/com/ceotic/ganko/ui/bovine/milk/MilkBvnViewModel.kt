@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 class MilkBvnViewModel @Inject constructor(private val db: CouchRx, private val userSession: UserSession) : ViewModel() {
 
-    private val idFinca = userSession.farmID
+
 
     fun getMilkProduction(idBovino: String): Single<List<Produccion>> =
             db.listByExp("bovino" equalEx idBovino, Produccion::class)
@@ -25,7 +25,7 @@ fun getOne(idBovino: String): Maybe<Produccion> =
                 .applySchedulers()
 
 fun addMilkProduction(produccion: Produccion): Single<String> {
-    produccion.idFinca = idFinca
+    produccion.idFinca = userSession.farmID
     return db.insert(produccion)
             .applySchedulers()
 }
