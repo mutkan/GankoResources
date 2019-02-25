@@ -14,7 +14,8 @@ class MeadowAlarm (
     var description: String? = null,
     var wasShowed: Boolean? = false,
     var fechaProxima: Date? = null,
-    var tipo:String? = null
+    var tipo:String? = null,
+    var idFinca:String? = null
 ): Parcelable {
     init {
         type = javaClass.simpleName

@@ -110,13 +110,13 @@ class BovineViewModel @Inject constructor(private val db: CouchRx, private val u
             }
             .flatMapObservable { it.toObservable() }
             .flatMapSingle {
-                if (it.bovino != null || it.bovinos.size == 1) {
+                if (it.bovino != null || (it.bovinos?.size ?: -1) == 1) {
                     NotificationWork.cancelAlarm(it, userSession.device)
                     db.update(it._id!!, it)
                 } else if (it.grupo == null) {
-                    val idx = it.bovinos.indexOfFirst { x -> x == bovine._id }
+                    val idx = it.bovinos?.indexOfFirst { x -> x == bovine._id } ?: -1
                     if (idx > -1) {
-                        val idxs = it.bovinos.toMutableList()
+                        val idxs = it.bovinos!!.toMutableList()
                         idxs.removeAt(idx)
                         it.bovinos = idxs
                         db.update(it._id!!, it)

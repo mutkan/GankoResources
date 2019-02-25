@@ -42,7 +42,8 @@ class NotificationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
         this.bvnTxt = when{
             notification.grupo != null -> "Grupo ${notification.grupo!!.nombre}"
             notification.bovino != null -> "Codigo ${notification.bovino!!.codigo}"
-            else -> "${notification.bovinos.size} Bovinos"
+            notification.bovinos != null && notification.bovinos!!.isNotEmpty() -> "${notification.bovinos!!.size} Bovinos"
+            else -> ""
         }
     }
 

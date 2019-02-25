@@ -50,7 +50,7 @@ class Alarm(
         val numeroAplicaciones: Int? = null,
         val aplicacion: Int? = null,
         var grupo: Grupo? = null,
-        var bovinos: List<String> = listOf(),
+        var bovinos: List<String>? = listOf(),
         var noBovinos: List<String> = listOf(),
         var fechaProxima: Date? = null,
         var bovino:AlarmBovine? = null,

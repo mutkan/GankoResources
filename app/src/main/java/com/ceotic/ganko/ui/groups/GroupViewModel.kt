@@ -63,12 +63,12 @@ class GroupViewModel @Inject constructor(private val db: CouchRx,
 
     fun listBovinesByDocId(id: String): Single<List<Bovino>> =
             db.oneById(id, Alarm::class)
-                    .flatMapSingle { db.listByExp("_id" inEx it.bovinos andEx ("retirado" equalEx false), Bovino::class) }
+                    .flatMapSingle { db.listByExp("_id" inEx (it.bovinos ?: emptyList()) andEx ("retirado" equalEx false), Bovino::class) }
                     .applySchedulers()
 
     fun listAllBovinesByDocId(id: String): Single<Pair<List<Bovino>, List<Bovino>>> = db.oneById(id, Alarm::class)
             .flatMapSingle {
-                db.listByExp("_id" inEx it.bovinos andEx ("retirado" equalEx false), Bovino::class)
+                db.listByExp("_id" inEx (it.bovinos ?: emptyList()) andEx ("retirado" equalEx false), Bovino::class)
                         .zipWith(db.listByExp("_id" inEx it.noBovinos andEx ("retirado" equalEx false), Bovino::class))
             }
             .applySchedulers()

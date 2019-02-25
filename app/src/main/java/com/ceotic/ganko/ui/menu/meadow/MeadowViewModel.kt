@@ -25,7 +25,7 @@ class MeadowViewModel @Inject constructor(private val db: CouchRx, private val u
             db.oneById(idMeadow,Pradera::class).applySchedulers()
 
     fun addMeadowAlert(alarm: MeadowAlarm):Single<String> =
-            db.insert(alarm).applySchedulers()
+            db.insert(alarm.apply { idFinca = userSession.farmID }).applySchedulers()
 
     fun getMeadowAlert(idMeadow: String): Observable<List<MeadowAlarm>> =
             db.listObsByExp("meadow" equalEx idMeadow,MeadowAlarm::class)
