@@ -13,11 +13,12 @@ import io.reactivex.rxkotlin.toObservable
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-class ReportViewModel(private val farmID:String, private val db: CouchRx) {
+class ReportViewModel(private val db: CouchRx,
+                      private val session:UserSession) {
 
     private fun reporteFuturosPartos(from: Date? = null, to: Date? = null, month: Int? = null, year: Int? = null): Single<List<List<String>>> {
         val (ini, end) = processDates(from, to, month, year)
-        val q = ("finca" equalEx farmID
+        val q = ("finca" equalEx session.farmID
                 andEx ("genero" equalEx "Hembra")
                 andEx ("servicios[0].finalizado" equalEx false)
                 andEx ("servicios[0].posFechaParto".betweenDates(ini!!, end!!))
@@ -40,7 +41,7 @@ class ReportViewModel(private val farmID:String, private val db: CouchRx) {
         val iniMilis = ini!!.time
         val endMilis = end!!.time
 
-        val q = ("finca" equalEx farmID
+        val q = ("finca" equalEx session.farmID
                 andEx ("genero" equalEx "Hembra")
                 andEx ("servicios[0].finalizado" equalEx false)
                 andEx ("servicios[0].posFechaParto" isNullEx false)
@@ -64,7 +65,7 @@ class ReportViewModel(private val farmID:String, private val db: CouchRx) {
         val iniMilis = ini!!.time
         val endMilis = end!!.time
 
-        val q = ("finca" equalEx farmID
+        val q = ("finca" equalEx session.farmID
                 andEx ("genero" equalEx "Hembra")
                 andEx ("servicios[0].finalizado" equalEx false)
                 andEx ("servicios[0].posFechaParto" isNullEx false)
@@ -90,7 +91,7 @@ class ReportViewModel(private val farmID:String, private val db: CouchRx) {
         val currentMilis = Date().time
         val cMilis = if (currentMilis < endMilis) currentMilis else endMilis
 
-        val q = ("finca" equalEx farmID
+        val q = ("finca" equalEx session.farmID
                 andEx ("genero" equalEx "Hembra")
                 andEx ("retirado" equalEx false)
                 andEx (ArrayFunction.length(Expression.property("servicios")).greaterThanOrEqualTo(Expression.value(1))))
@@ -155,7 +156,7 @@ class ReportViewModel(private val farmID:String, private val db: CouchRx) {
         val iniMilis = ini?.time ?: 0
         val endMilis = end?.time ?: 0
 
-        val q = ("finca" equalEx farmID
+        val q = ("finca" equalEx session.farmID
                 andEx ("genero" equalEx "Hembra")
                 andEx ("retirado" equalEx false)
                 andEx ArrayFunction.length(Expression.property("servicios")).greaterThan(Expression.intValue(0))
@@ -184,7 +185,7 @@ class ReportViewModel(private val farmID:String, private val db: CouchRx) {
         val endMilis = end!!.time
         val iniMilis = ini!!.time
 
-        val q = ("finca" equalEx farmID
+        val q = ("finca" equalEx session.farmID
                 andEx ("genero" equalEx "Hembra")
                 andEx ("retirado" equalEx false)
                 andEx ArrayFunction.length(Expression.property("servicios")).greaterThan(Expression.intValue(0))
@@ -209,7 +210,7 @@ class ReportViewModel(private val farmID:String, private val db: CouchRx) {
     }
 
     private fun reporteTresServicios(): Single<List<List<String>>> =
-            db.listByExp("finca" equalEx farmID
+            db.listByExp("finca" equalEx session.farmID
                     andEx ("genero" equalEx "Hembra")
                     andEx ("retirado" equalEx false)
                     andEx (ArrayFunction.length(Expression.property("servicios")).greaterThanOrEqualTo(Expression.value(3)))
@@ -243,7 +244,7 @@ class ReportViewModel(private val farmID:String, private val db: CouchRx) {
         val iniMilis = ini!!.time
         val endMilis = end!!.time
 
-        val q = ("finca" equalEx farmID
+        val q = ("finca" equalEx session.farmID
                 andEx ("genero" equalEx "Hembra")
                 andEx ("retirado" equalEx false)
                 andEx (ArrayFunction.length(Expression.property("celos")).greaterThanOrEqualTo(Expression.value(1)))
@@ -297,7 +298,7 @@ class ReportViewModel(private val farmID:String, private val db: CouchRx) {
                 .map { Item(it) }
                 .first(Item(null))
 
-        return db.listByExp("finca" equalEx farmID
+        return db.listByExp("finca" equalEx session.farmID
                 andEx ("genero" equalEx "Hembra")
                 andEx ("retirado" equalEx false), Bovino::class)
                 .flatMapObservable { it.toObservable() }
@@ -399,7 +400,7 @@ class ReportViewModel(private val farmID:String, private val db: CouchRx) {
 
     private fun reporteConsolidado(from: Date? = null, to: Date? = null, month: Int? = null, year: Int? = null): Single<List<List<String>>> {
         val (ini, end) = processDates(from, to, month, year)
-        val q = ("idFarm" equalEx farmID
+        val q = ("idFarm" equalEx session.farmID
                 andEx ("fecha".betweenDates(ini!!, end!!)))
 
         return db.listByExp(q, SalidaLeche::class, orderBy = arrayOf("fecha" orderEx DESCENDING))
@@ -413,7 +414,7 @@ class ReportViewModel(private val farmID:String, private val db: CouchRx) {
 
     private fun reportesLeche(from: Date? = null, to: Date? = null, month: Int? = null, year: Int? = null): Single<List<List<String>>> {
         val (ini, end) = processDates(from, to, month, year)
-        val q = ("idFinca" equalEx farmID
+        val q = ("idFinca" equalEx session.farmID
                 andEx "fecha".betweenDates(ini!!, end!!))
 
         return db.listByExp(q, Produccion::class, orderBy = arrayOf("fecha" orderEx DESCENDING))
@@ -432,7 +433,7 @@ class ReportViewModel(private val farmID:String, private val db: CouchRx) {
 
     private fun reportesDestete(from: Date? = null, to: Date? = null, month: Int? = null, year: Int? = null): Single<List<List<String>>> {
         val (ini, end) = processDates(from, to, month, year)
-        val q = ("finca" equalEx farmID
+        val q = ("finca" equalEx session.farmID
                 andEx "fechaDestete".betweenDates(ini!!, end!!)
                 andEx ("retirado" equalEx false))
 
@@ -448,7 +449,7 @@ class ReportViewModel(private val farmID:String, private val db: CouchRx) {
         val iniMilis = ini!!.time
         val endMilis = end!!.time
 
-        return db.listByExp("idFinca" equalEx farmID andEx ("identificador" isNullEx false), Pradera::class)
+        return db.listByExp("idFinca" equalEx session.farmID andEx ("identificador" isNullEx false), Pradera::class)
                 .flatMapObservable { it.toObservable() }
                 .flatMap { pr ->
                     (pr.mantenimiento ?: mutableListOf()).toObservable()
@@ -466,7 +467,10 @@ class ReportViewModel(private val farmID:String, private val db: CouchRx) {
         val (_, end) = processDates(from, to, month, year)
         val endMilis = end!!.time
 
-        return db.listByExp("idFinca" equalEx farmID andEx ("identificador" isNullEx false), Pradera::class)
+        val nowMilis =  Date().time
+        val maxMilis = if(nowMilis < endMilis) nowMilis else endMilis
+
+        return db.listByExp("idFinca" equalEx session.farmID andEx ("identificador" isNullEx false), Pradera::class)
                 .flatMapObservable { it.toObservable() }
                 .flatMapSingle { pr ->
                     (pr.mantenimiento ?: mutableListOf()).toObservable()
@@ -478,22 +482,22 @@ class ReportViewModel(private val farmID:String, private val db: CouchRx) {
                             }
                             .flatMap { m ->
                                 db.listByExp("idPradera" equalEx pr.identificador!!
+                                        andEx ("idFarm" equalEx session.farmID)
                                         andEx ("transactionDate" lte end), Movimiento::class, 1,
                                         orderBy = arrayOf("transactionDate" orderEx DESCENDING))
                                         .map {
                                             val manage: Mantenimiento? = if (m.isNotEmpty()) m[0] else null
                                             val movement: Movimiento? = if (it.isNotEmpty()) it[0] else null
                                             val freeMilis = movement?.fechaSalida?.time ?: 0
-                                            val free = freeMilis < endMilis
-                                            val freeDays = if (free && freeMilis != 0L) {
-                                                Math.ceil((endMilis.toDouble() - freeMilis) / 86400000)
+                                            val free = freeMilis in 1..(endMilis - 1)
+                                            val freeDays = if (free) {
+                                                Math.ceil((maxMilis.toDouble() - freeMilis) / 86400000)
                                             } else movement?.diasLibres ?: 0
 
                                             listOf("${pr.identificador}", manage?.graminea ?: "",
-                                                    manage?.fechaMantenimiento?.toStringFormat()
-                                                            ?: "",
-                                                    "$freeDays", if (free) "Libre"
-                                            else movement?.transactionDate?.toStringFormat() ?: ""
+                                                    manage?.fechaMantenimiento?.toStringFormat() ?: "",
+                                                    "$freeDays", if (free || movement == null) "Libre"
+                                            else movement.transactionDate.toStringFormat()
                                             )
 
 
@@ -508,7 +512,7 @@ class ReportViewModel(private val farmID:String, private val db: CouchRx) {
 
     private fun reporteMovimientos(from: Date? = null, to: Date? = null, month: Int? = null, year: Int? = null): Single<List<List<String>>> {
         val (ini, end) = processDates(from, to, month, year)
-        return db.listByExp("idFarm" equalEx farmID andEx ("transactionDate".betweenDates(ini!!, end!!)), Movimiento::class)
+        return db.listByExp("idFarm" equalEx session.farmID andEx ("transactionDate".betweenDates(ini!!, end!!)), Movimiento::class)
                 .flatMapObservable { it.toObservable() }
                 .flatMap {
                     // Single.just(it)
@@ -523,7 +527,7 @@ class ReportViewModel(private val farmID:String, private val db: CouchRx) {
 
     private fun reporteAlimentacion(from: Date? = null, to: Date? = null, month: Int? = null, year: Int? = null): Single<List<List<String>>> {
         val (ini, end) = processDates(from, to, month, year)
-        return db.listByExp("idFinca" equalEx farmID andEx ("fecha".betweenDates(ini!!, end!!)), RegistroAlimentacion::class)
+        return db.listByExp("idFinca" equalEx session.farmID andEx ("fecha".betweenDates(ini!!, end!!)), RegistroAlimentacion::class)
                 .flatMapObservable { it.toObservable() }
                 .filter { it.bovinos != null }
                 .flatMap {
@@ -539,7 +543,7 @@ class ReportViewModel(private val farmID:String, private val db: CouchRx) {
 
     private fun reporteInventario(from: Date? = null, to: Date? = null, month: Int? = null, year: Int? = null): Single<List<List<String>>> {
         val (ini, end) = processDates(from, to, month, year)
-        return db.listByExp("finca" equalEx farmID andEx ("fechaNacimiento".betweenDates(ini!!, end!!)), Bovino::class)
+        return db.listByExp("finca" equalEx session.farmID andEx ("fechaNacimiento".betweenDates(ini!!, end!!)), Bovino::class)
                 .flatMapObservable { it.toObservable() }
                 .map {
                     var partos: String = ""
@@ -555,7 +559,7 @@ class ReportViewModel(private val farmID:String, private val db: CouchRx) {
         val end = Date(now - 259200000)
         val ini = Date(now - 12960000000)
 
-        return db.listByExp("finca" equalEx farmID andEx ("fechaNacimiento".betweenDates(ini, end) andEx ("genero" equalEx "Hembra")), Bovino::class)
+        return db.listByExp("finca" equalEx session.farmID andEx ("fechaNacimiento".betweenDates(ini, end) andEx ("genero" equalEx "Hembra")), Bovino::class)
                 .flatMapObservable { it.toObservable() }
                 .map {
                     listOf(it.codigo!!, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), it.proposito!!, it.raza!!, it.codigoMadre
@@ -569,7 +573,7 @@ class ReportViewModel(private val farmID:String, private val db: CouchRx) {
         val end = Date(now - 15552000000)
         val ini = Date(now - 31104000000)
 
-        return db.listByExp("finca" equalEx farmID
+        return db.listByExp("finca" equalEx session.farmID
                 andEx ("fechaNacimiento".betweenDates(ini, end)
                 andEx ("genero" equalEx "Hembra")), Bovino::class)
                 .flatMapObservable { it.toObservable() }
@@ -585,7 +589,7 @@ class ReportViewModel(private val farmID:String, private val db: CouchRx) {
         val end = Date(now - 31104000000)
         val ini = Date(now - 46656000000)
 
-        return db.listByExp("finca" equalEx farmID andEx ("fechaNacimiento".betweenDates(ini, end) andEx ("genero" equalEx "Hembra")), Bovino::class)
+        return db.listByExp("finca" equalEx session.farmID andEx ("fechaNacimiento".betweenDates(ini, end) andEx ("genero" equalEx "Hembra")), Bovino::class)
                 .flatMapObservable { it.toObservable() }
                 .map {
                     listOf(it.codigo!!, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), it.proposito!!, it.raza!!, it.codigoMadre
@@ -598,7 +602,7 @@ class ReportViewModel(private val farmID:String, private val db: CouchRx) {
         val end = Date(now - 46656000000)
         val ini = Date(now - 51840000000)
 
-        return db.listByExp("finca" equalEx farmID andEx ("fechaNacimiento".betweenDates(ini, end) andEx ("genero" equalEx "Hembra")), Bovino::class)
+        return db.listByExp("finca" equalEx session.farmID andEx ("fechaNacimiento".betweenDates(ini, end) andEx ("genero" equalEx "Hembra")), Bovino::class)
                 .flatMapObservable { it.toObservable() }
                 .map {
                     listOf(it.codigo!!, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), it.proposito!!, it.raza!!)
@@ -606,7 +610,7 @@ class ReportViewModel(private val farmID:String, private val db: CouchRx) {
     }
 
     private fun reporteVacas(): Single<List<List<String>>> =
-            db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra"), Bovino::class)
+            db.listByExp("finca" equalEx session.farmID andEx ("genero" equalEx "Hembra"), Bovino::class)
                     .flatMapObservable { it.toObservable() }
                     .filter {
                         val cal = Calendar.getInstance()
@@ -620,7 +624,7 @@ class ReportViewModel(private val farmID:String, private val db: CouchRx) {
 
     private fun reporteSalida(from: Date? = null, to: Date? = null, month: Int? = null, year: Int? = null): Single<List<List<String>>> {
         val (ini, end) = processDates(from, to, month, year)
-        return db.listByExp("finca" equalEx farmID andEx ("fechaSalida").betweenDates(ini!!, end!!), Bovino::class)
+        return db.listByExp("finca" equalEx session.farmID andEx ("fechaSalida").betweenDates(ini!!, end!!), Bovino::class)
                 .flatMapObservable { it.toObservable() }
                 .map {
                     listOf(it.codigo!!, it.nombre!!, it.fechaSalida!!.toStringFormat(), it.motivoSalida!!)
@@ -630,7 +634,7 @@ class ReportViewModel(private val farmID:String, private val db: CouchRx) {
 
     private fun reporteVacunas(from: Date? = null, to: Date? = null, month: Int? = null, year: Int? = null): Single<List<List<String>>> {
         val (ini, end) = processDates(from, to, month, year)
-        return db.listByExp("idFinca" equalEx farmID
+        return db.listByExp("idFinca" equalEx session.farmID
                 andEx "fecha".betweenDates(ini!!, end!!)
                 , RegistroVacuna::class, orderBy = arrayOf("fecha" orderEx DESCENDING))
                 .flatMapObservable {
@@ -646,7 +650,7 @@ class ReportViewModel(private val farmID:String, private val db: CouchRx) {
 
     private fun reporteSanidad(from: Date? = null, to: Date? = null, month: Int? = null, year: Int? = null): Single<List<List<String>>> {
         val (ini, end) = processDates(from, to, month, year)
-        return db.listByExp("idFinca" equalEx farmID andEx "fecha".betweenDates(ini!!, end!!), Sanidad::class
+        return db.listByExp("idFinca" equalEx session.farmID andEx "fecha".betweenDates(ini!!, end!!), Sanidad::class
                 , orderBy = arrayOf("fecha" orderEx DESCENDING))
                 .flatMapObservable {
                     it.toObservable()
@@ -661,7 +665,7 @@ class ReportViewModel(private val farmID:String, private val db: CouchRx) {
 
     private fun reporteManejo(from: Date? = null, to: Date? = null, month: Int? = null, year: Int? = null): Single<List<List<String>>> {
         val (ini, end) = processDates(from, to, month, year)
-        return db.listByExp("idFinca" equalEx farmID andEx "fecha".betweenDates(ini!!, end!!), RegistroManejo::class,
+        return db.listByExp("idFinca" equalEx session.farmID andEx "fecha".betweenDates(ini!!, end!!), RegistroManejo::class,
                 orderBy = arrayOf("fecha" orderEx DESCENDING))
                 .flatMapObservable {
                     it.toObservable()
@@ -676,7 +680,7 @@ class ReportViewModel(private val farmID:String, private val db: CouchRx) {
 
     private fun reportePajillas(from: Date? = null, to: Date? = null, month: Int? = null, year: Int? = null): Single<List<List<String>>> {
         val (ini, end) = processDates(from, to, month, year)
-        return db.listByExp("idFarm" equalEx farmID andEx ("fecha".betweenDates(ini!!, end!!)), Straw::class)
+        return db.listByExp("idFarm" equalEx session.farmID andEx ("fecha".betweenDates(ini!!, end!!)), Straw::class)
                 .flatMapObservable { it.toObservable() }
                 .map {
                     listOf(it.idStraw!!, it.layette!!, it.breed!!, it.purpose!!, it.bull!!, it.origin!!)
@@ -685,7 +689,7 @@ class ReportViewModel(private val farmID:String, private val db: CouchRx) {
 
     private fun reporteGananciaPeso(from: Date? = null, to: Date? = null, month: Int? = null, year: Int? = null): Single<List<List<String>>> {
         val (ini, end) = processDates(from, to, month, year)
-        return db.listByExp("finca" equalEx farmID, Bovino::class)
+        return db.listByExp("finca" equalEx session.farmID, Bovino::class)
                 .flatMapObservable { it.toObservable() }
                 .flatMapSingle {
                     db.listByExp("fecha".betweenDates(ini!!, end!!) andEx ("bovino" equalEx it._id!!) andEx (("eliminado" equalEx false ) orEx ("eliminado" isNullEx true)), Ceba::class, orderBy = arrayOf("fecha" orderEx DESCENDING))
