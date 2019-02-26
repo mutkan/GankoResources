@@ -40,14 +40,9 @@ class NotificationsFragment : Fragment(), Injectable {
             field = value
             emptyMsgNotifications.visibility = if (value) View.VISIBLE else View.GONE
         }
-    val cal: Calendar  by lazy {
-        Calendar.getInstance().apply {
-            set(Calendar.HOUR_OF_DAY, 0)
-            set(Calendar.MINUTE, 0)
-        }
-    }
+    val cal: Calendar =  Calendar.getInstance()
     val from: Date by lazy { Date(cal.timeInMillis).add(Calendar.DATE,-7)!! }
-    val to: Date by lazy { from.add(Calendar.DATE, 10)!! }
+    val to: Date by lazy { Date(cal.timeInMillis).add(Calendar.DATE,10)!! }
     lateinit var notificationSelected:OnNotificationSelected
 
     override fun onAttach(context: Context?) {

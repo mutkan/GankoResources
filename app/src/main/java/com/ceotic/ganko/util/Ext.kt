@@ -189,6 +189,7 @@ fun Float.currencyFormat(): String {
 
 fun String.toDate(): Date = format.parse(this)
 
+
 fun Date.toStringFormat(): String = format.format(this)
 
 fun <T> Fragment.dialog(msg: Int, data: T) = Observable.create<T> { emitter ->
@@ -235,8 +236,8 @@ fun setRankOrMonth(textView: TextView, promedio: Promedio) {
 }
 
 @BindingAdapter("app:individualValueOrPrice")
-fun setIndividualValueOrPrice(textView: TextView, promedio: Promedio){
-    when{
+fun setIndividualValueOrPrice(textView: TextView, promedio: Promedio) {
+    when {
         promedio.individual != null -> textView.text = promedio.individual.toString()
         promedio.valor != null -> textView.text = promedio.valor.toString()
     }

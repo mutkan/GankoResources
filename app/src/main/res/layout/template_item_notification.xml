@@ -100,8 +100,10 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp"
             android:text='@{notification.descripcion}'
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            app:layout_constraintBottom_toTopOf="@id/barrier"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/guideline17"
@@ -150,42 +152,49 @@
             tools:text="22/02/2018" />
 
         <ImageView
-            android:visibility="@{notification.grupo != null ? View.VISIBLE : View.GONE}"
             android:id="@+id/iconGp"
             android:layout_width="@dimen/icon"
             android:layout_height="@dimen/icon"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="16dp"
+            android:visibility="@{notification.grupo != null ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/bvnInfo"
-            app:layout_constraintTop_toBottomOf="@+id/textView60"
+            app:layout_constraintTop_toBottomOf="@+id/barrier"
             app:srcCompat="@drawable/ic_group_grey" />
 
         <ImageView
             android:id="@+id/bvnIcon"
             android:layout_width="@dimen/icon"
             android:layout_height="@dimen/icon"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="16dp"
             android:visibility="@{notification.bovino != null || (notification.bovinos != null &amp;&amp; notification.bovinos.size()> 0 &amp;&amp; notification.grupo == null) ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/bvnInfo"
-            app:layout_constraintTop_toBottomOf="@+id/textView60"
-            app:srcCompat="@drawable/ic_bovine_grey" />
+            app:srcCompat="@drawable/ic_bovine_grey"
+            app:layout_constraintTop_toBottomOf="@+id/barrier"
+            />
 
         <TextView
-            android:visibility="@{notification.bovino != null || (notification.bovinos != null &amp;&amp; notification.bovinos.size()> 0) || notification.grupo != null ? View.VISIBLE : View.GONE}"
             android:id="@+id/bvnInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
+            android:text="@{bvnTxt}"
+            android:visibility="@{notification.bovino != null || (notification.bovinos != null &amp;&amp; notification.bovinos.size()> 0) || notification.grupo != null ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:text="@{bvnTxt}"
             tools:text="Grupo Color" />
+
+        <android.support.constraint.Barrier
+            android:id="@+id/barrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="top"
+            app:constraint_referenced_ids="iconGp,bvnIcon,bvnInfo"
+            tools:layout_editor_absoluteY="131dp" />
 
 
     </android.support.constraint.ConstraintLayout>

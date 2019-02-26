@@ -40,7 +40,9 @@ class CouchModule {
     fun provideMapper(): ObjectMapper {
         return ObjectMapper().apply {
             registerKotlinModule()
-            dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+            dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+            dateFormat.timeZone = TimeZone.getTimeZone("UTC")
+
             configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
             configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
         }

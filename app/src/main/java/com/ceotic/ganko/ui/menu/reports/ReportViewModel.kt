@@ -481,7 +481,7 @@ class ReportViewModel(private val db: CouchRx,
                                 it
                             }
                             .flatMap { m ->
-                                db.listByExp("idPradera" equalEx pr.identificador!!
+                                db.listByExp("idPradera" equalEx pr.identificador!!.toString()
                                         andEx ("idFarm" equalEx session.farmID)
                                         andEx ("transactionDate" lte end), Movimiento::class, 1,
                                         orderBy = arrayOf("transactionDate" orderEx DESCENDING))
