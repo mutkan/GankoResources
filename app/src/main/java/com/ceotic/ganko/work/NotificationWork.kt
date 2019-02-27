@@ -71,12 +71,12 @@ class NotificationWork(context: Context, params: WorkerParameters) : Worker(cont
     }
 
     companion object {
-        private const val ARG_TITLE = "ARG_TITLE"
-        private const val ARG_ID = "ARG_ID"
-        private const val ARG_DESCRIPTION = "ARG_DESCRIPTION"
-        private const val ARG_TYPE = "ARG_TYPE"
-        private const val ARG_FARM = "ARG_FARM"
-        private const val ARG_REQUEST_CODE = "ARG_REQUEST_CODE"
+        const val ARG_TITLE = "ARG_TITLE"
+        const val ARG_ID = "ARG_ID"
+        const val ARG_DESCRIPTION = "ARG_DESCRIPTION"
+        const val ARG_TYPE = "ARG_TYPE"
+        const val ARG_FARM = "ARG_FARM"
+        const val ARG_REQUEST_CODE = "ARG_REQUEST_CODE"
 
         const val TYPE_HEALTH = 0
         const val TYPE_MANAGEMENT = 1
