@@ -5,16 +5,11 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Build
 import android.support.multidex.MultiDexApplication
-import androidx.work.Constraints
-import androidx.work.Data
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
+import androidx.work.*
 import com.ceotic.ganko.data.models.*
 import com.ceotic.ganko.data.preferences.UserSession
 import com.ceotic.ganko.di.AppInjector
-import com.ceotic.ganko.util.andEx
-import com.ceotic.ganko.util.equalEx
-import com.ceotic.ganko.util.gt
+import com.ceotic.ganko.util.*
 import com.ceotic.ganko.work.NotificationWork
 import com.couchbase.lite.*
 import com.couchbase.lite.Dictionary
@@ -25,6 +20,7 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import io.reactivex.Observable
 import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.toObservable
 import io.reactivex.schedulers.Schedulers
 import java.net.URI
@@ -52,12 +48,15 @@ class App : MultiDexApplication(), HasActivityInjector {
 
     private var replicator: Replicator? = null
     private var changeToken: ListenerToken? = null
+    lateinit var workManager: WorkManager
 
     override fun onCreate() {
         super.onCreate()
         AppInjector.init(this)
+        workManager = WorkManager.getInstance()
         createNotificationChannel()
         startReplicator()
+
 
     }
 
@@ -111,8 +110,10 @@ class App : MultiDexApplication(), HasActivityInjector {
 
     private fun notificationListener() {
         val device = session.device
+        val next = Date().add(Calendar.DATE, 5)
         val exp = ("activa" equalEx true
                 andEx ("fechaProxima" gt Date())
+                andEx( "fechaProxima" lt next!! )
                 andEx ("type" equalEx TYPE_ALARM)
                 andEx Expression.negated(
                 ArrayExpression.any(ArrayExpression.variable("d")).`in`(Expression.property("device"))
@@ -123,8 +124,9 @@ class App : MultiDexApplication(), HasActivityInjector {
                 .subscribeOn(Schedulers.io())
                 .subscribe()
 
-        /*val expDis = ("activa" equalEx false
+        val expDis = ("activa" equalEx false
                 andEx ("fechaProxima" gt Date())
+                andEx( "fechaProxima" lt next )
                 andEx ("type" equalEx TYPE_ALARM)
                 andEx ArrayExpression.any(ArrayExpression.variable("d")).`in`(Expression.property("device"))
                 .satisfies(ArrayExpression.variable("d.device").equalTo(Expression.longValue(device)))
@@ -132,11 +134,12 @@ class App : MultiDexApplication(), HasActivityInjector {
 
         cancelNotification(device, expDis)
                 .subscribeOn(Schedulers.io())
-                .subscribe()*/
+                .subscribe()
     }
 
     private fun addNotification(device: Long, exp: Expression): Single<Unit> {
         var now: Long = 0
+
         return Single.create<ResultSet> { emitter ->
             val query = QueryBuilder
                     .select(SelectResult.all(), SelectResult.expression(Meta.id))
@@ -162,7 +165,7 @@ class App : MultiDexApplication(), HasActivityInjector {
                     val gp = doc.getDictionary("grupo")
                     val farm = doc.getString("idFinca")
 
-                    val milis = fechaProxima.time - now
+                    val milis = (fechaProxima.time - now) / 60000
 
                     val type = when (alarma) {
                         in ALARM_2_MONTHS..ALARM_12_MONTHS, ALARM_VACCINE -> NotificationWork.TYPE_VACCINES
@@ -189,10 +192,24 @@ class App : MultiDexApplication(), HasActivityInjector {
                             titulo to descripcion + ", Bovino " + bvn?.getString("codigo")
                         }
                     }
-                    val uuid = notify(type, title, des, reference, milis, TimeUnit.MILLISECONDS, farm
-                            ?: "")
-                    id to uuid
+
+                    val data: Data = Data.Builder()
+                            .putString(NotificationWork.ARG_ID, reference)
+                            .putString(NotificationWork.ARG_TITLE, title)
+                            .putString(NotificationWork.ARG_DESCRIPTION, des)
+                            .putInt(NotificationWork.ARG_TYPE, type)
+                            .putString(NotificationWork.ARG_FARM, farm)
+                            .build()
+
+                    val notificationWork = OneTimeWorkRequestBuilder<NotificationWork>()
+                            .setInitialDelay(milis, TimeUnit.MINUTES)
+                            .setInputData(data)
+                            .build()
+
+                    id to notificationWork
                 }
+                .doOnNext {workManager.enqueue(it.second)}
+                .map { it.first to it.second.id }
                 .flatMapSingle { (id, uuid) ->
                     val doc = db.getDocument(id).toMutable()
                     val devices = doc.getArray("device")
@@ -205,7 +222,7 @@ class App : MultiDexApplication(), HasActivityInjector {
                 }
                 .toList()
                 .flatMap {
-                    Single.timer(15, TimeUnit.SECONDS)
+                    Single.timer(18, TimeUnit.SECONDS)
                             .flatMap { addNotification(device, exp) }
                 }
 
@@ -255,29 +272,6 @@ class App : MultiDexApplication(), HasActivityInjector {
 
     }
 
-    fun notify(type: Int, title: String, msg: String, docId: String, time: Long, timeUnit: TimeUnit, farm: String): UUID {
-
-        val data: Data = Data.Builder()
-                .putString(NotificationWork.ARG_ID, docId)
-                .putString(NotificationWork.ARG_TITLE, title)
-                .putString(NotificationWork.ARG_DESCRIPTION, msg)
-                .putInt(NotificationWork.ARG_TYPE, type)
-                .putString(NotificationWork.ARG_FARM, farm)
-                .build()
-
-        val notificationWork = OneTimeWorkRequestBuilder<NotificationWork>()
-                .setInitialDelay(time, timeUnit)
-
-                .setInputData(data)
-                .build()
-
-
-        WorkManager.getInstance()
-                .enqueue(notificationWork)
-
-
-        return notificationWork.id
-    }
 
     companion object {
         const val CHANNEL_ID = "ganko.channel.notification"

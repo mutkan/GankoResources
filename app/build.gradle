@@ -33,7 +33,7 @@ android {
 def support_version = "27.1.1"
 def arch_version = "1.1.1"
 def anko_version = "0.10.4"
-def work_version = "1.0.0-beta02"
+def work_version = "1.0.0-rc02"
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
@@ -104,6 +104,7 @@ dependencies {
 
     //Work Manager
     implementation "android.arch.work:work-runtime-ktx:$work_version"
+    implementation "android.arch.work:work-firebase:1.0.0-alpha11"
 
     //Excel files
     implementation 'org.apache.poi:poi:3.17'
