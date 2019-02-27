@@ -142,6 +142,8 @@ class App : MultiDexApplication(), HasActivityInjector {
             }
 
         }
+                .map { it.allResults() }
+                .filter { it.size > 0 }
                 .doOnSuccess {
                     now = Date().time
                     addToken?.run { query?.removeChangeListener(this) }
@@ -149,10 +151,11 @@ class App : MultiDexApplication(), HasActivityInjector {
                     addToken = null
                 }
                 .flatMapObservable { it.toObservable() }
-                .map { it.getDictionary("ganko-database").toMap() to it.getString("id") }
+                .map { it.getDictionary("ganko-database")?.toMap() to it.getString("id") }
+                .filter { it.first != null }
                 .map {
-                    it.first["_id"] = it.second
-                    mapper.convertValue<Alarm>(it.first)
+                    it.first!!["_id"] = it.second
+                    mapper.convertValue<Alarm>(it.first!!)
                 }
                 .distinct { it._id }
                 .map { a ->
@@ -188,7 +191,8 @@ class App : MultiDexApplication(), HasActivityInjector {
                             a.titulo to a.descripcion + ", Bovino " + bvn.codigo
                         }
                     }
-                    val uuid = NotificationWork.notify(type, title!!, des!!, reference, milis, TimeUnit.MILLISECONDS, a.idFinca!!)
+                    val uuid = NotificationWork.notify(type, title!!, des!!, reference, milis, TimeUnit.MILLISECONDS, a.idFinca
+                            ?: "")
                     a._id!! to uuid
 
 
@@ -227,25 +231,33 @@ class App : MultiDexApplication(), HasActivityInjector {
                 emitter.onSuccess(it.results)
             }
         }
+                .map { it.allResults() }
+                .filter { it.size > 0 }
                 .doOnSuccess {
                     cancelToken?.run { query?.removeChangeListener(this) }
                     query = null
                     cancelToken = null
                 }
                 .flatMapObservable { it.toObservable() }
-                .map { it.getDictionary("ganko-database").toMap() }
-                .map { mapper.convertValue<Alarm>(it) }
+                .map { it.getDictionary("ganko-database")?.toMap() to it.getString("id") }
+                .filter { it.first != null }
+                .map {
+                    it.first!!["_id"] = it.second
+                    mapper.convertValue<Alarm>(it)
+                }
                 .map { a ->
                     val idx = a.device.indexOfFirst { it.device == device }
-                    val uuid = a.device[idx].uuid
-                    NotificationWork.cancelNotificationById(UUID.fromString(uuid))
-                    val devices = a.device.toMutableList()
-                    devices.removeAt(idx)
-                    a.device = devices
-                    a
+                    if (idx > -1) {
+                        val uuid = a.device[idx].uuid
+                        NotificationWork.cancelNotificationById(UUID.fromString(uuid))
+                        val devices = a.device.toMutableList()
+                        devices.removeAt(idx)
+                        a.device = devices
+                    }
+                    a to idx
                 }
-                .flatMapSingle { a ->
-                    Single.fromCallable {
+                .flatMapSingle { (a, idx) ->
+                    if (idx > -1) Single.fromCallable {
                         val doc = db.getDocument(a._id).toMutable()
                         val channels = doc.getArray("channels")
 
@@ -256,6 +268,7 @@ class App : MultiDexApplication(), HasActivityInjector {
                         if (channels != null) doc.setArray("channels", channels)
                         db.save(doc)
                     }
+                    else Single.just(Unit)
                 }
                 .toList()
                 .map { Unit }
