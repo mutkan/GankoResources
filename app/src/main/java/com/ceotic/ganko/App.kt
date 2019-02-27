@@ -5,6 +5,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Build
 import android.support.multidex.MultiDexApplication
+import androidx.work.Constraints
 import androidx.work.Data
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
@@ -16,11 +17,13 @@ import com.ceotic.ganko.util.equalEx
 import com.ceotic.ganko.util.gt
 import com.ceotic.ganko.work.NotificationWork
 import com.couchbase.lite.*
+import com.couchbase.lite.Dictionary
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.convertValue
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
+import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.rxkotlin.toObservable
 import io.reactivex.schedulers.Schedulers
@@ -134,76 +137,61 @@ class App : MultiDexApplication(), HasActivityInjector {
 
     private fun addNotification(device: Long, exp: Expression): Single<Unit> {
         var now: Long = 0
-        var query: Query? = null
-        var addToken: ListenerToken? = null
         return Single.create<ResultSet> { emitter ->
-            query = QueryBuilder
+            val query = QueryBuilder
                     .select(SelectResult.all(), SelectResult.expression(Meta.id))
                     .from(DataSource.database(db))
                     .where(exp)
-
-            addToken = query?.addChangeListener {
-                emitter.onSuccess(it.results)
-            }
-
+            emitter.onSuccess(query.execute())
         }
-                .map { it.allResults() }
-                .filter { it.size > 0 }
-                .doOnSuccess {
-                    now = Date().time
-                    addToken?.run { query?.removeChangeListener(this) }
-                    query = null
-                    addToken = null
-                }
+                .doOnSuccess { now = Date().time }
                 .flatMapObservable { it.toObservable() }
                 .map {
-                    val dic = it.getDictionary("ganko-database")?.toMap()
+                    val dic = it.getDictionary("ganko-database")
                     val id = it.getString("id")
                     dic to id
                 }
                 .filter { it.first != null }
-                .map {
-                    it.first!!["_id"] = it.second
-                    mapper.convertValue<Alarm>(it.first!!)
-                }
-                .map { a ->
-                    val milis = a.fechaProxima!!.time - now
-                    val reference = a.reference!!
-                    val alarm = a.alarma
-                    val type = when (alarm) {
+                .map { (doc, id) ->
+                    val alarma = doc.getInt("alarma")
+                    val fechaProxima = mapper.convertValue<Date>(doc.getString("fechaProxima"))
+                    val reference = doc.getString("reference")
+                    val titulo = doc.getString("titulo")
+                    val descripcion = doc.getString("descripcion")
+                    val bvn = doc.getDictionary("bovino")
+                    val gp = doc.getDictionary("grupo")
+                    val farm = doc.getString("idFinca")
+
+                    val milis = fechaProxima.time - now
+
+                    val type = when (alarma) {
                         in ALARM_2_MONTHS..ALARM_12_MONTHS, ALARM_VACCINE -> NotificationWork.TYPE_VACCINES
                         ALARM_18_MONTHS, in ALARM_SECADO..ALARM_DIAGNOSIS, ALARM_REJECT_DIAGNOSIS_3 -> NotificationWork.TYPE_REPRODUCTIVE
                         ALARM_HEALTH -> NotificationWork.TYPE_HEALTH
                         ALARM_MANAGE -> NotificationWork.TYPE_MANAGEMENT
                         else -> NotificationWork.TYPE_MEADOW
                     }
-                    val (title, des) = when (alarm) {
-                        in ALARM_18_MONTHS..ALARM_12_MONTHS -> a.titulo to a.descripcion
+                    val (title, des) = when (alarma) {
+                        in ALARM_18_MONTHS..ALARM_12_MONTHS -> titulo to descripcion
                         in ALARM_SECADO..ALARM_DIAGNOSIS -> {
-                            val bvn = a.bovino
-                            a.titulo to a.descripcion + ", Bovino " + bvn!!.codigo
+                            titulo to descripcion + ", Bovino " + (bvn?.getString("codigo"))
                         }
                         in ALARM_HEALTH..ALARM_MANAGE -> {
-                            val bvn = a.bovino
-                            val gp = a.grupo
                             val info = when {
-                                bvn != null -> " - Bovino ${bvn.codigo}"
-                                gp != null -> " - Grupo ${gp.nombre}"
+                                bvn != null -> " - Bovino ${bvn.getString("codigo")}"
+                                gp != null -> " - Grupo ${gp.getString("nombre")}"
                                 else -> ""
                             }
-                            a.titulo to a.descripcion + info
+                            titulo to descripcion + info
                         }
-                        in ALARM_MEADOW_OCUPATION..ALARM_MEADOW_EXIT -> a.titulo to a.descripcion
+                        in ALARM_MEADOW_OCUPATION..ALARM_MEADOW_EXIT -> titulo to descripcion
                         else -> {
-                            val bvn = a.bovino!!
-                            a.titulo to a.descripcion + ", Bovino " + bvn.codigo
+                            titulo to descripcion + ", Bovino " + bvn?.getString("codigo")
                         }
                     }
-                    val uuid = notify(type, title!!, des!!, reference, milis, TimeUnit.MILLISECONDS, a.idFinca
+                    val uuid = notify(type, title, des, reference, milis, TimeUnit.MILLISECONDS, farm
                             ?: "")
-                    a._id!! to uuid
-
-
+                    id to uuid
                 }
                 .flatMapSingle { (id, uuid) ->
                     val doc = db.getDocument(id).toMutable()
@@ -217,63 +205,43 @@ class App : MultiDexApplication(), HasActivityInjector {
                 }
                 .toList()
                 .flatMap {
-                    Single.timer(5000, TimeUnit.MILLISECONDS)
+                    Single.timer(15, TimeUnit.SECONDS)
                             .flatMap { addNotification(device, exp) }
                 }
-
 
 
     }
 
     private fun cancelNotification(device: Long, exp: Expression): Single<Unit> {
-        var query: Query? = null
-        var cancelToken: ListenerToken? = null
-
         return Single.create<ResultSet> { emitter ->
-            query = QueryBuilder
+            val query = QueryBuilder
                     .select(SelectResult.all(), SelectResult.expression(Meta.id))
                     .from(DataSource.database(db))
                     .where(exp)
-
-            cancelToken = query?.addChangeListener {
-                emitter.onSuccess(it.results)
-            }
+            emitter.onSuccess(query.execute())
         }
-                .map { it.allResults() }
-                .filter { it.size > 0 }
-                .doOnSuccess {
-                    cancelToken?.run { query?.removeChangeListener(this) }
-                    query = null
-                    cancelToken = null
-                }
                 .flatMapObservable { it.toObservable() }
-                .map { it.getDictionary("ganko-database")?.toMap() to it.getString("id") }
+                .map { it.getDictionary("ganko-database") to it.getString("id") }
                 .filter { it.first != null }
-                .map {
-                    it.first!!["_id"] = it.second
-                    mapper.convertValue<Alarm>(it.first!!)
-                }
-                .map { a ->
-                    val idx = a.device.indexOfFirst { it.device == device }
-                    if (idx > -1) {
-                        val uuid = a.device[idx].uuid
-                        NotificationWork.cancelNotificationById(UUID.fromString(uuid))
-                        val devices = a.device.toMutableList()
-                        devices.removeAt(idx)
-                        a.device = devices
+                .map { (doc, id) ->
+                    val devices = doc.getArray("device")
+                    val idx = devices.indexOfFirst {
+                        val i = it as Dictionary
+                        it.getLong("device") == device
                     }
-                    a to idx
-                }
-                .flatMapSingle { (a, idx) ->
-                    if (idx > -1) Single.fromCallable {
-                        val doc = db.getDocument(a._id).toMutable()
-                        val channels = doc.getArray("channels")
 
-                        val map = mapper.convertValue(a, Map::class.java) as MutableMap<String, Any>
-                        map.remove("_id")
-                        map.remove("_sequence")
-                        doc.setData(map)
-                        if (channels != null) doc.setArray("channels", channels)
+                    if (idx > -1) {
+                        val uuid = devices.getDictionary(idx).getString("uuid")
+                        NotificationWork.cancelNotificationById(UUID.fromString(uuid))
+                    }
+                    id to idx
+                }
+                .flatMapSingle { (id, idx) ->
+                    if (idx > -1) Single.fromCallable {
+                        val doc = db.getDocument(id).toMutable()
+                        val devices = doc.getArray("device")
+                        devices.remove(idx)
+                        doc.setArray("device", devices)
                         db.save(doc)
                     }
                     else Single.just(Unit)
@@ -281,13 +249,13 @@ class App : MultiDexApplication(), HasActivityInjector {
                 .toList()
                 .map { Unit }
                 .flatMap {
-                    Single.timer(5000, TimeUnit.MILLISECONDS)
+                    Single.timer(25, TimeUnit.SECONDS)
                             .flatMap { cancelNotification(device, exp) }
                 }
 
     }
 
-    fun notify(type: Int, title: String, msg: String, docId: String, time: Long, timeUnit: TimeUnit, farm:String): UUID {
+    fun notify(type: Int, title: String, msg: String, docId: String, time: Long, timeUnit: TimeUnit, farm: String): UUID {
 
         val data: Data = Data.Builder()
                 .putString(NotificationWork.ARG_ID, docId)
@@ -299,8 +267,10 @@ class App : MultiDexApplication(), HasActivityInjector {
 
         val notificationWork = OneTimeWorkRequestBuilder<NotificationWork>()
                 .setInitialDelay(time, timeUnit)
+
                 .setInputData(data)
                 .build()
+
 
         WorkManager.getInstance()
                 .enqueue(notificationWork)

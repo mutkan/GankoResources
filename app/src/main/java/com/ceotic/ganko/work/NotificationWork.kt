@@ -22,12 +22,14 @@ import kotlin.random.Random.Default.nextInt
 class NotificationWork(context: Context, params: WorkerParameters) : Worker(context, params) {
 
     override fun doWork(): Result {
+        Log.i("ENTRO NOTY", "NOTY 1")
         val title = inputData.getString(ARG_TITLE) ?: "Ganko"
         val msg = inputData.getString(ARG_DESCRIPTION)
         val id = inputData.getString(ARG_ID)
         val type = inputData.getInt(ARG_TYPE, 0)
         val farm = inputData.getString(ARG_FARM)
         val requestCode = nextInt()
+        Log.i("ENTRO NOTY", "NOTY 2")
 
         val icon = when (type) {
             TYPE_HEALTH -> R.drawable.ic_notify_hea
@@ -36,6 +38,7 @@ class NotificationWork(context: Context, params: WorkerParameters) : Worker(cont
             TYPE_MEADOW -> R.drawable.ic_prairies
             else -> R.drawable.ic_bovine
         }
+        Log.i("ENTRO NOTY", "NOTY 3")
         /*val intent: Intent = when (type) {
             TYPE_HEALTH -> Intent(applicationContext, MenuActivity::class.java).apply { putExtra("fragment", 0) }
             TYPE_MANAGEMENT -> Intent(applicationContext, MenuActivity::class.java).apply { putExtra("fragment", 1) }
@@ -64,8 +67,12 @@ class NotificationWork(context: Context, params: WorkerParameters) : Worker(cont
                 .setAutoCancel(true)
                 .build()
 
+        Log.i("ENTRO NOTY", "NOTY 4")
+
         NotificationManagerCompat.from(applicationContext)
                 .notify(requestCode, notification)
+
+        Log.i("ENTRO NOTY", "NOTY 5")
 
         return Result.success()
     }
