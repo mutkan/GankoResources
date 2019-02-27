@@ -12,6 +12,7 @@ import java.util.concurrent.TimeUnit
 import android.app.PendingIntent
 import android.content.Context
 import android.graphics.Color
+import android.util.Log
 import com.ceotic.ganko.data.models.Alarm
 import com.ceotic.ganko.ui.bovine.reproductive.ReproductiveBvnActivity
 import java.util.*
@@ -21,15 +22,12 @@ import kotlin.random.Random.Default.nextInt
 class NotificationWork(context: Context, params: WorkerParameters) : Worker(context, params) {
 
     override fun doWork(): Result {
-
         val title = inputData.getString(ARG_TITLE) ?: "Ganko"
         val msg = inputData.getString(ARG_DESCRIPTION)
         val id = inputData.getString(ARG_ID)
         val type = inputData.getInt(ARG_TYPE, 0)
         val farm = inputData.getString(ARG_FARM)
-
         val requestCode = nextInt()
-
 
         val icon = when (type) {
             TYPE_HEALTH -> R.drawable.ic_notify_hea
@@ -60,11 +58,12 @@ class NotificationWork(context: Context, params: WorkerParameters) : Worker(cont
                 .setVibrate(longArrayOf(500, 800, 500))
                 .setLights(Color.GREEN, 3000, 3000)
                 .setContentIntent(pendingIntent)
-                .setPriority(NotificationCompat.PRIORITY_MAX)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setStyle(NotificationCompat.BigTextStyle()
                         .bigText(msg))
                 .setAutoCancel(true)
                 .build()
+
         NotificationManagerCompat.from(applicationContext)
                 .notify(requestCode, notification)
 
@@ -102,7 +101,9 @@ class NotificationWork(context: Context, params: WorkerParameters) : Worker(cont
                     .setInputData(data)
                     .build()
 
-            WorkManager.getInstance().enqueue(notificationWork)
+            WorkManager.getInstance()
+                    .enqueue(notificationWork)
+
 
             return notificationWork.id
         }

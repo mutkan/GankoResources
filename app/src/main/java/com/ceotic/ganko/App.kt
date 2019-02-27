@@ -82,7 +82,7 @@ class App : MultiDexApplication(), HasActivityInjector {
             replicator = Replicator(config)
             replicator?.start()
 
-            notificationListener()
+            // notificationListener()
 
             changeToken = db.addDocumentChangeListener(session.userId) {
                 val doc = db.getDocument(it.documentID)
@@ -110,20 +110,22 @@ class App : MultiDexApplication(), HasActivityInjector {
                 andEx ("type" equalEx TYPE_ALARM)
                 andEx Expression.negated(
                 ArrayExpression.any(ArrayExpression.variable("d")).`in`(Expression.property("device"))
-                        .satisfies(ArrayExpression.variable("d.device").equalTo(Expression.value(device))))
+                        .satisfies(ArrayExpression.variable("d.device").equalTo(Expression.longValue(device))))
                 )
 
         addNotification(device, exp)
+                .subscribeOn(Schedulers.io())
                 .subscribe()
 
         val expDis = ("activa" equalEx false
                 andEx ("fechaProxima" gt Date())
                 andEx ("type" equalEx TYPE_ALARM)
                 andEx ArrayExpression.any(ArrayExpression.variable("d")).`in`(Expression.property("device"))
-                .satisfies(ArrayExpression.variable("d.device").equalTo(Expression.value(device)))
+                .satisfies(ArrayExpression.variable("d.device").equalTo(Expression.longValue(device)))
                 )
 
         cancelNotification(device, expDis)
+                .subscribeOn(Schedulers.io())
                 .subscribe()
     }
 
@@ -212,7 +214,7 @@ class App : MultiDexApplication(), HasActivityInjector {
                     Single.timer(500, TimeUnit.MILLISECONDS)
                             .flatMap { addNotification(device, exp) }
                 }
-                .subscribeOn(Schedulers.io())
+
 
 
     }
@@ -223,7 +225,7 @@ class App : MultiDexApplication(), HasActivityInjector {
 
         return Single.create<ResultSet> { emitter ->
             query = QueryBuilder
-                    .select(SelectResult.all())
+                    .select(SelectResult.all(), SelectResult.expression(Meta.id))
                     .from(DataSource.database(db))
                     .where(exp)
 
@@ -243,7 +245,7 @@ class App : MultiDexApplication(), HasActivityInjector {
                 .filter { it.first != null }
                 .map {
                     it.first!!["_id"] = it.second
-                    mapper.convertValue<Alarm>(it)
+                    mapper.convertValue<Alarm>(it.first!!)
                 }
                 .map { a ->
                     val idx = a.device.indexOfFirst { it.device == device }
@@ -276,7 +278,7 @@ class App : MultiDexApplication(), HasActivityInjector {
                     Single.timer(500, TimeUnit.MILLISECONDS)
                             .flatMap { cancelNotification(device, exp) }
                 }
-                .subscribeOn(Schedulers.io())
+
     }
 
     companion object {
