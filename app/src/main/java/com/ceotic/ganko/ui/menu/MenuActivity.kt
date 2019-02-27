@@ -88,6 +88,7 @@ class MenuActivity : SearchBarActivity(MENU_SEARCH_FILTER), Injectable, HasSuppo
                 1 -> clickOnMenu(6, true)
                 2 -> clickOnMenu(8, true)
                 4 -> clickOnMenu(11, true)
+                13 -> clickOnMenu(13, true)
             }
         } else {
             clickOnMenu(viewModel.content, true)
