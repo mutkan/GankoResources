@@ -31,12 +31,12 @@ import javax.inject.Inject
 class MenuViewModel @Inject constructor(private val db: CouchRx, private val userSession: UserSession) : ViewModel() {
 
     fun getFarmId(): String = userSession.farmID
-    fun setFarmId(farm:String){
+    fun setFarmId(farm: String) {
         userSession.farmID = farm
     }
 
-    val reports:ReportViewModel by lazy { ReportViewModel(db, userSession)}
-    val averages:AverageViewModel by lazy { AverageViewModel(userSession.farmID, db) }
+    val reports: ReportViewModel by lazy { ReportViewModel(db, userSession) }
+    val averages: AverageViewModel by lazy { AverageViewModel(userSession.farmID, db) }
 
 
     //region Menu
@@ -92,7 +92,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     }
 
     class MenuItem(val type: Int, var color: Int = 0, val icon: Int = 0, val title: Int = 0,
-                   val titleText: String? = null) {
+                   var titleText: String? = null) {
 
         companion object {
             val TYPE_TITLE: Int = 0
@@ -101,6 +101,14 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
         }
     }
     //endregion
+
+    fun getFarm(idFarm: String): Maybe<String> = db.oneById(idFarm, Finca::class)
+            .map { it.nombre }
+            .doOnSuccess {
+                userSession.farm = it
+                data[0].titleText = it
+            }
+            .applySchedulers()
 
     fun getBovineByFilter(idFinca: String): Observable<List<Bovino>> {
         val filter = FilterFragment.filter
@@ -295,18 +303,21 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
 
     //region Vacunas
     fun inserVaccine(registroVacuna: RegistroVacuna): Single<String> = db.insert(registroVacuna)
-            .flatMap { makeAlarm(it,registroVacuna.bovinos ?: emptyList(),registroVacuna.grupo,
-                    registroVacuna.titulo!!, registroVacuna.descripcion!!, null,null,
-                    registroVacuna.fechaProxima, ALARM_VACCINE
-                    ) }
+            .flatMap {
+                makeAlarm(it, registroVacuna.bovinos ?: emptyList(), registroVacuna.grupo,
+                        registroVacuna.titulo!!, registroVacuna.descripcion!!, null, null,
+                        registroVacuna.fechaProxima, ALARM_VACCINE
+                )
+            }
             .applySchedulers()
 
     fun inserFirstVaccine(registroVacuna: RegistroVacuna): Single<String> = db.insertDosisUno(registroVacuna)
             .flatMap {
-                makeAlarm(it,registroVacuna.bovinos ?: emptyList(),registroVacuna.grupo,
-                    registroVacuna.titulo!!, registroVacuna.descripcion!!, null,null,
-                    registroVacuna.fechaProxima, ALARM_VACCINE
-            ) }
+                makeAlarm(it, registroVacuna.bovinos ?: emptyList(), registroVacuna.grupo,
+                        registroVacuna.titulo!!, registroVacuna.descripcion!!, null, null,
+                        registroVacuna.fechaProxima, ALARM_VACCINE
+                )
+            }
             .applySchedulers()
 
     fun updateVaccine(registroVacuna: RegistroVacuna): Single<Unit> = db.update(registroVacuna._id!!, registroVacuna)
@@ -340,24 +351,26 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     //region Manejo
     fun insertManageFirst(registroManejo: RegistroManejo): Single<String> = db.insertDosisUno(registroManejo)
             .flatMap {
-                val title = if(registroManejo.tipo == "Otro") registroManejo.otro!!
+                val title = if (registroManejo.tipo == "Otro") registroManejo.otro!!
                 else registroManejo.tipo!!
 
                 makeAlarm(it, registroManejo.bovinos ?: emptyList(), registroManejo.grupo,
-                    title, registroManejo.tratamiento?: "", registroManejo.aplicacion ?: 0,
-                        registroManejo.numeroAplicaciones?:0,
-                    registroManejo.fechaProxima, ALARM_MANAGE) }
+                        title, registroManejo.tratamiento ?: "", registroManejo.aplicacion ?: 0,
+                        registroManejo.numeroAplicaciones ?: 0,
+                        registroManejo.fechaProxima, ALARM_MANAGE)
+            }
             .applySchedulers()
 
     fun insertManage(registroManejo: RegistroManejo): Single<String> = db.insertDosisUno(registroManejo)
             .flatMap {
-                val title = if(registroManejo.tipo == "Otro") registroManejo.otro!!
+                val title = if (registroManejo.tipo == "Otro") registroManejo.otro!!
                 else registroManejo.tipo!!
 
                 makeAlarm(it, registroManejo.bovinos ?: emptyList(), registroManejo.grupo,
-                        title, registroManejo.tratamiento?: "", registroManejo.aplicacion ?: 0,
-                        registroManejo.numeroAplicaciones?:0,
-                        registroManejo.fechaProxima, ALARM_MANAGE) }
+                        title, registroManejo.tratamiento ?: "", registroManejo.aplicacion ?: 0,
+                        registroManejo.numeroAplicaciones ?: 0,
+                        registroManejo.fechaProxima, ALARM_MANAGE)
+            }
             .applySchedulers()
 
     fun getManages(): Observable<List<RegistroManejo>> = SearchBarActivity.query
@@ -392,32 +405,31 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     fun validatePlan(): Boolean = userSession.validatePlanDate().first
 
 
-
     //region Notificaiones
 
     fun getNotifications(from: Date, to: Date): Single<List<Alarm>> =
             db.listByExp("idFinca" equalEx userSession.farmID andEx ("fechaProxima".betweenDates(from, to)) andEx ("activa" equalEx true), Alarm::class, orderBy = arrayOf("fechaProxima" orderEx DESCENDING))
                     .applySchedulers()
 
-    private fun prepareNotificationBovine(id:String, bovines:List<String> = emptyList(), group:Grupo? =null) =
-            if(bovines.size == 1 && group == null)
-        db.oneById(bovines[0], Bovino::class)
-                .map { "${it._id};;${it.nombre};;${it.codigo}" to id }
-                .defaultIfEmpty("" to id)
-                .toSingle()
-    else
+    private fun prepareNotificationBovine(id: String, bovines: List<String> = emptyList(), group: Grupo? = null) =
+            if (bovines.size == 1 && group == null)
+                db.oneById(bovines[0], Bovino::class)
+                        .map { "${it._id};;${it.nombre};;${it.codigo}" to id }
+                        .defaultIfEmpty("" to id)
+                        .toSingle()
+            else
                 Single.just("" to id)
 
-    private fun prepareAlarm(data:Pair<String, String>, bovines:List<String> = emptyList(), group:Grupo? = null, title:String, description:String, nextDate:Date?, notifyTime: Long, type:Int):Single<String>{
+    private fun prepareAlarm(data: Pair<String, String>, bovines: List<String> = emptyList(), group: Grupo? = null, title: String, description: String, nextDate: Date?, notifyTime: Long, type: Int): Single<String> {
         val bvn = data.first.split(";;")
-        var bvnInfo:AlarmBovine? = null
+        var bvnInfo: AlarmBovine? = null
         var info = ""
-        if(bvn.size > 2){
+        if (bvn.size > 2) {
             bvnInfo = AlarmBovine(bvn[0], bvn[1], bvn[2])
             info = "- Bovino ${bvnInfo.codigo}"
         }
 
-        if(group != null){
+        if (group != null) {
             info = "- Grupo ${group.nombre}"
         }
 
@@ -446,28 +458,28 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
         return db.insert(alarm)
     }
 
-    private fun makeAlarm(id:String, bovines:List<String> = emptyList(), group:Grupo? = null, title:String, description:String, application:Int? = null , numApplication:Int? = null, nextDate:Date?, type:Int):Single<String>{
-        val to =( (nextDate?.time ?: 0) / 3600000)
+    private fun makeAlarm(id: String, bovines: List<String> = emptyList(), group: Grupo? = null, title: String, description: String, application: Int? = null, numApplication: Int? = null, nextDate: Date?, type: Int): Single<String> {
+        val to = ((nextDate?.time ?: 0) / 3600000)
         val now = Date().time / 3600000
-        return if(to > (now - DAY_7_HOUR) && (application == null ||application < numApplication!!)){
+        return if (to > (now - DAY_7_HOUR) && (application == null || application < numApplication!!)) {
             prepareNotificationBovine(id, bovines, group)
-                    .flatMap { prepareAlarm(it, bovines, group, title, description, nextDate,to - now, type)  }
-        }else{
+                    .flatMap { prepareAlarm(it, bovines, group, title, description, nextDate, to - now, type) }
+        } else {
             Single.just("")
         }
     }
 
-    private fun cancelAlarm(reference:String):Single<Unit>{
-        return db.listByExp("reference" equalEx  reference
+    private fun cancelAlarm(reference: String): Single<Unit> {
+        return db.listByExp("reference" equalEx reference
                 andEx ("activa" equalEx true)
                 andEx ("fechaProxima" gt Date())
-                , Alarm::class )
+                , Alarm::class)
                 .flatMap {
-                    if(it.isNotEmpty()){
+                    if (it.isNotEmpty()) {
                         it[0].activa = false
-                        NotificationWork.cancelAlarm(it[0], userSession.device )
+                        NotificationWork.cancelAlarm(it[0], userSession.device)
                         db.update(it[0]._id!!, it[0])
-                    }else{
+                    } else {
                         Single.just(Unit)
                     }
                 }

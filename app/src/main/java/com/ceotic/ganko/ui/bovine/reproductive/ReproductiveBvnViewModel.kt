@@ -241,7 +241,7 @@ class ReproductiveBvnViewModel @Inject constructor(private val db: CouchRx, priv
         val date = birth.time / 60000
         val now = Date().time / 60000
 
-        return listOf((date + 34560) to "21", (date + 60480) to "42", (date + 92160) to "64", (date + 120960) to "84").toObservable()
+        return listOf((date + 30240) to "21", (date + 60480) to "42", (date + 92160) to "64", (date + 120960) to "84").toObservable()
                 .map { (emptyDays, type)-> Triple(emptyDays, emptyDays- now, type)}
                 .filter{it.second + DAY_7_MIN > 0}
                 .map {(emptyDays, time, type)->

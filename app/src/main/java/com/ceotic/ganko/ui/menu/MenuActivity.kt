@@ -28,8 +28,9 @@ import com.ceotic.ganko.util.buildViewModel
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
+import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_menu.*
-import kotlinx.android.synthetic.main.template_birth.*
+import org.jetbrains.anko.toast
 import javax.inject.Inject
 
 
@@ -52,11 +53,13 @@ class MenuActivity : SearchBarActivity(MENU_SEARCH_FILTER), Injectable, HasSuppo
     var phone: Boolean = true
     var contentValue = 0
 
+    var farm:String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu)
         intent.extras?.getString("farm")?.run {
+            farm = this
             viewModel.setFarmId(this)
         }
 
@@ -99,6 +102,16 @@ class MenuActivity : SearchBarActivity(MENU_SEARCH_FILTER), Injectable, HasSuppo
 
     override fun onResume() {
         super.onResume()
+        if(farm != null){
+            dis add viewModel.getFarm(farm!!)
+                    .subscribeBy(
+                            onSuccess = {
+                                toast("Finca $it seleccionada")
+                                adapter.notifyDataSetChanged()
+                            },
+                            onComplete = {}
+                    )
+        }
 
         if(!viewModel.validatePlan())
             planMsg.visibility = View.VISIBLE

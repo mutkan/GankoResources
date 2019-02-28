@@ -50,6 +50,7 @@ class NotificationWork(context: Context, params: WorkerParameters) : Worker(cont
         val intent = Intent(applicationContext, MenuActivity::class.java).apply {
             putExtra("fragment", 13)
             putExtra("farm", farm)
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
 
         val pendingIntent = PendingIntent.getActivity(applicationContext, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT)
