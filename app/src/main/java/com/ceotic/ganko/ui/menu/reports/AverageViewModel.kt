@@ -2,6 +2,7 @@ package com.ceotic.ganko.ui.menu.reports
 
 import com.ceotic.ganko.data.db.CouchRx
 import com.ceotic.ganko.data.models.*
+import com.ceotic.ganko.data.preferences.UserSession
 import com.ceotic.ganko.util.*
 import com.couchbase.lite.ArrayExpression
 import com.couchbase.lite.ArrayFunction
@@ -16,11 +17,11 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.math.roundToInt
 
-class AverageViewModel(private val farmID: String, private val db: CouchRx) {
+class AverageViewModel(private val session: UserSession, private val db: CouchRx) {
 
     private fun promedioGananciaPeso(from: Date? = null, to: Date? = null, month: Int? = null, year: Int? = null, idBovino: String? = null): Single<Float> {
         val (ini, end) = processDates(from, to, month, year)
-        var exp = "finca" equalEx farmID andEx ("gananciaPeso" isNullEx false)
+        var exp = "finca" equalEx session.farmID andEx ("gananciaPeso" isNullEx false)
         if (idBovino != null) {
             exp = exp andEx ("bovino" equalEx idBovino)
         }
@@ -37,7 +38,7 @@ class AverageViewModel(private val farmID: String, private val db: CouchRx) {
     }
 
     private fun promedioLeche(from: Date? = null, to: Date? = null, month: Int? = null, year: Int? = null, bovino: String? = null): Maybe<Int> {
-        var exp = "idFinca" equalEx farmID
+        var exp = "idFinca" equalEx session.farmID
         val (ini, end) = processDates(from, to, month, year)
 
         if (bovino != null) {
@@ -70,7 +71,7 @@ class AverageViewModel(private val farmID: String, private val db: CouchRx) {
 
     private fun promedioAlimentacion(tipoAlimento: String, from: Date? = null, to: Date? = null, month: Int? = null, year: Int? = null, bovino: String? = null): Maybe<Pair<Int, Int>> {
         val (ini, end) = processDates(from, to, month, year)
-        var exp = "idFinca" equalEx farmID andEx ("tipoAlimento" equalEx tipoAlimento)
+        var exp = "idFinca" equalEx session.farmID andEx ("tipoAlimento" equalEx tipoAlimento)
         if (bovino != null) {
             exp = exp andEx ("bovinos" containsEx bovino)
         }
@@ -108,7 +109,7 @@ class AverageViewModel(private val farmID: String, private val db: CouchRx) {
         val currDate = Date()
         val currMilis = currDate.time
 
-        return db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra")
+        return db.listByExp("finca" equalEx session.farmID andEx ("genero" equalEx "Hembra")
                 andEx ArrayFunction.length(Expression.property("servicios")).greaterThan(Expression.intValue(0)), Bovino::class)
                 .flatMapObservable { it.toObservable() }
                 .map { it._id to it.servicios }
@@ -193,7 +194,7 @@ class AverageViewModel(private val farmID: String, private val db: CouchRx) {
                     }
 
     private fun promedioEdad(date: Date) =
-            db.listByExp("finca" equalEx farmID andEx ("fechaNacimiento" lte date), Bovino::class)
+            db.listByExp("finca" equalEx session.farmID andEx ("fechaNacimiento" lte date), Bovino::class)
                     .flatMapObservable { it.toObservable() }
                     .map {
                         val dif = date.time - it.fechaNacimiento!!.time
@@ -211,7 +212,7 @@ class AverageViewModel(private val farmID: String, private val db: CouchRx) {
         val iniMilis = ini!!.time
         val endMilis = end!!.time
 
-        return db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra")
+        return db.listByExp("finca" equalEx session.farmID andEx ("genero" equalEx "Hembra")
                 andEx (ArrayFunction.length(Expression.property("servicios")).greaterThanOrEqualTo(Expression.value(1)))
                 andEx (ArrayExpression.any(VAR_SERV).`in`(Expression.property("servicios")))
                 .satisfies(VAR_NOVEDAD.equalTo(Expression.string("Aborto")))
@@ -235,7 +236,7 @@ class AverageViewModel(private val farmID: String, private val db: CouchRx) {
         val iniMilis = ini!!.time
         val endMilis = end!!.time
 
-        return db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra")
+        return db.listByExp("finca" equalEx session.farmID andEx ("genero" equalEx "Hembra")
                 andEx (ArrayFunction.length(Expression.property("servicios")).greaterThanOrEqualTo(Expression.value(1)))
                 andEx (ArrayExpression.any(VAR_SERV).`in`(Expression.property("servicios")))
                 .satisfies(VAR_PARTO.notNullOrMissing())
@@ -258,7 +259,7 @@ class AverageViewModel(private val farmID: String, private val db: CouchRx) {
         val iniMilis = ini!!.time
         val endMilis = end!!.time
 
-        return db.listByExp("finca" equalEx farmID
+        return db.listByExp("finca" equalEx session.farmID
                 andEx (ArrayFunction.length(Expression.property("servicios")).greaterThanOrEqualTo(Expression.value(1)))
                 , Bovino::class)
                 .flatMapObservable {
@@ -279,7 +280,7 @@ class AverageViewModel(private val farmID: String, private val db: CouchRx) {
         val iniMilis = ini!!.time
         val endMilis = end!!.time
 
-        return db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra")
+        return db.listByExp("finca" equalEx session.farmID andEx ("genero" equalEx "Hembra")
                 andEx (ArrayFunction.length(Expression.property("servicios")).greaterThanOrEqualTo(Expression.value(1)))
                 , Bovino::class)
                 .flatMapObservable {
@@ -300,9 +301,10 @@ class AverageViewModel(private val farmID: String, private val db: CouchRx) {
         val iniMilis = ini!!.time
         val endMilis = end!!.time
 
-        return db.listByExp("finca" equalEx farmID andEx ("genero" equalEx "Hembra")
-                andEx (ArrayFunction.length(Expression.property("servicios")).greaterThanOrEqualTo(Expression.value(2)))
-                andEx (ArrayExpression.any(VAR_SERV).`in`(Expression.property("servicios")))
+        return db.listByExp("finca" equalEx session.farmID
+                andEx ("genero" equalEx "Hembra")
+                andEx (ArrayFunction.length(Expression.property("servicios")).greaterThanOrEqualTo(Expression.intValue(2)))
+                andEx ArrayExpression.any(VAR_SERV).`in`(Expression.property("servicios"))
                 .satisfies(VAR_PARTO.notNullOrMissing() andEx (VAR_FECHA_PARTO.between(Expression.date(ini), Expression.date(end))))
                 , Bovino::class)
                 .flatMapObservable { it.toObservable() }

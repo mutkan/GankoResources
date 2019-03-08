@@ -36,7 +36,7 @@ class MenuViewModel @Inject constructor(private val db: CouchRx, private val use
     }
 
     val reports: ReportViewModel by lazy { ReportViewModel(db, userSession) }
-    val averages: AverageViewModel by lazy { AverageViewModel(userSession.farmID, db) }
+    val averages: AverageViewModel by lazy { AverageViewModel(userSession, db) }
 
 
     //region Menu
