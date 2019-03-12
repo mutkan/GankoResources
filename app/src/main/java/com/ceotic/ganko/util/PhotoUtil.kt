@@ -90,9 +90,9 @@ object PhotoUtil {
                 val bitmap = BitmapFactory.decodeFile(fileImage.absolutePath, bmOptions)
                 fileImage.delete()
 
-                val file = File(context.filesDir, "${Date().time}.webp")
+                val file = File(context.filesDir, "${Date().time}.jpg")
                 val outStream: OutputStream = FileOutputStream(file)
-                bitmap.compress(Bitmap.CompressFormat.WEBP, 50, outStream)
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 50, outStream)
                 outStream.flush()
                 outStream.close()
                 context.runOnUiThread {
@@ -117,9 +117,9 @@ object PhotoUtil {
                 matrix.postScale(scaleWidth, scaleHeight)
 
                 val bitmap = Bitmap.createBitmap(bitmap2, 0, 0, bmWidth, bmHeight, matrix, false)
-                val file = File(context.filesDir, "${Date().time}.webp")
+                val file = File(context.filesDir, "${Date().time}.jpg")
                 val outStream: OutputStream = FileOutputStream(file)
-                bitmap.compress(Bitmap.CompressFormat.WEBP, 50, outStream)
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 50, outStream)
                 outStream.flush()
                 outStream.close()
                 context.runOnUiThread {

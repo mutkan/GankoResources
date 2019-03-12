@@ -54,7 +54,7 @@ class CouchRx @Inject constructor(private val db: Database
         docComplete.setData(document.toMap())
         if (files != null) docComplete.setDictionary("files", files)
         if(channels != null) docComplete.setArray("channels", channels)
-        if(attachments != null)docComplete.setDictionary("_attachments", attachments)
+        if(attachments != null) docComplete.setDictionary("_attachments", attachments)
 
 
         db.save(docComplete)
@@ -353,6 +353,14 @@ class CouchRx @Inject constructor(private val db: Database
         val map = dictionary.toMap()
         map["_id"] = id
         map["_sequence"] = sequence
+        if(map.containsKey("files")){
+            map.remove("files")
+        }
+
+        if(map.containsKey("_attachments")){
+            map.remove("_attachments")
+        }
+
         return mapper.convertValue(map, kClass.java)
     }
 

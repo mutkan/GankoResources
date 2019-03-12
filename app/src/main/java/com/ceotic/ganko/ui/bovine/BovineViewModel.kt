@@ -26,7 +26,7 @@ class BovineViewModel @Inject constructor(private val db: CouchRx, private val u
 
     fun addBovineWithImage(bovino: Bovino, field: String, file: File): Single<Pair<String, String>> = checkId(bovino.codigo!!)
             .flatMap { if (it) db.insert(bovino) else throw Throwable() }
-            .flatMap { db.putBlob(it, field, "image/webp", file) }
+            .flatMap { db.putBlob(it, field, "image/jpeg", file) }
             .flatMap { makeBirthAlarm(it.first, bovino, it) }
             .applySchedulers()
 

@@ -24,6 +24,7 @@ import com.squareup.picasso.Picasso
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_bovine_profile.*
 import org.jetbrains.anko.startActivity
+import org.jetbrains.anko.toast
 import javax.inject.Inject
 
 class DetailBovineActivity : AppCompatActivity(), Injectable {
@@ -124,11 +125,15 @@ class DetailBovineActivity : AppCompatActivity(), Injectable {
         binding.sex = bovine!!.genero == "Hembra"
 
         bovine!!.imagen?.let { imageName ->
-            dis add viewModel.getImage(bovine!!._id!!, imageName).subscribe { file ->
-                Picasso.get().load(file)
-                        .into(banner)
+            dis add viewModel.getImage(bovine!!._id!!, imageName)
+                    .subscribeBy(onSuccess = { file ->
+                        Picasso.get().load(file)
+                                .into(banner)
+                    }, onComplete = {
+                        toast("La imagen no se ha sincronizado aun")
+                    })
+
             }
-        }
     }
 
     companion object {
