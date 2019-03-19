@@ -129,7 +129,7 @@ class DetailBovineActivity : AppCompatActivity(), Injectable {
                     .subscribeBy(onSuccess = { file ->
                         Picasso.get().load(file)
                                 .into(banner)
-                    }, onComplete = {
+                    }, onError = {
                         toast("La imagen no se ha sincronizado aun")
                     })
 

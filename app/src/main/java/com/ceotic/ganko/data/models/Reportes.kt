@@ -31,7 +31,7 @@ data class ReporteDiasVacios(
         val fechaUltimoParto: Date,
         val fechaUltimoServicio: Date,
         val diasVacios: Long,
-        val enServicio:Boolean
+        val enServicio: Boolean
 )
 
 data class ReportePartosAtendidos(
@@ -74,7 +74,7 @@ data class ReporteLeche(
         val fecha_produccion: Date
 )
 
-data class  ReporteDestetos(
+data class ReporteDestetos(
         val codigo: String,
         val nombre: String?,
         val fechaNacimiento: Date,
@@ -142,7 +142,7 @@ data class ReporteAlimentacion(
 data class ReporteSuplementosUsados(
         val nombre: String?,
         val totalUsado: String,
-        val valorTotal:Int
+        val valorTotal: Int
 )
 
 data class ReporteAnimalesEnPradera(
@@ -199,7 +199,9 @@ data class ReporteNovillasLevante(
         val nombre: String?,
         val fechaNacimiento: Date,
         val proposito: String,
-        val raza: String
+        val raza: String,
+        val codigoMadre: String,
+        val codigoPadre: String
 )
 
 data class ReporteNovillasVientre(
@@ -234,70 +236,70 @@ data class ReporteSalidas(
         val fechaSalida: Date,
         val tipoSalida: String
 )
+
 @Parcelize
 data class Promedio(
-        val tipo:String,
-        val total:Number,
-        val bovino:String? = null,
-        val individual:Number? = null,
-        val desde:Date? = null,
-        val hasta:Date? = null,
-        val mes:Int? = null,
-        val anio:Int? = null,
-        val valor:Int? = null,
-        val unidades:String? = null,
+        val tipo: String,
+        val total: Number,
+        val bovino: String? = null,
+        val individual: Number? = null,
+        val desde: Date? = null,
+        val hasta: Date? = null,
+        val mes: Int? = null,
+        val anio: Int? = null,
+        val valor: Int? = null,
+        val unidades: String? = null,
         val unidadesPrecio: String? = null
 ) : Parcelable
 
 //region heeader pdf and excel file
-fun getHeader(tipoReporte:String):List<String> =
+fun getHeader(tipoReporte: String): List<String> =
 
-    when(tipoReporte){
-         "Partos futuros"-> listOf("Codigo","Nombre","F. servicio","F. estimada de parto")
-         "Secado"-> listOf("Codigo","Nombre","Fecha servicio","Fecha secado")
-         "Preparación"-> listOf("Codigo","Nombre","Fecha de preparación", "Fecha estimada de parto")
-         "Días abiertos"-> listOf("Codigo","Nombre","Ultimo parto o Novedad","Ultimo servicio","Dias vacios","En servicio")
-         "Partos atendidos"-> listOf("Codigo","Nombre","Fecha parto","Sexo cria", "Estado cria")
-         "Abortos"-> listOf("Codigo","Nombre","Fecha servicio","Fecha confirmacion aborto")
-         "Tres servicios"-> listOf("Codigo","Nombre","Ultimo servicio","Dias vacios")
-         "Celos"-> listOf("Codigo","Nombre","Fecha celo")
-         "Resumen"-> listOf("Codigo", "Nombre", "Fecha Parto", "Tipo", "Toro/Pajilla",
-                 "Fecha Confirmación", "Dias en Leche", "Dias Abiertos", "Fecha Secado", "Proximo Parto", "Servicio")
-         //LECHE
-         "Consolidado de leche"-> listOf("Tipo","Fecha","Operacion","Numero Litros","Valor litros","Total Valor")
-         "Reporte de leche"-> listOf("Codigo","Numero de litros","Fecha de producción","Jornada")
-         //CEBA
-         "Destetos"-> listOf("Codigo","Nombre","Fecha nacimiento","Fecha destete","Codigo madre")
-         "Ganancia diaria de peso"-> listOf("Codigo","Nombre","Fecha nacimiento","GDP","Proposito")
-         //PRADERAS
-         "Praderas"-> listOf("Numero","Tipo Graminea","Fecha fertilizacion","Producto","Cantidad")
-         "Ocupación de praderas"-> listOf("Numero","Graminea","Fecha de mantenimiento","Dias Libres","Fecha ocupacion")
-         //ALIMENTACION
-         "Alimentación"-> listOf("Codigo Bovino","Tipo de alimento","Ración","Precio total")
-         "Suplementos usados"-> listOf("Nombre","Total usado","Valor total")
-         //MOVIMIENTOS
-         "Animales en pradera"-> listOf("Bovinos","Pradera","Fecha de transaccion")
-         //ENTRADAS
-         "Inventario"-> listOf("Codigo","Nombre","Nacimiento","Propósito","Color","Raza","Partos","C.Madre","C.Padre")
-         "Terneras en estaca"-> listOf("Codigo","Nombre","Nacimiento","Proposito","Raza","C.Madre", "C.Padre")
-         "Terneras destetas"-> listOf("Codigo","Nombre","Nacimiento","Proposito","Raza","C.Madre","C.Padre")
-         "Novillas de levante"-> listOf("Codigo","Nombre","Nacimiento","Proposito","Raza")
-         "Novillas vientre"-> listOf("Codigo","Nombre","Nacimiento","Proposito","Raza")
-         "Horras"-> listOf("Codigo","Nombre","Nacimiento","Proposito","Raza")
-         "Vacas"-> listOf("Codigo","Nombre","Nacimiento","Proposito","Raza")
-         //SALIDAS
-         "Salida"-> listOf("Codigo","Nombre","Fecha salida","Tipo salida")
-         //VACUNAS
-         "Vacunas"-> listOf("Codigo","Nombre","Fecha vacunacion","Vacuna aplicada")
-         //SANIDAD
-         "Sanidad"-> listOf("Codigo","Nombre","Fecha evento","Evento","Diagnostico","Producto")
-         //MANEJO
-         "Manejo"-> listOf("Codigo","Nombre","Fecha evento","Evento","Tratamiento","Producto")
-         //PAJILLAS
-         "Pajillas"-> listOf("Codigo","Canastilla","Raza","Proposito","Toro","Procedencia")
-         else -> emptyList()
+        when (tipoReporte) {
+            "Partos futuros" -> listOf("Codigo", "Nombre", "F. servicio", "F. estimada de parto")
+            "Secado" -> listOf("Codigo", "Nombre", "Fecha servicio", "Fecha secado")
+            "Preparación" -> listOf("Codigo", "Nombre", "Fecha de preparación", "Fecha estimada de parto")
+            "Días abiertos" -> listOf("Codigo", "Nombre", "Ultimo parto o Novedad", "Ultimo servicio", "Dias vacios", "En servicio")
+            "Partos atendidos" -> listOf("Codigo", "Nombre", "Fecha parto", "Sexo cria", "Estado cria")
+            "Abortos" -> listOf("Codigo", "Nombre", "Fecha servicio", "Fecha confirmacion aborto")
+            "Tres servicios" -> listOf("Codigo", "Nombre", "Ultimo servicio", "Dias vacios")
+            "Celos" -> listOf("Codigo", "Nombre", "Fecha celo")
+            "Resumen" -> listOf("Codigo", "Nombre", "Fecha Parto", "Tipo", "Toro/Pajilla",
+                    "Fecha Confirmación", "Dias en Leche", "Dias Abiertos", "Fecha Secado", "Proximo Parto", "Servicio")
+            //LECHE
+            "Consolidado de leche" -> listOf("Tipo", "Fecha", "Operacion", "Numero Litros", "Valor litros", "Total Valor")
+            "Reporte de leche" -> listOf("Codigo", "Numero de litros", "Fecha de producción", "Jornada")
+            //CEBA
+            "Destetos" -> listOf("Codigo", "Nombre", "Fecha nacimiento", "Fecha destete", "Codigo madre")
+            "Ganancia diaria de peso" -> listOf("Codigo", "Nombre", "Fecha nacimiento", "GDP", "Proposito")
+            //PRADERAS
+            "Praderas" -> listOf("Numero", "Tipo Graminea", "Fecha fertilizacion", "Producto", "Cantidad")
+            "Ocupación de praderas" -> listOf("Numero", "Graminea", "Fecha de mantenimiento", "Dias Libres", "Fecha ocupacion")
+            //ALIMENTACION
+            "Alimentación" -> listOf("Codigo Bovino", "Tipo de alimento", "Ración", "Precio total")
+            "Suplementos usados" -> listOf("Nombre", "Total usado", "Valor total")
+            //MOVIMIENTOS
+            "Animales en pradera" -> listOf("Bovinos", "Pradera", "Fecha de transaccion")
+            //ENTRADAS
+            "Inventario" -> listOf("Codigo", "Nombre", "Nacimiento", "Propósito", "Color", "Raza", "Partos", "C.Madre", "C.Padre")
+            "Terneras en estaca" -> listOf("Codigo", "Nombre", "Nacimiento", "Proposito", "Raza", "C.Madre", "C.Padre")
+            "Terneras destetas" -> listOf("Codigo", "Nombre", "Nacimiento", "Proposito", "Raza", "C.Madre", "C.Padre")
+            "Novillas de levante" -> listOf("Codigo", "Nombre", "Nacimiento", "Proposito", "Raza", "C.Madre", "C.Padre")
+            "Novillas vientre" -> listOf("Codigo", "Nombre", "Nacimiento", "Proposito", "Raza")
+            "Horras" -> listOf("Codigo", "Nombre", "Nacimiento", "Proposito", "Raza")
+            "Vacas" -> listOf("Codigo", "Nombre", "Nacimiento", "Proposito", "Raza")
+            //SALIDAS
+            "Salida" -> listOf("Codigo", "Nombre", "Fecha salida", "Tipo salida")
+            //VACUNAS
+            "Vacunas" -> listOf("Codigo", "Nombre", "Fecha vacunacion", "Vacuna aplicada")
+            //SANIDAD
+            "Sanidad" -> listOf("Codigo", "Nombre", "Fecha evento", "Evento", "Diagnostico", "Producto")
+            //MANEJO
+            "Manejo" -> listOf("Codigo", "Nombre", "Fecha evento", "Evento", "Tratamiento", "Producto")
+            //PAJILLAS
+            "Pajillas" -> listOf("Codigo", "Canastilla", "Raza", "Proposito", "Toro", "Procedencia")
+            else -> emptyList()
         }
-
 
 
 //endregion
