@@ -14,7 +14,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 class ReportViewModel(private val db: CouchRx,
-                      private val session:UserSession) {
+                      private val session: UserSession) {
 
     private fun reporteFuturosPartos(from: Date? = null, to: Date? = null, month: Int? = null, year: Int? = null): Single<List<List<String>>> {
         val (ini, end) = processDates(from, to, month, year)
@@ -440,7 +440,8 @@ class ReportViewModel(private val db: CouchRx,
         return db.listByExp(q, Bovino::class)
                 .flatMapObservable { it.toObservable() }
                 .map {
-                    listOf(it.codigo?:"", it.nombre?:"", it.fechaNacimiento?.toStringFormat() ?: "", it.fechaDestete?.toStringFormat() ?: "", it.codigoMadre?: "")
+                    listOf(it.codigo ?: "", it.nombre ?: "", it.fechaNacimiento?.toStringFormat()
+                            ?: "", it.fechaDestete?.toStringFormat() ?: "", it.codigoMadre ?: "")
                 }.toList().applySchedulers()
     }
 
@@ -467,8 +468,8 @@ class ReportViewModel(private val db: CouchRx,
         val (_, end) = processDates(from, to, month, year)
         val endMilis = end!!.time
 
-        val nowMilis =  Date().time
-        val maxMilis = if(nowMilis < endMilis) nowMilis else endMilis
+        val nowMilis = Date().time
+        val maxMilis = if (nowMilis < endMilis) nowMilis else endMilis
 
         return db.listByExp("idFinca" equalEx session.farmID andEx ("identificador" isNullEx false), Pradera::class)
                 .flatMapObservable { it.toObservable() }
@@ -495,7 +496,8 @@ class ReportViewModel(private val db: CouchRx,
                                             } else movement?.diasLibres ?: 0
 
                                             listOf("${pr.identificador}", manage?.graminea ?: "",
-                                                    manage?.fechaMantenimiento?.toStringFormat() ?: "",
+                                                    manage?.fechaMantenimiento?.toStringFormat()
+                                                            ?: "",
                                                     "$freeDays", if (free || movement == null) "Libre"
                                             else movement.transactionDate.toStringFormat()
                                             )
@@ -506,7 +508,7 @@ class ReportViewModel(private val db: CouchRx,
 
 
                 }
-               .toList().applySchedulers()
+                .toList().applySchedulers()
     }
 
 
@@ -567,7 +569,7 @@ class ReportViewModel(private val db: CouchRx,
                 }.toList().applySchedulers()
     }
 
-    private fun reporteTernerasDestetas(): Single<List<List<String>>>{
+    private fun reporteTernerasDestetas(): Single<List<List<String>>> {
 
         val now = Date().time
         val end = Date(now - 15552000000)
@@ -597,7 +599,7 @@ class ReportViewModel(private val db: CouchRx,
                 }.toList().applySchedulers()
     }
 
-    private fun reporteNovillasVientre(): Single<List<List<String>>>{
+    private fun reporteNovillasVientre(): Single<List<List<String>>> {
         val now = Date().time
         val end = Date(now - 46656000000)
         val ini = Date(now - 51840000000)
@@ -689,28 +691,67 @@ class ReportViewModel(private val db: CouchRx,
 
     private fun reporteGananciaPeso(from: Date? = null, to: Date? = null, month: Int? = null, year: Int? = null): Single<List<List<String>>> {
         val (ini, end) = processDates(from, to, month, year)
+
+        val inRange: (id: String) -> Single<List<Ceba>> = {
+            db.listByExp("fecha".betweenDates(ini!!, end!!)
+                andEx ("bovino" equalEx it)
+                andEx (("eliminado" equalEx false) orEx ("eliminado" isNullEx true)),
+                Ceba::class, orderBy = arrayOf("fecha" orderEx ASCENDING))
+        }
+
+        val lowerRange: (id:String) -> Single<List<Ceba>> = {
+            db.listByExp("fecha" lt ini!!
+                    andEx ("bovino" equalEx it)
+                    andEx (("eliminado" equalEx false) orEx ("eliminado" isNullEx true)),
+                    Ceba::class, limit = 1)
+        }
+
+        val higherRange: (id:String) -> Single<List<Ceba>> = {
+            db.listByExp("fecha" gt end!!
+                    andEx ("bovino" equalEx it)
+                    andEx (("eliminado" equalEx false) orEx ("eliminado" isNullEx true)),
+                    Ceba::class, limit = 1)
+        }
+
         return db.listByExp("finca" equalEx session.farmID, Bovino::class)
                 .flatMapObservable { it.toObservable() }
                 .flatMapSingle {
-                    db.listByExp("fecha".betweenDates(ini!!, end!!) andEx ("bovino" equalEx it._id!!) andEx (("eliminado" equalEx false ) orEx ("eliminado" isNullEx true)), Ceba::class, orderBy = arrayOf("fecha" orderEx DESCENDING))
+                    inRange(it._id!!)
+                            .flatMap {c->
+                                when{
+                                    c.size == 1-> lowerRange(it._id!!)
+                                            .map { l-> if(l.isEmpty()) c else listOf(l[0], c[0]) }
+                                    c.size > 1 -> Single.just(listOf(c[0], c.last()))
+                                    else -> lowerRange(it._id!!)
+                                            .flatMap { l -> higherRange(it._id!!)
+                                                    .map {h->
+                                                        when{
+                                                            l.isNotEmpty() && h.isNotEmpty() -> listOf(l[0], h[0])
+                                                            h.isNotEmpty() -> h
+                                                            else -> emptyList()
+                                                        }
+                                                    }}
+
+                                }
+                            }
                             .map { cebaList ->
-                                var gananciaPeso =0f
+                                var gananciaPeso = 0f
                                 if (cebaList.size == 1) {
                                     gananciaPeso = cebaList[0].gananciaPeso!!
-                                } else if(cebaList.size > 1) {
-                                    val cebaMayor = cebaList[0]
-                                    val cebaMenor = cebaList.last()
+                                } else if (cebaList.size > 1) {
+                                    val cebaMayor = cebaList.last()
+                                    val cebaMenor = cebaList[0]
                                     val dif = cebaMayor.fecha!!.time - cebaMenor.fecha!!.time
                                     val dias = Math.ceil(dif.toDouble() / 86400000)
-                                    gananciaPeso =((cebaMayor.peso!! - cebaMenor.peso!!) * 1000 / dias).toFloat()
+                                    gananciaPeso = ((cebaMayor.peso!! - cebaMenor.peso!!) * 1000 / dias).toFloat()
                                 }
                                 listOf(it.codigo!!, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), "$gananciaPeso Gr", it.proposito!!)
                             }
                 }.toList().applySchedulers()
     }
 
-    fun getReport(name:String,from: Date? = null, to: Date? = null, month: Int? = null, year: Int? = null): Single<List<List<String>>> {
-        return when(name){
+    fun getReport(name: String, from: Date? = null, to: Date? = null, month: Int? = null, year: Int? = null): Single<List<List<String>>> {
+        return when (name) {
             "Partos futuros" -> reporteFuturosPartos(from, to, month, year)
             "Secado" -> reporteSecado(from, to, month, year)
             "Preparación" -> reportePreparacion(from, to, month, year)
@@ -721,17 +762,17 @@ class ReportViewModel(private val db: CouchRx,
             "Celos" -> reporteCelos(from, to, month, year)
             "Consolidado de leche" -> reporteConsolidado(from, to, month, year)
             "Reporte de leche" -> reportesLeche(from, to, month, year)
-            "Destetos" ->reportesDestete(from, to, month, year)
+            "Destetos" -> reportesDestete(from, to, month, year)
             "Ganancia diaria de peso" -> reporteGananciaPeso(from, to, month, year)
             "Praderas" -> reporteGetPraderas(from, to, month, year)
             "Ocupación de praderas" -> reporteOcupacionPraderas(from, to, month, year)
-            "Animales en pradera" ->  reporteMovimientos(from, to, month, year)
+            "Animales en pradera" -> reporteMovimientos(from, to, month, year)
             "Alimentación" -> reporteAlimentacion(from, to, month, year)
             "Inventario" -> reporteInventario(from, to, month, year)
             "Terneras en estaca" -> reporteTernerasEnEstaca()
-            "Terneras destetas" ->  reporteTernerasDestetas()
+            "Terneras destetas" -> reporteTernerasDestetas()
             "Novillas de levante" -> reporteTerneraslevante()
-            "Novillas vientre" ->  reporteNovillasVientre()
+            "Novillas vientre" -> reporteNovillasVientre()
             "Vacas" -> reporteVacas()
             "Salida" -> reporteSalida(from, to, month, year)
             "Vacunas" -> reporteVacunas(from, to, month, year)
@@ -742,7 +783,6 @@ class ReportViewModel(private val db: CouchRx,
         }
 
     }
-
 
 
     companion object {
