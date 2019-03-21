@@ -14,27 +14,42 @@ import io.reactivex.rxkotlin.toObservable
 import io.reactivex.rxkotlin.zipWith
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.TimeUnit
 import kotlin.math.roundToInt
 
 class AverageViewModel(private val session: UserSession, private val db: CouchRx) {
 
     private fun promedioGananciaPeso(from: Date? = null, to: Date? = null, month: Int? = null, year: Int? = null, idBovino: String? = null): Single<Float> {
         val (ini, end) = processDates(from, to, month, year)
-        var exp = "finca" equalEx session.farmID andEx ("gananciaPeso" isNullEx false)
-        if (idBovino != null) {
-            exp = exp andEx ("bovino" equalEx idBovino)
-        }
-        if (ini != null) {
-            exp = exp andEx "fecha".betweenDates(ini, end!!)
-        }
 
-        return db.listByExp(exp, Ceba::class)
+        val source = if (idBovino == null)
+            db.listByExp("finca" equalEx session.farmID, Bovino::class)
+        else
+            db.oneById(idBovino, Bovino::class)
+                    .map { listOf(it) }
+                    .toSingle()
+
+        return source
                 .flatMapObservable { it.toObservable() }
+                .flatMapSingle { bvn ->
+                    db.listByExp("finca" equalEx session.farmID
+                            andEx ("gananciaPeso" isNullEx false)
+                            andEx ("bovino" equalEx bvn._id!!)
+                            andEx "fecha".betweenDates(ini!!, end!!), Ceba::class)
+                            .flatMap { c ->
+                                if (c.isNotEmpty()) Single.just(c)
+                                else db.listByExp("finca" equalEx session.farmID
+                                        andEx ("gananciaPeso" isNullEx false)
+                                        andEx ("bovino" equalEx bvn._id!!)
+                                        andEx ("fecha" gt end), Ceba::class, limit = 1)
+                            }
+                }
+                .flatMap { it.toObservable() }
                 .map { it.gananciaPeso }
                 .to(MathObservable::averageFloat)
                 .first(0f)
                 .applySchedulers()
+
+
     }
 
     private fun promedioLeche(from: Date? = null, to: Date? = null, month: Int? = null, year: Int? = null, bovino: String? = null): Maybe<Int> {
@@ -199,7 +214,7 @@ class AverageViewModel(private val session: UserSession, private val db: CouchRx
                     .map {
                         val dif = date.time - it.fechaNacimiento!!.time
                         val months = Math.floor(dif.toDouble() / 2592000000)
-                        if(months < 0)  0 else months.toInt()
+                        if (months < 0) 0 else months.toInt()
                     }
                     .to(MathObservable::averageFloat)
                     .first(0f)
