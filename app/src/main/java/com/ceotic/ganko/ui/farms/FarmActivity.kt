@@ -6,6 +6,8 @@ import android.databinding.ObservableBoolean
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.view.Menu
+import android.view.MenuItem
 import com.ceotic.ganko.R
 import com.ceotic.ganko.data.models.Finca
 import com.ceotic.ganko.databinding.ActivityListFarmBinding
@@ -13,6 +15,7 @@ import com.ceotic.ganko.databinding.TemplateAlertDeleteFarmBinding
 import com.ceotic.ganko.di.Injectable
 import com.ceotic.ganko.ui.adapters.ListFarmAdapter
 import com.ceotic.ganko.ui.menu.MenuActivity
+import com.ceotic.ganko.ui.sync.SyncActivity
 import com.ceotic.ganko.util.LifeDisposable
 import com.ceotic.ganko.util.buildViewModel
 import com.ceotic.ganko.util.text
@@ -91,6 +94,16 @@ class FarmActivity : AppCompatActivity(), Injectable {
                             finish()
                         }
                 )
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.farm_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        startActivity<SyncActivity>()
+        return super.onOptionsItemSelected(item)
     }
 
     private fun validateName(finca: Finca, nombre: String): Observable<Finca> = Observable.create<Finca> { e ->

@@ -108,6 +108,13 @@ class App : MultiDexApplication(), HasActivityInjector {
         }
     }
 
+    fun stopReplicator(){
+        replicator?.stop()
+        replicator = null
+        if (changeToken != null) db.removeChangeListener(changeToken)
+        changeToken = null
+    }
+
     private fun notificationListener() {
         val device = session.device
         val next = Date().add(Calendar.DATE, 5)

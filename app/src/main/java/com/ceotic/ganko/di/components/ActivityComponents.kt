@@ -41,6 +41,7 @@ import com.ceotic.ganko.ui.menu.straw.StrawAddActivity
 import com.ceotic.ganko.ui.menu.vaccines.AddVaccineActivity
 import com.ceotic.ganko.ui.menu.vaccines.detail.VaccineDetailActivity
 import com.ceotic.ganko.ui.search.SearchActivity
+import com.ceotic.ganko.ui.sync.SyncActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -219,6 +220,10 @@ abstract class ActivityComponents {
     @ActivityScope
     @ContributesAndroidInjector
     abstract fun bindRestorePassActivity(): RestorePassActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector
+    abstract fun syncActivity(): SyncActivity
 
 
 }

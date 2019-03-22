@@ -384,7 +384,7 @@
     <string name="filter_no_weaning">No Destete</string>
     <string name="show_average">Visualizar promedio</string>
     <string name="average_of_month">Promedio del mes</string>
-    <string name="average_type" >Seleccionar promedio</string>
+    <string name="average_type">Seleccionar promedio</string>
     <string name="addFeed">Agregar Alimentación</string>
     <string name="no_observations">Sin observaciones</string>
     <string name="straw_exist">Id de Pajilla ya existe</string>
@@ -397,6 +397,13 @@
     <string name="plan_date_limit">Comunicate con nostros para renovar tu licencia :D</string>
     <string name="plan_msg">Sincronización desactivada, renueva tu licencia</string>
     <string name="add_frecuency_of_prox_application">Agregue la frecuencia para la proxima aplicación </string>
+    <string name="sync_msg">Sincroniza toda la infromación desde y hacia la nube</string>
+    <string name="sync_msg_2">Sincronizando información …</string>
+    <string name="sync">Sincronizar</string>
+    <string name="sync_success">Sincronización Exitosa</string>
+    <string name="sync_offline">No hay conexion, intenta de nuevo</string>
+    <string name="sync_error">Error al sincronizar, Intenta de nuevo</string>
+    <string name="sync_start">Iniciar Sincronización</string>
 
     <string-array name="milk_production">
         <item>Litros vendidos</item>
@@ -476,7 +483,7 @@
 
     <string-array name="feed_type">
         <item>Alimentación</item>
-      <!--  <item>Suplementos usados</item>c-->
+        <!--  <item>Suplementos usados</item>c-->
     </string-array>
 
     <string-array name="movements_type">

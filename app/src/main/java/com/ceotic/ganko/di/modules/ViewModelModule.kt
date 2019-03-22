@@ -22,6 +22,7 @@ import com.ceotic.ganko.ui.menu.meadow.MeadowViewModel
 import com.ceotic.ganko.ui.menu.milk.MilkViewModel
 import com.ceotic.ganko.ui.menu.straw.StrawViewModel
 import com.ceotic.ganko.ui.search.SearchViewModel
+import com.ceotic.ganko.ui.sync.SyncViewModel
 import com.ceotic.ganko.util.AppViewModelFactory
 import dagger.Binds
 import dagger.Module
@@ -127,5 +128,10 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(SearchViewModel::class)
     abstract fun bindSearchViewModel(viewModel: SearchViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SyncViewModel::class)
+    abstract fun syncViewModel(viewModel: SyncViewModel): ViewModel
 
 }
