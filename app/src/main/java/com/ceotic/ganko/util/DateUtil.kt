@@ -21,6 +21,7 @@ fun processDates(from: Date?, to: Date?, month: Int?, year: Int?): Pair<Date?, D
         fromDate to toDate
     }
     from != null -> from to to
+    to != null -> null to to
     else -> Pair<Date?, Date?>(null, null)
 }
 

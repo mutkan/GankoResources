@@ -20,6 +20,7 @@ import com.ceotic.ganko.databinding.FragmentSelectReportBinding
 import com.ceotic.ganko.di.Injectable
 import com.ceotic.ganko.excel.TemplateExcel
 import com.ceotic.ganko.pdf.TemplatePdf
+import com.ceotic.ganko.ui.common.SingleDatePicker
 import com.ceotic.ganko.ui.menu.MenuViewModel
 import com.ceotic.ganko.util.LifeDisposable
 import com.ceotic.ganko.util.buildViewModel
@@ -55,6 +56,7 @@ class SelectReportFragment : Fragment(), Injectable, com.borax12.materialdateran
     val year: Int by lazy { calendar.get(Calendar.YEAR) }
     var datePicker: com.borax12.materialdaterangepicker.date.DatePickerDialog = com.borax12.materialdaterangepicker.date.DatePickerDialog
             .newInstance(this, year, calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
+
     var selectedType: String = "Partos"
 
 
@@ -71,6 +73,7 @@ class SelectReportFragment : Fragment(), Injectable, com.borax12.materialdateran
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_select_report, container, false)
         templatePdf = TemplatePdf(context!!)
         templateExcel = TemplateExcel(context!!)
+        binding.single = false
         return binding.root
     }
 
@@ -99,7 +102,9 @@ class SelectReportFragment : Fragment(), Injectable, com.borax12.materialdateran
         var header: List<String> = emptyList()
         dis add fromDateText.clicks()
                 .subscribeBy {
-                    datePicker.show(activity!!.fragmentManager, "dialog")
+                    if(selectedType == "Horras") SingleDatePicker.newInstance(fromDateText)
+                            .show(fragmentManager, "singleDialog")
+                    else datePicker.show(activity!!.fragmentManager, "dialog")
                 }
 
         dis add typeDateGroup.checkedChanges()
@@ -119,8 +124,7 @@ class SelectReportFragment : Fragment(), Injectable, com.borax12.materialdateran
         dis add reportType.itemSelections()
                 .subscribeBy(onNext = {
                     selectedType = tiposdata[it]
-
-
+                    binding.single = selectedType == "Horras"
                 })
 
         dis add fabView.clicks()

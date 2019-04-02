@@ -7,11 +7,13 @@ import com.ceotic.ganko.util.*
 import com.couchbase.lite.ArrayExpression
 import com.couchbase.lite.ArrayFunction
 import com.couchbase.lite.Expression
+import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.rxkotlin.Singles
 import io.reactivex.rxkotlin.toObservable
 import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.reflect.jvm.internal.impl.metadata.ProtoBuf
 
 class ReportViewModel(private val db: CouchRx,
                       private val session: UserSession) {
@@ -694,19 +696,19 @@ class ReportViewModel(private val db: CouchRx,
 
         val inRange: (id: String) -> Single<List<Ceba>> = {
             db.listByExp("fecha".betweenDates(ini!!, end!!)
-                andEx ("bovino" equalEx it)
-                andEx (("eliminado" equalEx false) orEx ("eliminado" isNullEx true)),
-                Ceba::class, orderBy = arrayOf("fecha" orderEx ASCENDING))
+                    andEx ("bovino" equalEx it)
+                    andEx (("eliminado" equalEx false) orEx ("eliminado" isNullEx true)),
+                    Ceba::class, orderBy = arrayOf("fecha" orderEx ASCENDING))
         }
 
-        val lowerRange: (id:String) -> Single<List<Ceba>> = {
+        val lowerRange: (id: String) -> Single<List<Ceba>> = {
             db.listByExp("fecha" lt ini!!
                     andEx ("bovino" equalEx it)
                     andEx (("eliminado" equalEx false) orEx ("eliminado" isNullEx true)),
                     Ceba::class, limit = 1)
         }
 
-        val higherRange: (id:String) -> Single<List<Ceba>> = {
+        val higherRange: (id: String) -> Single<List<Ceba>> = {
             db.listByExp("fecha" gt end!!
                     andEx ("bovino" equalEx it)
                     andEx (("eliminado" equalEx false) orEx ("eliminado" isNullEx true)),
@@ -717,20 +719,22 @@ class ReportViewModel(private val db: CouchRx,
                 .flatMapObservable { it.toObservable() }
                 .flatMapSingle {
                     inRange(it._id!!)
-                            .flatMap {c->
-                                when{
-                                    c.size == 1-> lowerRange(it._id!!)
-                                            .map { l-> if(l.isEmpty()) c else listOf(l[0], c[0]) }
+                            .flatMap { c ->
+                                when {
+                                    c.size == 1 -> lowerRange(it._id!!)
+                                            .map { l -> if (l.isEmpty()) c else listOf(l[0], c[0]) }
                                     c.size > 1 -> Single.just(listOf(c[0], c.last()))
                                     else -> lowerRange(it._id!!)
-                                            .flatMap { l -> higherRange(it._id!!)
-                                                    .map {h->
-                                                        when{
-                                                            l.isNotEmpty() && h.isNotEmpty() -> listOf(l[0], h[0])
-                                                            h.isNotEmpty() -> h
-                                                            else -> emptyList()
+                                            .flatMap { l ->
+                                                higherRange(it._id!!)
+                                                        .map { h ->
+                                                            when {
+                                                                l.isNotEmpty() && h.isNotEmpty() -> listOf(l[0], h[0])
+                                                                h.isNotEmpty() -> h
+                                                                else -> emptyList()
+                                                            }
                                                         }
-                                                    }}
+                                            }
 
                                 }
                             }
@@ -748,6 +752,88 @@ class ReportViewModel(private val db: CouchRx,
                                 listOf(it.codigo!!, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), "$gananciaPeso Gr", it.proposito!!)
                             }
                 }.toList().applySchedulers()
+    }
+
+    private fun reporteHorras(from: Date? = null, to: Date? = null, month: Int? = null, year: Int? = null): Single<List<List<String>>> {
+        val (_, end) = processDates(from, to, month, year)
+        val currMilis = Date().time
+        val endMilis = end!!.time
+
+        val maxMilis = if (currMilis < endMilis) currMilis else endMilis
+        val maxDate = Date(maxMilis)
+
+        val month20 = endMilis - 51840000000
+        val month18 = endMilis - 46656000000
+        val month3 = maxMilis - 7776000000
+
+        val expNovillas: Expression = (
+                "finca" equalEx session.farmID
+                        andEx ("genero" equalEx "Hembra")
+                        andEx ("retirado" equalEx false)
+                        andEx ("fechaNacimiento" gt Date(month20))
+                        andEx ("fechaNacimiento" lte Date(month18))
+                        andEx (ArrayFunction.length(Expression.property("servicios")).greaterThan(Expression.intValue(0)))
+                        andEx ArrayExpression.any(ArrayExpression.variable("s")).`in`(Expression.property("servicios"))
+                        .satisfies(
+                                ArrayExpression.variable("s.diagnostico.confirmacion").equalTo(Expression.booleanValue(true))
+                                        .and(ArrayExpression.variable("s.fecha").lessThanOrEqualTo(Expression.date(Date(month3))))
+                                        .and(ArrayExpression.variable("s.parto").isNullOrMissing
+                                                .or(ArrayExpression.variable("s.parto.fecha").greaterThan(Expression.date(maxDate))))
+                                        .add(ArrayExpression.variable("s.novedad").isNullOrMissing
+                                                .or(ArrayExpression.variable("s.novedad.fecha").greaterThan(Expression.date(maxDate))))
+                        ))
+        val novillasObs = db.listByExp(expNovillas, Bovino::class)
+                .flatMapObservable { it.toObservable() }
+
+        val expAdultas: Expression = (
+                "finca" equalEx session.farmID
+                        andEx ("genero" equalEx "Hembra")
+                        andEx ("retirado" equalEx false)
+                        andEx ("fechaNacimiento" lte Date(month20))
+                        andEx (ArrayFunction.length(Expression.property("servicios")).greaterThan(Expression.intValue(0)))
+                        andEx ArrayExpression.any(ArrayExpression.variable("s")).`in`(Expression.property("servicios"))
+                        .satisfies(
+                            ArrayExpression.variable("s.fecha").lessThanOrEqualTo(Expression.date(maxDate))
+                        )
+                )
+
+        val adultasObs = db.listByExp(expAdultas, Bovino::class)
+                .flatMapObservable { it.toObservable() }
+                .flatMapSingle {bvn-> bvn.servicios!!.toObservable()
+                        .filter {  it.fecha!!.time <= maxMilis}
+                        .map { listOf(it to bvn) }
+                        .first(listOf())
+                }
+                .filter{ it.isNotEmpty() }
+                .map { it[0] }
+                .filter{ (s,_)->
+                    val empty = s.finalizado ?: false || s.diagnostico == null
+                    var isSecado = false
+                    var validSecado = false
+
+                    if (s.diagnostico != null && s.diagnostico!!.confirmacion) {
+                        val sDate = s.posFechaParto!!.time
+                        val dif = sDate - maxMilis
+                        isSecado = dif <= 5184000000
+
+                        if (s.parto == null && s.novedad == null) {
+                            validSecado = true
+                        } else {
+                            val milis = if (s.parto != null) s.parto!!.fecha!!.time
+                            else s.novedad!!.fecha.time
+                            validSecado = milis > maxMilis
+                        }
+                    }
+                    empty || (isSecado && validSecado)
+                }
+                .map { it.second }
+
+
+
+        return Observable.merge(novillasObs, adultasObs)
+                .map { listOf(it.codigo!!, it.nombre!!, it.fechaNacimiento!!.toStringFormat(), it.proposito!!, it.raza!! ) }
+                .toList()
+                .applySchedulers()
     }
 
     fun getReport(name: String, from: Date? = null, to: Date? = null, month: Int? = null, year: Int? = null): Single<List<List<String>>> {
@@ -779,6 +865,7 @@ class ReportViewModel(private val db: CouchRx,
             "Sanidad" -> reporteSanidad(from, to, month, year)
             "Manejo" -> reporteManejo(from, to, month, year)
             "Pajillas" -> reportePajillas(from, to, month, year)
+            "Horras" -> reporteHorras(from, to, month, year)
             else -> reporteResumen(from, to, month, year)
         }
 
